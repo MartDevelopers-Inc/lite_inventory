@@ -1,26 +1,26 @@
 <?php
 /*
- * Created on Fri Feb 04 2022
+ * Created on Thu May 12 2022
  *
- *  Devlan Agency - devlan.co.ke 
+ * Devlan Solutions LTD - www.devlan.co.ke 
  *
  * hello@devlan.co.ke
  *
  *
- * The Devlan End User License Agreement
+ * The Devlan Solutions LTD End User License Agreement
  *
- * Copyright (c) 2022 Devlan Agency
+ * Copyright (c) 2022 Devlan Solutions LTD
  *
  * 1. GRANT OF LICENSE
- * Devlan Agency hereby grants to you (an individual) the revocable, personal, non-exclusive, and nontransferable right to
+ * Devlan Solutions LTD hereby grants to you (an individual) the revocable, personal, non-exclusive, and nontransferable right to
  * install and activate this system on two separated computers solely for your personal and non-commercial use,
- * unless you have purchased a commercial license from Devlan Agency. Sharing this Software with other individuals, 
+ * unless you have purchased a commercial license from Devlan Solutions LTD. Sharing this Software with other individuals, 
  * or allowing other individuals to view the contents of this Software, is in violation of this license.
  * You may not make the Software available on a network, or in any way provide the Software to multiple users
- * unless you have first purchased at least a multi-user license from Devlan Agency.
+ * unless you have first purchased at least a multi-user license from Devlan Solutions LTD.
  *
  * 2. COPYRIGHT 
- * The Software is owned by Devlan Agency and protected by copyright law and international copyright treaties. 
+ * The Software is owned by Devlan Solutions LTD and protected by copyright law and international copyright treaties. 
  * You may not remove or conceal any proprietary notices, labels or marks from the Software.
  *
  * 3. RESTRICTIONS ON USE
@@ -37,8 +37,8 @@
  * Upon such termination, you agree to destroy the Software, together with all copies thereof.
  *
  * 5. NO OTHER WARRANTIES. 
- * DEVLAN AGENCY  DOES NOT WARRANT THAT THE SOFTWARE IS ERROR FREE. 
- * DEVLAN AGENCY SOFTWARE DISCLAIMS ALL OTHER WARRANTIES WITH RESPECT TO THE SOFTWARE, 
+ * DEVLAN SOLUTIONS LTD DOES NOT WARRANT THAT THE SOFTWARE IS ERROR FREE. 
+ * DEVLAN SOLUTIONS LTD SOFTWARE DISCLAIMS ALL OTHER WARRANTIES WITH RESPECT TO THE SOFTWARE, 
  * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, 
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS. 
  * SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF IMPLIED WARRANTIES OR LIMITATIONS
@@ -52,7 +52,7 @@
  * In the event of invalidity of any provision of this license, the parties agree that such invalidity shall not
  * affect the validity of the remaining portions of this license.
  *
- * 7. NO LIABILITY FOR CONSEQUENTIAL DAMAGES IN NO EVENT SHALL DEVLAN AGENCY  OR ITS SUPPLIERS BE LIABLE TO YOU FOR ANY
+ * 7. NO LIABILITY FOR CONSEQUENTIAL DAMAGES IN NO EVENT SHALL DEVLAN SOLUTIONS LTD  OR ITS SUPPLIERS BE LIABLE TO YOU FOR ANY
  * CONSEQUENTIAL, SPECIAL, INCIDENTAL OR INDIRECT DAMAGES OF ANY KIND ARISING OUT OF THE DELIVERY, PERFORMANCE OR 
  * USE OF THE SOFTWARE, EVEN IF DEVLAN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES
  * IN NO EVENT WILL DEVLAN  LIABILITY FOR ANY CLAIM, WHETHER IN CONTRACT 
@@ -60,9 +60,27 @@
  */
 
 
-/* Procedural Database Connecrions */
-$dbuser = "root"; /* Database Username */
-$dbpass = ""; /* Database Username Password */
-$host = "localhost"; /* Database Host */
-$db = "lite_inventory";  /* Database Name */
-$mysqli = new mysqli($host, $dbuser, $dbpass, $db); /* Connection Function */
+/* Load System Settings */
+$ret = "SELECT * FROM  system_settings";
+$stmt = $mysqli->prepare($ret);
+$stmt->execute(); //ok
+$res = $stmt->get_result();
+while ($settings = $res->fetch_object()) {
+?>
+    <!DOCTYPE html>
+    <html lang="zxx" class="js">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="@@page-discription">
+        <!-- Fav Icon  -->
+        <link rel="shortcut icon" href="./images/favicon.png">
+        <!-- Page Title  -->
+        <title><?php echo $settings->system_name; ?></title>
+        <!-- StyleSheets  -->
+        <link rel="stylesheet" href="../public/css/dashlite.css?ver=1.4.0">
+        <!-- Skin Css -->
+        <link id="skin-default" rel="stylesheet" href="../public/css/theme.css?ver=1.4.0">
+    </head>
+<?php } ?>

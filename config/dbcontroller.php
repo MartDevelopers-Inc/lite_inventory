@@ -64,7 +64,7 @@ class DBController
 	private $host = "localhost";
 	private $user = "root";
 	private $password = "";
-	private $database = "pos";
+	private $database = "lite_inventory";
 	private $conn;
 
 	function __construct()

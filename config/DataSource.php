@@ -83,7 +83,7 @@ class DataSource
 
     const PASSWORD = '';
 
-    const DATABASENAME = 'pos';
+    const DATABASENAME = 'lite_inventory';
 
     private $conn;
 

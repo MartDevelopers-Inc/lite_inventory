@@ -70,7 +70,7 @@ $DB_user = "root";
 $DB_pass = "";
 
 /* Database Name */
-$DB_name = "pos";
+$DB_name = "lite_inventory";
 
 /* Handle Exception */
 try {
