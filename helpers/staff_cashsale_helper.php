@@ -61,7 +61,6 @@
 
 
 /* This Helper Handles Cash Payments Processing */
-/* Cash */
 $sale_user_id = $_SESSION['user_id'];
 $sale_customer_name = $_POST['sale_customer_name'];
 $sale_customer_phoneno  = $_POST['sale_customer_phoneno'];
@@ -129,48 +128,12 @@ foreach ($cart_products as $cart_products) {
             } else {
                 $err = "Failed!, Please Empty Cart And Repost Again";
             }
+            /* Make Sure This Portion Will Never Be Triggered */
         } else if ($sale_quantity > $products['product_quantity']) {
             /* Error Quantity Sold Is Greeater Than The One In Stock */
             $err = "There Are Only : " . $products['product_quantity'] . " Items Available For " . $products['product_name'];
         } else {
             $info = "Failed!, Kindly Restock That Product,It Has Reached Restock Limit";
-            /* Sell The Product But Give A Restock Warning */
-
-            /* Deduct Product Sale Quantity From Products Table */
-            //$new_product_qty = $products['product_quantity'] - $sale_quantity;
-
-            /* SQLS To Persist Changes */
-            // $update_sql  = "UPDATE products SET product_quantity =? WHERE product_id  = ?";
-            //$sale_sql =  "INSERT INTO sales (sale_product_id, sale_user_id, sale_quantity, sale_customer_name, sale_customer_phoneno, sale_receipt_no, sale_payment_method)
-            //VALUES(?,?,?,?,?,?,?)";
-
-            /* Prepare */
-            //$update_prepare = $mysqli->prepare($update_sql);
-            //$sale_prepare = $mysqli->prepare($sale_sql);
-
-            /* Bind */
-            /* //$update_bind = $update_prepare->bind_param('ss', $new_product_qty, $sale_product_id);
-            $sale_bind = $sale_prepare->bind_param(
-                'sssssss',
-                $sale_product_id,
-                $sale_user_id,
-                $sale_quantity,
-                $sale_customer_name,
-                $sale_customer_phoneno,
-                $sale_receipt_no,
-                $sale_payment_method
-            ); */
-            /* Execute */
-            /*  $update_prepare->execute();
-            $sale_prepare->execute(); */
-
-            /* Load Mailer */
-            /* require_once('../mailers/restock_limit_mailer.php'); */
-
-            /* Alerts If Everything Is Okay */
-            /* if ($update_prepare && $sale_prepare) {
-                $info = "Failed!, Kindly Restock That Product";
-            } */
         }
     } else {
         $err = "Failed, Kindly Try Again";
