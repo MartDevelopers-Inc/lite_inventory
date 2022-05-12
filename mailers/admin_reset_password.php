@@ -67,7 +67,8 @@ require_once('../vendor/PHPMailer/src/SMTP.php');
 require_once('../vendor/PHPMailer/src/PHPMailer.php');
 require_once('../vendor/PHPMailer/src/Exception.php');
 
-$ret = "SELECT * FROM `mailer_settings`  ";
+$ret = "SELECT * FROM `mailer_settings` JOIN 
+  ";
 $stmt = $mysqli->prepare($ret);
 $stmt->execute(); //ok
 $res = $stmt->get_result();
