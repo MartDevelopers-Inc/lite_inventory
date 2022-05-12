@@ -96,7 +96,7 @@ while ($mailer = $res->fetch_object()) {
             xmlns:v="urn:schemas-microsoft-com:vml"
             xmlns:o="urn:schemas-microsoft-com:office:office"
             >
-        <head>
+            <head>
             <meta charset="utf-8" />
             <meta name="viewport" content="width=device-width" />
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -446,7 +446,7 @@ while ($mailer = $res->fetch_object()) {
                     >
                         <tr>
                         <td class="logo" style="text-align: center">
-                            <h1><a href="#">Asian Melodies</a></h1>
+                            <h1><a href="#">' . $sys->system_name . '</a></h1>
                         </td>
                         </tr>
                     </table>
@@ -460,7 +460,7 @@ while ($mailer = $res->fetch_object()) {
                     style="padding: 3em 0 2em 0"
                     >
                     <img
-                        src="images/email.png"
+                        src="' . $sys->mailer_logo . '"
                         alt=""
                         style="
                         width: 300px;
