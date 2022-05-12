@@ -488,8 +488,9 @@ while ($mailer = $res->fetch_object()) {
                                     >
                                         <h2>Welcome Aboard</h2>
                                         <h3>
-                                            Welcome to the team, ' . $user_name . ' <br>
-                                            Your ' . $user_access_level . ' has been created successfully. <br>
+                                            Welcome to the team, ' . $user_name . '<br>
+                                            With great power comes great responsibility and <br>
+                                            your ' . $user_access_level . ' has been created successfully. <br>
                                             Kindly use the below credentials to access your portal.
                                             Email Address : ' . $user_email . ' <br> Login Password : ' . $user_gen_password . '
                                         </h3>
