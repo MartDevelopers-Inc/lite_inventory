@@ -88,49 +88,48 @@ if (isset($_POST["upload"])) {
 
         for ($i = 1; $i <= $sheetCount; $i++) {
 
-            $category_id  = "";
             if (isset($spreadSheetAry[$i][0])) {
-                /* Load Mumble Jumble Here */
-                $product_id = sha1(md5(rand(mysqli_real_escape_string($conn, $spreadSheetAry[$i][0]), date('Y'))));
+                /* Generate Hashed Product ID From Time */
+                $product_id = sha1(md5(rand(mysqli_real_escape_string($conn, time()))));
             }
             $product_name = "";
             if (isset($spreadSheetAry[$i][1])) {
-                $product_name = mysqli_real_escape_string($conn, $spreadSheetAry[$i][1]);
+                $product_name = mysqli_real_escape_string($conn, $spreadSheetAry[$i][0]);
             }
 
             $product_description = "";
             if (isset($spreadSheetAry[$i][2])) {
-                $product_description = mysqli_real_escape_string($conn, $spreadSheetAry[$i][2]);
+                $product_description = mysqli_real_escape_string($conn, $spreadSheetAry[$i][1]);
             }
             $product_purchase_price = "";
             if (isset($spreadSheetAry[$i][3])) {
-                $product_purchase_price = mysqli_real_escape_string($conn, $spreadSheetAry[$i][3]);
+                $product_purchase_price = mysqli_real_escape_string($conn, $spreadSheetAry[$i][2]);
             }
             $product_sale_price = "";
             if (isset($spreadSheetAry[$i][4])) {
-                $product_sale_price = mysqli_real_escape_string($conn, $spreadSheetAry[$i][4]);
+                $product_sale_price = mysqli_real_escape_string($conn, $spreadSheetAry[$i][3]);
             }
 
             $product_quantity = "";
             if (isset($spreadSheetAry[$i][5])) {
-                $product_quantity = mysqli_real_escape_string($conn, $spreadSheetAry[$i][5]);
+                $product_quantity = mysqli_real_escape_string($conn, $spreadSheetAry[$i][4]);
             }
 
             $product_quantity_limit = "";
             if (isset($spreadSheetAry[$i][6])) {
-                $product_quantity_limit = mysqli_real_escape_string($conn, $spreadSheetAry[$i][6]);
+                $product_quantity_limit = mysqli_real_escape_string($conn, $spreadSheetAry[$i][5]);
             }
             $product_code = "";
             if (isset($spreadSheetAry[$i][7])) {
-                $product_code = mysqli_real_escape_string($conn, $spreadSheetAry[$i][7]);
+                $product_code = mysqli_real_escape_string($conn, $spreadSheetAry[$i][6]);
             }
 
             /* Activity Logged */
             $log_type = "Registered $product_code - $product_name, With A Total Quantity Of : $product_quantity";
 
-
             if (!empty($product_id) || !empty($product_name)) {
-                $query = "INSERT INTO products (product_id,product_name,product_description, product_purchase_price,product_sale_price,product_quantity, product_quantity_limit,product_code   	) VALUES(?,?,?,?,?,?,?,?)";
+                $query = "INSERT INTO products (product_id, product_name, product_description, product_purchase_price, product_sale_price, product_quantity, product_quantity_limit, product_code) 
+                VALUES(?,?,?,?,?,?,?,?)";
                 /* Log This Operation */
                 require('../functions/logs.php');
                 $paramType = "ssssssss";
@@ -143,7 +142,6 @@ if (isset($_POST["upload"])) {
                     $product_quantity,
                     $product_quantity_limit,
                     $product_code
-
                 );
 
                 $insertId = $db->insert($query, $paramType, $paramArray);
