@@ -121,8 +121,6 @@ foreach ($cart_products as $cart_products) {
         /* Alerts If Everything Is Okay */
         if ($update_prepare && $sale_prepare) {
             $success = "Sale Record(s) Posted";
-            //header('Location: main_dashboard_sales_receipt?print_receipt=' . $sale_receipt_no . '');
-            //header('Location: main_dashboard_sales?print_receipt=' . $sale_receipt_no . '&action=empty');
         } else {
             $err = "Failed!, Please Empty Cart And Repost Again";
         }

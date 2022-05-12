@@ -60,30 +60,11 @@
  */
 
 
-/* 
-    -> Handle All Mathematical Computations On This File
-    -> To Consume Any Contets In This File Just Load It As A Partial
-  */
-
-
-/* 1. Total Revenue Since System Was Implemented */
-$query = "SELECT SUM(s.sale_payment_amount-s.sale_discount*s.sale_quantity) AS total_revenue FROM  sales s 
-INNER JOIN products p ON p.product_id = s.sale_product_id
-INNER JOIN users u ON u.user_id = s.sale_user_id 
-WHERE u.user_store_id=?
-";
-$stmt = $mysqli->prepare($query);
-$stmt->bind_param('s',  $user_store_id);
-$stmt->execute();
-$stmt->bind_result($total_revenue);
-$stmt->fetch();
-$stmt->close();
-
-/* 2. Today Sales */
-$query = "SELECT SUM((s.sale_payment_amount)*s.sale_quantity) AS total_revenue FROM sales s 
+/* 1. Today Sales */
+$query = "SELECT SUM((s.sale_payment_amount-s.sale_discount)*s.sale_quantity) AS total_revenue FROM sales s 
 INNER JOIN products p ON p.product_id = s.sale_product_id 
 INNER JOIN users u ON u.user_id = s.sale_user_id 
- WHERE DATE(s.sale_datetime)=CURDATE() AND u.user_store_id=?";
+WHERE DATE(s.sale_datetime)=CURDATE() AND u.user_store_id=?";
 $stmt = $mysqli->prepare($query);
 $stmt->bind_param('s',  $user_store_id);
 $stmt->execute();
@@ -91,7 +72,7 @@ $stmt->bind_result($today_sales);
 $stmt->fetch();
 $stmt->close();
 
-/* 3. Total Registered Products */
+/* 2. Total Registered Products */
 $query = "SELECT COUNT(*)  FROM `products`";
 $stmt = $mysqli->prepare($query);
 $stmt->execute();
@@ -99,15 +80,10 @@ $stmt->bind_result($products);
 $stmt->fetch();
 $stmt->close();
 
-/* 4. Out Of Stock Products */
+/* 3. Out Of Stock Products */
 $query = "SELECT COUNT(*)  FROM `products` WHERE product_quantity <= 1";
 $stmt = $mysqli->prepare($query);
 $stmt->execute();
 $stmt->bind_result($out_of_stock);
 $stmt->fetch();
 $stmt->close();
-
-
-
-
-  /* Feel Free To Add Any Extra Analytics Logic Here */
