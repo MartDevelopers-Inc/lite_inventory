@@ -60,32 +60,58 @@
  */
 session_start();
 require_once('../config/config.php');
-/* Handle Login */
-if (isset($_POST['login'])) {
+require_once('../config/app_config.php');
+require_once('../config/codeGen.php');
+
+/* Handle Password Reset */
+if (isset($_POST['ResetPassword'])) {
     $user_email = mysqli_real_escape_string($mysqli, $_POST['user_email']);
-    $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
-
-    $stmt = $mysqli->prepare("SELECT user_password, user_access_level, user_store_id, user_id FROM users WHERE user_email=? and user_password=?");
-    $stmt->bind_param('ss', $user_email, $user_password);
-    $stmt->execute();
-    $stmt->bind_result($user_password, $user_access_level, $user_store_id, $user_id);
-    $rs = $stmt->fetch();
-
-    /* Auth User Only With 3 Access Level */
-    if ($rs && $user_access_level == "Admin") {
-        $_SESSION['user_id'] = $user_id;
-        header("location:main_dashboard");
-    } elseif ($rs && $user_access_level == "Manager") {
-        $_SESSION['user_id'] = $user_id;
-        $_SESSION['user_store_id'] = $user_store_id;
-        header("location:manager_dashboard");
-    } elseif ($rs && $user_access_level == "Staff") {
-        $_SESSION['user_id'] = $user_id;
-        $_SESSION['user_access_level'] = $user_access_level;
-        $_SESSION['user_store_id'] = $user_store_id;
-        header("location:staff_dashboard");
-    } else {
-        $err = "Access Denied Please Check Your Email Or Password";
+    $user_email = mysqli_real_escape_string($mysqli, $_POST['user_email']);
+    $password_reset_token = $checksum;
+    $reset_url  =  $url . $checksum . '&email=' . $user_email;
+    /* Filter And Validate Email */
+    if (filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
+        $sql = mysqli_query($mysqli, "SELECT * FROM users WHERE user_email = '{$user_email}'");
+        if (mysqli_num_rows($sql) > 0) {
+            /* Persist Token And Email It */
+            $sql = "UPDATE users SET  user_password_reset_token ='{$password_reset_token}' WHERE  user_email ='{$user_email}'";
+            $prepare = $mysqli->prepare($sql);
+            $prepare->execute();
+            /* Detect Internet Connection First */
+            switch (connection_status()) {
+                case CONNECTION_NORMAL:
+                    /* Load Mailer & Send Password Reset Instructions*/
+                    require_once('../mailers/reset_password_mailer.php');
+                    if ($prepare && $mail->send()) {
+                        $success = "Password Reset Instructions Send To Your Email";
+                    } else {
+                        $info = "Failed!, Please Try Again";
+                    }
+                    break;
+                case (CONNECTION_ABORTED && CONNECTION_TIMEOUT):
+                    /* Do Not Mail Just Take User To Password Reset  */
+                    if ($prepare) {
+                        $_SESSION['success'] = 'Confirm Your New Password';
+                        header("Location: confirm_password?token=$password_reset_token");
+                        exit;
+                    } else {
+                        $info = "Failed!, Please Try Again";
+                    }
+                    break;
+                default:
+                    /* Do Not Mail Just Take User To Password Reset  */
+                    if ($prepare) {
+                        $_SESSION['success'] = 'Confirm Your New Password';
+                        header("Location: confirm_password?token=$password_reset_token");
+                        exit;
+                    } else {
+                        $err = "Please Check Your Internet Connectivity";
+                    }
+                    break;
+            }
+        } else {
+            $err =  "No Account With This Email";
+        }
     }
 }
 require_once('../partials/head.php');
@@ -107,34 +133,24 @@ require_once('../partials/head.php');
                     <div class="nk-block nk-block-middle nk-auth-body">
                         <div class="nk-block-head">
                             <div class="nk-block-head-content">
-                                <h5 class="nk-block-title">Sign In</h5>
+                                <h5 class="nk-block-title">Reset Password</h5>
                                 <div class="nk-block-des">
-                                    <p>Access The <?php echo $settings->system_name; ?> Panel Using Your Email & Passcode.</p>
+                                    <p>Having Troubles Accessing <?php echo $settings->system_name; ?>? Enter Your Email To Reset Password</p>
                                 </div>
                             </div>
                         </div><!-- .nk-block-head -->
                         <form method="POST">
                             <div class="form-group">
                                 <div class="form-label-group">
-                                    <label class="form-label" for="default-01">Email</label>
-                                </div>
-                                <input type="email" name="user_email" class="form-control form-control-lg" id="default-01">
-                            </div><!-- .foem-group -->
-                            <div class="form-group">
-                                <div class="form-label-group">
-                                    <label class="form-label" for="password">Password</label>
-                                    <a class="link link-primary link-sm" tabindex="-1" href="reset_password">Forgot Password</a>
+                                    <label class="form-label" for="password">Email Address</label>
+                                    <a class="link link-primary link-sm" tabindex="-1" href="index">Remember Password</a>
                                 </div>
                                 <div class="form-control-wrap">
-                                    <a tabindex="-1" href="#" class="form-icon form-icon-right passcode-switch" data-target="password">
-                                        <em class="passcode-icon icon-show icon ni ni-eye"></em>
-                                        <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
-                                    </a>
-                                    <input type="password" name="user_password" class="form-control form-control-lg" id="password">
+                                    <input type="email" name="user_email" class="form-control form-control-lg" id="default-01">
                                 </div>
                             </div><!-- .foem-group -->
                             <div class="form-group">
-                                <button name="SignIn" class="btn btn-lg btn-primary btn-block">Sign in</button>
+                                <button name="ResetPassword" class="btn btn-lg btn-primary btn-block">Reset Password</button>
                             </div>
                         </form><!-- form -->
                     </div><!-- .nk-block -->

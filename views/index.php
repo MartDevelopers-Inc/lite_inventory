@@ -61,7 +61,7 @@
 session_start();
 require_once('../config/config.php');
 /* Handle Login */
-if (isset($_POST['login'])) {
+if (isset($_POST['SignIn'])) {
     $user_email = mysqli_real_escape_string($mysqli, $_POST['user_email']);
     $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
 
