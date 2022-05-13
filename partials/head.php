@@ -82,6 +82,14 @@ while ($settings = $res->fetch_object()) {
         <link rel="stylesheet" href="../public/css/dashlite.css?ver=1.4.0">
         <!-- Skin Css -->
         <link id="skin-default" rel="stylesheet" href="../public/css/theme.css?ver=1.4.0">
+        <!-- Toastr CSS -->
+        <link rel="stylesheet" href="../public/js/libs/toastr/toastr.min.css">
     </head>
     <!-- Load Alerts Via Sessionsgi -->
-<?php } ?>
+<?php
+    /* Password Reset Alerts */
+    if (isset($_SESSION['success'])) {
+        $success = $_SESSION['success'];
+        unset($_SESSION['success']);
+    }
+} ?>
