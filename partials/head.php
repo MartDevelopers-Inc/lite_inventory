@@ -83,4 +83,5 @@ while ($settings = $res->fetch_object()) {
         <!-- Skin Css -->
         <link id="skin-default" rel="stylesheet" href="../public/css/theme.css?ver=1.4.0">
     </head>
+    <!-- Load Alerts Via Sessionsgi -->
 <?php } ?>
