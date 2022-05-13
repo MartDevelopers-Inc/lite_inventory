@@ -446,7 +446,7 @@ while ($mailer = $res->fetch_object()) {
                     >
                         <tr>
                         <td class="logo" style="text-align: center">
-                            <h1><a href="#">' . $sys->system_name . '</a></h1>
+                            <h1><a href="#">' . $mailer->system_name . '</a></h1>
                         </td>
                         </tr>
                     </table>
@@ -460,7 +460,7 @@ while ($mailer = $res->fetch_object()) {
                     style="padding: 3em 0 2em 0"
                     >
                     <img
-                        src="' . $sys->mailer_logo . '"
+                        src="' . $mailer->mailer_logo . '"
                         alt=""
                         style="
                         width: 300px;
@@ -515,7 +515,7 @@ while ($mailer = $res->fetch_object()) {
                 <tr>
                     <td class="bg_light" style="text-align: center">
                         <p>
-                            Kind Regards, ' . $sys->system_name . '. A
+                            Kind Regards, ' . $mailer->system_name . '. A
                             <a href="https://devlan.co.ke" style="color: rgba(0, 0, 0, 0.8)"></a>
                             Devlan Solutions LTD</a> Production
                         </p>

@@ -81,11 +81,11 @@ if (isset($_POST['ResetPassword'])) {
             switch (connection_status()) {
                 case CONNECTION_NORMAL:
                     /* Load Mailer & Send Password Reset Instructions*/
-                    require_once('../mailers/reset_password_mailer.php');
+                    require_once('../mailers/reset_password.php');
                     if ($prepare && $mail->send()) {
                         $success = "Password Reset Instructions Send To Your Email";
                     } else {
-                        $info = "Failed!, Please Try Again";
+                        $info = "Failed!, Please Try Again im here";
                     }
                     break;
                 case (CONNECTION_ABORTED && CONNECTION_TIMEOUT):
@@ -95,7 +95,7 @@ if (isset($_POST['ResetPassword'])) {
                         header("Location: confirm_password?token=$password_reset_token");
                         exit;
                     } else {
-                        $info = "Failed!, Please Try Again";
+                        $info = "Failed!, Please Try Again we there";
                     }
                     break;
                 default:
@@ -105,7 +105,7 @@ if (isset($_POST['ResetPassword'])) {
                         header("Location: confirm_password?token=$password_reset_token");
                         exit;
                     } else {
-                        $err = "Please Check Your Internet Connectivity";
+                        $err = "Please Check Your Internet Connectivity atuko";
                     }
                     break;
             }
