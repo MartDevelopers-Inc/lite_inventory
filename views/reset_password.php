@@ -84,18 +84,15 @@ if (isset($_POST['ResetPassword'])) {
                     require_once('../mailers/reset_password.php');
                     if ($prepare && $mail->send()) {
                         $success = "Password Reset Instructions Send To Your Email";
-                    } else {
-                        $info = "Failed!, Please Try Again im here";
-                    }
-                    break;
-                case (CONNECTION_ABORTED && CONNECTION_TIMEOUT):
-                    /* Do Not Mail Just Take User To Password Reset  */
-                    if ($prepare) {
-                        $_SESSION['success'] = 'Confirm Your New Password';
-                        header("Location: confirm_password?token=$password_reset_token");
-                        exit;
-                    } else {
-                        $info = "Failed!, Please Try Again we there";
+                    } else if (CONNECTION_ABORTED && CONNECTION_TIMEOUT) {
+                        /* If No Connection Detected, Just Take User To Password Reset */
+                        if ($prepare) {
+                            $_SESSION['success'] = 'Confirm Your New Password';
+                            header("Location: confirm_password?token=$password_reset_token");
+                            exit;
+                        } else {
+                            $info = "Failed!, Please Try Again we there";
+                        }
                     }
                     break;
                 default:
