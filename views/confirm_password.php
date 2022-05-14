@@ -73,7 +73,7 @@ if (isset($_POST['ResetPassword'])) {
         $err = "Passwords Does Not Match";
     } else {
         /* Persist */
-        $sql = "UPDATE users SET user SET user_password = '{$user_password}' WHERE user_password_reset_token = '{$token}'";
+        $sql = "UPDATE users SET user_password = '{$confirm_password}' WHERE user_password_reset_token = '{$token}'";
         $prepare = $mysqli->prepare($sql);
         $prepare->execute();
         if ($prepare) {
