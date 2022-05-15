@@ -61,7 +61,7 @@
 
 
 /* 1. Today Sales */
-$query = "SELECT SUM((s.sale_payment_amount-s.sale_discount)*s.sale_quantity) AS total_revenue FROM sales s 
+$query = "SELECT SUM((s.sale_payment_amount)*s.sale_quantity) AS total_revenue FROM sales s 
 INNER JOIN products p ON p.product_id = s.sale_product_id 
 INNER JOIN users u ON u.user_id = s.sale_user_id 
 WHERE DATE(s.sale_datetime)=CURDATE() AND u.user_store_id=?";
