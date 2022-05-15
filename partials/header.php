@@ -134,8 +134,8 @@ while ($settings = $res->fetch_object()) {
                                     /* Fetch List Of All Products Which Are Low On Stock */
                                     $ret = "SELECT  * FROM `products` 
                                     WHERE product_quantity <= 1 
-                                    ORDER BY product_name ASC
-                                    LIMIT 10 ";
+                                    ORDER BY product_name DESC
+                                    LIMIT 5 ";
                                     $stmt = $mysqli->prepare($ret);
                                     $stmt->execute(); //ok
                                     $res = $stmt->get_result();
