@@ -224,7 +224,27 @@ require_once('../helpers/admin_analytics.php');
                                                     </div>
                                                     <div class="nk-tb-list">
                                                         <div class="nk-tb-item">
-
+                                                            <ul class="nk-activity">
+                                                                <?php
+                                                                /* Fetch List Of All Products Which Are Low On Stock */
+                                                                $ret = "SELECT  * FROM `products` 
+                                                                WHERE product_quantity <= 1 
+                                                                ORDER BY product_name ASC
+                                                                LIMIT 10 ";
+                                                                $stmt = $mysqli->prepare($ret);
+                                                                $stmt->execute(); //ok
+                                                                $res = $stmt->get_result();
+                                                                while ($product = $res->fetch_object()) {
+                                                                ?>
+                                                                    <li class="nk-activity-item">
+                                                                        <div class="nk-activity-data">
+                                                                            <div class="label">
+                                                                                <span class="text-danger"><?php echo $product->product_code . ' ' . $product->product_name; ?> </span> is out of stock, kindly plan to restock it.
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                <?php } ?>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div><!-- .card -->
