@@ -181,12 +181,10 @@ require_once('../helpers/admin_analytics.php');
                                                                 <?php
                                                                 /* Fetch List Of All Products Which Are Low On Stock */
                                                                 $ret = "SELECT  * FROM sales s
-                                                                INNER JOIN products p 
-                                                                ON p.product_id = s.sale_product_id
-                                                                INNER JOIN users u
-                                                                ON u.user_id = s.sale_user_id
-                                                                ORDER BY sale_datetime DESC
-                                                                LIMIT 10
+                                                                INNER JOIN products p ON p.product_id = s.sale_product_id
+                                                                INNER JOIN users u ON u.user_id = s.sale_user_id
+                                                                WHERE DATE(s.sale_datetime)=CURDATE() 
+                                                                ORDER BY s.sale_datetime DESC LIMIT 10
                                                                 ";
                                                                 $stmt = $mysqli->prepare($ret);
                                                                 $stmt->execute(); //ok

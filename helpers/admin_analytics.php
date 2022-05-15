@@ -61,7 +61,8 @@
 
 
 /* 1. Today Sales */
-$query = "SELECT SUM((s.sale_payment_amount)*s.sale_quantity) AS total_revenue FROM sales s INNER JOIN products p ON p.product_id = s.sale_product_id WHERE DATE(s.sale_datetime)=CURDATE()";
+$query = "SELECT SUM((s.sale_payment_amount)*s.sale_quantity) AS total_revenue FROM sales s
+ INNER JOIN products p ON p.product_id = s.sale_product_id WHERE DATE(s.sale_datetime)=CURDATE()";
 $stmt = $mysqli->prepare($query);
 $stmt->execute();
 $stmt->bind_result($today_sales);
