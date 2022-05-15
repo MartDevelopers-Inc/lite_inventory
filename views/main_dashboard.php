@@ -100,29 +100,6 @@ require_once('../helpers/admin_analytics.php');
                                                     <p>Hello, Welcome to <?php echo $settings->system_name . ' ' . $settings->user_access_level; ?> Dashboard</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
-                                            <div class="nk-block-head-content">
-                                                <div class="toggle-wrap nk-block-tools-toggle">
-                                                    <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
-                                                    <div class="toggle-expand-content" data-content="pageMenu">
-                                                        <ul class="nk-block-tools g-3">
-                                                            <li><a href="#" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-download-cloud"></em><span>Export</span></a></li>
-                                                            <li><a href="#" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-reports"></em><span>Reports</span></a></li>
-                                                            <li class="nk-block-tools-opt">
-                                                                <div class="drodown">
-                                                                    <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
-                                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            <li><a href="#"><em class="icon ni ni-user-add-fill"></em><span>Add User</span></a></li>
-                                                                            <li><a href="#"><em class="icon ni ni-coin-alt-fill"></em><span>Add Order</span></a></li>
-                                                                            <li><a href="#"><em class="icon ni ni-note-add-fill-c"></em><span>Add Page</span></a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div><!-- .toggle-expand-content -->
-                                                </div><!-- .toggle-wrap -->
-                                            </div><!-- .nk-block-head-content -->
                                         </div><!-- .nk-block-between -->
                                     </div><!-- .nk-block-head -->
                                     <div class="nk-block">
@@ -132,31 +109,16 @@ require_once('../helpers/admin_analytics.php');
                                                     <div class="card-inner">
                                                         <div class="card-title-group align-start mb-0">
                                                             <div class="card-title">
-                                                                <h6 class="subtitle">Total Deposit</h6>
+                                                                <h6 class="subtitle">Today's Sales Revenue</h6>
                                                             </div>
                                                             <div class="card-tools">
-                                                                <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="Total Deposited"></em>
+                                                                <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="<?php echo date('d M Y'); ?> Sales Revenue"></em>
                                                             </div>
                                                         </div>
                                                         <div class="card-amount">
-                                                            <span class="amount"> 49,595.34 <span class="currency currency-usd">USD</span>
+                                                            <span class="amount">
+                                                                <?php echo "Ksh " . number_format($today_sales, 2); ?>
                                                             </span>
-                                                            <span class="change up text-danger"><em class="icon ni ni-arrow-long-up"></em>1.93%</span>
-                                                        </div>
-                                                        <div class="invest-data">
-                                                            <div class="invest-data-amount g-2">
-                                                                <div class="invest-data-history">
-                                                                    <div class="title">This Month</div>
-                                                                    <div class="amount">2,940.59 <span class="currency currency-usd">USD</span></div>
-                                                                </div>
-                                                                <div class="invest-data-history">
-                                                                    <div class="title">This Week</div>
-                                                                    <div class="amount">1,259.28 <span class="currency currency-usd">USD</span></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="invest-data-ck">
-                                                                <canvas class="iv-data-chart" id="totalDeposit"></canvas>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div><!-- .card -->
@@ -166,64 +128,35 @@ require_once('../helpers/admin_analytics.php');
                                                     <div class="card-inner">
                                                         <div class="card-title-group align-start mb-0">
                                                             <div class="card-title">
-                                                                <h6 class="subtitle">Total Withdraw</h6>
+                                                                <h6 class="subtitle">Total Items</h6>
                                                             </div>
                                                             <div class="card-tools">
-                                                                <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="Total Withdraw"></em>
+                                                                <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="Total Registered Items"></em>
                                                             </div>
                                                         </div>
                                                         <div class="card-amount">
-                                                            <span class="amount"> 49,595.34 <span class="currency currency-usd">USD</span>
+                                                            <span class="amount">
+                                                                <?php echo $products ?>
                                                             </span>
-                                                            <span class="change down text-danger"><em class="icon ni ni-arrow-long-down"></em>1.93%</span>
-                                                        </div>
-                                                        <div class="invest-data">
-                                                            <div class="invest-data-amount g-2">
-                                                                <div class="invest-data-history">
-                                                                    <div class="title">This Month</div>
-                                                                    <div class="amount">2,940.59 <span class="currency currency-usd">USD</span></div>
-                                                                </div>
-                                                                <div class="invest-data-history">
-                                                                    <div class="title">This Week</div>
-                                                                    <div class="amount">1,259.28 <span class="currency currency-usd">USD</span></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="invest-data-ck">
-                                                                <canvas class="iv-data-chart" id="totalWithdraw"></canvas>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div><!-- .card -->
                                             </div><!-- .col -->
                                             <div class="col-md-4">
-                                                <div class="card card-bordered  card-full">
+                                                <div class="card card-bordered  card-full ">
                                                     <div class="card-inner">
                                                         <div class="card-title-group align-start mb-0">
                                                             <div class="card-title">
-                                                                <h6 class="subtitle">Balance in Account</h6>
+                                                                <h6 class="subtitle">Low / Out Of Stock Items</h6>
                                                             </div>
                                                             <div class="card-tools">
-                                                                <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="Total Balance in Account"></em>
+                                                                <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="Total Items That Have Reached Restock Limit Or Low In Qty"></em>
                                                             </div>
                                                         </div>
                                                         <div class="card-amount">
-                                                            <span class="amount"> 79,358.50 <span class="currency currency-usd">USD</span>
+                                                            <span class="amount text-danger">
+                                                                <?php echo $out_of_stock ?>
                                                             </span>
-                                                        </div>
-                                                        <div class="invest-data">
-                                                            <div class="invest-data-amount g-2">
-                                                                <div class="invest-data-history">
-                                                                    <div class="title">This Month</div>
-                                                                    <div class="amount">2,940.59 <span class="currency currency-usd">USD</span></div>
-                                                                </div>
-                                                                <div class="invest-data-history">
-                                                                    <div class="title">This Week</div>
-                                                                    <div class="amount">1,259.28 <span class="currency currency-usd">USD</span></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="invest-data-ck">
-                                                                <canvas class="iv-data-chart" id="totalBalance"></canvas>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div><!-- .card -->
