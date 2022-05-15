@@ -160,6 +160,33 @@ while ($settings = $res->fetch_object()) {
                                 <span class="nk-menu-text">System Logs</span>
                             </a>
                         </li><!-- .nk-menu-item -->
+                        <?php
+                        if ($settings->user_access_level == 'Admin') {
+                            /* Show Admin This */
+                        ?>
+                            <li class="nk-menu-heading">
+                                <h6 class="overline-title text-primary-alt">Core System Settings</h6>
+                            </li><!-- .nk-menu-heading -->
+                            <li class="nk-menu-item">
+                                <a href="main_dashboard_reports_logs" class="nk-menu-link">
+                                    <span class="nk-menu-icon"><em class="icon ni ni-activity-alt"></em></span>
+                                    <span class="nk-menu-text">Restock Limits</span>
+                                </a>
+                            </li><!-- .nk-menu-item -->
+                            <li class="nk-menu-item">
+                                <a href="main_dashboard_reports_logs" class="nk-menu-link">
+                                    <span class="nk-menu-icon"><em class="icon ni ni-activity-alt"></em></span>
+                                    <span class="nk-menu-text">System Configs</span>
+                                </a>
+                            </li><!-- .nk-menu-item -->
+                            <li class="nk-menu-item">
+                                <a href="main_dashboard_reports_logs" class="nk-menu-link">
+                                    <span class="nk-menu-icon"><em class="icon ni ni-activity-alt"></em></span>
+                                    <span class="nk-menu-text">STMP Settings</span>
+                                </a>
+                            </li><!-- .nk-menu-item -->
+                        <?php } ?>
+
                     </ul>
                 </div><!-- .nk-sidebar-menu -->
             </div><!-- .nk-sidebar-content -->

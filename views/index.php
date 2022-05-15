@@ -78,12 +78,12 @@ if (isset($_POST['SignIn'])) {
     } elseif ($rs && $user_access_level == "Manager") {
         $_SESSION['user_id'] = $user_id;
         $_SESSION['user_store_id'] = $user_store_id;
-        header("location:manager_dashboard");
+        header("location:main_dashboard");
     } elseif ($rs && $user_access_level == "Staff") {
         $_SESSION['user_id'] = $user_id;
         $_SESSION['user_access_level'] = $user_access_level;
         $_SESSION['user_store_id'] = $user_store_id;
-        header("location:staff_dashboard");
+        header("location:home");
     } else {
         $err = "Access Denied Please Check Your Email Or Password";
     }
