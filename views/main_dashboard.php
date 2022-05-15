@@ -154,7 +154,7 @@ require_once('../helpers/admin_analytics.php');
                                                             </div>
                                                         </div>
                                                         <div class="card-amount">
-                                                            <span class="amount text-danger">
+                                                            <span class="amount text-danger"> 
                                                                 <?php echo $out_of_stock ?>
                                                             </span>
                                                         </div>
