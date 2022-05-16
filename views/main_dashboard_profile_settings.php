@@ -62,6 +62,30 @@ session_start();
 require_once('../config/config.php');
 require_once('../config/checklogin.php');
 check_login();
+
+/* Update Profile */
+if (isset($_POST['update_personal_info'])) {
+    $user_name =  mysqli_real_escape_string($mysqli, $_POST['user_name']);
+    $user_email = mysqli_real_escape_string($mysqli, $_POST['user_email']);
+    $user_phoneno = mysqli_real_escape_string($mysqli, $_POST['user_phoneno']);
+    $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
+
+    /* Persist */
+    $sql = "UPDATE users SET user_name = '{$user_name}', user_email  = '{$user_email}', user_phoneno = '{$user_phoneno}' 
+    WHERE user_id = '{$user_id}'";
+    $prepare = $mysqli->prepare($sql);
+    $prepare->execute();
+    if ($prepare) {
+        $success = "Personal Details Updated";
+    } else {
+        $err = "Failed!, Please Try Again";
+    }
+}
+
+/* Update Password And Access Level */
+if (isset($_POST['update_auth_details'])) {
+}
+
 require_once('../partials/head.php');
 ?>
 
@@ -104,12 +128,30 @@ require_once('../partials/head.php');
                                                                         <h4 class="nk-block-title">Personal Information</h4>
                                                                         <div class="nk-block-des">
                                                                             <p>
-                                                                                Basic info, like your name and address, that you use on our system.
+                                                                                Update Your Personal Information
                                                                             </p>
+                                                                            <form method="post" enctype="multipart/form-data" role="form">
+                                                                                <div class="card-body">
+                                                                                    <div class="row">
+                                                                                        <div class="form-group col-md-12">
+                                                                                            <label for="">Full Name</label>
+                                                                                            <input type="text" required name="user_name" value="<?php echo $settings->user_name; ?>" class="form-control">
+                                                                                        </div>
+                                                                                        <div class="form-group col-md-12">
+                                                                                            <label for="">Email</label>
+                                                                                            <input type="text" required name="user_email" value="<?php echo $settings->user_email; ?>" class="form-control">
+                                                                                        </div>
+                                                                                        <div class="form-group col-md-12">
+                                                                                            <label for="">Phone Number</label>
+                                                                                            <input type="text" required name="user_phoneno" value="<?php echo $settings->user_phoneno; ?>" class="form-control">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="text-right">
+                                                                                    <button type="submit" name="update_personal_info" class="btn btn-primary">Submit</button>
+                                                                                </div>
+                                                                            </form>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="nk-block-head-content align-self-start d-lg-none">
-                                                                        <a href="#" class="toggle btn btn-icon btn-trigger mt-n1" data-target="userAside"><em class="icon ni ni-menu-alt-r"></em></a>
                                                                     </div>
                                                                 </div>
                                                             </div><!-- .nk-block-head -->
