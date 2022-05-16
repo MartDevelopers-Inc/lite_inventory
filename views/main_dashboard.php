@@ -178,30 +178,37 @@ require_once('../helpers/admin_analytics.php');
                                                         <div class="timeline">
                                                             <h6 class="timeline-head"><?php echo date('d M Y'); ?></h6>
                                                             <ul class="timeline-list">
+
                                                                 <?php
-                                                                /* Fetch List Of All Products Which Are Low On Stock */
-                                                                $ret = "SELECT  * FROM sales s
+                                                                /* Fetch Some Of Favourite Users Which Belongs To You */
+                                                                $raw_results = mysqli_query($mysqli, "SELECT  * FROM sales s
                                                                 INNER JOIN products p ON p.product_id = s.sale_product_id
                                                                 INNER JOIN users u ON u.user_id = s.sale_user_id
                                                                 WHERE DATE(s.sale_datetime)=CURDATE() 
-                                                                ORDER BY s.sale_datetime DESC LIMIT 10
-                                                                ";
-                                                                $stmt = $mysqli->prepare($ret);
-                                                                $stmt->execute(); //ok
-                                                                $res = $stmt->get_result();
-                                                                while ($sales = $res->fetch_object()) {
+                                                                ORDER BY s.sale_datetime DESC LIMIT 10");
+                                                                if (mysqli_num_rows($raw_results) > 0) {
+                                                                    while ($results = mysqli_fetch_array($raw_results)) {
                                                                 ?>
-                                                                    <li class="timeline-item">
-                                                                        <div class="timeline-status bg-primary is-outline"></div>
-                                                                        <div class="timeline-date"><?php echo date('g:ia', strtotime($sales->sale_datetime)); ?> <em class="text-success icon ni ni-clipboad-check-fill"></em></div>
-                                                                        <div class="timeline-data">
-                                                                            <h6 class="timeline-title"><?php echo $sales->user_name; ?> Sold <span class="text-success"><?php echo $sales->product_name; ?></span></h6>
-                                                                            <div class="timeline-des">
-                                                                                <p>
-                                                                                    To <span class="text-success"><?php echo $sales->sale_customer_name; ?></span>.
-                                                                                    Quantity Sold Is <span class="text-success"><?php echo $sales->sale_quantity; ?>
-                                                                                </p>
+                                                                        <li class="timeline-item">
+                                                                            <div class="timeline-status bg-primary is-outline"></div>
+                                                                            <div class="timeline-date"><?php echo date('g:ia', strtotime($results['sale_datetime'])); ?> <em class="text-success icon ni ni-clipboad-check-fill"></em></div>
+                                                                            <div class="timeline-data">
+                                                                                <h6 class="timeline-title"><?php echo $results['user_name']; ?> Sold <span class="text-success"><?php echo $results['product_name']; ?></span></h6>
+                                                                                <div class="timeline-des">
+                                                                                    <p>
+                                                                                        To <span class="text-success"><?php echo $results['sale_customer_name']; ?></span>.
+                                                                                        Quantity Sold Is <span class="text-success"><?php echo $results['sale_quantity']; ?>
+                                                                                    </p>
+                                                                                </div>
                                                                             </div>
+                                                                        </li>
+                                                                    <?php }
+                                                                } else { ?>
+                                                                    <li class="timeline-item">
+                                                                        <div class="timeline-status bg-danger is-outline"></div>
+                                                                        <div class="timeline-date"><?php echo date('g:ia'); ?><em class="text-success icon ni ni-clipboad-check-fill"></em></div>
+                                                                        <div class="timeline-data">
+                                                                            <h6 class="timeline-title">No Sales Recorded So Far</span></h6>
                                                                         </div>
                                                                     </li>
                                                                 <?php } ?>
