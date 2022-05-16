@@ -84,6 +84,37 @@ if (isset($_POST['update_personal_info'])) {
 
 /* Update Password And Access Level */
 if (isset($_POST['update_auth_details'])) {
+    $old_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['old_password'])));
+    $new_password  = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['new_password'])));
+    $confirm_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['confirm_password'])));
+    $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
+    $user_access_level = mysqli_real_escape_string($mysqli, $_POST['user_access_level']);
+
+    /* Check If Old Pasword Match */
+    if ($new_password != $confirm_password) {
+        $err = "New Password And Confirmation Passwords Does Not Match";
+    } else {
+        /* Check if Old Passwords Match */
+        $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
+        $res = mysqli_query($mysqli, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            $row = mysqli_fetch_assoc($res);
+            if ($old_password != $row['user_password']) {
+                $err = "Incorrect Old Password";
+            } else {
+                /* Update Password & Access Level */
+                $sql = "UPDATE users SET user_password = '{$confirm_password}', user_access_level = '{$user_access_level}'
+                WHERE user_id = '{$user_id}'";
+                $prepare = $mysqli->prepare($sql);
+                $prepare->execute();
+                if ($prepare) {
+                    $success = "Auth Details Updated";
+                } else {
+                    $err = "Failed!, Please Try Again";
+                }
+            }
+        }
+    }
 }
 
 require_once('../partials/head.php');
@@ -184,6 +215,7 @@ require_once('../partials/head.php');
                                                                                             <label for="">Access Level</label>
                                                                                             <select type="text" required name="user_access_level" class="form-control">
                                                                                                 <option><?php echo $settings->user_access_level; ?></option>
+                                                                                                <option>Admin</option>
                                                                                                 <option>Manager</option>
                                                                                             </select>
                                                                                         </div>
@@ -207,11 +239,16 @@ require_once('../partials/head.php');
                                                                             <p>
                                                                                 See How This User Has Interacted With The System
                                                                             </p>
+                                                                            <form method="post" class="form-inline my-2 my-lg-0">
+                                                                                <label for="">From Date </label> <br>
+                                                                                <input class="form-control mr-sm-2" type="date" name="from_date" placeholder="From Date">
+                                                                                <label for="">To Date </label> <br>
+                                                                                <input class="form-control mr-sm-2" type="date" name="to_date" placeholder="To Date">
+                                                                                <button class="btn btn-outline-success my-2 my-sm-0" name="filter" type="submit">Filter Logs</button>
+                                                                            </form>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="nk-block-head-content align-self-start d-lg-none">
-                                                                        <a href="#" class="toggle btn btn-icon btn-trigger mt-n1" data-target="userAside"><em class="icon ni ni-menu-alt-r"></em></a>
-                                                                    </div>
+
                                                                 </div>
                                                             </div><!-- .nk-block-head -->
                                                         </div>
