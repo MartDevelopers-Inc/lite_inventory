@@ -164,22 +164,122 @@ require_once('../partials/head.php')
                                     <div class="row">
                                         <div class="card mb-3 col-md-12 border border-success">
                                             <div class="card-body">
-                                                <form method="post" enctype="multipart/form-data">
-                                                    <div class="form-group">
-                                                        <label class="form-label" for="default-06">Spreadsheet File</label>
-                                                        <div class="form-control-wrap">
-                                                            <div class="custom-file">
-                                                                <input type="file" accept=".xlsx , .xls" name="file" multiple class="custom-file-input" id="customFile">
-                                                                <label class="custom-file-label" for="customFile">Choose file</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="text-right">
-                                                        <button name="upload" class="btn btn-primary" type="submit">
-                                                            Upload
-                                                        </button>
-                                                    </div>
-                                                </form>
+                                                <table class="datatable-init table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Item Code</th>
+                                                            <th>Item Name</th>
+                                                            <th>QTY</th>
+                                                            <th>Purchase Price</th>
+                                                            <th>Retail Price</th>
+                                                            <th>Manage</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        $ret = "SELECT * FROM products WHERE product_status = 'active'";
+                                                        $stmt = $mysqli->prepare($ret);
+                                                        $stmt->execute(); //ok
+                                                        $res = $stmt->get_result();
+                                                        while ($products = $res->fetch_object()) {
+                                                        ?>
+                                                            <tr>
+                                                                <td><?php echo $products->product_code; ?></td>
+                                                                <td><?php echo $products->product_name; ?></td>
+                                                                <td><?php echo $products->product_quantity; ?></td>
+                                                                <td>Ksh <?php echo $products->product_purchase_price; ?></td>
+                                                                <td>Ksh <?php echo $products->product_sale_price; ?></td>
+                                                                <td>
+                                                                    <a data-toggle="modal" href="#update_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-warning"><em class="icon ni ni-edit"></em> Edit</a>
+                                                                    <a data-toggle="modal" href="#delete_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
+                                                                </td>
+
+                                                                <!-- Udpate Modal -->
+                                                                <div class="modal fade" id="update_<?php echo $products->product_id; ?>">
+                                                                    <div class="modal-dialog  modal-lg">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h4 class="modal-title">Fill All Required Fields</h4>
+                                                                                <button type="button" class="close" data-dismiss="modal">
+                                                                                    <span>&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <form method="post" enctype="multipart/form-data">
+                                                                                    <div class="form-row">
+                                                                                        <div class="form-group col-md-6">
+                                                                                            <label>Name</label>
+                                                                                            <input type="text" name="product_name" value="<?php echo $products->product_name; ?>" required class="form-control">
+                                                                                            <input type="hidden" name="product_id" value="<?php echo $products->product_id; ?>" required class="form-control">
+                                                                                        </div>
+
+                                                                                        <div class="form-group col-md-6">
+                                                                                            <label>Quantity</label>
+                                                                                            <input type="text" name="product_quantity" value="<?php echo $products->product_quantity; ?>" required class="form-control">
+                                                                                        </div>
+                                                                                        <div class="form-group col-md-6">
+                                                                                            <label>Purchase Price (Ksh)</label>
+                                                                                            <input type="text" name="product_purchase_price" value="<?php echo $products->product_purchase_price; ?>" required class="form-control">
+                                                                                        </div>
+                                                                                        <div class="form-group col-md-6">
+                                                                                            <label>Retail Sale Price (Ksh)</label>
+                                                                                            <input type="text" name="product_sale_price" value="<?php echo $products->product_sale_price; ?>" required class="form-control">
+                                                                                        </div>
+                                                                                        <div class="form-group col-md-12">
+                                                                                            <label>Description</label>
+                                                                                            <textarea type="text" name="product_description" rows="3" required class="form-control"><?php echo $products->product_description; ?></textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="text-right">
+                                                                                        <button name="update_product" class="btn btn-primary" type="submit">
+                                                                                            Update Product
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- End Modal -->
+
+                                                                <!-- Delete Modal -->
+                                                                <div class="modal fade" id="delete_<?php echo $products->product_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="exampleModalLabel">CONFIRM DELETE</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal">
+                                                                                    <span>&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <form method="POST">
+                                                                                <div class="modal-body text-center text-danger">
+                                                                                    <h4>
+                                                                                        Delete <?php echo $products->product_code . ' ' . $products->product_name; ?> ?
+                                                                                        <hr>
+                                                                                        This operation is irreversible. Please confirm your password before deleting above product
+                                                                                    </h4>
+                                                                                    <br>
+                                                                                    <!-- Hide This -->
+                                                                                    <input type="hidden" name="product_id" value="<?php echo $products->product_id; ?>">
+                                                                                    <input type="hidden" name="product_details" value="<?php echo $products->product_code . ' ' . $products->product_name; ?>">
+                                                                                    <div class="form-group col-md-12">
+                                                                                        <input type="password" required name="user_password" class="form-control">
+                                                                                    </div>
+                                                                                    <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
+                                                                                    <input type="submit" name="delete_product" value="Delete" class="text-center btn btn-danger">
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- End Delete Modal -->
+                                                            </tr>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
