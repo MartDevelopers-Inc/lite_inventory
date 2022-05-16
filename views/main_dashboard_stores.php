@@ -82,8 +82,55 @@ if (isset($_POST['create_store'])) {
         $err = "Failed!, Please Try Again";
     }
 }
+
 /* Update Store */
+if (isset($_POST['update_store'])) {
+    $store_id = mysqli_real_escape_string($mysqli, $_POST['store_id']);
+    $store_name = mysqli_real_escape_string($mysqli, $_POST['store_name']);
+    $store_adr = mysqli_real_escape_string($mysqli, $_POST['store_adr']);
+    $store_email = mysqli_real_escape_string($mysqli, $_POST['store_email']);
+
+    /* Persist */
+    $sql = "UPDATE store_settings SET store_name = '{$store_name}', store_adr = '{$store_adr}', store_email = '{$store_email}'
+    WHERE store_id = '{$store_id}'";
+    $prepare = $mysqli->prepare($sql);
+    $prepare->execute();
+    if ($prepare) {
+        $success = "Store Details Updated";
+    } else {
+        $err = "Failed!, Please Try Again";
+    }
+}
+
 /* Delete Store */
+if (isset($_POST['delete_store'])) {
+    $store_id = mysqli_real_escape_string($mysqli, $_POST['store_id']);
+    $store_status = mysqli_real_escape_string($mysqli, 'closed');
+    $store_close_date = mysqli_real_escape_string($mysqli, date('d M Y'));
+    $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
+    $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
+
+    /* Check Of This User Password Really Adds Up */
+    $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
+    $res = mysqli_query($mysqli, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        if ($user_password != $row['user_password']) {
+            $err = "Please Enter Correct Password";
+        } else {
+            /* Persist */
+            $sql = "UPDATE store_settings SET store_status = '{$store_status}', store_close_date = '{$store_close_date}'
+            WHERE store_id = '{$store_id}'";
+            $prepare = $mysqli->prepare($sql);
+            $prepare->execute();
+            if ($prepare) {
+                $success  = "Store Closed";
+            } else {
+                $err = "Failed!, Please Try Again";
+            }
+        }
+    }
+}
 require_once('../partials/head.php');
 ?>
 
