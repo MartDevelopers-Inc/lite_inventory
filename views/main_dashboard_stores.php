@@ -131,6 +131,36 @@ if (isset($_POST['delete_store'])) {
         }
     }
 }
+
+/* Re Open Store */
+if (isset($_POST['re_open'])) {
+    $store_id = mysqli_real_escape_string($mysqli, $_POST['store_id']);
+    $store_status = mysqli_real_escape_string($mysqli, 'closed');
+    $store_close_date = mysqli_real_escape_string($mysqli, date('d M Y'));
+    $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
+    $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
+
+    /* Check Of This User Password Really Adds Up */
+    $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
+    $res = mysqli_query($mysqli, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        if ($user_password != $row['user_password']) {
+            $err = "Please Enter Correct Password";
+        } else {
+            /* Persist */
+            $sql = "UPDATE store_settings SET store_status = '{$store_status}', store_close_date = ''
+            WHERE store_id = '{$store_id}'";
+            $prepare = $mysqli->prepare($sql);
+            $prepare->execute();
+            if ($prepare) {
+                $success  = "Store Opened";
+            } else {
+                $err = "Failed!, Please Try Again";
+            }
+        }
+    }
+}
 require_once('../partials/head.php');
 ?>
 
@@ -241,8 +271,13 @@ require_once('../partials/head.php');
                                                                 <p class="card-text">Store Email: <?php echo $stores['store_email']; ?></p>
                                                                 <p class="card-text">Store Address: <?php echo $stores['store_adr']; ?></p>
                                                                 <p class="card-text">
-                                                                    <a data-toggle="modal" href="#update_store_<?php echo $stores['store_id']; ?>" class="badge badge-dim badge-pill badge-outline-warning">Update</a>
-                                                                    <a data-toggle="modal" href="#delete_store_<?php echo $stores['store_id']; ?>" class="badge badge-dim badge-pill badge-outline-danger">Delete</a>
+                                                                    <?php
+                                                                    if ($stores['store_status'] == 'active') { ?>
+                                                                        <a data-toggle="modal" href="#update_store_<?php echo $stores['store_id']; ?>" class="badge badge-dim badge-pill badge-outline-warning">Update</a>
+                                                                        <a data-toggle="modal" href="#delete_store_<?php echo $stores['store_id']; ?>" class="badge badge-dim badge-pill badge-outline-danger">Delete</a>
+                                                                    <?php } else { ?>
+                                                                        <a data-toggle="modal" href="#re_open_<?php echo $stores['store_id']; ?>" class="badge badge-dim badge-pill badge-outline-primary">Re Open</a>
+                                                                    <?php } ?>
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -291,7 +326,7 @@ require_once('../partials/head.php');
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">CONFIRM DELETE</h5>
+                                                                <h5 class="modal-title" id="exampleModalLabel">CONFIRM CLOSING</h5>
                                                                 <button type="button" class="close" data-dismiss="modal">
                                                                     <span>&times;</span>
                                                                 </button>
@@ -299,9 +334,9 @@ require_once('../partials/head.php');
                                                             <form method="POST">
                                                                 <div class="modal-body text-center">
                                                                     <h4 class="text-danger">
-                                                                        Delete <?php echo $stores['store_name']; ?> Store ?
+                                                                        Close <?php echo $stores['store_name']; ?> Store ?
                                                                         <hr>
-                                                                        This operation is irreversible. Please confirm your password before closing above store.
+                                                                        This operation is delicate. Please confirm your password before closing above store.
                                                                     </h4>
                                                                     <br>
                                                                     <!-- Hide This -->
@@ -312,6 +347,37 @@ require_once('../partials/head.php');
                                                                     </div>
                                                                     <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
                                                                     <input type="submit" name="delete_store" value="Delete" class="text-center btn btn-danger">
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Re Open Store -->
+                                                <div class="modal fade" id="delete_store_<?php echo $stores['store_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">CONFIRM RE OPENING</h5>
+                                                                <button type="button" class="close" data-dismiss="modal">
+                                                                    <span>&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST">
+                                                                <div class="modal-body text-center">
+                                                                    <h4 class="text-danger">
+                                                                        Re Open <?php echo $stores['store_name']; ?> Store ?
+                                                                        <hr>
+                                                                        This operation is delicate. Please confirm your password before re opening the above store.
+                                                                    </h4>
+                                                                    <br>
+                                                                    <!-- Hide This -->
+                                                                    <input type="hidden" name="store_id" value="<?php echo $stores['store_id']; ?>">
+                                                                    <input type="hidden" name="store_name" value="<?php echo $stores['store_name']; ?>">
+                                                                    <div class="form-group col-md-12">
+                                                                        <input type="password" required name="user_password" class="form-control">
+                                                                    </div>
+                                                                    <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
+                                                                    <input type="submit" name="re_open" value="Delete" class="text-center btn btn-danger">
                                                                 </div>
                                                             </form>
                                                         </div>
