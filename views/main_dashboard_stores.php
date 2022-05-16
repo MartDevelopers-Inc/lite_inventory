@@ -135,7 +135,7 @@ if (isset($_POST['delete_store'])) {
 /* Re Open Store */
 if (isset($_POST['re_open'])) {
     $store_id = mysqli_real_escape_string($mysqli, $_POST['store_id']);
-    $store_status = mysqli_real_escape_string($mysqli, 'closed');
+    $store_status = mysqli_real_escape_string($mysqli, 'active');
     $store_close_date = mysqli_real_escape_string($mysqli, date('d M Y'));
     $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
     $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
@@ -274,7 +274,7 @@ require_once('../partials/head.php');
                                                                     <?php
                                                                     if ($stores['store_status'] == 'active') { ?>
                                                                         <a data-toggle="modal" href="#update_store_<?php echo $stores['store_id']; ?>" class="badge badge-dim badge-pill badge-outline-warning">Update</a>
-                                                                        <a data-toggle="modal" href="#delete_store_<?php echo $stores['store_id']; ?>" class="badge badge-dim badge-pill badge-outline-danger">Delete</a>
+                                                                        <a data-toggle="modal" href="#delete_store_<?php echo $stores['store_id']; ?>" class="badge badge-dim badge-pill badge-outline-danger">Close</a>
                                                                     <?php } else { ?>
                                                                         <a data-toggle="modal" href="#re_open_<?php echo $stores['store_id']; ?>" class="badge badge-dim badge-pill badge-outline-primary">Re Open</a>
                                                                     <?php } ?>
@@ -346,14 +346,14 @@ require_once('../partials/head.php');
                                                                         <input type="password" required name="user_password" class="form-control">
                                                                     </div>
                                                                     <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
-                                                                    <input type="submit" name="delete_store" value="Delete" class="text-center btn btn-danger">
+                                                                    <input type="submit" name="delete_store" value="Close" class="text-center btn btn-danger">
                                                                 </div>
                                                             </form>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <!-- Re Open Store -->
-                                                <div class="modal fade" id="delete_store_<?php echo $stores['store_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal fade" id="re_open_<?php echo $stores['store_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -377,14 +377,13 @@ require_once('../partials/head.php');
                                                                         <input type="password" required name="user_password" class="form-control">
                                                                     </div>
                                                                     <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
-                                                                    <input type="submit" name="re_open" value="Delete" class="text-center btn btn-danger">
+                                                                    <input type="submit" name="re_open" value="Re Open Store" class="text-center btn btn-danger">
                                                                 </div>
                                                             </form>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <!-- End Modals -->
-
                                             <?php }
                                         } else { ?>
                                             <div class="card mb-3 col-md-6 border border-danger">
