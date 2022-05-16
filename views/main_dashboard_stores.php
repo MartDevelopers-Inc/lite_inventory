@@ -95,13 +95,51 @@ require_once('../partials/head.php');
                                                 <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
                                                 <div class="toggle-expand-content" data-content="pageMenu">
                                                     <ul class="nk-block-tools g-3">
-                                                        <li><a href="#" class="btn btn-white btn-outline-light"><em class="icon ni ni-file-plus-fill"></em><span>Add New Store</span></a></li>
+                                                        <li><a href="#create_store" data-toggle="modal" class="btn btn-white btn-outline-light"><em class="icon ni ni-file-plus-fill"></em><span>Add New Store</span></a></li>
                                                     </ul>
                                                 </div>
                                             </div><!-- .toggle-wrap -->
                                         </div><!-- .nk-block-head-content -->
                                     </div><!-- .nk-block-between -->
                                 </div><!-- .nk-block-head -->
+                                <!-- Add Store Modal -->
+                                <div class="modal fade" id="create_store">
+                                    <div class="modal-dialog  modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Fill All Required Fields</h4>
+                                                <button type="button" class="close" data-dismiss="modal">
+                                                    <span>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" enctype="multipart/form-data">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Store Name</label>
+                                                            <input type="text" name="store_name" required class="form-control">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Store Email</label>
+                                                            <input type="text" name="store_email" required class="form-control">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Store Address</label>
+                                                            <textarea type="text" name="store_adr" rows="3" required class="form-control"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <br><br>
+                                                    <div class="text-right">
+                                                        <button name="create_store" class="btn btn-primary" type="submit">
+                                                            Create Store
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Modal -->
                                 <div class="nk-block">
                                     <div class="row">
                                         <?php
@@ -192,9 +230,9 @@ require_once('../partials/head.php');
                                                             <form method="POST">
                                                                 <div class="modal-body text-center">
                                                                     <h4 class="text-danger">
-                                                                        Delete <?php echo $stores['store_name']; ?> ?
+                                                                        Delete <?php echo $stores['store_name']; ?> Store ?
                                                                         <hr>
-                                                                        This operation is irreversible. Please confirm your password before closing above store
+                                                                        This operation is irreversible. Please confirm your password before closing above store.
                                                                     </h4>
                                                                     <br>
                                                                     <!-- Hide This -->
@@ -211,8 +249,10 @@ require_once('../partials/head.php');
                                                     </div>
                                                 </div>
                                                 <!-- End Modals -->
+
                                             <?php }
                                         } else { ?>
+
                                         <?php } ?>
                                     </div>
                                 </div><!-- .nk-block -->
