@@ -61,7 +61,29 @@
 session_start();
 require_once('../config/config.php');
 require_once('../config/checklogin.php');
+require_once('../config/codeGen.php');
 check_login();
+
+/* Add Store */
+if (isset($_POST['create_store'])) {
+    $store_id = mysqli_real_escape_string($mysqli, $sys_gen_id);
+    $store_name = mysqli_real_escape_string($mysqli, $_POST['store_name']);
+    $store_adr = mysqli_real_escape_string($mysqli, $_POST['store_adr']);
+    $store_email = mysqli_real_escape_string($mysqli, $_POST['store_email']);
+
+    /* Persist */
+    $sql = "INSERT INTO store_settings(store_id, store_name, store_email, store_adr)
+    VALUES('{$store_id}', '{$store_name}', '{$store_email}', '{$store_adr}')";
+    $prepare = $mysqli->prepare($sql);
+    $prepare->execute();
+    if ($prepare) {
+        $success = "Store Registered";
+    } else {
+        $err = "Failed!, Please Try Again";
+    }
+}
+/* Update Store */
+/* Delete Store */
 require_once('../partials/head.php');
 ?>
 
@@ -140,7 +162,7 @@ require_once('../partials/head.php');
                                     </div>
                                 </div>
                                 <!-- End Modal -->
-                                <div class="nk-block">
+                                <div class="">
                                     <div class="row">
                                         <?php
                                         /* Pop All Registered Stores */
