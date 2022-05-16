@@ -115,6 +115,35 @@ if (isset($_POST['update_item'])) {
     }
 }
 /* Delete Product */
+if (isset($_POST['delete_store'])) {
+    $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
+    $product_status  = mysqli_real_escape_string($mysqli, 'inactive');
+    $product_details = mysqli_real_escape_string($mysqli, $_POST['product_details']);
+    $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
+    $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
+
+    /* Check Of This User Password Really Adds Up */
+    $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
+    $res = mysqli_query($mysqli, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        if ($user_password != $row['user_password']) {
+            $err = "Please Enter Correct Password";
+        } else {
+            /* Persist */
+            $sql = "UPDATE products SET product_status = '{$product_status}' WHERE product_id = '{$product_id}'";
+            $prepare = $mysqli->prepare($sql);
+            $prepare->execute();
+            /* Load Logs */
+            require_once('../functions/logs.php');
+            if ($prepare) {
+                $success = "$product_details Deleted";
+            } else {
+                $err = "Failed!, Please Try Again";
+            }
+        }
+    }
+}
 /* Load Header Partial */
 require_once('../partials/head.php')
 ?>
