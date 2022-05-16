@@ -270,6 +270,11 @@ require_once('../partials/head.php');
                                                                                     </li>
                                                                                 <?php } ?>
                                                                             </ul>
+                                                                            <hr>
+                                                                            <div class="text-center">
+                                                                                <a class="btn btn-primary" href="main_dashboard_system_logs_pdf_dump"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
+                                                                                <a class="btn btn-primary" href="main_dashboard_system_logs_xls_dump"><em class="icon ni ni-file-xls"></em>Export To Excel</a>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
 
