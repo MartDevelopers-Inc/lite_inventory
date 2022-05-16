@@ -94,7 +94,7 @@ if (isset($_POST['add_item'])) {
 /* Update Product */
 if (isset($_POST['update_item'])) {
     $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
-    $product_name = $_POST['product_name'];
+    $product_name = mysqli_real_escape_string($mysqli, $_POST['product_name']);
     $product_description = $_POST['product_description'];
     $product_purchase_price = mysqli_real_escape_string($mysqli, $_POST['product_purchase_price']);
     $product_sale_price  = mysqli_real_escape_string($mysqli, $_POST['product_sale_price']);
