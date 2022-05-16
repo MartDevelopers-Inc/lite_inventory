@@ -250,7 +250,7 @@ require_once('../helpers/admin_analytics.php');
                                                                     <li class="nk-activity-item">
                                                                         <div class="nk-activity-data">
                                                                             <div class="label">
-                                                                                <span class="text-success"> No out of stock items, good job in keeping your store stocked
+                                                                                <span class="text-success"> No out of stock items, good job in keeping your store stocked </span>
                                                                             </div>
                                                                         </div>
                                                                     </li>
