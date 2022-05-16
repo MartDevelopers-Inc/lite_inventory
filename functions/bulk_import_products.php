@@ -87,40 +87,39 @@ if (isset($_POST["upload"])) {
         $sheetCount = count($spreadSheetAry);
 
         for ($i = 1; $i <= $sheetCount; $i++) {
+            /* Load Mumble Jumble */
+            $rand_number = substr(str_shuffle("1234567890"), 1, 4);
+            $product_id = sha1(md5(mysqli_real_escape_string($conn, $rand_number . time())));
 
-            if (isset($spreadSheetAry[$i][0])) {
-                /* Generate Hashed Product ID From Time */
-                $product_id = sha1(md5(rand(mysqli_real_escape_string($conn, time()))));
-            }
             $product_name = "";
-            if (isset($spreadSheetAry[$i][1])) {
+            if (isset($spreadSheetAry[$i][0])) {
                 $product_name = mysqli_real_escape_string($conn, $spreadSheetAry[$i][0]);
             }
 
             $product_description = "";
-            if (isset($spreadSheetAry[$i][2])) {
+            if (isset($spreadSheetAry[$i][1])) {
                 $product_description = mysqli_real_escape_string($conn, $spreadSheetAry[$i][1]);
             }
             $product_purchase_price = "";
-            if (isset($spreadSheetAry[$i][3])) {
+            if (isset($spreadSheetAry[$i][2])) {
                 $product_purchase_price = mysqli_real_escape_string($conn, $spreadSheetAry[$i][2]);
             }
             $product_sale_price = "";
-            if (isset($spreadSheetAry[$i][4])) {
+            if (isset($spreadSheetAry[$i][3])) {
                 $product_sale_price = mysqli_real_escape_string($conn, $spreadSheetAry[$i][3]);
             }
 
             $product_quantity = "";
-            if (isset($spreadSheetAry[$i][5])) {
+            if (isset($spreadSheetAry[$i][4])) {
                 $product_quantity = mysqli_real_escape_string($conn, $spreadSheetAry[$i][4]);
             }
 
             $product_quantity_limit = "";
-            if (isset($spreadSheetAry[$i][6])) {
+            if (isset($spreadSheetAry[$i][5])) {
                 $product_quantity_limit = mysqli_real_escape_string($conn, $spreadSheetAry[$i][5]);
             }
             $product_code = "";
-            if (isset($spreadSheetAry[$i][7])) {
+            if (isset($spreadSheetAry[$i][6])) {
                 $product_code = mysqli_real_escape_string($conn, $spreadSheetAry[$i][6]);
             }
 
