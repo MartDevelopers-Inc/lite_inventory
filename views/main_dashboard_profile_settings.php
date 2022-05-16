@@ -165,10 +165,35 @@ require_once('../partials/head.php');
                                                                             <p>
                                                                                 Authentication Password & Access Levels
                                                                             </p>
+                                                                            <form method="post" enctype="multipart/form-data" role="form">
+                                                                                <div class="card-body">
+                                                                                    <div class="row">
+                                                                                        <div class="form-group col-md-12">
+                                                                                            <label for="">Old Password</label>
+                                                                                            <input type="password" required name="old_password" class="form-control">
+                                                                                        </div>
+                                                                                        <div class="form-group col-md-12">
+                                                                                            <label for="">New Password</label>
+                                                                                            <input type="password" required name="new_password" class="form-control">
+                                                                                        </div>
+                                                                                        <div class="form-group col-md-6">
+                                                                                            <label for="">Confirm Password</label>
+                                                                                            <input type="password" required name="confirm_password" class="form-control">
+                                                                                        </div>
+                                                                                        <div class="form-group col-md-6">
+                                                                                            <label for="">Access Level</label>
+                                                                                            <select type="text" required name="user_access_level" class="form-control">
+                                                                                                <option><?php echo $settings->user_access_level; ?></option>
+                                                                                                <option>Manager</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="text-right">
+                                                                                    <button type="submit" name="update_auth_details" class="btn btn-primary">Submit</button>
+                                                                                </div>
+                                                                            </form>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="nk-block-head-content align-self-start d-lg-none">
-                                                                        <a href="#" class="toggle btn btn-icon btn-trigger mt-n1" data-target="userAside"><em class="icon ni ni-menu-alt-r"></em></a>
                                                                     </div>
                                                                 </div>
                                                             </div><!-- .nk-block-head -->
