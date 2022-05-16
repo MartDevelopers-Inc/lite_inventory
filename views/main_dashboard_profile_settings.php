@@ -272,7 +272,7 @@ require_once('../partials/head.php');
                                                                             </ul>
                                                                             <hr>
                                                                             <div class="text-center">
-                                                                                <a class="btn btn-primary" href="main_dashboard_system_logs_pdf_dump?user=<?php echo $user_id; ?>"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
+                                                                                <a class="btn btn-primary" href="main_dashboard_system_logs_pdf_dump?user=<?php echo $user_id; ?>&name=<?php echo $settings->user_name; ?>"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
                                                                                 <a class="btn btn-primary" href="main_dashboard_system_logs_xls_dump?user=<?php echo $user_id; ?>"><em class="icon ni ni-file-xls"></em>Export To Excel</a>
                                                                             </div>
                                                                         </div>

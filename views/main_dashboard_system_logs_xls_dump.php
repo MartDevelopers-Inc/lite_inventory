@@ -66,7 +66,7 @@ check_login();
 require_once('../config/codeGen.php');
 
 /* User ID */
-$user_id = $_GET['user_id'];
+$user_id = $_GET['user'];
 
 /* Filter Excel Data */
 function filterData(&$str)
