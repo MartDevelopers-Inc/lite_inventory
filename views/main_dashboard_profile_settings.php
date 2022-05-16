@@ -239,13 +239,37 @@ require_once('../partials/head.php');
                                                                             <p>
                                                                                 See How This User Has Interacted With The System
                                                                             </p>
-                                                                            <form method="post" class="form-inline my-2 my-lg-0">
-                                                                                <label for="">From Date </label> <br>
-                                                                                <input class="form-control mr-sm-2" type="date" name="from_date" placeholder="From Date">
-                                                                                <label for="">To Date </label> <br>
-                                                                                <input class="form-control mr-sm-2" type="date" name="to_date" placeholder="To Date">
-                                                                                <button class="btn btn-outline-success my-2 my-sm-0" name="filter" type="submit">Filter Logs</button>
-                                                                            </form>
+                                                                            <ul class="timeline-list">
+                                                                                <?php
+                                                                                /* Load Recent Sales Today */
+                                                                                $raw_results = mysqli_query($mysqli, "SELECT * FROM system_logs 
+                                                                                WHERE log_user_id ='$user_id' ORDER BY log_created_at ASC LIMIT 10 ");
+                                                                                if (mysqli_num_rows($raw_results) > 0) {
+                                                                                    while ($results = mysqli_fetch_array($raw_results)) {
+                                                                                ?>
+                                                                                        <li class="timeline-item">
+                                                                                            <div class="timeline-status bg-primary is-outline"></div>
+                                                                                            <div class="timeline-date"><?php echo date('d M Y g:ia', strtotime($results['log_created_at'])); ?> </div>
+                                                                                            <div class="timeline-data">
+                                                                                                <h6 class="timeline-title"><?php echo $results['log_ip_address']; ?></h6>
+                                                                                                <div class="timeline-des">
+                                                                                                    <p>
+                                                                                                        <?php echo $results['log_details']; ?>
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </li>
+                                                                                    <?php }
+                                                                                } else { ?>
+                                                                                    <li class="timeline-item">
+                                                                                        <div class="timeline-status bg-danger is-outline"></div>
+                                                                                        <div class="timeline-date text-danger"><?php echo date('d M Y g:ia'); ?><em class="text-danger icon ni ni-alert-fill"></em></div>
+                                                                                        <div class="timeline-data ">
+                                                                                            <h6 class="timeline-title text-danger">No Recent System Access Logs</span></h6>
+                                                                                        </div>
+                                                                                    </li>
+                                                                                <?php } ?>
+                                                                            </ul>
                                                                         </div>
                                                                     </div>
 
