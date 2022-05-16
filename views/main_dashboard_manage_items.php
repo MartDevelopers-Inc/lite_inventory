@@ -69,8 +69,8 @@ check_login();
 /* Add Product */
 if (isset($_POST['add_item'])) {
     $product_id = mysqli_real_escape_string($mysqli, $ID);
-    $product_name = mysqli_real_escape_string($mysqli, $_POST['product_name']);
-    $product_description = mysqli_real_escape_string($mysqli, $_POST['product_description']);
+    $product_name = $_POST['product_name'];
+    $product_description = $_POST['product_description'];
     $product_purchase_price = mysqli_real_escape_string($mysqli, $_POST['product_purchase_price']);
     $product_sale_price  = mysqli_real_escape_string($mysqli, $_POST['product_sale_price']);
     $product_quantity = mysqli_real_escape_string($mysqli, $_POST['product_quantity']);
@@ -93,19 +93,19 @@ if (isset($_POST['add_item'])) {
 
 /* Update Product */
 if (isset($_POST['update_item'])) {
-    $product_id = mysqli_real_escape_string($mysqli, $ID);
-    $product_name = mysqli_real_escape_string($mysqli, $_POST['product_name']);
-    $product_description = mysqli_real_escape_string($mysqli, $_POST['product_description']);
+    $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
+    $product_name = $_POST['product_name'];
+    $product_description = $_POST['product_description'];
     $product_purchase_price = mysqli_real_escape_string($mysqli, $_POST['product_purchase_price']);
     $product_sale_price  = mysqli_real_escape_string($mysqli, $_POST['product_sale_price']);
     $product_quantity = mysqli_real_escape_string($mysqli, $_POST['product_quantity']);
     $product_quantity_limit  = mysqli_real_escape_string($mysqli, '2');
     $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
 
-    $sql = "UPDATE  products SET product_id = '{$product_id}' , product_name = '{$product_name}' , product_description = '{$product_description}',
+    $sql = "UPDATE  products SET product_name = '{$product_name}' , product_description = '{$product_description}',
     product_purchase_price = '{$product_purchase_price}', product_sale_price = '{$product_sale_price}',
     product_quantity = '{$product_quantity}' , product_quantity_limit = '{$product_quantity_limit}',
-    product_code  = '{$product_code}'";
+    product_code  = '{$product_code}' WHERE product_id = '{$product_id}' ";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
     if ($prepare) {
@@ -115,10 +115,10 @@ if (isset($_POST['update_item'])) {
     }
 }
 /* Delete Product */
-if (isset($_POST['delete_store'])) {
+if (isset($_POST['delete_item'])) {
     $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
     $product_status  = mysqli_real_escape_string($mysqli, 'inactive');
-    $product_details = mysqli_real_escape_string($mysqli, $_POST['product_details']);
+    $product_details =  $_POST['product_details'];
     $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
     $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
 
@@ -284,21 +284,25 @@ require_once('../partials/head.php')
                                                                             <div class="modal-body">
                                                                                 <form method="post" enctype="multipart/form-data">
                                                                                     <div class="form-row">
-                                                                                        <div class="form-group col-md-6">
+                                                                                        <div class="form-group col-md-8">
                                                                                             <label>Item Name</label>
                                                                                             <input type="text" name="product_name" value="<?php echo $products->product_name; ?>" required class="form-control">
                                                                                             <input type="hidden" name="product_id" value="<?php echo $products->product_id; ?>" required class="form-control">
                                                                                         </div>
 
-                                                                                        <div class="form-group col-md-6">
+                                                                                        <div class="form-group col-md-4">
+                                                                                            <label>Item Code</label>
+                                                                                            <input type="text" name="product_code" value="<?php echo $products->product_code; ?>" required class="form-control">
+                                                                                        </div>
+                                                                                        <div class="form-group col-md-4">
                                                                                             <label>Item Quantity</label>
                                                                                             <input type="text" name="product_quantity" value="<?php echo $products->product_quantity; ?>" required class="form-control">
                                                                                         </div>
-                                                                                        <div class="form-group col-md-6">
+                                                                                        <div class="form-group col-md-4">
                                                                                             <label>Item Purchase Price (Ksh)</label>
                                                                                             <input type="text" name="product_purchase_price" value="<?php echo $products->product_purchase_price; ?>" required class="form-control">
                                                                                         </div>
-                                                                                        <div class="form-group col-md-6">
+                                                                                        <div class="form-group col-md-4">
                                                                                             <label>Item Retail Sale Price (Ksh)</label>
                                                                                             <input type="text" name="product_sale_price" value="<?php echo $products->product_sale_price; ?>" required class="form-control">
                                                                                         </div>
@@ -307,8 +311,9 @@ require_once('../partials/head.php')
                                                                                             <textarea type="text" name="product_description" rows="3" required class="form-control"><?php echo $products->product_description; ?></textarea>
                                                                                         </div>
                                                                                     </div>
+                                                                                    <br><br>
                                                                                     <div class="text-right">
-                                                                                        <button name="update_product" class="btn btn-primary" type="submit">
+                                                                                        <button name="update_item" class="btn btn-primary" type="submit">
                                                                                             Update Item
                                                                                         </button>
                                                                                     </div>
@@ -344,7 +349,7 @@ require_once('../partials/head.php')
                                                                                         <input type="password" required name="user_password" class="form-control">
                                                                                     </div>
                                                                                     <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
-                                                                                    <input type="submit" name="delete_product" value="Delete" class="text-center btn btn-danger">
+                                                                                    <input type="submit" name="delete_item" value="Delete" class="text-center btn btn-danger">
                                                                                 </div>
                                                                             </form>
                                                                         </div>
