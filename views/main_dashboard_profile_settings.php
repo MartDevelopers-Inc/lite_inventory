@@ -78,7 +78,8 @@ require_once('../partials/head.php');
                 <?php require_once('../partials/header.php');
                 /* Load User Details */
                 $user_id = $_SESSION['user_id'];
-                $ret = "SELECT * FROM   users WHERE user_id = '{$user_id}' ";
+                $ret = "SELECT * FROM system_settings 
+                JOIN  users WHERE user_id = '{$user_id}' ";
                 $stmt = $mysqli->prepare($ret);
                 $stmt->execute(); //ok
                 $res = $stmt->get_result();
@@ -94,113 +95,87 @@ require_once('../partials/head.php');
                                         <div class="card card-bordered">
                                             <div class="card-aside-wrap">
                                                 <div class="card-inner card-inner-lg">
-                                                    <div class="nk-block-head nk-block-head-lg">
-                                                        <div class="nk-block-between">
-                                                            <div class="nk-block-head-content">
-                                                                <h4 class="nk-block-title">Security Settings</h4>
-                                                                <div class="nk-block-des">
-                                                                    <p>These settings are helps you keep your account secure.</p>
+                                                    <div class="tab-content">
+                                                        <!-- Main Personal Info Details -->
+                                                        <div class="tab-pane active" id="personal_info">
+                                                            <div class="nk-block-head nk-block-head-lg">
+                                                                <div class="nk-block-between">
+                                                                    <div class="nk-block-head-content">
+                                                                        <h4 class="nk-block-title">Personal Information</h4>
+                                                                        <div class="nk-block-des">
+                                                                            <p>
+                                                                                Basic info, like your name and address, that you use on our system.
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="nk-block-head-content align-self-start d-lg-none">
+                                                                        <a href="#" class="toggle btn btn-icon btn-trigger mt-n1" data-target="userAside"><em class="icon ni ni-menu-alt-r"></em></a>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="nk-block-head-content align-self-start d-lg-none">
-                                                                <a href="#" class="toggle btn btn-icon btn-trigger mt-n1" data-target="userAside"><em class="icon ni ni-menu-alt-r"></em></a>
-                                                            </div>
+                                                            </div><!-- .nk-block-head -->
                                                         </div>
-                                                    </div><!-- .nk-block-head -->
-                                                    <div class="nk-block">
-                                                        <div class="card card-bordered">
-                                                            <div class="card-inner-group">
-                                                                <div class="card-inner">
-                                                                    <div class="between-center flex-wrap flex-md-nowrap g-3">
-                                                                        <div class="nk-block-text">
-                                                                            <h6>Save my Activity Logs</h6>
-                                                                            <p>You can save your all activity logs including unusual activity detected.</p>
-                                                                        </div>
-                                                                        <div class="nk-block-actions">
-                                                                            <ul class="align-center gx-3">
-                                                                                <li class="order-md-last">
-                                                                                    <div class="custom-control custom-switch mr-n2">
-                                                                                        <input type="checkbox" class="custom-control-input" checked="" id="activity-log">
-                                                                                        <label class="custom-control-label" for="activity-log"></label>
-                                                                                    </div>
-                                                                                </li>
-                                                                            </ul>
+                                                        <div class="tab-pane" id="update_password">
+                                                            <div class="nk-block-head nk-block-head-lg">
+                                                                <div class="nk-block-between">
+                                                                    <div class="nk-block-head-content">
+                                                                        <h4 class="nk-block-title">Login Details</h4>
+                                                                        <div class="nk-block-des">
+                                                                            <p>
+                                                                                Authentication Password & Access Levels
+                                                                            </p>
                                                                         </div>
                                                                     </div>
-                                                                </div><!-- .card-inner -->
-                                                                <div class="card-inner">
-                                                                    <div class="between-center flex-wrap g-3">
-                                                                        <div class="nk-block-text">
-                                                                            <h6>Change Password</h6>
-                                                                            <p>Set a unique password to protect your account.</p>
-                                                                        </div>
-                                                                        <div class="nk-block-actions flex-shrink-sm-0">
-                                                                            <ul class="align-center flex-wrap flex-sm-nowrap gx-3 gy-2">
-                                                                                <li class="order-md-last">
-                                                                                    <a href="#" class="btn btn-primary">Change Password</a>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <em class="text-soft text-date fs-12px">Last changed: <span>Oct 2, 2019</span></em>
-                                                                                </li>
-                                                                            </ul>
+                                                                    <div class="nk-block-head-content align-self-start d-lg-none">
+                                                                        <a href="#" class="toggle btn btn-icon btn-trigger mt-n1" data-target="userAside"><em class="icon ni ni-menu-alt-r"></em></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div><!-- .nk-block-head -->
+                                                        </div>
+                                                        <div class="tab-pane" id="account_activity">
+                                                            <div class="nk-block-head nk-block-head-lg">
+                                                                <div class="nk-block-between">
+                                                                    <div class="nk-block-head-content">
+                                                                        <h4 class="nk-block-title">System Access Logs</h4>
+                                                                        <div class="nk-block-des">
+                                                                            <p>
+                                                                                See How This User Has Interacted With The System
+                                                                            </p>
                                                                         </div>
                                                                     </div>
-                                                                </div><!-- .card-inner -->
-                                                                <div class="card-inner">
-                                                                    <div class="between-center flex-wrap flex-md-nowrap g-3">
-                                                                        <div class="nk-block-text">
-                                                                            <h6>2 Factor Auth &nbsp; <span class="badge badge-success ml-0">Enabled</span></h6>
-                                                                            <p>Secure your account with 2FA security. When it is activated you will need to enter not only your password, but also a special code using app. You can receive this code by in mobile app. </p>
-                                                                        </div>
-                                                                        <div class="nk-block-actions">
-                                                                            <a href="#" class="btn btn-primary">Disable</a>
-                                                                        </div>
+                                                                    <div class="nk-block-head-content align-self-start d-lg-none">
+                                                                        <a href="#" class="toggle btn btn-icon btn-trigger mt-n1" data-target="userAside"><em class="icon ni ni-menu-alt-r"></em></a>
                                                                     </div>
-                                                                </div><!-- .card-inner -->
-                                                            </div><!-- .card-inner-group -->
-                                                        </div><!-- .card -->
-                                                    </div><!-- .nk-block -->
+                                                                </div>
+                                                            </div><!-- .nk-block-head -->
+                                                        </div>
+                                                    </div>
                                                 </div><!-- .card-inner -->
                                                 <div class="card-aside card-aside-left user-aside toggle-slide toggle-slide-left toggle-break-lg" data-content="userAside" data-toggle-screen="lg" data-toggle-overlay="true">
                                                     <div class="card-inner-group">
                                                         <div class="card-inner">
                                                             <div class="user-card">
                                                                 <div class="user-avatar bg-primary">
-                                                                    <span>AB</span>
+                                                                    <span><?php echo substr($settings->user_name, 0, 2); ?></span>
                                                                 </div>
                                                                 <div class="user-info">
-                                                                    <span class="lead-text">Abu Bin Ishtiyak</span>
-                                                                    <span class="sub-text">info@softnio.com</span>
-                                                                </div>
-                                                                <div class="user-action">
-                                                                    <div class="dropdown">
-                                                                        <a class="btn btn-icon btn-trigger mr-n2" data-toggle="dropdown" href="#"><em class="icon ni ni-more-v"></em></a>
-                                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                                            <ul class="link-list-opt no-bdr">
-                                                                                <li><a href="#"><em class="icon ni ni-camera-fill"></em><span>Change Photo</span></a></li>
-                                                                                <li><a href="#"><em class="icon ni ni-edit-fill"></em><span>Update Profile</span></a></li>
-                                                                            </ul>
-                                                                        </div>
-                                                                    </div>
+                                                                    <span class="lead-text"><?php echo $settings->user_name; ?></span>
+                                                                    <span class="sub-text"><?php echo $settings->user_email; ?></span>
                                                                 </div>
                                                             </div>
                                                         </div><!-- .card-inner -->
                                                         <div class="card-inner">
                                                             <div class="user-account-info py-0">
-                                                                <h6 class="overline-title-alt">Nio Wallet Account</h6>
-                                                                <div class="user-balance">12.395769 <small class="currency currency-btc">BTC</small></div>
-                                                                <div class="user-balance-sub">Locked <span>0.344939 <span class="currency currency-btc">BTC</span></span></div>
+                                                                <h6 class="overline-title-alt"><?php echo $settings->system_name . ' ' . $settings->user_access_level; ?> Account</h6>
                                                             </div>
                                                         </div><!-- .card-inner -->
                                                         <div class="card-inner p-0">
-                                                            <ul class="link-list-menu">
-                                                                <li><a href="html/general/user-profile-regular.html"><em class="icon ni ni-user-fill-c"></em><span>Personal Infomation</span></a></li>
-                                                                <li><a href="html/general/user-profile-notification.html"><em class="icon ni ni-bell-fill"></em><span>Notifications</span></a></li>
-                                                                <li><a href="html/general/user-profile-activity.html"><em class="icon ni ni-activity-round-fill"></em><span>Account Activity</span></a></li>
-                                                                <li><a class="active" href="html/general/user-profile-setting.html"><em class="icon ni ni-lock-alt-fill"></em><span>Security Settings</span></a></li>
-                                                                <li><a href="#"><em class="icon ni ni-shield-star-fill"></em><span>Password Change</span></a></li>
-                                                                <li><a href="#"><em class="icon ni ni-grid-add-fill-c"></em><span>Connected with Social</span></a></li>
-                                                            </ul>
+                                                            <div class="card-body">
+                                                                <ul class="nav nav-tabs">
+                                                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#personal_info"><em class="icon ni ni-user-fill-c"></em><span>Personal Infomation</span></a></li>
+                                                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#update_password"><em class="icon ni ni-bell-fill"></em><span>Update Password</span></a></li>
+                                                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#account_activity"><em class="icon ni ni-activity-round-fill"></em><span>Account Activity</span></a></li>
+                                                                </ul>
+                                                            </div>
                                                         </div><!-- .card-inner -->
                                                     </div><!-- .card-inner-group -->
                                                 </div><!-- .card-aside -->
