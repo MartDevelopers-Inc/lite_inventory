@@ -178,9 +178,8 @@ require_once('../helpers/admin_analytics.php');
                                                         <div class="timeline">
                                                             <h6 class="timeline-head"><?php echo date('d M Y'); ?></h6>
                                                             <ul class="timeline-list">
-
                                                                 <?php
-                                                                /* Fetch Some Of Favourite Users Which Belongs To You */
+                                                                /* Load Recent Sales Today */
                                                                 $raw_results = mysqli_query($mysqli, "SELECT  * FROM sales s
                                                                 INNER JOIN products p ON p.product_id = s.sale_product_id
                                                                 INNER JOIN users u ON u.user_id = s.sale_user_id
@@ -206,9 +205,9 @@ require_once('../helpers/admin_analytics.php');
                                                                 } else { ?>
                                                                     <li class="timeline-item">
                                                                         <div class="timeline-status bg-danger is-outline"></div>
-                                                                        <div class="timeline-date"><?php echo date('g:ia'); ?><em class="text-success icon ni ni-clipboad-check-fill"></em></div>
-                                                                        <div class="timeline-data">
-                                                                            <h6 class="timeline-title">No Sales Recorded So Far</span></h6>
+                                                                        <div class="timeline-date text-danger"><?php echo date('g:ia'); ?><em class="text-danger icon ni ni-alert-fill"></em></div>
+                                                                        <div class="timeline-data ">
+                                                                            <h6 class="timeline-title text-danger">No Sales Recorded So Far</span></h6>
                                                                         </div>
                                                                     </li>
                                                                 <?php } ?>
@@ -233,20 +232,25 @@ require_once('../helpers/admin_analytics.php');
                                                         <div class="nk-tb-item">
                                                             <ul class="nk-activity">
                                                                 <?php
-                                                                /* Fetch List Of All Products Which Are Low On Stock */
-                                                                $ret = "SELECT  * FROM `products` 
-                                                                WHERE product_quantity <= 1 
-                                                                ORDER BY product_name ASC
-                                                                LIMIT 10 ";
-                                                                $stmt = $mysqli->prepare($ret);
-                                                                $stmt->execute(); //ok
-                                                                $res = $stmt->get_result();
-                                                                while ($product = $res->fetch_object()) {
+                                                                /* Load Recent Out Of Stock Products */
+                                                                $raw_results = mysqli_query($mysqli, "SELECT  * FROM `products` 
+                                                                WHERE product_quantity <= 1 ORDER BY product_name ASC LIMIT 10");
+                                                                if (mysqli_num_rows($raw_results) > 0) {
+                                                                    while ($results = mysqli_fetch_array($raw_results)) {
                                                                 ?>
+                                                                        <li class="nk-activity-item">
+                                                                            <div class="nk-activity-data">
+                                                                                <div class="label">
+                                                                                    <span class="text-danger"><?php echo $results['product_code'] . ' ' . $results['product_name']; ?> </span> is out of stock, kindly plan to restock it.
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                    <?php }
+                                                                } else { ?>
                                                                     <li class="nk-activity-item">
                                                                         <div class="nk-activity-data">
                                                                             <div class="label">
-                                                                                <span class="text-danger"><?php echo $product->product_code . ' ' . $product->product_name; ?> </span> is out of stock, kindly plan to restock it.
+                                                                                <span class="text-success"> No out of stock items, good job in keeping your store stocked
                                                                             </div>
                                                                         </div>
                                                                     </li>
