@@ -67,8 +67,8 @@ include '../vendor/autoload.php';
 check_login();
 
 /* Add Product */
-if (isset($_POST['add_product'])) {
-    $product_id = mysqli_real_escape_string($$mysqli, $ID);
+if (isset($_POST['add_item'])) {
+    $product_id = mysqli_real_escape_string($mysqli, $ID);
     $product_name = mysqli_real_escape_string($mysqli, $_POST['product_name']);
     $product_description = mysqli_real_escape_string($mysqli, $_POST['product_description']);
     $product_purchase_price = mysqli_real_escape_string($mysqli, $_POST['product_purchase_price']);
@@ -77,6 +77,7 @@ if (isset($_POST['add_product'])) {
     $product_quantity_limit  = mysqli_real_escape_string($mysqli, '2');
     $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
 
+    /* Persist This */
     $sql = "INSERT INTO products (product_id, product_name, product_description, product_purchase_price, 
     product_sale_price, product_quantity, product_quantity_limit, product_code)
     VALUES ('{$product_id}', '{$product_name}', '{$product_description}', '{$product_purchase_price}', '{$product_sale_price}', 
@@ -89,7 +90,30 @@ if (isset($_POST['add_product'])) {
         $err = 'Please Try Again Or Try Later';
     }
 }
+
 /* Update Product */
+if (isset($_POST['update_item'])) {
+    $product_id = mysqli_real_escape_string($mysqli, $ID);
+    $product_name = mysqli_real_escape_string($mysqli, $_POST['product_name']);
+    $product_description = mysqli_real_escape_string($mysqli, $_POST['product_description']);
+    $product_purchase_price = mysqli_real_escape_string($mysqli, $_POST['product_purchase_price']);
+    $product_sale_price  = mysqli_real_escape_string($mysqli, $_POST['product_sale_price']);
+    $product_quantity = mysqli_real_escape_string($mysqli, $_POST['product_quantity']);
+    $product_quantity_limit  = mysqli_real_escape_string($mysqli, '2');
+    $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
+
+    $sql = "UPDATE  products SET product_id = '{$product_id}' , product_name = '{$product_name}' , product_description = '{$product_description}',
+    product_purchase_price = '{$product_purchase_price}', product_sale_price = '{$product_sale_price}',
+    product_quantity = '{$product_quantity}' , product_quantity_limit = '{$product_quantity_limit}',
+    product_code  = '{$product_code}'";
+    $prepare = $mysqli->prepare($sql);
+    $prepare->execute();
+    if ($prepare) {
+        $success = "$product_name Updated ";
+    } else {
+        $err = 'Please Try Again Or Try Later';
+    }
+}
 /* Delete Product */
 /* Load Header Partial */
 require_once('../partials/head.php')
