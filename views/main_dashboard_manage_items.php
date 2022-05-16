@@ -65,8 +65,32 @@ require_once('../config/codeGen.php');
 require_once '../config/DataSource.php';
 include '../vendor/autoload.php';
 check_login();
-/* Load Bulk Import Helper */
-require_once '../functions/bulk_import_products.php';
+
+/* Add Product */
+if (isset($_POST['add_product'])) {
+    $product_id = mysqli_real_escape_string($$mysqli, $ID);
+    $product_name = mysqli_real_escape_string($mysqli, $_POST['product_name']);
+    $product_description = mysqli_real_escape_string($mysqli, $_POST['product_description']);
+    $product_purchase_price = mysqli_real_escape_string($mysqli, $_POST['product_purchase_price']);
+    $product_sale_price  = mysqli_real_escape_string($mysqli, $_POST['product_sale_price']);
+    $product_quantity = mysqli_real_escape_string($mysqli, $_POST['product_quantity']);
+    $product_quantity_limit  = mysqli_real_escape_string($mysqli, '2');
+    $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
+
+    $sql = "INSERT INTO products (product_id, product_name, product_description, product_purchase_price, 
+    product_sale_price, product_quantity, product_quantity_limit, product_code)
+    VALUES ('{$product_id}', '{$product_name}', '{$product_description}', '{$product_purchase_price}', '{$product_sale_price}', 
+    '{$product_quantity}', '{$product_quantity_limit}', '{$product_code}')";
+    $prepare = $mysqli->prepare($sql);
+    $prepare->execute();
+    if ($prepare) {
+        $success = "$product_name Added ";
+    } else {
+        $err = 'Please Try Again Or Try Later';
+    }
+}
+/* Update Product */
+/* Delete Product */
 /* Load Header Partial */
 require_once('../partials/head.php')
 ?>
@@ -208,31 +232,31 @@ require_once('../partials/head.php')
                                                                                 <form method="post" enctype="multipart/form-data">
                                                                                     <div class="form-row">
                                                                                         <div class="form-group col-md-6">
-                                                                                            <label>Name</label>
+                                                                                            <label>Item Name</label>
                                                                                             <input type="text" name="product_name" value="<?php echo $products->product_name; ?>" required class="form-control">
                                                                                             <input type="hidden" name="product_id" value="<?php echo $products->product_id; ?>" required class="form-control">
                                                                                         </div>
 
                                                                                         <div class="form-group col-md-6">
-                                                                                            <label>Quantity</label>
+                                                                                            <label>Item Quantity</label>
                                                                                             <input type="text" name="product_quantity" value="<?php echo $products->product_quantity; ?>" required class="form-control">
                                                                                         </div>
                                                                                         <div class="form-group col-md-6">
-                                                                                            <label>Purchase Price (Ksh)</label>
+                                                                                            <label>Item Purchase Price (Ksh)</label>
                                                                                             <input type="text" name="product_purchase_price" value="<?php echo $products->product_purchase_price; ?>" required class="form-control">
                                                                                         </div>
                                                                                         <div class="form-group col-md-6">
-                                                                                            <label>Retail Sale Price (Ksh)</label>
+                                                                                            <label>Item Retail Sale Price (Ksh)</label>
                                                                                             <input type="text" name="product_sale_price" value="<?php echo $products->product_sale_price; ?>" required class="form-control">
                                                                                         </div>
                                                                                         <div class="form-group col-md-12">
-                                                                                            <label>Description</label>
+                                                                                            <label>Item Description</label>
                                                                                             <textarea type="text" name="product_description" rows="3" required class="form-control"><?php echo $products->product_description; ?></textarea>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="text-right">
                                                                                         <button name="update_product" class="btn btn-primary" type="submit">
-                                                                                            Update Product
+                                                                                            Update Item
                                                                                         </button>
                                                                                     </div>
                                                                                 </form>
@@ -253,11 +277,11 @@ require_once('../partials/head.php')
                                                                                 </button>
                                                                             </div>
                                                                             <form method="POST">
-                                                                                <div class="modal-body text-center text-danger">
-                                                                                    <h4>
-                                                                                        Delete <?php echo $products->product_code . ' ' . $products->product_name; ?> ?
+                                                                                <div class="modal-body text-center ">
+                                                                                    <h4 class="text-danger">
+                                                                                        Delete <?php echo  $products->product_name; ?> ?
                                                                                         <hr>
-                                                                                        This operation is irreversible. Please confirm your password before deleting above product
+                                                                                        This operation is delicate. Please confirm your password before deleting above product
                                                                                     </h4>
                                                                                     <br>
                                                                                     <!-- Hide This -->
