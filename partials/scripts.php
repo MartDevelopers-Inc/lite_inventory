@@ -62,3 +62,9 @@ if (isset($info)) { ?>
     </script>
 <?php }
 ?>
+<script>
+    /* Stop Double Resubmission */
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>

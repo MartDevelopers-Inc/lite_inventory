@@ -214,12 +214,12 @@ require_once('../partials/head.php');
                                                             <div class="modal-body">
                                                                 <form method="post" enctype="multipart/form-data">
                                                                     <div class="form-row">
-                                                                        <div class="form-group col-md-12">
+                                                                        <div class="form-group col-md-6">
                                                                             <label>Store Name</label>
                                                                             <input type="text" value="<?php echo $stores['store_name']; ?>" name="store_name" required class="form-control">
                                                                             <input type="hidden" value="<?php echo $stores['store_id']; ?>" name="store_id" required class="form-control">
                                                                         </div>
-                                                                        <div class="form-group col-md-12">
+                                                                        <div class="form-group col-md-6">
                                                                             <label>Store Email</label>
                                                                             <input type="text" value="<?php echo $stores['store_email']; ?>" name="store_email" required class="form-control">
                                                                         </div>
@@ -274,7 +274,23 @@ require_once('../partials/head.php');
 
                                             <?php }
                                         } else { ?>
-
+                                            <div class="card mb-3 col-md-6 border border-danger">
+                                                <div class="row no-gutters">
+                                                    <div class="col-md-4">
+                                                        <img src="../public/images/no_store.png" alt="...">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">
+                                                                No Registered Stores.
+                                                            </h5>
+                                                            <p class="card-text">
+                                                                To manage your stores, kindly create a store first.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         <?php } ?>
                                     </div>
                                 </div><!-- .nk-block -->
