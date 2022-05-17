@@ -71,11 +71,17 @@ if (isset($_POST['create_store'])) {
     $store_adr = mysqli_real_escape_string($mysqli, $_POST['store_adr']);
     $store_email = mysqli_real_escape_string($mysqli, $_POST['store_email']);
 
+    /* Log Attributes */
+    $log_type = "Add New Store";
+    $log_details = "Registered " . $store_name . "As A New Store";
+
     /* Persist */
     $sql = "INSERT INTO store_settings(store_id, store_name, store_email, store_adr)
     VALUES('{$store_id}', '{$store_name}', '{$store_email}', '{$store_adr}')";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
+    /* Log This Operation */
+    include('../functions/logs.php');
     if ($prepare) {
         $success = "Store Registered";
     } else {
@@ -89,12 +95,17 @@ if (isset($_POST['update_store'])) {
     $store_name = mysqli_real_escape_string($mysqli, $_POST['store_name']);
     $store_adr = mysqli_real_escape_string($mysqli, $_POST['store_adr']);
     $store_email = mysqli_real_escape_string($mysqli, $_POST['store_email']);
+    /* Log Attributes */
+    $log_type = "Updated Store Details";
+    $log_details = "Updated " . $store_name . " Details";
 
     /* Persist */
     $sql = "UPDATE store_settings SET store_name = '{$store_name}', store_adr = '{$store_adr}', store_email = '{$store_email}'
     WHERE store_id = '{$store_id}'";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
+    /* Log This Operation */
+    include('../functions/logs.php');
     if ($prepare) {
         $success = "Store Details Updated";
     } else {
@@ -105,10 +116,15 @@ if (isset($_POST['update_store'])) {
 /* Delete Store */
 if (isset($_POST['delete_store'])) {
     $store_id = mysqli_real_escape_string($mysqli, $_POST['store_id']);
+    $store_name = mysqli_real_escape_string($mysqli, $_POST['store_name']);
     $store_status = mysqli_real_escape_string($mysqli, 'closed');
     $store_close_date = mysqli_real_escape_string($mysqli, date('d M Y'));
     $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
     $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
+
+    /* Log Attributes */
+    $log_type = "Closed Store";
+    $log_details = "Closed " . $store_name;
 
     /* Check Of This User Password Really Adds Up */
     $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
@@ -123,6 +139,8 @@ if (isset($_POST['delete_store'])) {
             WHERE store_id = '{$store_id}'";
             $prepare = $mysqli->prepare($sql);
             $prepare->execute();
+            /* Log This Operation */
+            include('../functions/logs.php');
             if ($prepare) {
                 $success  = "Store Closed";
             } else {
@@ -135,10 +153,15 @@ if (isset($_POST['delete_store'])) {
 /* Re Open Store */
 if (isset($_POST['re_open'])) {
     $store_id = mysqli_real_escape_string($mysqli, $_POST['store_id']);
+    $store_name = mysqli_real_escape_string($mysqli, $_POST['store_name']);
     $store_status = mysqli_real_escape_string($mysqli, 'active');
     $store_close_date = mysqli_real_escape_string($mysqli, date('d M Y'));
     $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
     $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
+
+    /* Log Attributes */
+    $log_type = "Reopened Store";
+    $log_details = "Re Opened " . $store_name;
 
     /* Check Of This User Password Really Adds Up */
     $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
@@ -153,6 +176,8 @@ if (isset($_POST['re_open'])) {
             WHERE store_id = '{$store_id}'";
             $prepare = $mysqli->prepare($sql);
             $prepare->execute();
+            /* Log This Operation */
+            include('../functions/logs.php');
             if ($prepare) {
                 $success  = "Store Opened";
             } else {
