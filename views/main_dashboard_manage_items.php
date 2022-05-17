@@ -77,6 +77,10 @@ if (isset($_POST['add_item'])) {
     $product_quantity_limit  = mysqli_real_escape_string($mysqli, '2');
     $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
 
+    /* Log Attributes */
+    $log_type = "Add New Item";
+    $log_details = "Added  $product_code - $product_name, With A Total Quantity Of  $product_quantity";
+
     /* Persist This */
     $sql = "INSERT INTO products (product_id, product_name, product_description, product_purchase_price, 
     product_sale_price, product_quantity, product_quantity_limit, product_code)
@@ -84,6 +88,8 @@ if (isset($_POST['add_item'])) {
     '{$product_quantity}', '{$product_quantity_limit}', '{$product_code}')";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
+    /* Load Logger */
+    require('../functions/logs.php');
     if ($prepare) {
         $success = "$product_name Added ";
     } else {
@@ -102,12 +108,18 @@ if (isset($_POST['update_item'])) {
     $product_quantity_limit  = mysqli_real_escape_string($mysqli, '2');
     $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
 
+    /* Log Details */
+    $log_type = "Updated Item";
+    $log_details = "Updated  $product_code - $product_name Details";
+
     $sql = "UPDATE  products SET product_name = '{$product_name}' , product_description = '{$product_description}',
     product_purchase_price = '{$product_purchase_price}', product_sale_price = '{$product_sale_price}',
     product_quantity = '{$product_quantity}' , product_quantity_limit = '{$product_quantity_limit}',
     product_code  = '{$product_code}' WHERE product_id = '{$product_id}' ";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
+    /* Persist Log */
+    include('../functions/logs.php');
     if ($prepare) {
         $success = "$product_name Updated ";
     } else {
@@ -122,6 +134,10 @@ if (isset($_POST['delete_item'])) {
     $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
     $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
 
+    /* Log Attributes */
+    $log_type = "Deleted Item";
+    $log_details = "Deleted  $product_details";
+
     /* Check Of This User Password Really Adds Up */
     $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
     $res = mysqli_query($mysqli, $sql);
@@ -135,7 +151,7 @@ if (isset($_POST['delete_item'])) {
             $prepare = $mysqli->prepare($sql);
             $prepare->execute();
             /* Load Logs */
-            require_once('../functions/logs.php');
+            include('../functions/logs.php');
             if ($prepare) {
                 $success = "$product_details Deleted";
             } else {
