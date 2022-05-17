@@ -84,8 +84,6 @@ while ($settings = $res->fetch_object()) {
         <link id="skin-default" rel="stylesheet" href="../public/css/theme.css?ver=1.4.0">
         <!-- Toastr CSS -->
         <link rel="stylesheet" href="../public/js/libs/toastr/toastr.min.css">
-        <!-- Data Tables -->
-        <link rel="stylesheet" href="../public/js/libs/DataTables/datatables.min.css">
     </head>
     <!-- Load Alerts Via Sessionsgi -->
 <?php

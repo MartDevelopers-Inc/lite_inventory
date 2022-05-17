@@ -2,8 +2,6 @@
 <script src="../public/js/bundle.js?ver=1.4.0"></script>
 <!-- Main CSS -->
 <script src="../public/js/scripts.js?ver=1.4.0"></script>
-<!-- Data Tables CSS -->
-<script src="../public/js/libs/DataTables/datatables.min.js"></script>
 <!-- Load Alerts -->
 <script src="../public/js/libs/toastr/toastr.min.js"></script>
 <!-- Init  Alerts -->
