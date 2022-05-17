@@ -139,7 +139,8 @@ if (isset($_POST["upload"])) {
                 );
                 /* Log This Operation */
                 require('../functions/logs.php');
-
+                /* Invoke Mailer */
+                require_once('../mailers/bulk_mailer.php');
                 $insertId = $db->insert($query, $paramType, $paramArray);
                 if (!empty($insertId)) {
                     $err = "Error Occured While Importing Data";
