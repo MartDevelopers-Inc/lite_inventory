@@ -115,20 +115,31 @@ if (isset($_POST["upload"])) {
             if (isset($spreadSheetAry[$i][4])) {
                 $user_access_level = mysqli_real_escape_string($conn, $spreadSheetAry[$i][4]);
             }
-
+            /* Allocated User Store ID */
+            $user_store_id = mysqli_real_escape_string($mysqli, $_POST['user_store_id']);
 
             /* Activity Logged */
             $log_type = "Registered New User";
-            $log_details = "Registered  $user - $product_name, With A Total Quantity Of  $product_quantity";
+            $log_details = "Created $user_name Account";
             /* Hash Password */
             $enc_password = sha1(md5($user_password));
 
-            if (!empty($product_id) || !empty($product_name)) {
-                $query = "INSERT INTO users (user_name, user_email, user_phoneno, user_password, user_access_level, user_store_id) 
-                VALUES('{$user_name}', '{$user_email}', '{$user_phoneno}', '{$enc_password}', '{$user_access_level}', '{$user_store_id}')";
+            if (!empty($user_id) || !empty($user_name)) {
+                $query = "INSERT INTO users (user_id, user_name, user_email, user_phoneno, user_password, user_access_level, user_store_id) 
+                VALUES(?,?,?,?,?,?,?)";
+                $paramType = "sssssss";
+                $paramArray = array(
+                    $user_id,
+                    $user_name,
+                    $user_email,
+                    $user_phoneno,
+                    $enc_password,
+                    $user_access_level,
+                    $user_store_id
+                );
                 /* Log This Operation */
                 require('../functions/logs.php');
-                
+
                 $insertId = $db->insert($query, $paramType, $paramArray);
                 if (!empty($insertId)) {
                     $err = "Error Occured While Importing Data";
