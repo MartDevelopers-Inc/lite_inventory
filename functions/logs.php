@@ -61,8 +61,7 @@
 
 
 /* Log Attributes */
-$log_ip = $_SERVER['REMOTE_ADDR'];
-$log_sql = "INSERT INTO system_logs (log_user_id, log_ip_address, log_details) VALUES(?,?,?)";
+$log_sql = "INSERT INTO system_logs (log_user_id = '{$_SESSION["user_id"]}', log_ip_address = '{$_SERVER["REMOTE_ADDR"]}', 
+log_details = '{$log_details}', log_type = {'$log_type'}";
 $log_prepare  = $mysqli->prepare($log_sql);
-$bind = $log_prepare->bind_param('sss', $_SESSION['user_id'], $log_ip, $log_type);
 $log_prepare->execute();

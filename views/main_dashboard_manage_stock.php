@@ -68,10 +68,14 @@ include '../vendor/autoload.php';
 check_login();
 /* Update Stock And Log That Activity */
 if (isset($_POST['update_product_stock'])) {
+    /* Product Attributes */
     $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
     $product_quantity = mysqli_real_escape_string($mysqli, $_POST['product_quantity']);
     $product_details = mysqli_real_escape_string($mysqli, $_POST['product_details']);
-    $log_type = 'Added New Stock Of ' . $product_quantity . ' Items To ' . $product_details;
+
+    /* Log Details */
+    $log_type = 'Stock Update';
+    $log_details = 'Added New Stock Of ' . $product_quantity . ' Items To ' . $product_details;
 
     /* Get Product Details */
     $sql = "SELECT * FROM  products  WHERE product_id = '{$product_id}'";
