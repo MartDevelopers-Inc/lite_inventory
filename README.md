@@ -4,6 +4,8 @@ On Pushing To Live Server Kindly Update This Links <br>
 
 1. Application Config - Its On Config/appconfig.php <b>
 
+# Known Issues
+1. Slow Loading On Items Tables
 
 # Login Credetials
 
