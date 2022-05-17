@@ -125,7 +125,7 @@ if (isset($_POST["upload"])) {
 
             /* Activity Logged */
             $log_type = "Add New Item";
-            $log_type = "Added  $product_code - $product_name, With A Total Quantity Of  $product_quantity";
+            $log_details = "Added  $product_code - $product_name, With A Total Quantity Of  $product_quantity";
 
             if (!empty($product_id) || !empty($product_name)) {
                 $query = "INSERT INTO products (product_id, product_name, product_description, product_purchase_price, product_sale_price, product_quantity, product_quantity_limit, product_code) 
