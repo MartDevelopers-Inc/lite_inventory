@@ -100,13 +100,15 @@ if (isset($_POST["upload"])) {
             if (isset($spreadSheetAry[$i][1])) {
                 $user_email = mysqli_real_escape_string($conn, $spreadSheetAry[$i][1]);
             }
+
             $user_phoneno = "";
             if (isset($spreadSheetAry[$i][2])) {
                 $user_phoneno = mysqli_real_escape_string($conn, $spreadSheetAry[$i][2]);
             }
+
             $user_password = "";
             if (isset($spreadSheetAry[$i][3])) {
-                $user_password = sha1(md5(mysqli_real_escape_string($conn, $spreadSheetAry[$i][3])));
+                $user_password = mysqli_real_escape_string($conn, $spreadSheetAry[$i][3]);
             }
 
             $user_access_level = "";
@@ -118,24 +120,15 @@ if (isset($_POST["upload"])) {
             /* Activity Logged */
             $log_type = "Registered New User";
             $log_details = "Registered  $user - $product_name, With A Total Quantity Of  $product_quantity";
+            /* Hash Password */
+            $enc_password = sha1(md5($user_password));
 
             if (!empty($product_id) || !empty($product_name)) {
-                $query = "INSERT INTO products (product_id, product_name, product_description, product_purchase_price, product_sale_price, product_quantity, product_quantity_limit, product_code) 
-                VALUES(?,?,?,?,?,?,?,?)";
+                $query = "INSERT INTO users (user_name, user_email, user_phoneno, user_password, user_access_level, user_store_id) 
+                VALUES('{$user_name}', '{$user_email}', '{$user_phoneno}', '{$enc_password}', '{$user_access_level}', '{$user_store_id}')";
                 /* Log This Operation */
                 require('../functions/logs.php');
-                $paramType = "ssssssss";
-                $paramArray = array(
-                    $product_id,
-                    $product_name,
-                    $product_description,
-                    $product_purchase_price,
-                    $product_sale_price,
-                    $product_quantity,
-                    $product_quantity_limit,
-                    $product_code
-                );
-
+                
                 $insertId = $db->insert($query, $paramType, $paramArray);
                 if (!empty($insertId)) {
                     $err = "Error Occured While Importing Data";
