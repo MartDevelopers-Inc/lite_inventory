@@ -142,10 +142,20 @@ if (isset($_POST["upload"])) {
                 /* Invoke Mailer */
                 require_once('../mailers/bulk_mailer.php');
                 $insertId = $db->insert($query, $paramType, $paramArray);
-                if (!empty($insertId)) {
-                    $err = "Error Occured While Importing Data";
-                } else {
-                    $success = "Products Imported";
+                /* Detect Connectivity And Invoke Mailer */
+                switch (connection_status()) {
+                    case CONNECTION_NORMAL:
+                        if (empty($insertId) && $mail->send()) {
+                            $success = "User Data Imported";
+                        } else if (CONNECTION_ABORTED && CONNECTION_TIMEOUT && empty($insertId)) {
+                            $info = "User Data Imported, But Mailing Failed, Check Your Internet Connectivity";
+                        } else {
+                            $err = "Failed To Import Users, Please Try Again";
+                        }
+                        break;
+                    default:
+                        $info = "User Data Imported Successfully";
+                        break;
                 }
             }
         }
