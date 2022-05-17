@@ -69,12 +69,17 @@ if (isset($_POST['update_personal_info'])) {
     $user_email = mysqli_real_escape_string($mysqli, $_POST['user_email']);
     $user_phoneno = mysqli_real_escape_string($mysqli, $_POST['user_phoneno']);
     $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
+    /* Log Attributes */
+    $log_type = "Personal Info Update";
+    $log_details = "Updated Personal Information";
 
     /* Persist */
     $sql = "UPDATE users SET user_name = '{$user_name}', user_email  = '{$user_email}', user_phoneno = '{$user_phoneno}' 
     WHERE user_id = '{$user_id}'";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
+    /* Log This Operation */
+    include('../functions/logs.php');
     if ($prepare) {
         $success = "Personal Details Updated";
     } else {
@@ -89,6 +94,10 @@ if (isset($_POST['update_auth_details'])) {
     $confirm_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['confirm_password'])));
     $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
     $user_access_level = mysqli_real_escape_string($mysqli, $_POST['user_access_level']);
+
+    /* Log Attributes */
+    $log_type = "Personal Auth Info Update";
+    $log_details = "Updated Personal Authentication Details";
 
     /* Check If Old Pasword Match */
     if ($new_password != $confirm_password) {
@@ -107,6 +116,8 @@ if (isset($_POST['update_auth_details'])) {
                 WHERE user_id = '{$user_id}'";
                 $prepare = $mysqli->prepare($sql);
                 $prepare->execute();
+                /* Load Logs */
+                include('../functions/logs.php');
                 if ($prepare) {
                     $success = "Auth Details Updated";
                 } else {
