@@ -73,7 +73,7 @@ if (isset($_POST['create_store'])) {
 
     /* Log Attributes */
     $log_type = "Add New Store";
-    $log_details = "Registered " . $store_name . "As A New Store";
+    $log_details = "Registered " . $store_name . " As A New Store";
 
     /* Persist */
     $sql = "INSERT INTO store_settings(store_id, store_name, store_email, store_adr)
@@ -160,7 +160,7 @@ if (isset($_POST['re_open'])) {
     $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
 
     /* Log Attributes */
-    $log_type = "Reopened Store";
+    $log_type = "Re Opened Store";
     $log_details = "Re Opened " . $store_name;
 
     /* Check Of This User Password Really Adds Up */
