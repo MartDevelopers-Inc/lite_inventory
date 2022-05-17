@@ -492,7 +492,7 @@ while ($mailer = $res->fetch_object()) {
                                             With great power comes great responsibility and <br>
                                             your ' . $user_access_level . ' has been created successfully. <br>
                                             Kindly use the below credentials to access your portal.
-                                            Email Address : ' . $user_email . ' <br> Login Password : ' . $user_gen_password . '
+                                            Email Address : <b>' . $user_email . '</b> <br> Login Password : <b>' . $user_password . '</b>
                                         </h3>
                                     </div>
                                 </td>

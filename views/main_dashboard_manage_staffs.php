@@ -66,100 +66,56 @@ require_once '../config/DataSource.php';
 include '../vendor/autoload.php';
 check_login();
 
-/* Add Product */
-if (isset($_POST['add_item'])) {
-    $product_id = mysqli_real_escape_string($mysqli, $ID);
-    $product_name = $_POST['product_name'];
-    $product_description = $_POST['product_description'];
-    $product_purchase_price = mysqli_real_escape_string($mysqli, $_POST['product_purchase_price']);
-    $product_sale_price  = mysqli_real_escape_string($mysqli, $_POST['product_sale_price']);
-    $product_quantity = mysqli_real_escape_string($mysqli, $_POST['product_quantity']);
-    $product_quantity_limit  = mysqli_real_escape_string($mysqli, '2');
-    $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
+/* Add Staffs */
+if (isset($_POST['add_user'])) {
+    $user_id = mysqli_real_escape_string($mysqli, $_POST['user_id']);
+    $user_name  = mysqli_real_escape_string($mysqli, $_POST[['user_name']]);
+    $user_email = mysqli_real_escape_string($mysqli, $_POST['user_email']);
+    $user_phoneno = mysqli_real_escape_string($mysqli, $_POST['user_phoneno']);
+    $user_password = mysqli_real_escape_string($mysqli, $_POST['user_password']);
+    $user_access_level = mysqli_real_escape_string($mysqli, $_POST['user_access_level']);
+    $user_store_id = mysqli_real_escape_string($mysqli, $_POST['user_store_id']);
+    $enc_password = sha1(md5($user_password));
 
-    /* Log Attributes */
-    $log_type = "Add New Item";
-    $log_details = "Added  $product_code - $product_name, With A Total Quantity Of  $product_quantity";
+    /* Log User Activity */
+    $log_type = "Registered New User";
+    $log_details = "Created $user_name Account";
 
-    /* Persist This */
-    $sql = "INSERT INTO products (product_id, product_name, product_description, product_purchase_price, 
-    product_sale_price, product_quantity, product_quantity_limit, product_code)
-    VALUES ('{$product_id}', '{$product_name}', '{$product_description}', '{$product_purchase_price}', '{$product_sale_price}', 
-    '{$product_quantity}', '{$product_quantity_limit}', '{$product_code}')";
-    $prepare = $mysqli->prepare($sql);
-    $prepare->execute();
-    /* Load Logger */
-    require('../functions/logs.php');
-    if ($prepare) {
-        $success = "$product_name Added ";
+
+    /* Remove Duplicated */
+    $raw_results = mysqli_query($mysqli, "SELECT * FROM users WHERE user_email = '{$user_email}'");
+    if (mysqli_num_rows($raw_results) > 0) {
+        $err = "User Email  Already Exists";
     } else {
-        $err = 'Please Try Again Or Try Later';
-    }
-}
-
-/* Update Product */
-if (isset($_POST['update_item'])) {
-    $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
-    $product_name = mysqli_real_escape_string($mysqli, $_POST['product_name']);
-    $product_description = $_POST['product_description'];
-    $product_purchase_price = mysqli_real_escape_string($mysqli, $_POST['product_purchase_price']);
-    $product_sale_price  = mysqli_real_escape_string($mysqli, $_POST['product_sale_price']);
-    $product_quantity = mysqli_real_escape_string($mysqli, $_POST['product_quantity']);
-    $product_quantity_limit  = mysqli_real_escape_string($mysqli, '2');
-    $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
-
-    /* Log Details */
-    $log_type = "Updated Item";
-    $log_details = "Updated  $product_code - $product_name Details";
-
-    $sql = "UPDATE  products SET product_name = '{$product_name}' , product_description = '{$product_description}',
-    product_purchase_price = '{$product_purchase_price}', product_sale_price = '{$product_sale_price}',
-    product_quantity = '{$product_quantity}' , product_quantity_limit = '{$product_quantity_limit}',
-    product_code  = '{$product_code}' WHERE product_id = '{$product_id}' ";
-    $prepare = $mysqli->prepare($sql);
-    $prepare->execute();
-    /* Persist Log */
-    include('../functions/logs.php');
-    if ($prepare) {
-        $success = "$product_name Updated ";
-    } else {
-        $err = 'Please Try Again Or Try Later';
-    }
-}
-/* Delete Product */
-if (isset($_POST['delete_item'])) {
-    $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
-    $product_status  = mysqli_real_escape_string($mysqli, 'inactive');
-    $product_details =  $_POST['product_details'];
-    $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
-    $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
-
-    /* Log Attributes */
-    $log_type = "Deleted Item";
-    $log_details = "Deleted  $product_details";
-
-    /* Check Of This User Password Really Adds Up */
-    $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
-    $res = mysqli_query($mysqli, $sql);
-    if (mysqli_num_rows($res) > 0) {
-        $row = mysqli_fetch_assoc($res);
-        if ($user_password != $row['user_password']) {
-            $err = "Please Enter Correct Password";
-        } else {
-            /* Persist */
-            $sql = "UPDATE products SET product_status = '{$product_status}' WHERE product_id = '{$product_id}'";
-            $prepare = $mysqli->prepare($sql);
-            $prepare->execute();
-            /* Load Logs */
-            include('../functions/logs.php');
-            if ($prepare) {
-                $success = "$product_details Deleted";
-            } else {
-                $err = "Failed!, Please Try Again";
-            }
+        /* Persist */
+        $sql = "INSERT INTO  users  (user_id, user_name, user_email, user_phoneno, user_password, user_access_level, user_store_id)
+        VALUES('{$user_id}' , '{$user_name}', '{$user_email}', '{$user_phoneno}', '{$enc_password}', '{$user_access_level}', '{$user_store_id}')";
+        $prepare = $mysqli->prepare($sql);
+        $prepare->execute();
+        /* Log User */
+        include('../functions/logs.php');
+        /* Email User */
+        include('../mailers/add_new_user.php');
+        /* Detect Connection First Then Send Mail */
+        switch (connection_status()) {
+            case CONNECTION_NORMAL:
+                if ($prepare && $mail->send()) {
+                    $success = "Account Created";
+                } else if ($prepare && CONNECTION_ABORTED && CONNECTION_TIMEOUT) {
+                    $info = "Account Created But Mailing Failed, Check Your Internet Connectivity.";
+                } else {
+                    $err = "Failed, Please Try Again";
+                }
+                break;
+            default:
+                $err = "Failed, Please Try Again";
+                break;
         }
     }
 }
+
+/* Update Staffs */
+/* Delete Staffss */
 /* Load Header Partial */
 require_once('../partials/head.php')
 ?>
@@ -196,7 +152,7 @@ require_once('../partials/head.php')
                                                 <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
                                                 <div class="toggle-expand-content" data-content="pageMenu">
                                                     <ul class="nk-block-tools g-3">
-                                                        <li><a href="#create_store" data-toggle="modal" class="btn btn-white btn-outline-light"><em class="icon ni ni-grid-plus-fill"></em><span>Add Item</span></a></li>
+                                                        <li><a href="#create_store" data-toggle="modal" class="btn btn-white btn-outline-light"><em class="icon ni ni-user-add"></em><span>Add New Staff</span></a></li>
                                                     </ul>
                                                 </div>
                                             </div><!-- .toggle-wrap -->
