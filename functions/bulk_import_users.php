@@ -138,10 +138,9 @@ if (isset($_POST["upload"])) {
                     $user_store_id
                 );
                 /* Log This Operation */
-                require('../functions/logs.php');
+                include('../functions/logs.php');
                 /* Invoke Mailer */
-                require_once('../mailers/bulk_mailer.php');
-                $insertId = $db->insert($query, $paramType, $paramArray);
+                include('../mailers/bulk_mailer.php');
                 /* Detect Connectivity And Invoke Mailer */
                 switch (connection_status()) {
                     case CONNECTION_NORMAL:

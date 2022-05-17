@@ -76,7 +76,11 @@ while ($mailer = $res->fetch_object()) {
 
     $mail = new PHPMailer\PHPMailer\PHPMailer();
     $mail->setFrom($mailer->mailer_mail_from_email);
-    $mail->addAddress($user_email);
+    $user_emails = explode(',', $user_email);
+    /* Send Email To All Users */
+    foreach ($user_emails as $user_email) {
+        $mail->AddAddress(trim($user_email));
+    }
     $mail->FromName = $mailer->mailer_mail_from_name;
     $mail->isHTML(true);
     $mail->IsSMTP();
@@ -492,7 +496,7 @@ while ($mailer = $res->fetch_object()) {
                                             With great power comes great responsibility and <br>
                                             your ' . $user_access_level . ' has been created successfully. <br>
                                             Kindly use the below credentials to access your portal.
-                                            Email Address : ' . $user_email . ' <br> Default Login Password : ' . $user_password . '
+                                            Email Address <b>: ' . $user_email . '</b> <br> Default Login Password : <b>' . $user_password . '</b> <br>
                                             Kindly change your password on login.
                                         </h3>
                                     </div>
