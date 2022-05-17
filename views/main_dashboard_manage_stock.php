@@ -82,8 +82,9 @@ if (isset($_POST['update_product_stock'])) {
         /* Persist New Stock */
         $sql = "UPDATE products SET product_quantity = '{$new_stock}' WHERE product_id = '{$product_id}'";
         $prepare = $mysqli->prepare($sql);
+        $prepare->execute();
         if ($prepare) {
-            $success = "New Stock Of $product_details Added";
+            $success = "New Stock Of $product_details Has Been Added";
         } else {
             $err = "Failed!, Please Try Again";
         }
