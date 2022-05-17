@@ -254,7 +254,7 @@ require_once('../partials/head.php');
                                                                                 <?php
                                                                                 /* Load Recent Sales Today */
                                                                                 $raw_results = mysqli_query($mysqli, "SELECT * FROM system_logs 
-                                                                                WHERE log_user_id ='$user_id' ORDER BY log_created_at ASC LIMIT 10 ");
+                                                                                WHERE log_user_id ='$user_id' ORDER BY log_created_at DESC LIMIT 10 ");
                                                                                 if (mysqli_num_rows($raw_results) > 0) {
                                                                                     while ($results = mysqli_fetch_array($raw_results)) {
                                                                                 ?>
