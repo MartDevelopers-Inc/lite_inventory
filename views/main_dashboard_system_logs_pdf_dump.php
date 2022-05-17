@@ -189,7 +189,7 @@ while ($stores = $res->fetch_object()) {
             </thead>
             ';
     $ret = "SELECT * FROM system_logs WHERE log_user_id = '{$user_id}'
-            ORDER BY log_created_at ASC";
+            ORDER BY log_created_at DESC";
     $stmt = $mysqli->prepare($ret);
     $stmt->execute(); //ok
     $res = $stmt->get_result();

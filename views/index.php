@@ -62,31 +62,14 @@ session_start();
 require_once('../config/config.php');
 /* Handle Login */
 if (isset($_POST['SignIn'])) {
-    $user_email = mysqli_real_escape_string($mysqli, $_POST['user_email']);
-    $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
 
-    $stmt = $mysqli->prepare("SELECT user_password, user_access_level, user_store_id, user_id FROM users WHERE user_email=? and user_password=?");
-    $stmt->bind_param('ss', $user_email, $user_password);
-    $stmt->execute();
-    $stmt->bind_result($user_password, $user_access_level, $user_store_id, $user_id);
-    $rs = $stmt->fetch();
-
-    /* Auth User Only With 3 Access Level */
-    if ($rs && $user_access_level == "Admin") {
-        $_SESSION['user_id'] = $user_id;
-        header("location:main_dashboard");
-    } elseif ($rs && $user_access_level == "Manager") {
-        $_SESSION['user_id'] = $user_id;
-        $_SESSION['user_store_id'] = $user_store_id;
-        header("location:main_dashboard");
-    } elseif ($rs && $user_access_level == "Staff") {
-        $_SESSION['user_id'] = $user_id;
-        $_SESSION['user_access_level'] = $user_access_level;
-        $_SESSION['user_store_id'] = $user_store_id;
-        header("location:home");
-    } else {
-        $err = "Access Denied Please Check Your Email Or Password";
-    }
+    $user_email = mysqli_real_escape_string($mysqli, trim($_POST['user_email']));
+    $user_password = mysqli_real_escape_string($mysqli, trim(sha1(md5($_POST['user_password']))));
+    /* Check If Posted Data Matches */
+    $ret = mysqli_query($mysqli, "SELECT * FROM users  WHERE user_email='{$user_email}'  AND user_password='{$user_password}'");
+    $num = mysqli_fetch_array($ret);
+    /* Load Auth Log Helper */
+    include('../functions/auth_logger.php');
 }
 require_once('../partials/head.php');
 ?>

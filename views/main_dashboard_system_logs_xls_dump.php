@@ -88,7 +88,7 @@ $excelData = implode("\t", array_values($fields)) . "\n";
 
 /* Fetch All Records From The Database */
 $query = $mysqli->query("SELECT * FROM system_logs WHERE log_user_id = '{$user_id}'
-ORDER BY log_created_at ASC");
+ORDER BY log_created_at DESC");
 if ($query->num_rows > 0) {
     /* Load All Fetched Rows */
     while ($row = $query->fetch_assoc()) {
