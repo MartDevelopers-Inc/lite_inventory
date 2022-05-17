@@ -113,6 +113,32 @@ if (isset($_POST['add_user'])) {
 }
 
 /* Update Staffs */
+if (isset($_POST['update_user'])) {
+    $user_id = mysqli_real_escape_string($mysqli, $_POST['user_id']);
+    $user_name  = mysqli_real_escape_string($mysqli, $_POST['user_name']);
+    $user_email = mysqli_real_escape_string($mysqli, $_POST['user_email']);
+    $user_phoneno = mysqli_real_escape_string($mysqli, $_POST['user_phoneno']);
+    $user_access_level = mysqli_real_escape_string($mysqli, $_POST['user_access_level']);
+    $user_store_id = mysqli_real_escape_string($mysqli, $_POST['user_store_id']);
+
+    /* Log User Activity */
+    $log_type = "Update User Details";
+    $log_details = "Updated $user_name, $user_email Account";
+
+    /* Persist */
+    $sql = "UPDATE users SET user_name = '{$user_name}', user_email = '{$user_email}', 
+    user_phoneno = '{$user_phoneno}', user_access_level = '{$user_access_level}', user_store_id = '{$user_store_id}'
+    WHERE user_id = '{$user_id}'";
+    $prepare = $mysqli->prepare($sql);
+    $prepare->execute();
+    /* Log This Operation */
+    include('../functions/logs.php');
+    if ($prepare) {
+        $success = "User Account Details Updated";
+    } else {
+        $err = "Failed!, Please Try Again";
+    }
+}
 /* Delete Staffs */
 if (isset($_POST['close_account'])) {
     $user_id = mysqli_real_escape_string($mysqli, $_POST['user_id']);

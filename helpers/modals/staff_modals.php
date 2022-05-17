@@ -69,7 +69,7 @@
                     </div><br><br>
                     <div class="text-right">
                         <button name="update_user" class="btn btn-primary" type="submit">
-                            Update user
+                            Update User
                         </button>
                     </div>
                 </form>
