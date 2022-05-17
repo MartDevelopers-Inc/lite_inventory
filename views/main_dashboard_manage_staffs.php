@@ -62,14 +62,12 @@ session_start();
 require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
-require_once '../config/DataSource.php';
-include '../vendor/autoload.php';
 check_login();
 
 /* Add Staffs */
 if (isset($_POST['add_user'])) {
-    $user_id = mysqli_real_escape_string($mysqli, $_POST['user_id']);
-    $user_name  = mysqli_real_escape_string($mysqli, $_POST[['user_name']]);
+    $user_id = mysqli_real_escape_string($mysqli, $staff_id);
+    $user_name  = mysqli_real_escape_string($mysqli, $_POST['user_name']);
     $user_email = mysqli_real_escape_string($mysqli, $_POST['user_email']);
     $user_phoneno = mysqli_real_escape_string($mysqli, $_POST['user_phoneno']);
     $user_password = mysqli_real_escape_string($mysqli, $_POST['user_password']);
@@ -92,7 +90,7 @@ if (isset($_POST['add_user'])) {
         VALUES('{$user_id}' , '{$user_name}', '{$user_email}', '{$user_phoneno}', '{$enc_password}', '{$user_access_level}', '{$user_store_id}')";
         $prepare = $mysqli->prepare($sql);
         $prepare->execute();
-        /* Log User */
+        /* Log This Operation */
         include('../functions/logs.php');
         /* Email User */
         include('../mailers/add_new_user.php');
@@ -172,7 +170,7 @@ require_once('../partials/head.php')
                                             <div class="modal-body">
                                                 <form method="post" enctype="multipart/form-data">
                                                     <div class="form-row">
-                                                        <div class="form-group col-md-12">
+                                                        <div class="form-group col-md-6">
                                                             <label>Name</label>
                                                             <input type="text" name="user_name" required class="form-control">
                                                         </div>
@@ -183,6 +181,10 @@ require_once('../partials/head.php')
                                                         <div class="form-group col-md-6">
                                                             <label>Phone Number</label>
                                                             <input type="text" name="user_phoneno" required class="form-control">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Password</label>
+                                                            <input type="text" name="user_password" value="<?php echo $defaultPass; ?>" required class="form-control">
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label class="form-label" for="default-06">Allocated Store</label>
@@ -208,7 +210,7 @@ require_once('../partials/head.php')
                                                             <label class="form-label" for="default-06">User Access Level</label>
                                                             <div class="form-control-wrap">
                                                                 <div class="form-group">
-                                                                    <div class="form-control-wrap">
+                                                                    <div class="form-control-wrap">g
                                                                         <select name="user_access_level" class="form-select form-control form-control-lg" data-search="on">
                                                                             <option value="Staff">Staff</option>
                                                                             <option value="Manager">Manager</option>
