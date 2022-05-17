@@ -85,20 +85,18 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">CONFIRM CLOSE</h5>
+                <h5 class="modal-title" id="exampleModalLabel">CONFIRM DELETE</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
             <form method="POST">
-                <div class="modal-body text-center text-danger">
-                    <h4>
-                        Delete <?php echo $users->user_name; ?> ? <br>
-                        This operation is irreversible.
+                <div class="modal-body text-center ">
+                    <h4 class="text-danger">
+                        Delete <?php echo $users->user_name; ?>'s  account? <br>
+                        This operation is delicate. Kindly enter your password to delete.
                     </h4>
                     <br>
-                    <!-- Hide This -->
-                    <input type="hidden" name="user_id" value="<?php echo $users->user_id; ?>">
                     <!-- Hide This -->
                     <input type="hidden" name="user_id" value="<?php echo $users->user_id; ?>">
                     <input type="hidden" name="user_details" value="<?php echo $users->user_name . ' ' . $users->user_email; ?>">
@@ -106,7 +104,7 @@
                         <input type="password" required name="user_password" class="form-control">
                     </div>
                     <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
-                    <input type="submit" name="close_account" value="Close" class="text-center btn btn-danger">
+                    <input type="submit" name="close_account" value="Delete" class="text-center btn btn-danger">
                 </div>
             </form>
         </div>

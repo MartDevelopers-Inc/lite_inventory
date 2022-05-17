@@ -113,7 +113,40 @@ if (isset($_POST['add_user'])) {
 }
 
 /* Update Staffs */
-/* Delete Staffss */
+/* Delete Staffs */
+if (isset($_POST['close_account'])) {
+    $user_id = mysqli_real_escape_string($mysqli, $_POST['user_id']);
+    $user_status = mysqli_real_escape_string($mysqli, 'inactive');
+    $user_details = mysqli_real_escape_string($mysqli, $_POST['user_details']);
+    $userid = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
+    $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
+
+    /* Log This Details */
+    $log_type = "Deleted User Account";
+    $log_details = "Deleted $user_details Account";
+
+    /* Check If Posted Password Matches */
+    $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
+    $res = mysqli_query($mysqli, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        if ($user_password != $row['user_password']) {
+            $err = "Please Enter Correct Password";
+        } else {
+            /* Persist */
+            $sql = "UPDATE users SET user_status = '{$user_status}' WHERE user_id = {'$user_id'}";
+            $prepare = $mysqli->prepare($sql);
+            $prepare->execute();
+            /* Log This Operation */
+            include('../functions/logs.php');
+            if ($prepare) {
+                $success = "$user_details Account Deleted";
+            } else {
+                $err = "Failed!, Please Try Again";
+            }
+        }
+    }
+}
 /* Load Header Partial */
 require_once('../partials/head.php')
 ?>
@@ -138,10 +171,10 @@ require_once('../partials/head.php')
                                 <div class="nk-block-head nk-block-head-sm">
                                     <div class="nk-block-between">
                                         <div class="nk-block-head-content">
-                                            <h3 class="nk-block-title page-title">Manage Items</h3>
+                                            <h3 class="nk-block-title page-title">Manage Users</h3>
                                             <div class="nk-block-des text-soft">
                                                 <p>
-                                                    This module allows you to register, update and delete items <br>
+                                                    This module allows you to register, update and delete users <br>
                                                 </p>
                                             </div>
                                         </div><!-- .nk-block-head-content -->
@@ -210,7 +243,7 @@ require_once('../partials/head.php')
                                                             <label class="form-label" for="default-06">User Access Level</label>
                                                             <div class="form-control-wrap">
                                                                 <div class="form-group">
-                                                                    <div class="form-control-wrap">g
+                                                                    <div class="form-control-wrap">
                                                                         <select name="user_access_level" class="form-select form-control form-control-lg" data-search="on">
                                                                             <option value="Staff">Staff</option>
                                                                             <option value="Manager">Manager</option>
@@ -263,8 +296,8 @@ require_once('../partials/head.php')
                                                                 <td><?php echo $users->user_access_level; ?></td>
                                                                 <td><?php echo $users->store_name; ?></td>
                                                                 <td>
-                                                                    <a data-toggle="modal" href="#update_<?php echo $users->user_id; ?>" class="badge badge-primary"><i class="fas fa-edit"></i> Edit</a>
-                                                                    <a data-toggle="modal" href="#delete_<?php echo $users->user_id; ?>" class="badge badge-danger"><i class="fas fa-trash"></i> Delete</a>
+                                                                    <a data-toggle="modal" href="#update_<?php echo $users->user_id; ?>" class="badge badge-dim badge-pill badge-outline-warning"><em class="icon ni ni-edit"></em> Edit</a>
+                                                                    <a data-toggle="modal" href="#delete_<?php echo $users->user_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
                                                                 </td>
                                                             </tr>
                                                         <?php include('../helpers/modals/staff_modals.php');
