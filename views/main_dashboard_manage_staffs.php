@@ -126,7 +126,7 @@ if (isset($_POST['close_account'])) {
     $log_details = "Deleted $user_details Account";
 
     /* Check If Posted Password Matches */
-    $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
+    $sql = "SELECT * FROM  users  WHERE user_id = '{$userid}'";
     $res = mysqli_query($mysqli, $sql);
     if (mysqli_num_rows($res) > 0) {
         $row = mysqli_fetch_assoc($res);
@@ -134,7 +134,7 @@ if (isset($_POST['close_account'])) {
             $err = "Please Enter Correct Password";
         } else {
             /* Persist */
-            $sql = "UPDATE users SET user_status = '{$user_status}' WHERE user_id = {'$user_id'}";
+            $sql = "UPDATE users SET user_status = '{$user_status}' WHERE user_id = '{$user_id}'";
             $prepare = $mysqli->prepare($sql);
             $prepare->execute();
             /* Log This Operation */
