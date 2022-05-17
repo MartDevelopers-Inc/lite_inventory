@@ -61,7 +61,7 @@
 
 
 /* Log Attributes */
-$log_sql = "INSERT INTO system_logs (log_user_id = '{$_SESSION["user_id"]}', log_ip_address = '{$_SERVER["REMOTE_ADDR"]}', 
-log_details = '{$log_details}', log_type = {'$log_type'}";
+$log_sql = "INSERT INTO system_logs (log_user_id, log_ip_address, log_details , log_type)
+VALUES('{$_SESSION['user_id']}',  '{$_SERVER['REMOTE_ADDR']}', '{$log_details}', '{$log_type}')";
 $log_prepare  = $mysqli->prepare($log_sql);
 $log_prepare->execute();
