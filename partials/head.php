@@ -75,7 +75,7 @@ while ($settings = $res->fetch_object()) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="@@page-discription">
         <!-- Fav Icon  -->
-        <link rel="shortcut icon" href="./images/favicon.png">
+        <link rel="shortcut icon" href="../public/images/favicon/favicon.ico">
         <!-- Page Title  -->
         <title><?php echo $settings->system_name; ?></title>
         <!-- StyleSheets  -->
