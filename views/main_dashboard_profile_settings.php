@@ -251,7 +251,7 @@ require_once('../partials/head.php');
                                                                                             <div class="timeline-status bg-primary is-outline"></div>
                                                                                             <div class="timeline-date"><?php echo date('d M Y g:ia', strtotime($results['log_created_at'])); ?> </div>
                                                                                             <div class="timeline-data">
-                                                                                                <h6 class="timeline-title"><?php echo $results['log_ip_address']; ?></h6>
+                                                                                                <h6 class="timeline-title"><?php echo $results['log_ip_address'] . ' - ' . $results['log_type']; ?></h6>
                                                                                                 <div class="timeline-des">
                                                                                                     <p>
                                                                                                         <?php echo $results['log_details']; ?>

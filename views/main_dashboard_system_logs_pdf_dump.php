@@ -182,6 +182,7 @@ while ($stores = $res->fetch_object()) {
             <thead>
                 <tr>
                     <th style="width:30%">IP Address</th>
+                    <th style="width:30%">Type</th>
                     <th style="width:100%">Log Details</th>
                     <th style="width:100%">Created On</th>
                 </tr>
@@ -198,6 +199,7 @@ while ($stores = $res->fetch_object()) {
             '
                     <tr>
                         <td>' . $logs->log_ip_address . '</td>
+                        <td>' . $logs->log_type . '</td>
                         <td>' . $logs->log_details . '</td>
                         <td>' . date('d M Y g:ia', strtotime($logs->log_created_at)) . '</td>
                     </tr>

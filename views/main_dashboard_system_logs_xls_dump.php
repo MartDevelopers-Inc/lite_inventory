@@ -80,7 +80,7 @@ function filterData(&$str)
 $fileName = "System Access Logs.xls";
 
 /* Excel Column Name */
-$fields = array('IP Address', 'Date Created',  'Log Details');
+$fields = array('IP Address', 'Date Created', 'Log Type',  'Log Details');
 
 
 /* Implode Excel Data */
@@ -95,7 +95,7 @@ if ($query->num_rows > 0) {
         /* Sanitize Log Date */
         $log_date = date('d M Y g:ia', strtotime($row['log_created_at']));
         /* Hardwire This Data Into .xls File */
-        $lineData = array($row['log_ip_address'],  $log_date, $row['log_details']);
+        $lineData = array($row['log_ip_address'], $log_date, $row['log_type'], $row['log_details']);
         array_walk($lineData, 'filterData');
         $excelData .= implode("\t", array_values($lineData)) . "\n";
     }
