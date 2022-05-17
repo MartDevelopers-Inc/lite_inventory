@@ -147,7 +147,7 @@ if (isset($_POST["upload"])) {
                         if (empty($insertId) && $mail->send()) {
                             $success = "User Data Imported";
                         } else if (CONNECTION_ABORTED && CONNECTION_TIMEOUT && empty($insertId)) {
-                            $info = "User Data Imported, But Mailing Failed, Check Your Internet Connectivity";
+                            $info = "User Data Imported, But Mailing Failed, Check Your Internet Connectivity Or User Emails";
                         } else {
                             $err = "Failed To Import Users, Please Try Again";
                         }
