@@ -64,10 +64,55 @@ require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
 check_login();
+
 /* Roll Back Sale Record */
-if(isset($_POST['delete_sale'])){
-    
+if (isset($_POST['delete_sale'])) {
+    $sale_id = mysqli_real_escape_string($mysqli, $_POST['sale_id']);
+    $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
+    $sale_quantity = mysqli_real_escape_string($mysqli, $_POST['sale_quantity']);
+    $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
+    $user_password = mysqli_real_escape_string($mysqli, sha1(md5($_POST['user_password'])));
+    /* Activity Logged */
+    $log_type = 'Rolled Back Sale Record';
+    $log_details = mysqli_real_escape_string($mysqli, $_POST['log_details']);
+
+    /* Check If This Fella Password Matches */
+    $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
+    $res = mysqli_query($mysqli, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        if ($user_password != $row['user_password']) {
+            $err = "Please Enter Correct Password";
+        } else {
+            /* Pop Product Details */
+            $sql = "SELECT * FROM  products  WHERE product_id = '{$product_id}'";
+            $return = mysqli_query($mysqli, $sql);
+            if (mysqli_num_rows($return) > 0) {
+                $product_details = mysqli_fetch_assoc($return);
+                /* New Quantity */
+                $new_stock = $product_details['product_quantity'] + $sale_quantity;
+                /* Persist */
+                $product_sql = "UPDATE products SET product_quantity = '{$product_quantity}' WHERE product_id = {$product_id}";
+                $sale_sql = "DELETE FROM sales WHERE sale_id = '{$sale_id}'";
+
+                $product_prepare = $mysqli->prepare($product_sql);
+                $sale_prepare = $mysqli->prepare($sale_sql);
+
+                $product_prepare->execute();
+                $sale_prepare->execute();
+
+                /* Log Operation */
+                include('../functions/logs.php');
+                if ($product_prepare && $sale_prepare) {
+                    $success = "Cash Sale Rolled Back";
+                } else {
+                    $err = "Failed!, Please Try Again";
+                }
+            }
+        }
+    }
 }
+
 /* Load Header Partial */
 require_once('../partials/head.php')
 ?>
