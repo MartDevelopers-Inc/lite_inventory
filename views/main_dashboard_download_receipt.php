@@ -114,11 +114,7 @@ if (mysqli_num_rows($res) > 0) {
             Date: ' . $date->format('d M Y H:i') . '
         </strong>
         ';
-    if ($receipts_header['receipt_show_barcode'] == 'true') {
-        '
-        <img src="../functions/barcode.php?codetype=code39&size=50&print=true&text=' . $number . '">
-    ';
-    }
+    include('../helpers/dom_pdf/receipt_barcode.php');
     $html .=
         '
     </h4>
