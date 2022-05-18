@@ -64,6 +64,8 @@ require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
 check_login();
+/* Roll Back Sale Record */
+
 /* Load Header Partial */
 require_once('../partials/head.php')
 ?>
@@ -78,7 +80,10 @@ require_once('../partials/head.php')
             <!-- wrap @s -->
             <div class="nk-wrap ">
                 <!-- main header @s -->
-                <?php require_once('../partials/header.php'); ?>
+                <?php require_once('../partials/header.php');
+                /* Get Receipt Number */
+                $view = mysqli_real_escape_string($mysqli, $_GET['view']);
+                ?>
                 <!-- main header @e -->
                 <!-- content @s -->
                 <div class="nk-content ">
@@ -88,10 +93,10 @@ require_once('../partials/head.php')
                                 <div class="nk-block-head nk-block-head-sm">
                                     <div class="nk-block-between">
                                         <div class="nk-block-head-content">
-                                            <h3 class="nk-block-title page-title">Manage Posted Sales</h3>
+                                            <h3 class="nk-block-title page-title">Receipt #<?php echo $view; ?> Details</h3>
                                             <div class="nk-block-des text-soft">
                                                 <p>
-                                                    This module allows you to manage all posted sales records <br>
+                                                    This is a detailed record of sale receipt #<?php echo $view; ?> <br>
                                                 </p>
                                             </div>
                                         </div><!-- .nk-block-head-content -->
@@ -105,10 +110,9 @@ require_once('../partials/head.php')
                                                 <table class="datatable-init table">
                                                     <thead>
                                                         <tr>
-                                                            <th>Receipt Number</th>
-                                                            <th>Date Posted</th>
-                                                            <th>Items Qty</th>
-                                                            <th>Posted By</th>
+                                                            <th>Item Details</th>
+                                                            <th>Quantity</th>
+                                                            <th>Sale Amount</th>
                                                             <th>Manage</th>
                                                         </tr>
                                                     </thead>
@@ -117,21 +121,22 @@ require_once('../partials/head.php')
                                                         $ret = "SELECT * FROM sales s
                                                         INNER JOIN products p ON p.product_id =  s.sale_product_id
                                                         INNER JOIN users u ON u.user_id = s.sale_user_id
-                                                        GROUP BY s.sale_receipt_no";
+                                                        WHERE s.sale_receipt_no = '{$view}'";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
                                                         while ($sales = $res->fetch_object()) {
                                                         ?>
                                                             <tr>
-                                                                <td><?php echo $sales->sale_receipt_no; ?></td>
-                                                                <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?></td>
+                                                                <td><?php echo $sales->product_code . ' ' . $sales->product_name; ?></td>
                                                                 <td><?php echo $sales->sale_quantity; ?></td>
-                                                                <td><?php echo $sales->user_name; ?></td>
+                                                                <td>Ksh <?php echo number_format($sales->sale_payment_amount, 2); ?></td>
                                                                 <td>
-                                                                    <a href="main_dashboard_manage_sale?view=<?php echo $sales->sale_receipt_no; ?>" class="badge badge-dim badge-pill badge-outline-primary"><em class="icon ni ni-external"></em> View Details</a>
+                                                                    <a data-toggle="modal" href="#delete_<?php echo $sales->sale_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
                                                                 </td>
                                                             </tr>
+                                                            <!-- Load Delete Sale Modal -->
+
                                                         <?php
                                                         }
                                                         ?>
