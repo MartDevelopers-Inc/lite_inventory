@@ -126,11 +126,13 @@ require_once('../partials/head.php')
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
                                                         while ($sales = $res->fetch_object()) {
+                                                            /* Compute Price */
+                                                            $total_sale = ($sales->sale_quantity * $sales->sale_payment_amount);
                                                         ?>
                                                             <tr>
                                                                 <td><?php echo $sales->product_code . ' ' . $sales->product_name; ?></td>
                                                                 <td><?php echo $sales->sale_quantity; ?></td>
-                                                                <td>Ksh <?php echo number_format($sales->sale_payment_amount, 2); ?></td>
+                                                                <td>Ksh <?php echo number_format($total_sale, 2); ?></td>
                                                                 <td>
                                                                     <a data-toggle="modal" href="#delete_<?php echo $sales->sale_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
                                                                 </td>
