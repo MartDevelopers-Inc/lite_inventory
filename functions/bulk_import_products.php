@@ -76,7 +76,7 @@ if (isset($_POST["upload"])) {
 
     /* Where Magic Happens */
     if (in_array($_FILES["file"]["type"], $allowedFileType)) {
-        $targetPath = '../public/system_data/databases_backups/' . 'POS_XLS_IMPORT_' . time() . '_' . $_FILES['file']['name'];
+        $targetPath = '../storage/bulk_uploads/' . 'PRODUCTS_BULK_IMPORT_' . time() . '_' . $_FILES['file']['name'];
         move_uploaded_file($_FILES['file']['tmp_name'], $targetPath);
 
         $Reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
@@ -86,7 +86,7 @@ if (isset($_POST["upload"])) {
         $spreadSheetAry = $excelSheet->toArray();
         $sheetCount = count($spreadSheetAry);
 
-        for ($i = 1; $i <= $sheetCount; $i++) {
+        for ($i = 0; $i <= $sheetCount; $i++) {
             /* Load Mumble Jumble */
             $rand_number = substr(str_shuffle("1234567890"), 1, 4);
             $product_id = sha1(md5(mysqli_real_escape_string($conn, $rand_number . time())));

@@ -77,7 +77,7 @@ if (isset($_POST["upload"])) {
 
     /* Where Magic Happens */
     if (in_array($_FILES["file"]["type"], $allowedFileType)) {
-        $targetPath = '../public/system_data/databases_backups/' . 'USERS_BULK_IMPORT_' . time() . '_' . $_FILES['file']['name'];
+        $targetPath = '../storage/bulk_uploads/' . 'USERS_BULK_IMPORT_' . time() . '_' . $_FILES['file']['name'];
         move_uploaded_file($_FILES['file']['tmp_name'], $targetPath);
 
         $Reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
