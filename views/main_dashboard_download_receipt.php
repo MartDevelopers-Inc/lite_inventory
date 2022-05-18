@@ -66,7 +66,11 @@ require_once '../config/codeGen.php';
 check_login();
 require_once('../vendor/autoload.php');
 
+/* Dom PDF */
+
 use Dompdf\Dompdf;
+
+/* Load Barcode */
 
 $dompdf = new Dompdf();
 
@@ -75,7 +79,9 @@ $total_price = 0;
 $number = $_GET['number'];
 
 $date = new DateTime("now", new DateTimeZone('EAT'));
-/* Get Class Details And Class Details */
+
+/* Convert Image To Base 64 */
+
 
 $html = '
 <style>
@@ -107,6 +113,14 @@ if (mysqli_num_rows($res) > 0) {
             Customer : ' . $_GET["customer"] . ' <br>
             Date: ' . $date->format('d M Y H:i') . '
         </strong>
+        ';
+    if ($receipts_header['receipt_show_barcode'] == 'true') {
+        '
+        <img src="../functions/barcode.php?codetype=code39&size=50&print=true&text=' . $number . '">
+    ';
+    }
+    $html .=
+        '
     </h4>
     </div>
     <hr>
@@ -128,7 +142,7 @@ if (mysqli_num_rows($res) > 0) {
     $cnt = 1;
     while ($sales = $res->fetch_object()) {
         /* Amount */
-        
+
         $html .=
             '
                 <tr>

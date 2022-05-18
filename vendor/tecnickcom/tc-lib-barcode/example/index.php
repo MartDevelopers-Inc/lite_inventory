@@ -14,7 +14,7 @@
  */
 
 // autoloader when using Composer
-require ('../vendor/autoload.php');
+require ('vendor/autoload.php');
 
 // autoloader when using RPM or DEB package installation
 //require ('/usr/share/php/Com/Tecnick/Barcode/autoload.php');

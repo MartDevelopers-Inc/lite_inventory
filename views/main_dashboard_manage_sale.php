@@ -63,6 +63,8 @@ session_start();
 require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
+require_once('../vendor/autoload.php');
+
 check_login();
 /* Roll Back Sale Record */
 
@@ -111,7 +113,31 @@ require_once('../partials/head.php')
                                                         $res = mysqli_query($mysqli, $sql);
                                                         if (mysqli_num_rows($res) > 0) {
                                                             $receipts = mysqli_fetch_assoc($res);
+                                                            $barcode = new \Com\Tecnick\Barcode\Barcode();
+                                                            $targetPath = "../storage/cache/";
+
+                                                            if (!is_dir($targetPath)) {
+                                                                mkdir($targetPath, 0777, true);
+                                                            }
+                                                            $MRP = $receipts['sale_receipt_no'];
+                                                            //$MFGDate = strtotime(date('d-m-y'));
+                                                            //$EXPDate = strtotime(date('d-m-y'));
+                                                            $productData = "098{$MRP}";
+                                                            $barcode = new \Com\Tecnick\Barcode\Barcode();
+                                                            $bobj = $barcode->getBarcodeObj('C128', "{$productData}", 450, 70, 'black', array(
+                                                                0,
+                                                                0,
+                                                                0,
+                                                                0
+                                                            ));
+
+                                                            $imageData = $bobj->getPngData();
+                                                            $timestamp = time();
+
+                                                            file_put_contents($targetPath . $timestamp . '.png', $imageData);
                                                         ?>
+
+
                                                             <li><a href="main_dashboard_download_receipt?number=<?php echo $view; ?>&customer=<?php echo $receipts['sale_customer_name']; ?>" class="btn btn-white btn-outline-light"><em class="icon ni ni-download"></em><span>Download Receipt</span></a></li>
                                                         <?php } ?>
                                                     </ul>

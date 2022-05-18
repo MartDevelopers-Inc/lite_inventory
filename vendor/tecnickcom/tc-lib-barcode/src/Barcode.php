@@ -122,3 +122,4 @@ class Barcode
         return new $bclass($code, $width, $height, $color, $params, $padding);
     }
 }
+
