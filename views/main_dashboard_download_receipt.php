@@ -187,6 +187,8 @@ $dompdf->set_option('dpi', 80);
 $dompdf->set_option('isHtml5ParserEnabled', true);
 $dompdf->render();
 $dompdf->stream('Sale Receipt ' . $_GET["number"], array("Attachment" => 1));
+/* Delete Posted Barcode */
+unlink($path);
 $options = $dompdf->getOptions();
 $options->setDefaultFont('');
 $dompdf->setOptions($options);
