@@ -109,7 +109,22 @@ if (mysqli_num_rows($res) > 0) {
         </strong>
     </h4>
     </div>
-    <hr>';
+    <hr>
+    
+    
+            ';
+    $sql = "SELECT * FROM sales s INNER JOIN users u ON
+    u.user_id = s.sale_user_id
+    WHERE s.sale_receipt_no = '{$number}'";
+    $res = mysqli_query($mysqli, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        $users = mysqli_fetch_assoc($res);
+        $html .= '
+                    <p align="center"><i>' . $receipts_header['receipt_footer_content'] . '</i></p>
+                    <p align="center"><strong>You Were Served By ' . $users['user_name'] . '<strong></p>
+                    <hr>
+                ';
+    }
 }
 $html .= '
         </body>';
