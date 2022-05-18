@@ -111,7 +111,48 @@ if (mysqli_num_rows($res) > 0) {
     </div>
     <hr>
     
-    
+    <table cellspacing="5"  style="font-size:8.4pt">
+        <thead>
+            <tr>
+                <th style="text-align:left;" width="2%">SL</th>
+                <th width="100%" style="text-align:left;"><strong>ITEM DESC</strong></th>
+                <th width="100%" style="text-align:right;"><strong>TOTAL</strong></th>
+            </tr>
+        </thead>
+        ';
+    $ret = "SELECT * FROM sales s INNER JOIN products p ON p.product_id = s.sale_product_id
+    WHERE s.sale_receipt_no = '{$number}'";
+    $stmt = $mysqli->prepare($ret);
+    $stmt->execute(); //ok
+    $res = $stmt->get_result();
+    $cnt = 1;
+    while ($sales = $res->fetch_object()) {
+        /* Amount */
+        
+        $html .=
+            '
+                <tr>
+                    <td style="text-align:left;"><strong>' . $cnt . '. </strong></td>
+                    <td style="text-align:left; overflow-wrap: break-word">
+                        <strong>
+                            ' . $sales->product_name . '<br>
+                            ' . $sales->sale_quantity . ' X  Ksh ' . number_format($sales->sale_payment_amount, 2) . '
+                        </strong>
+                    </td>
+                    <td style="text-align:right;"><strong>' . "Ksh " . number_format(($sales->sale_payment_amount * $sales->sale_quantity), 2) . '</strong></td>
+                </tr>
+                    ';
+        $total_quantity += $sales->sale_quantity;
+        $total_price += ($sales->sale_payment_amount * $sales->sale_quantity);
+        $cnt++;
+    }
+
+    $html .= '
+            <tr>
+                <td colspan="1"><strong>TOTAL:</strong></td>
+                <td style="text-align:right;" colspan="2"><strong>Ksh ' . number_format($total_price, 2) . '</strong></td>
+            </tr>
+            <br><br>
             ';
     $sql = "SELECT * FROM sales s INNER JOIN users u ON
     u.user_id = s.sale_user_id
