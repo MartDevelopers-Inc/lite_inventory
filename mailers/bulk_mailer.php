@@ -495,7 +495,7 @@ while ($mailer = $res->fetch_object()) {
                                             Welcome to the team, ' . $user_name . '<br>
                                             With great power comes great responsibility and <br>
                                             your ' . $user_access_level . ' account  has been created successfully. <br><br>
-                                            Kindly use the below credentials to access your portal.
+                                            Kindly use the below credentials to access your portal. <br>
                                             Email Address <b>: ' . $user_email . '</b> <br> Default Login Password : <b>' . $user_password . '</b> <br>
                                             Kindly change your password on login.
                                         </h3>

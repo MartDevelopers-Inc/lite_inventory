@@ -87,7 +87,7 @@ if (isset($_POST["upload"])) {
         $spreadSheetAry = $excelSheet->toArray();
         $sheetCount = count($spreadSheetAry);
 
-        for ($i = 0; $i <= $sheetCount; $i++) {
+        for ($i = 1; $i <= $sheetCount; $i++) {
             /* Load Mumble Jumble */
             $user_id  = 'STF-' . substr(str_shuffle("1234567890"), 1, 4);
 
@@ -124,7 +124,7 @@ if (isset($_POST["upload"])) {
             /* Hash Password */
             $enc_password = sha1(md5($user_password));
 
-            if (!empty($user_id) || !empty($user_name)) {
+            if (!empty($user_email)) {
                 $query = "INSERT INTO users (user_id, user_name, user_email, user_phoneno, user_password, user_access_level, user_store_id) 
                 VALUES(?,?,?,?,?,?,?)";
                 $paramType = "sssssss";
@@ -137,6 +137,7 @@ if (isset($_POST["upload"])) {
                     $user_access_level,
                     $user_store_id
                 );
+                $insertId = $db->insert($query, $paramType, $paramArray);
                 /* Log This Operation */
                 include('../functions/logs.php');
                 /* Invoke Mailer */

@@ -86,7 +86,7 @@ if (isset($_POST["upload"])) {
         $spreadSheetAry = $excelSheet->toArray();
         $sheetCount = count($spreadSheetAry);
 
-        for ($i = 0; $i <= $sheetCount; $i++) {
+        for ($i = 1; $i <= $sheetCount; $i++) {
             /* Load Mumble Jumble */
             $rand_number = substr(str_shuffle("1234567890"), 1, 4);
             $product_id = sha1(md5(mysqli_real_escape_string($conn, $rand_number . time())));
