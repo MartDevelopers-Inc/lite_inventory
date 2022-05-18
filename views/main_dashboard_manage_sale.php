@@ -100,8 +100,27 @@ require_once('../partials/head.php')
                                                 </p>
                                             </div>
                                         </div><!-- .nk-block-head-content -->
+                                        <div class="nk-block-head-content">
+                                            <div class="toggle-wrap nk-block-tools-toggle">
+                                                <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                                <div class="toggle-expand-content" data-content="pageMenu">
+                                                    <ul class="nk-block-tools g-3">
+                                                        <?php
+                                                        /* Get Receipt Attributes */
+                                                        $sql = "SELECT * FROM sales WHERE sale_receipt_no = '{$view}'";
+                                                        $res = mysqli_query($mysqli, $sql);
+                                                        if (mysqli_num_rows($res) > 0) {
+                                                            $receipts = mysqli_fetch_assoc($res);
+                                                        ?>
+                                                            <li><a href="main_dashboard_download_receipt?number=<?php echo $view; ?>&customer=<?php echo $receipts['sale_customer_name']; ?>" class="btn btn-white btn-outline-light"><em class="icon ni ni-download"></em><span>Download Receipt</span></a></li>
+                                                        <?php } ?>
+                                                    </ul>
+                                                </div>
+                                            </div><!-- .toggle-wrap -->
+                                        </div><!-- .nk-block-head-content -->
                                     </div><!-- .nk-block-between -->
                                 </div><!-- .nk-block-head -->
+
                                 <!-- End Modal -->
                                 <div class="">
                                     <div class="row">
@@ -112,7 +131,8 @@ require_once('../partials/head.php')
                                                         <tr>
                                                             <th>Item Details</th>
                                                             <th>Quantity</th>
-                                                            <th>Sale Amount</th>
+                                                            <th>Item Unit Price</th>
+                                                            <th>Item Sale Price</th>
                                                             <th>Manage</th>
                                                         </tr>
                                                     </thead>
@@ -132,6 +152,7 @@ require_once('../partials/head.php')
                                                             <tr>
                                                                 <td><?php echo $sales->product_code . ' ' . $sales->product_name; ?></td>
                                                                 <td><?php echo $sales->sale_quantity; ?></td>
+                                                                <td>Ksh <?php echo number_format($sales->sale_payment_amount, 2); ?></td>
                                                                 <td>Ksh <?php echo number_format($total_sale, 2); ?></td>
                                                                 <td>
                                                                     <a data-toggle="modal" href="#delete_<?php echo $sales->sale_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
