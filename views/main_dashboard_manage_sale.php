@@ -63,12 +63,11 @@ session_start();
 require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
-require_once('../vendor/autoload.php');
-
-
 check_login();
 /* Roll Back Sale Record */
-
+if(isset($_POST['delete_sale'])){
+    
+}
 /* Load Header Partial */
 require_once('../partials/head.php')
 ?>
@@ -161,8 +160,8 @@ require_once('../partials/head.php')
                                                                     <a data-toggle="modal" href="#delete_<?php echo $sales->sale_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
                                                                 </td>
                                                             </tr>
-                                                            <!-- Load Delete Sale Modal -->
                                                         <?php
+                                                            /* Sale Delete Modal */
                                                             include('../helpers/modals/sale_modal.php');
                                                         }
                                                         ?>

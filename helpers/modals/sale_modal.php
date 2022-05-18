@@ -17,8 +17,10 @@
                     </h4>
                     <br>
                     <!-- Hide This -->
-                    <input type="hidden" name="sale_id" value="<?php echo $sales->product_id; ?>">
-                    <input type="hidden" name="log_details" value="Deleted <?php echo $sales->product_code . ' ' . $sales->product_name . ' ' . $sales->sale_receipt_no; ?> Sale Record.">
+                    <input type="hidden" name="sale_id" value="<?php echo $sales->sale_id; ?>">
+                    <input type="hidden" name="product_id" value="<?php echo $sales->sale_product_id; ?>">
+                    <input type="hidden" name="sale_quantity" value="<?php echo $sales->sale_quantity ?>">
+                    <input type="hidden" name="log_details" value="Cancelled <?php echo $sales->product_code . ' ' . $sales->product_name . ' Receipt Number #:' . $sales->sale_receipt_no; ?> Sale Record.">
                     <div class="form-group col-md-12">
                         <input type="password" required name="user_password" class="form-control">
                     </div>
