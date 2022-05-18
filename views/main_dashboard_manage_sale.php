@@ -92,7 +92,7 @@ if (isset($_POST['delete_sale'])) {
                 /* New Quantity */
                 $new_stock = $product_details['product_quantity'] + $sale_quantity;
                 /* Persist */
-                $product_sql = "UPDATE products SET product_quantity = '{$product_quantity}' WHERE product_id = {$product_id}";
+                $product_sql = "UPDATE products SET product_quantity = '{$new_stock}' WHERE product_id = '{$product_id}'";
                 $sale_sql = "DELETE FROM sales WHERE sale_id = '{$sale_id}'";
 
                 $product_prepare = $mysqli->prepare($product_sql);
