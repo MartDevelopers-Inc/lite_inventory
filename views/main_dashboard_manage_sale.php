@@ -162,8 +162,8 @@ require_once('../partials/head.php')
                                                                 </td>
                                                             </tr>
                                                             <!-- Load Delete Sale Modal -->
-
                                                         <?php
+                                                            include('../helpers/modals/sale_modal.php');
                                                         }
                                                         ?>
                                                     </tbody>
