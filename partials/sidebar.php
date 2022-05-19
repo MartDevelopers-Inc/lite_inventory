@@ -69,7 +69,7 @@ while ($settings = $res->fetch_object()) {
     <div class="nk-sidebar nk-sidebar-fixed is-dark " data-content="sidebarMenu">
         <div class="nk-sidebar-element nk-sidebar-head">
             <div class="nk-sidebar-brand">
-                <a href="main_dashboard" class="logo-link nk-sidebar-logo">
+                <a href="home" class="logo-link nk-sidebar-logo">
                     <img class="logo-light logo-img" src="../public/images/logo.png" srcset="../public/images/logo.png 2x" alt="logo">
                     <?php echo $settings->system_name; ?>
                 </a>
@@ -83,7 +83,7 @@ while ($settings = $res->fetch_object()) {
                 <div class="nk-sidebar-menu" data-simplebar>
                     <ul class="nk-menu">
                         <li class="nk-menu-item">
-                            <a href="main_dashboard" class="nk-menu-link">
+                            <a href="home" class="nk-menu-link">
                                 <span class="nk-menu-icon"><em class="icon ni ni-home"></em></span>
                                 <span class="nk-menu-text">Dashboard</span>
                             </a>

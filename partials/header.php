@@ -74,7 +74,7 @@ while ($settings = $res->fetch_object()) {
                     <a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="sidebarMenu"><em class="icon ni ni-menu"></em></a>
                 </div>
                 <div class="nk-header-brand d-xl-none">
-                    <a href="main_dashboard" class="logo-link">
+                    <a href="home" class="logo-link">
                         <img class="logo-light logo-img" src="../public/images/logo.png" srcset="../public/images/logo.png 2x" alt="logo">
                         <span class="nio-version"><?php echo $settings->system_name; ?></span>
                     </a>

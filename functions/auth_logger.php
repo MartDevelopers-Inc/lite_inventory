@@ -76,7 +76,7 @@ if ($num > 0) {
     if ($num['user_access_level'] == 'Admin') {
         /* Load System Admin Dashboard */
         mysqli_query($mysqli, "INSERT INTO system_logs(log_user_id, log_ip_address, log_type, log_details) VALUES('{$_SESSION['user_id']}','{$log_ip}', '{$log_type}', '{$log_details}')");
-        $extra = "main_dashboard";
+        $extra = "home";
         $host = $_SERVER['HTTP_HOST'];
         $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
         header("location:http://$host$uri/$extra");
@@ -84,7 +84,7 @@ if ($num > 0) {
     } else if ($num['user_access_level'] == 'Manager') {
         /* Load Manager Dashboard */
         mysqli_query($mysqli, "INSERT INTO system_logs(log_user_id, log_ip_address, log_type, log_details) VALUES('{$_SESSION['user_id']}','{$log_ip}', '{$log_type}', '{$log_details}')");
-        $extra = "main_dashboard";
+        $extra = "home";
         $host = $_SERVER['HTTP_HOST'];
         $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
         header("location:http://$host$uri/$extra");
@@ -92,7 +92,7 @@ if ($num > 0) {
     } else if ($num['user_access_level'] == 'Staff') {
         /* Staff Dashboard */
         mysqli_query($mysqli, "INSERT INTO system_logs(log_user_id, log_ip_address, log_type, log_details) VALUES('{$_SESSION['user_id']}','{$log_ip}', '{$log_type}', '{$log_details}')");
-        $extra = "home";
+        $extra = "pos";
         $host = $_SERVER['HTTP_HOST'];
         $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
         header("location:http://$host$uri/$extra");
