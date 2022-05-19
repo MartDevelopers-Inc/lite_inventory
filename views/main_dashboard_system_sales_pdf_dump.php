@@ -381,8 +381,8 @@ while ($stores = $res->fetch_object()) {
                                                 <td>' . date('d M Y g:ia', strtotime($sales->sale_datetime)) . '</td>
                                                 <td>' . "Ksh " . number_format($sales->product_sale_price, 2) . '</td>
                                                 <td>' . "Ksh " . number_format($sales->sale_discount, 2) . '</td>
-                                                <td>' . $sales->sale_quantity . '</td>
                                                 <td>' . "Ksh " . number_format($discounted_price, 2) . '</td>
+                                                <td>' . $sales->sale_quantity . '</td>
                                                 <td>' . "Ksh " . number_format($sales_amount, 2) . '</td>
                                             </tr>
                                         ';
