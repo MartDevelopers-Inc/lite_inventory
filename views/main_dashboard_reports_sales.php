@@ -180,7 +180,7 @@ require_once('../partials/head.php');
                                                             $cumulative_income = 0;
                                                             while ($sales = $res->fetch_object()) {
                                                                 /* Sale Amount  */
-                                                                $sales_amount = $sales->sale_quantity * ($sales->sale_payment_amount);
+                                                                $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
                                                             ?>
                                                                 <tr>
                                                                     <td><?php echo $sales->product_name ?></td>
@@ -205,12 +205,73 @@ require_once('../partials/head.php');
                                                     </table>
                                                 </div>
                                             </div>
-                                        <?php }
-                                    } else {
-                                        /* Show Composite Report */
+                                        <?php } else if ($sale_report_type == 'Composite Report') {
+                                            /* Show Composite Report */
                                         ?>
-
-                                    <?php } ?>
+                                            <div class="card mb-3 col-12 border border-success">
+                                                <div class="card-body">
+                                                    <h5 class="text-right">
+                                                        <a class="btn btn-primary" href="main_dashboard_system_sales_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&type=<?php echo $_POST['sale_report_type']; ?>"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
+                                                        <a class="btn btn-primary" href="main_dashboard_system_sales_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&type=<?php echo $_POST['sale_report_type']; ?>"><em class="icon ni ni-grid-add-fill-c"></em> Export To Excel</a>
+                                                    </h5>
+                                                    <div class="card-header">
+                                                        <h5 class="text-center text-primary">Composite Report Of All Posted Sales From <?php echo date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)); ?></h5>
+                                                    </div>
+                                                    <table class="table table-bordered dt-responsive" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Item</th>
+                                                                <th>Sold By</th>
+                                                                <th>Sold To</th>
+                                                                <th>Date Sold</th>
+                                                                <th>QTY</th>
+                                                                <th>Unit Cost</th>
+                                                                <th>Discount</th>
+                                                                <th>Amount</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                            $ret = "SELECT * FROM sales s
+                                                            INNER JOIN products p ON p.product_id = sale_product_id
+                                                            INNER JOIN users us ON us.user_id = s.sale_user_id
+                                                            WHERE s.sale_datetime BETWEEN '$start' AND '$end'
+                                                            ORDER BY sale_datetime ASC ";
+                                                            $stmt = $mysqli->prepare($ret);
+                                                            $stmt->execute(); //ok
+                                                            $res = $stmt->get_result();
+                                                            $cumulative_income = 0;
+                                                            while ($sales = $res->fetch_object()) {
+                                                                /* Sale Amount  */
+                                                                $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
+                                                            ?>
+                                                                <tr>
+                                                                    <td><?php echo $sales->product_name ?></td>
+                                                                    <td><?php echo $sales->user_name ?></td>
+                                                                    <td><?php echo $sales->sale_customer_name ?></td>
+                                                                    <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)) ?></td>
+                                                                    <td><?php echo $sales->sale_quantity ?></td>
+                                                                    <td><?php echo "Ksh " . number_format($sales->product_sale_price, 2); ?></td>
+                                                                    <td><?php echo "Ksh " . number_format($sales->sale_discount, 2); ?></td>
+                                                                    <td>
+                                                                        <?php echo "Ksh " . number_format($sales_amount, 2);
+                                                                        $cumulative_income += $sales_amount;
+                                                                        ?>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                            <tr>
+                                                                <td colspan="7"><b>Total Amount:</b></td>
+                                                                <td><b><?php echo  "Ksh " . number_format($cumulative_income, 2); ?></b></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                    <?php }
+                                    } ?>
                                 </div>
                             </div>
                         </div>
