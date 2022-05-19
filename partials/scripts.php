@@ -4,8 +4,6 @@
 <script src="../public/js/scripts.js?ver=1.4.0"></script>
 <!-- Load Alerts -->
 <script src="../public/js/libs/toastr/toastr.min.js"></script>
-<!-- Sample Chart Js -->
-<?php include('../functions/sales_reports_chart.php'); ?>
 <!-- Init  Alerts -->
 <?php if (isset($success)) { ?>
     <!-- Pop Success Alert -->
