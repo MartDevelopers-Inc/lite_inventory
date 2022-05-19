@@ -224,9 +224,10 @@ require_once('../partials/head.php');
                                                                 <th>Sold By</th>
                                                                 <th>Sold To</th>
                                                                 <th>Date Sold</th>
-                                                                <th>QTY</th>
                                                                 <th>Unit Cost</th>
                                                                 <th>Discount</th>
+                                                                <th>Discounted Amt</th>
+                                                                <th>QTY</th>
                                                                 <th>Amount</th>
                                                             </tr>
                                                         </thead>
@@ -244,15 +245,18 @@ require_once('../partials/head.php');
                                                             while ($sales = $res->fetch_object()) {
                                                                 /* Sale Amount  */
                                                                 $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
+                                                                $discounted_price = $sales->product_sale_price - $sales->sale_discount;
+
                                                             ?>
                                                                 <tr>
                                                                     <td><?php echo $sales->product_name ?></td>
                                                                     <td><?php echo $sales->user_name ?></td>
                                                                     <td><?php echo $sales->sale_customer_name ?></td>
                                                                     <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)) ?></td>
-                                                                    <td><?php echo $sales->sale_quantity ?></td>
                                                                     <td><?php echo "Ksh " . number_format($sales->product_sale_price, 2); ?></td>
                                                                     <td><?php echo "Ksh " . number_format($sales->sale_discount, 2); ?></td>
+                                                                    <td><?php echo "Ksh " . number_format($discounted_price, 2); ?></td>
+                                                                    <td><?php echo $sales->sale_quantity ?></td>
                                                                     <td>
                                                                         <?php echo "Ksh " . number_format($sales_amount, 2);
                                                                         $cumulative_income += $sales_amount;
@@ -263,7 +267,7 @@ require_once('../partials/head.php');
                                                             }
                                                             ?>
                                                             <tr>
-                                                                <td colspan="7"><b>Total Amount:</b></td>
+                                                                <td colspan="8"><b>Total Amount:</b></td>
                                                                 <td><b><?php echo  "Ksh " . number_format($cumulative_income, 2); ?></b></td>
                                                             </tr>
                                                         </tbody>
