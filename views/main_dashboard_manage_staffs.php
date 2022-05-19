@@ -76,7 +76,7 @@ if (isset($_POST['add_user'])) {
     $enc_password = sha1(md5($user_password));
 
     /* Log User Activity */
-    $log_type = "Registered New User";
+    $log_type = "User Account Management Logs";
     $log_details = "Created $user_name Account";
 
 
@@ -122,7 +122,7 @@ if (isset($_POST['update_user'])) {
     $user_store_id = mysqli_real_escape_string($mysqli, $_POST['user_store_id']);
 
     /* Log User Activity */
-    $log_type = "Update User Details";
+    $log_type = "User Account Management Logs";
     $log_details = "Updated $user_name, $user_email Account";
 
     /* Persist */
@@ -148,7 +148,7 @@ if (isset($_POST['close_account'])) {
     $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
 
     /* Log This Details */
-    $log_type = "Deleted User Account";
+    $log_type = "User Account Management Logs";
     $log_details = "Deleted $user_details Account";
 
     /* Check If Posted Password Matches */

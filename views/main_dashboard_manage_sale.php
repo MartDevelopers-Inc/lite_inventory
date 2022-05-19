@@ -73,7 +73,7 @@ if (isset($_POST['delete_sale'])) {
     $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
     $user_password = mysqli_real_escape_string($mysqli, sha1(md5($_POST['user_password'])));
     /* Activity Logged */
-    $log_type = 'Rolled Back Sale Record';
+    $log_type = 'Sales Management Logs';
     $log_details = mysqli_real_escape_string($mysqli, $_POST['log_details']);
 
     /* Check If This Fella Password Matches */

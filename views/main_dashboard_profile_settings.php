@@ -70,7 +70,7 @@ if (isset($_POST['update_personal_info'])) {
     $user_phoneno = mysqli_real_escape_string($mysqli, $_POST['user_phoneno']);
     $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
     /* Log Attributes */
-    $log_type = "Personal Info Update";
+    $log_type = "User Account Management Logs";
     $log_details = "Updated Personal Information";
 
     /* Persist */
@@ -96,7 +96,7 @@ if (isset($_POST['update_auth_details'])) {
     $user_access_level = mysqli_real_escape_string($mysqli, $_POST['user_access_level']);
 
     /* Log Attributes */
-    $log_type = "Personal Auth Info Update";
+    $log_type = "User Account Management Logs";
     $log_details = "Updated Personal Authentication Details";
 
     /* Check If Old Pasword Match */

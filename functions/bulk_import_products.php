@@ -124,7 +124,7 @@ if (isset($_POST["upload"])) {
             }
 
             /* Activity Logged */
-            $log_type = "Add New Item";
+            $log_type = "Items Management Logs";
             $log_details = "Added  $product_code - $product_name, With A Total Quantity Of  $product_quantity";
 
             if (!empty($product_name)) {

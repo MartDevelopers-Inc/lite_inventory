@@ -119,7 +119,7 @@ if (isset($_POST["upload"])) {
             $user_store_id = mysqli_real_escape_string($mysqli, $_POST['user_store_id']);
 
             /* Activity Logged */
-            $log_type = "Registered New User";
+            $log_type = "User Account Management Logs";
             $log_details = "Created $user_name Account";
             /* Hash Password */
             $enc_password = sha1(md5($user_password));

@@ -72,7 +72,7 @@ if (isset($_POST['create_store'])) {
     $store_email = mysqli_real_escape_string($mysqli, $_POST['store_email']);
 
     /* Log Attributes */
-    $log_type = "Add New Store";
+    $log_type = "Stores Management Logs";
     $log_details = "Registered " . $store_name . " As A New Store";
 
     /* Persist */
@@ -96,7 +96,7 @@ if (isset($_POST['update_store'])) {
     $store_adr = mysqli_real_escape_string($mysqli, $_POST['store_adr']);
     $store_email = mysqli_real_escape_string($mysqli, $_POST['store_email']);
     /* Log Attributes */
-    $log_type = "Updated Store Details";
+    $log_type = "Stores Management Logs";
     $log_details = "Updated " . $store_name . " Details";
 
     /* Persist */
@@ -123,7 +123,7 @@ if (isset($_POST['delete_store'])) {
     $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
 
     /* Log Attributes */
-    $log_type = "Closed Store";
+    $log_type = "Stores Management Logs";
     $log_details = "Closed " . $store_name;
 
     /* Check Of This User Password Really Adds Up */
@@ -160,7 +160,7 @@ if (isset($_POST['re_open'])) {
     $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
 
     /* Log Attributes */
-    $log_type = "Re Opened Store";
+    $log_type = "Stores Management Logs";
     $log_details = "Re Opened " . $store_name;
 
     /* Check Of This User Password Really Adds Up */

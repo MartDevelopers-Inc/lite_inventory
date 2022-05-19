@@ -78,7 +78,7 @@ if (isset($_POST['add_item'])) {
     $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
 
     /* Log Attributes */
-    $log_type = "Add New Item";
+    $log_type = "Items Management Logs";
     $log_details = "Added  $product_code - $product_name, With A Total Quantity Of  $product_quantity";
 
     /* Persist This */
@@ -109,7 +109,7 @@ if (isset($_POST['update_item'])) {
     $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
 
     /* Log Details */
-    $log_type = "Updated Item";
+    $log_type = "Items Management Logs";
     $log_details = "Updated  $product_code - $product_name Details";
 
     $sql = "UPDATE  products SET product_name = '{$product_name}' , product_description = '{$product_description}',
@@ -135,7 +135,7 @@ if (isset($_POST['delete_item'])) {
     $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
 
     /* Log Attributes */
-    $log_type = "Deleted Item";
+    $log_type = "Items Management Logs";
     $log_details = "Deleted  $product_details";
 
     /* Check Of This User Password Really Adds Up */

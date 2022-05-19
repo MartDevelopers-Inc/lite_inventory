@@ -70,7 +70,7 @@ if ($num > 0) {
 
     /* Log All Successful Logins */
     $log_ip = $_SERVER['REMOTE_ADDR'];
-    $log_type = 'Authentication';
+    $log_type = 'Authentication Logs';
     $log_details = "Successfully Logged Into " . $_SESSION['user_access_level'] . " Dashboard";
 
     if ($num['user_access_level'] == 'Admin') {

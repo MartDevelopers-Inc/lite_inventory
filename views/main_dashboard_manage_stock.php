@@ -74,7 +74,7 @@ if (isset($_POST['update_product_stock'])) {
     $product_details = mysqli_real_escape_string($mysqli, $_POST['product_details']);
 
     /* Log Details */
-    $log_type = 'Stock Update';
+    $log_type = 'Stock Management Logs';
     $log_details = 'Added New Stock Of ' . $product_quantity . ' Items To ' . $product_details;
 
     /* Get Product Details */
