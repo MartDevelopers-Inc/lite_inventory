@@ -131,13 +131,14 @@ if ($report_type == 'Summarized Report') {
 
     /* Excel Column Name */
     $fields = array(
-        'Item Details ',
+        'Item Details',
         'Sold By ',
         'Sold To ',
         'Date Sold',
-        'Quantity Sold ',
         'Unit Price (Ksh)',
         'Discount (Ksh)',
+        'Discounted Amount (Ksh)',
+        'Quantity Sold ',
         'Amount (Ksh)'
     );
 
@@ -157,15 +158,17 @@ if ($report_type == 'Summarized Report') {
             /* Sanitize Log Date */
             $sale_datetime = date('d M Y g:ia', strtotime($row['sale_datetime']));
             $sale_amount = $row['sale_quantity'] * $row['sale_payment_amount'];
+            $discounted_amount = $row['product_sale_price'] - $row['sale_discount'];
             /* Hardwire This Data Into .xls File */
             $lineData = array(
                 $row['product_name'],
                 $row['user_name'],
                 $row['sale_customer_name'],
                 $sale_datetime,
-                $row['sale_quantity'],
                 $row['product_sale_price'],
                 $row['sale_discount'],
+                $discounted_amount,
+                $row['sale_quantity'],
                 $sale_amount
             );
             array_walk($lineData, 'filterData');

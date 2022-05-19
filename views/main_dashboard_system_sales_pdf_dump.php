@@ -349,9 +349,10 @@ while ($stores = $res->fetch_object()) {
                                         <th style="width:100%">Sold By</th>
                                         <th style="width:100%">Sold To</th>
                                         <th style="width:100%">Date Sold</th>
-                                        <th style="width:30%">Qty</th>
                                         <th style="width:100%">Unit Price</th>
                                         <th style="width:100%">Discount</th>
+                                        <th style="width:100%">Discounted Price</th>
+                                        <th style="width:30%">Qty</th>
                                         <th style="width:100%">Amount</th>
                                     </tr>
                                 </thead>
@@ -369,6 +370,7 @@ while ($stores = $res->fetch_object()) {
                                     while ($sales = $res->fetch_object()) {
                                         /* Sale Amount  */
                                         $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
+                                        $discounted_price = $sales->product_sale_price - $sales->sale_discount;
                                         $cumulative_income += $sales_amount;
                                         $html .=
                                         '
@@ -377,16 +379,17 @@ while ($stores = $res->fetch_object()) {
                                                 <td>' . $sales->user_name . '</td>
                                                 <td>' . $sales->sale_customer_name . '</td>
                                                 <td>' . date('d M Y g:ia', strtotime($sales->sale_datetime)) . '</td>
-                                                <td>' . $sales->sale_quantity . '</td>
                                                 <td>' . "Ksh " . number_format($sales->product_sale_price, 2) . '</td>
                                                 <td>' . "Ksh " . number_format($sales->sale_discount, 2) . '</td>
+                                                <td>' . $sales->sale_quantity . '</td>
+                                                <td>' . "Ksh " . number_format($discounted_price, 2) . '</td>
                                                 <td>' . "Ksh " . number_format($sales_amount, 2) . '</td>
                                             </tr>
                                         ';
                                     }
                                         $html .= '
                                         <tr>
-                                            <td  colspan="7"><b>Total Amount: </b></td>
+                                            <td  colspan="8"><b>Total Amount: </b></td>
                                             <td><b>' . "Ksh " . number_format($cumulative_income, 2) . '</b></td>
                                         </tr>
                                 </tbody>
