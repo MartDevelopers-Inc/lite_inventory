@@ -154,10 +154,9 @@ require_once('../partials/head.php');
                                                     <a class="btn btn-primary" href="main_dashboard_system_sales_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&type=<?php echo $_POST['sale_report_type']; ?>"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
                                                     <a class="btn btn-primary" href="main_dashboard_system_sales_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&type=<?php echo $_POST['sale_report_type']; ?>"><em class="icon ni ni-grid-add-fill-c"></em> Export To Excel</a>
                                                 </h5>
-                                                <div class="card-header">
-                                                    <h5 class="text-center text-primary"><?php echo $log_type; ?> From <?php echo date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)); ?></h5>
-                                                </div>
-                                                <table class="table table-bordered dt-responsive" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <h5 class="text-center text-primary"><?php echo $log_type; ?> From <?php echo date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)); ?></h5>
+                                                <hr>
+                                                <table class="table datatable-init">
                                                     <thead>
                                                         <tr>
                                                             <th>User Detais</th>
@@ -172,7 +171,7 @@ require_once('../partials/head.php');
                                                         if ($log_type == 'All Logs') {
                                                             $ret = "SELECT * FROM system_logs l INNER JOIN users u
                                                             ON u.user_id = l.log_user_id WHERE l.log_created_at
-                                                            BETWEEN '{$start}' AND '{$end}' ORDER BY l.log_created_at ASC";
+                                                            BETWEEN '{$start}' AND '{$end}' ORDER BY l.log_created_at DESC";
                                                             $stmt = $mysqli->prepare($ret);
                                                             $stmt->execute(); //ok
                                                             $res = $stmt->get_result();
@@ -190,23 +189,24 @@ require_once('../partials/head.php');
                                                             }
                                                         } else {
                                                             $ret = "SELECT * FROM system_logs l INNER JOIN users u
-                                                            ON u.user_id = l.log_user_id 
-                                                            WHERE l.log_created_at BETWEEN '{$start}' AND '{$end}' 
-                                                            AND l.log_type  = '{$log_type}' ORDER BY l.log_created_at ASC";
+                                                            ON u.user_id = l.log_user_id WHERE l.log_type  = '{$log_type}' 
+                                                            AND l.log_created_at BETWEEN '{$start}' AND '{$end}' 
+                                                            ORDER BY l.log_created_at DESC";
                                                             $stmt = $mysqli->prepare($ret);
                                                             $stmt->execute(); //ok
                                                             $res = $stmt->get_result();
                                                             while ($logs = $res->fetch_object()) {
-                                                            } ?>
-                                                            <tr>
-                                                                <td><?php echo $logs->user_name . ' <br> ' . $logs->user_email ?></td>
-                                                                <td><?php echo $logs->log_ip_address ?></td>
-                                                                <td><?php echo date('d M Y g:ia', strtotime($logs->log_created_at)) ?></td>
-                                                                <td>
-                                                                    <?php echo $logs->log_details; ?>
-                                                                </td>
-                                                            </tr>
-                                                        <?php } ?>
+                                                            ?>
+                                                                <tr>
+                                                                    <td><?php echo $logs->user_name . ' <br> ' . $logs->user_email ?></td>
+                                                                    <td><?php echo $logs->log_ip_address ?></td>
+                                                                    <td><?php echo date('d M Y g:ia', strtotime($logs->log_created_at)) ?></td>
+                                                                    <td>
+                                                                        <?php echo $logs->log_details; ?>
+                                                                    </td>
+                                                                </tr>
+                                                        <?php }
+                                                        } ?>
                                                     </tbody>
                                                 </table>
                                             </div>
