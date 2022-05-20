@@ -78,7 +78,7 @@ if (isset($_POST['update_permissions'])) {
     } else {
         /* Persist */
         $sql = "INSERT INTO user_permissions (permission_access_level, permission_module)
-    VALUES('{$permission_access_level}', '{$permission_module}')";
+        VALUES('{$permission_access_level}', '{$permission_module}')";
         $prepare = $mysqli->prepare($sql);
         $prepare->execute();
         if ($prepare) {
@@ -89,6 +89,20 @@ if (isset($_POST['update_permissions'])) {
     }
 }
 
+/* Delete Access Levels */
+if (isset($_POST['roll_permissions'])) {
+    $permission_id = $_POST['permission_id'];
+
+    /* Persist */
+    $sql = "DELETE FROM user_permissions  = '{$user_permissions}'";
+    $prepare = $mysqli->prepare($sql);
+    $prepare->execute();
+    if ($prepare) {
+        $success = "Permission Revoked";
+    } else {
+        $err = "Failed!, Please Try Again";
+    }
+}
 
 require_once('../partials/head.php');
 ?>
