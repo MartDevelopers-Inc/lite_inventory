@@ -91,7 +91,7 @@ if (isset($_POST['update_permissions'])) {
 
 /* Delete Access Levels */
 if (isset($_POST['roll_permissions'])) {
-    $permission_id = $_POST['permission_id'];
+    $permission_id = mysqli_real_escape_string($mysqli, $_POST['permission_id']);
 
     /* Persist */
     $sql = "DELETE FROM user_permissions WHERE permission_id  = '{$permission_id}'";

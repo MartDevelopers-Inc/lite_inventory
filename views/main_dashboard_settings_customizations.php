@@ -66,44 +66,20 @@ require_once('../config/codeGen.php');
 check_login();
 
 /* Update Receipt Header And Footer */
-if (isset($_POST['update_permissions'])) {
-    $permission_access_level = mysqli_real_escape_string($mysqli, $_POST['permission_access_level']);
-    $permission_module = mysqli_real_escape_string($mysqli, $_POST['permission_module']);
-    /* Prevent Double Entries */
-    $sql = "SELECT * FROM  user_permissions WHERE permission_access_level = '{$permission_access_level}' 
-    AND permission_module = '{$permission_module}'";
-    $res = mysqli_query($mysqli, $sql);
-    if (mysqli_num_rows($res) > 0) {
-        $err = "$permission_access_level Already Has Access To $permission_module";
-    } else {
-        /* Persist */
-        $sql = "INSERT INTO user_permissions (permission_access_level, permission_module)
-        VALUES('{$permission_access_level}', '{$permission_module}')";
-        $prepare = $mysqli->prepare($sql);
-        $prepare->execute();
-        if ($prepare) {
-            $success = "$permission_module Added To Staff Access Level";
-        } else {
-            $err = "Failed!, Please Try Again";
-        }
-    }
-}
-
-/* Delete Access Levels */
-if (isset($_POST['roll_permissions'])) {
-    $permission_id = $_POST['permission_id'];
+if (isset($_POST['update_system_settings'])) {
+    $system_name = mysqli_real_escape_string($mysqli, $_POST['system_name']);
+    $system_tagline = mysqli_real_escape_string($ysqli, $_POST['system_tagline']);
 
     /* Persist */
-    $sql = "DELETE FROM user_permissions WHERE permission_id  = '{$permission_id}'";
+    $sql = "UPDATE system_settings SET system_name = '{$system_name}', system_tagline = '{$system_tagline}' ";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
     if ($prepare) {
-        $success = "Permission Revoked";
+        $success = "Updated System Settings";
     } else {
         $err = "Failed!, Please Try Again";
     }
 }
-
 require_once('../partials/head.php');
 ?>
 
