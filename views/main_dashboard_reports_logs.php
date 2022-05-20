@@ -152,6 +152,7 @@ require_once('../partials/head.php');
                                             <div class="card-body">
                                                 <h5 class="text-right">
                                                     <a class="btn btn-primary" href="main_dashboard_system_log_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&log_type=<?php echo $_POST['log_type']; ?>"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
+                                                    <a class="btn btn-primary" href="main_dashboard_system_log_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&log_type=<?php echo $_POST['log_type']; ?>"><em class="icon ni ni-grid-add-fill-c"></em> Export To CSV</a>
                                                 </h5>
                                                 <h5 class="text-center text-primary"><?php echo $log_type; ?> From <?php echo date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)); ?></h5>
                                                 <hr>
