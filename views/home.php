@@ -161,7 +161,18 @@ require_once('../helpers/admin_analytics.php');
                                                     </div>
                                                 </div><!-- .card -->
                                             </div><!-- .col -->
-
+                                            <div class="col-12">
+                                                <div class="card mb-3  border border-success">
+                                                    <div class="card-inner">
+                                                        <div class="card-title">
+                                                            <h6 class="title text-center"><?php echo date('M d Y'); ?> Sales Revenue Overview</h6>
+                                                        </div>
+                                                        <div class="nk-ck">
+                                                            <canvas class="line-chart" id="filledLineChart"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- .card-preview -->
+                                            </div>
                                             <div class="col-md-6 col-xxl-4">
                                                 <div class="card card-bordered h-100">
                                                     <div class="card-inner border-bottom">
@@ -278,7 +289,10 @@ require_once('../helpers/admin_analytics.php');
     </div>
     <!-- app-root @e -->
     <!-- JavaScript -->
-    <?php require_once('../partials/scripts.php'); ?>
+    <?php
+    require_once('../partials/scripts.php');
+    require_once('../functions/dashboard_sales_chart.php');
+    ?>
 </body>
 
 </html>

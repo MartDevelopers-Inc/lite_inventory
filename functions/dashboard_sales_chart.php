@@ -62,48 +62,15 @@
 
     "use strict";
     ! function(NioApp, $) {
-
-        var solidLineChart = {
-            labels: [
-                <?php
-                /* Fetch Todays Sales Only */
-                $ret = "SELECT * FROM sales s
-                INNER JOIN products p ON p.product_id = sale_product_id
-                INNER JOIN users us ON us.user_id = s.sale_user_id
-                WHERE DATE(s.sale_datetime)=CURDATE()
-                ORDER BY sale_datetime ASC ";
-                $stmt = $mysqli->prepare($ret);
-                $stmt->execute(); //ok
-                $res = $stmt->get_result();
-                $cumulative_income = 0;
-                while ($sales = $res->fetch_object()) {
-
-                ?> "<?php echo date('g:ia', strtotime($sales->sale_datetime)); ?>",
-                <?php } ?>
-            ],
-            dataUnit: "Ksh",
+        var filledLineChart = {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            dataUnit: "BTC",
             lineTension: .4,
-            legend: !0,
             datasets: [{
-                label: "<?php echo date('M d Y'); ?> Sales Revenue Overview",
-                color: "#5ce0aa",
-                background: "transparent",
-                data: [
-                    <?php
-                    $ret = "SELECT * FROM sales s
-                    INNER JOIN products p ON p.product_id = sale_product_id
-                    INNER JOIN users us ON us.user_id = s.sale_user_id
-                    WHERE s.sale_datetime DATE(s.sale_datetime)=CURDATE()
-                    ORDER BY sale_datetime ASC ";
-                    $stmt = $mysqli->prepare($ret);
-                    $stmt->execute(); //ok
-                    $res = $stmt->get_result();
-                    $cumulative_income = 0;
-                    while ($sales = $res->fetch_object()) {
-
-                        echo $sales->sale_payment_amount . ',';
-                    } ?>
-                ]
+                label: "Total Received",
+                color: "#798bff",
+                background: NioApp.hexRGB("#798bff", .4),
+                data: [110, 80, 125, 65, 95, 75, 90, 110, 80, 125, 70, 95]
             }]
         }
 
