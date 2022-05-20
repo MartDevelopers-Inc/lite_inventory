@@ -68,7 +68,7 @@ check_login();
 /* Update Receipt Header And Footer */
 if (isset($_POST['update_system_settings'])) {
     $system_name = mysqli_real_escape_string($mysqli, $_POST['system_name']);
-    $system_tagline = mysqli_real_escape_string($ysqli, $_POST['system_tagline']);
+    $system_tagline = mysqli_real_escape_string($mysqli, $_POST['system_tagline']);
 
     /* Persist */
     $sql = "UPDATE system_settings SET system_name = '{$system_name}', system_tagline = '{$system_tagline}' ";
