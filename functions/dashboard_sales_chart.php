@@ -63,14 +63,45 @@
     "use strict";
     ! function(NioApp, $) {
         var filledLineChart = {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            dataUnit: "BTC",
+            labels: [
+                <?php
+                /* Fetch Todays Sales Only */
+                $ret = "SELECT * FROM sales s
+                INNER JOIN products p ON p.product_id = sale_product_id
+                INNER JOIN users us ON us.user_id = s.sale_user_id
+                WHERE DATE(s.sale_datetime)=CURDATE()
+                ORDER BY sale_datetime ASC ";
+                $stmt = $mysqli->prepare($ret);
+                $stmt->execute(); //ok
+                $res = $stmt->get_result();
+                $cumulative_income = 0;
+                while ($sales = $res->fetch_object()) {
+
+                ?> "<?php echo date('g:ia', strtotime($sales->sale_datetime)); ?>",
+                <?php } ?>
+            ],
+            dataUnit: "Ksh",
             lineTension: .4,
             datasets: [{
                 label: "Total Received",
                 color: "#798bff",
                 background: NioApp.hexRGB("#798bff", .4),
-                data: [110, 80, 125, 65, 95, 75, 90, 110, 80, 125, 70, 95]
+                data: [
+                    <?php
+                    $ret = "SELECT * FROM sales s
+                    INNER JOIN products p ON p.product_id = sale_product_id
+                    INNER JOIN users us ON us.user_id = s.sale_user_id
+                    WHERE DATE(s.sale_datetime)=CURDATE()
+                    ORDER BY sale_datetime ASC ";
+                    $stmt = $mysqli->prepare($ret);
+                    $stmt->execute(); //ok
+                    $res = $stmt->get_result();
+                    $cumulative_income = 0;
+                    while ($sales = $res->fetch_object()) {
+
+                        echo $sales->sale_payment_amount . ',';
+                    } ?>
+                ]
             }]
         }
 
