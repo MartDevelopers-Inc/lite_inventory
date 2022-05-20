@@ -64,7 +64,22 @@ require_once('../config/config.php');
 require_once('../config/checklogin.php');
 check_login();
 /* Update Receipt Header And Footer */
+if (isset($_POST['update_receipt_settings'])) {
+    $receipt_store_id = mysqli_real_escape_string($mysqli, $_POST['receipt_store_id']);
+    $receipt_header_content = mysqli_real_escape_string($mysqli, $_POST['receipt_header_content']);
+    $receipt_footer_content = mysqli_real_escape_string($mysqli, $_POST['receipt_footer_content']);
+    $receipt_show_barcode = mysqli_real_escape_string($mysqli, $_POST['receipt_show_barcode']);
 
+    /* Persist */
+    $sql = "UPDATE receipt_customization SET receipt_store_id = '{$receipt_store_id}', receipt_header_content = '{$receipt_header_content}',
+    receipt_footer_content = '{$receipt_footer_content}', receipt_show_barcode = '{$receipt_show_barcode}'";
+    $prepare = $mysqli->prepare($sql);
+    if ($prepare) {
+        $success = "Receipt Customizations Updated";
+    } else {
+        $err = "Failed!, Please Try Again";
+    }
+}
 require_once('../partials/head.php');
 ?>
 
@@ -110,59 +125,75 @@ require_once('../partials/head.php');
                                                 <div class="card-inner">
                                                     <div class="timeline">
                                                         <form method="post" enctype="multipart/form-data">
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-12">
-                                                                    <label>Receipt Header Details</label>
-                                                                    <textarea type="text" name="product_description" rows="3" class="form-control"></textarea>
+                                                            <?php
+                                                            /*  */
+                                                            $ret = "SELECT * FROM receipt_customization rc INNER JOIN store_settings st ON st.store_id = rc.receipt_store_id 
+                                                            WHERE st.store_status ='active'";
+                                                            $stmt = $mysqli->prepare($ret);
+                                                            $stmt->execute(); //ok
+                                                            $res = $stmt->get_result();
+                                                            while ($receipt_conf = $res->fetch_object()) {
+                                                            ?>
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-md-12">
+                                                                        <label>Receipt Header Details</label>
+                                                                        <textarea type="text" required name="receipt_header_content" rows="2" class="form-control"><?php echo $receipt_conf->receipt_header_content; ?></textarea>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <br>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-12">
-                                                                    <label>Receipt Footer Details</label>
-                                                                    <textarea type="text" name="product_description" rows="3" class="form-control"></textarea>
+                                                                <br>
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-md-12">
+                                                                        <label>Receipt Footer Details</label>
+                                                                        <textarea type="text" name="receipt_footer_content" rows="2" class="form-control"><?php echo $receipt_conf->receipt_footer_content; ?></textarea>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <br>
-                                                            <div class="form-row">
+                                                                <br>
+                                                                <div class="form-row">
 
-                                                                <div class="form-group col-md-6">
-                                                                    <label>Store</label>
-                                                                    <div class="form-control-wrap">
-                                                                        <div class="form-group">
-                                                                            <div class="form-control-wrap">
-                                                                                <select name="user_store_id" class="form-select form-control form-control-lg" data-search="on">
-                                                                                    <?php
-                                                                                    $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
-                                                                                    if (mysqli_num_rows($raw_results) > 0) {
-                                                                                        while ($stores = mysqli_fetch_array($raw_results)) {
-                                                                                    ?>
-                                                                                            <option value="<?php echo $stores['store_id']; ?>"><?php echo $stores['store_name']; ?></option>
-                                                                                    <?php }
-                                                                                    }
-                                                                                    ?>
-                                                                                </select>
+                                                                    <div class="form-group col-md-6">
+                                                                        <label>Store</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <div class="form-group">
+                                                                                <div class="form-control-wrap">
+                                                                                    <select name="receipt_store_id" class="form-select form-control form-control-lg" data-search="on">
+                                                                                        <option value="<?php echo $receipt_conf->store_id; ?>"><?php echo $receipt_conf->store_name; ?></option>
+                                                                                        <?php
+                                                                                        $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
+                                                                                        if (mysqli_num_rows($raw_results) > 0) {
+                                                                                            while ($stores = mysqli_fetch_array($raw_results)) {
+                                                                                        ?>
+                                                                                                <option value="<?php echo $stores['store_id']; ?>"><?php echo $stores['store_name']; ?></option>
+                                                                                        <?php }
+                                                                                        }
+                                                                                        ?>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group col-md-6">
+                                                                        <label>Show Barcode</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <div class="form-group">
+                                                                                <div class="form-control-wrap">
+                                                                                    <select name="receipt_show_barcode" class="form-select form-control form-control-lg" data-search="on">
+                                                                                        <?php if ($receipt_conf->receipt_show_barcode  == 'true') { ?>
+                                                                                            <option value="true">Active</option>
+                                                                                            <option value="false">Disabled</option>
+                                                                                        <?php } else { ?>
+                                                                                            <option value="false">Disabled</option>
+                                                                                            <option value="true">Active</option>
+                                                                                        <?php } ?>
+                                                                                    </select>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label>Show Barcode</label>
-                                                                    <div class="form-control-wrap">
-                                                                        <div class="form-group">
-                                                                            <div class="form-control-wrap">
-                                                                                <select name="user_store_id" class="form-select form-control form-control-lg" data-search="on">
-                                                                                    <option value="true">Active</option>
-                                                                                    <option value="false">Disabled</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            <?php } ?>
                                                             <br>
                                                             <div class="text-right">
-                                                                <button name="add_item" class="btn btn-primary" type="submit">
+                                                                <button name="update_receipt_settings" class="btn btn-primary" type="submit">
                                                                     Update Configurations
                                                                 </button>
                                                             </div>
