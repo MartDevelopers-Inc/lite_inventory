@@ -70,10 +70,13 @@ if (isset($_POST['update_receipt_settings'])) {
     $receipt_header_content = mysqli_real_escape_string($mysqli, $_POST['receipt_header_content']);
     $receipt_footer_content = mysqli_real_escape_string($mysqli, $_POST['receipt_footer_content']);
     $receipt_show_barcode = mysqli_real_escape_string($mysqli, $_POST['receipt_show_barcode']);
+    $show_customer = mysqli_real_escape_string($mysqli, $_POST['show_customer']);
+    $allow_discounts = mysqli_real_escape_string($mysqli, $_POST['allow_discounts']);
 
     /* Persist */
     $sql = "UPDATE receipt_customization SET receipt_store_id = '{$receipt_store_id}', receipt_header_content = '{$receipt_header_content}',
-    receipt_footer_content = '{$receipt_footer_content}', receipt_show_barcode = '{$receipt_show_barcode}'";
+    receipt_footer_content = '{$receipt_footer_content}', receipt_show_barcode = '{$receipt_show_barcode}', show_customer = '{$show_customer}',
+    allow_discounts = '{$allow_discounts}'";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
     if ($prepare) {
@@ -120,7 +123,7 @@ require_once('../partials/head.php');
                                                 <div class="card-inner border-bottom">
                                                     <div class="card-title-group">
                                                         <div class="card-title">
-                                                            <h6 class="title">Edit Sales Receipt Details</h6>
+                                                            <h6 class="title">Edit Sales Receipt & Core Sales Module Configurations</h6>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -180,11 +183,47 @@ require_once('../partials/head.php');
                                                                                 <div class="form-control-wrap">
                                                                                     <select name="receipt_show_barcode" class="form-select form-control form-control-lg" data-search="on">
                                                                                         <?php if ($receipt_conf->receipt_show_barcode  == 'true') { ?>
+                                                                                            <option value="true">Enabled</option>
+                                                                                            <option value="false">Disabled</option>
+                                                                                        <?php } else { ?>
+                                                                                            <option value="false">Disabled</option>
+                                                                                            <option value="true">Enabled</option>
+                                                                                        <?php } ?>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group col-md-6">
+                                                                        <label>Show Customer Details</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <div class="form-group">
+                                                                                <div class="form-control-wrap">
+                                                                                    <select name="show_customer" class="form-select form-control form-control-lg" data-search="on">
+                                                                                        <?php if ($receipt_conf->show_customer  == 'true') { ?>
+                                                                                            <option value="true">Enabled</option>
+                                                                                            <option value="false">Disabled</option>
+                                                                                        <?php } else { ?>
+                                                                                            <option value="false">Disabled</option>
+                                                                                            <option value="true">Enabled</option>
+                                                                                        <?php } ?>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group col-md-6">
+                                                                        <label>Allow Discounts On Sales</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <div class="form-group">
+                                                                                <div class="form-control-wrap">
+                                                                                    <select name="allow_discounts" class="form-select form-control form-control-lg" data-search="on">
+                                                                                        <?php if ($receipt_conf->allow_discounts  == 'true') { ?>
                                                                                             <option value="true">Active</option>
                                                                                             <option value="false">Disabled</option>
                                                                                         <?php } else { ?>
                                                                                             <option value="false">Disabled</option>
-                                                                                            <option value="true">Active</option>
+                                                                                            <option value="true">Enabled</option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </div>

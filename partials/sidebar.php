@@ -180,10 +180,7 @@ while ($settings = $res->fetch_object()) {
                                 </a>
                                 <ul class="nk-menu-sub">
                                     <li class="nk-menu-item">
-                                        <a href="main_dashboard_settings_receipt" class="nk-menu-link"><span class="nk-menu-text">Receipt Settings</span></a>
-                                    </li>
-                                    <li class="nk-menu-item">
-                                        <a href="main_dashboard_settings_settings" class="nk-menu-link"><span class="nk-menu-text">Sales Settings</span></a>
+                                        <a href="main_dashboard_settings_receipt" class="nk-menu-link"><span class="nk-menu-text">Receipt & Sales Settings</span></a>
                                     </li>
                                     <li class="nk-menu-item">
                                         <a href="main_dashboard_settings_permissions" class="nk-menu-link"><span class="nk-menu-text">Permissions</span></a>
