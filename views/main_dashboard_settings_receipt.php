@@ -240,7 +240,13 @@ require_once('../partials/head.php');
                                                                                 Customer : Test Customer <br>
                                                                                 Date: <?php echo date('d M Y H:i'); ?>
                                                                             </strong>
-                                                                    <?php }
+                                                                            <br><br>
+                                                                    <?php
+                                                                            /* Show Barcode */
+                                                                            if ($receipts_header['receipt_show_barcode'] == 'true') {
+                                                                                echo "<img alt='barcode' src='../functions/barcode.php?codetype=Code39&size=20&text=" . $b . "&print=true'/>";
+                                                                            }
+                                                                        }
                                                                     }
                                                                     ?>
                                                                 </h4>
