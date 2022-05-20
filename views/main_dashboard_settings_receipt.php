@@ -250,13 +250,14 @@ require_once('../partials/head.php');
                                                                 <thead>
                                                                     <tr>
                                                                         <th style="text-align:left;" width="2%">SL</th>
-                                                                        <th width="100%" style="text-align:left;"><strong>ITEM DESC</strong></th>
+                                                                        <th width="100%" style="text-align:left;"><strong>ITEM DETAILS</strong></th>
                                                                         <th width="100%" style="text-align:right;"><strong>TOTAL</strong></th>
                                                                     </tr>
                                                                 </thead>
                                                                 <?php
                                                                 $test_product = "THIS IS A TEST ITEM";
                                                                 $test_product_price = "100";
+                                                                $test_qty = '5';
                                                                 $cnt = 1;
                                                                 while ($cnt <= 5) {
                                                                 ?>
@@ -264,19 +265,22 @@ require_once('../partials/head.php');
                                                                         <td style="text-align:left;"><strong><?php echo $cnt; ?></strong></td>
                                                                         <td style="text-align:left; overflow-wrap: break-word">
                                                                             <strong>
+                                                                                <?php echo $test_product; ?> <br>
+                                                                                <?php echo $test_qty . ' X Ksh' . number_format($test_product_price, 2); ?>
                                                                             </strong>
                                                                         </td>
-                                                                        <td style="text-align:right;"><strong></strong></td>
+                                                                        <td style="text-align:right;"><strong>Ksh <?php echo number_format(($test_qty * $test_product_price), 2); ?></strong></td>
                                                                     </tr>
-                                                                    <tr>
-                                                                        <td colspan="1"><strong>TOTAL:</strong></td>
-                                                                        <td style="text-align:right;" colspan="2"><strong>Ksh 15000</strong></td>
-                                                                    </tr>
-                                                                <?php $cnt++;
+                                                                <?php
+                                                                    $cnt++;
+                                                                    $total += ($test_qty * $test_product_price);
                                                                 } ?>
+                                                                <tr>
+                                                                    <td colspan="1"><strong>TOTAL:</strong></td>
+                                                                    <td style="text-align:right;" colspan="2"><strong>Ksh <?php echo number_format($total, 2); ?></strong></td>
+                                                                </tr>
                                                             </table>
                                                             <hr>
-                                                            <br><br>
                                                             <?php
                                                             $raw_results = mysqli_query(
                                                                 $mysqli,
