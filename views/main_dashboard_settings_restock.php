@@ -64,6 +64,7 @@ require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
 check_login();
+
 /* Manage System Restock Limits */
 if (isset($_POST['update_restock_limit'])) {
     $product_quantity_limit = mysqli_real_escape_string($mysqli, $_POST['product_quantity_limit']);
@@ -105,10 +106,10 @@ require_once('../partials/head.php');
                                 <div class="nk-block-head nk-block-head-sm">
                                     <div class="nk-block-between">
                                         <div class="nk-block-head-content">
-                                            <h3 class="nk-block-title page-title">Logs Reports</h3>
+                                            <h3 class="nk-block-title page-title">Restock Limits Settings</h3>
                                             <div class="nk-block-des text-soft">
                                                 <p>
-                                                    Customize, generate and system access logs reports in spreadsheet(.csv, .xlsx, .xls) or pdf format. <br>
+                                                    Customize and manipulate your items restock limits, according to your business rules.<br>
                                                 </p>
                                             </div>
                                         </div><!-- .nk-block-head-content -->
@@ -123,36 +124,14 @@ require_once('../partials/head.php');
                                                 <div class="card-body">
                                                     <form method="post" enctype="multipart/form-data">
                                                         <div class="form-row">
-                                                            <div class="form-group col-md-4">
-                                                                <label>Logs From Date</label>
-                                                                <input type="date" name="start_date" required class="form-control">
+                                                            <div class="form-group col-md-12">
+                                                                <label>Items Restock Limits</label>
+                                                                <input type="number" min="1" value="1" id="number_entry" name="product_quantity_limit" required class="form-control">
                                                             </div>
-                                                            <div class="form-group col-md-4">
-                                                                <label>Logs To Date</label>
-                                                                <input type="date" name="end_date" required class="form-control">
-                                                            </div>
-                                                            <div class="form-group col-md-4">
-                                                                <label>Log Report Type</label>
-                                                                <div class="form-control-wrap">
-                                                                    <div class="form-group">
-                                                                        <div class="form-control-wrap">
-                                                                            <select name="log_type" class="form-select form-control form-control-lg" data-search="on">
-                                                                                <option>All Logs</option>
-                                                                                <option>Authentication Logs</option>
-                                                                                <option>User Account Management Logs</option>
-                                                                                <option>Items Management Logs</option>
-                                                                                <option>Stock Management Logs</option>
-                                                                                <option>Sales Management Logs</option>
-                                                                                <option>Stores Management Logs</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        </div><br><br>
                                                         <div class="text-right">
-                                                            <button name="get_logs" class="btn btn-primary" type="submit">
-                                                                Get Reports
+                                                            <button name="update_restock_limit" class="btn btn-primary" type="submit">
+                                                                Save
                                                             </button>
                                                         </div>
                                                     </form>
@@ -160,77 +139,6 @@ require_once('../partials/head.php');
                                             </div>
                                         </div>
                                     </div>
-                                    <?php
-                                    if (isset($_POST['get_logs'])) {
-                                        $start = date('Y-m-d', strtotime($_POST['start_date']));
-                                        $end = date('Y-m-d', strtotime($_POST['end_date']));
-                                        $log_type = $_POST['log_type'];
-                                    ?>
-                                        <div class="card mb-3 col-12 border border-success">
-                                            <div class="card-body">
-                                                <h5 class="text-right">
-                                                    <a class="btn btn-primary" href="main_dashboard_system_log_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&log_type=<?php echo $_POST['log_type']; ?>"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
-                                                    <a class="btn btn-primary" href="main_dashboard_system_log_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&log_type=<?php echo $_POST['log_type']; ?>"><em class="icon ni ni-grid-add-fill-c"></em> Export To CSV</a>
-                                                </h5>
-                                                <h5 class="text-center text-primary"><?php echo $log_type; ?> From <?php echo date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)); ?></h5>
-                                                <hr>
-                                                <table class="table datatable-init">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>User Detais</th>
-                                                            <th>IP Address</th>
-                                                            <th>Created At</th>
-                                                            <th>Details</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        /* Filter Logs */
-                                                        if ($log_type == 'All Logs') {
-                                                            $ret = "SELECT * FROM system_logs l INNER JOIN users u
-                                                            ON u.user_id = l.log_user_id WHERE l.log_created_at
-                                                            BETWEEN '{$start}' AND '{$end}' ORDER BY l.log_created_at DESC";
-                                                            $stmt = $mysqli->prepare($ret);
-                                                            $stmt->execute(); //ok
-                                                            $res = $stmt->get_result();
-                                                            while ($logs = $res->fetch_object()) {
-                                                        ?>
-                                                                <tr>
-                                                                    <td><?php echo $logs->user_name . ' <br> ' . $logs->user_email ?></td>
-                                                                    <td><?php echo $logs->log_ip_address ?></td>
-                                                                    <td><?php echo date('d M Y g:ia', strtotime($logs->log_created_at)) ?></td>
-                                                                    <td>
-                                                                        <?php echo $logs->log_details; ?>
-                                                                    </td>
-                                                                </tr>
-                                                            <?php
-                                                            }
-                                                        } else {
-                                                            $ret = "SELECT * FROM system_logs l INNER JOIN users u
-                                                            ON u.user_id = l.log_user_id WHERE l.log_type  = '{$log_type}' 
-                                                            AND l.log_created_at BETWEEN '{$start}' AND '{$end}' 
-                                                            ORDER BY l.log_created_at DESC";
-                                                            $stmt = $mysqli->prepare($ret);
-                                                            $stmt->execute(); //ok
-                                                            $res = $stmt->get_result();
-                                                            while ($logs = $res->fetch_object()) {
-                                                            ?>
-                                                                <tr>
-                                                                    <td><?php echo $logs->user_name . ' <br> ' . $logs->user_email ?></td>
-                                                                    <td><?php echo $logs->log_ip_address ?></td>
-                                                                    <td><?php echo date('d M Y g:ia', strtotime($logs->log_created_at)) ?></td>
-                                                                    <td>
-                                                                        <?php echo $logs->log_details; ?>
-                                                                    </td>
-                                                                </tr>
-                                                        <?php }
-                                                        } ?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    <?php  } ?>
-
                                 </div>
                             </div>
                         </div>

@@ -2,6 +2,8 @@
 <script src="../public/js/bundle.js?ver=1.4.0"></script>
 <!-- Main CSS -->
 <script src="../public/js/scripts.js?ver=1.4.0"></script>
+<!-- Load Spinnners -->
+<script src="../public/js/libs/spinner/bootstrap-number-input.js"></script>
 <!-- Load Alerts -->
 <script src="../public/js/libs/toastr/toastr.min.js"></script>
 <!-- Init  Alerts -->
@@ -67,4 +69,10 @@ if (isset($info)) { ?>
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
     }
+</script>
+<script>
+    $('#number_entry').bootstrapNumber({
+        upClass: 'success',
+        downClass: 'danger'
+    });
 </script>
