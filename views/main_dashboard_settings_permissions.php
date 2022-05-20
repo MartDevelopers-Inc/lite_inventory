@@ -94,7 +94,7 @@ if (isset($_POST['roll_permissions'])) {
     $permission_id = $_POST['permission_id'];
 
     /* Persist */
-    $sql = "DELETE FROM user_permissions  = '{$user_permissions}'";
+    $sql = "DELETE FROM user_permissions WHERE permission_id  = '{$permission_id}'";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
     if ($prepare) {
@@ -209,7 +209,15 @@ require_once('../partials/head.php');
                                                             $cnt = 1;
                                                             while ($permissions = $res->fetch_object()) {
                                                             ?>
-                                                                <li class="list-group-item"># <?php echo $cnt . ' ' . $permissions->permission_module; ?></li>
+                                                                <li class="list-group-item">
+                                                                    # <?php echo $cnt . ' ' . $permissions->permission_module; ?>
+                                                                    <div class="text-right">
+                                                                        <form method="POST">
+                                                                            <input type="hidden" name="permission_id" value="<?php echo $permissions->permission_id; ?>">
+                                                                            <button class="badge badge-dim badge-pill badge-outline-danger" type="submit" name="roll_permissions">Revoke</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </li>
                                                             <?php $cnt++;
                                                             } ?>
                                                         </ul>
