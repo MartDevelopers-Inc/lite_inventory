@@ -64,7 +64,7 @@ define("DB_USER", 'root');
 define("DB_PASSWORD", '');
 define("DB_NAME", 'lite_inventory'); /* On Production Change This To Your Database Name */
 define("DB_HOST", 'localhost');
-define("BACKUP_DIR", '../database/'); // Comment this line to use same script's directory ('.')
+define("BACKUP_DIR", '../database'); // Comment this line to use same script's directory ('.')
 define("TABLES", '*'); // Full backup
 //define("TABLES", 'table1, table2, table3'); // Partial backup
 define('IGNORE_TABLES', array(

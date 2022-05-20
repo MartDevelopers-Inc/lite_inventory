@@ -123,119 +123,16 @@ require_once('../partials/head.php');
                                                 <div class="card-inner border-bottom">
                                                     <div class="card-title-group">
                                                         <div class="card-title">
-                                                            <h6 class="title">Edit Sales Receipt & Core Sales Module Configurations</h6>
+                                                            <h6 class="title">Export Database</h6>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="card-inner">
                                                     <div class="timeline">
                                                         <form method="post" enctype="multipart/form-data">
-                                                            <?php
-                                                            /*  */
-                                                            $ret = "SELECT * FROM receipt_customization rc INNER JOIN store_settings st ON st.store_id = rc.receipt_store_id 
-                                                            WHERE st.store_status ='active'";
-                                                            $stmt = $mysqli->prepare($ret);
-                                                            $stmt->execute(); //ok
-                                                            $res = $stmt->get_result();
-                                                            while ($receipt_conf = $res->fetch_object()) {
-                                                            ?>
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-md-12">
-                                                                        <label>Receipt Header Details</label>
-                                                                        <textarea type="text" required name="receipt_header_content" rows="2" class="form-control"><?php echo $receipt_conf->receipt_header_content; ?></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-md-12">
-                                                                        <label>Receipt Footer Details</label>
-                                                                        <textarea type="text" name="receipt_footer_content" rows="2" class="form-control"><?php echo $receipt_conf->receipt_footer_content; ?></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <div class="form-row">
-
-                                                                    <div class="form-group col-md-6">
-                                                                        <label>Store</label>
-                                                                        <div class="form-control-wrap">
-                                                                            <div class="form-group">
-                                                                                <div class="form-control-wrap">
-                                                                                    <select name="receipt_store_id" class="form-select form-control form-control-lg" data-search="on">
-                                                                                        <option value="<?php echo $receipt_conf->store_id; ?>"><?php echo $receipt_conf->store_name; ?></option>
-                                                                                        <?php
-                                                                                        $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
-                                                                                        if (mysqli_num_rows($raw_results) > 0) {
-                                                                                            while ($stores = mysqli_fetch_array($raw_results)) {
-                                                                                        ?>
-                                                                                                <option value="<?php echo $stores['store_id']; ?>"><?php echo $stores['store_name']; ?></option>
-                                                                                        <?php }
-                                                                                        }
-                                                                                        ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group col-md-6">
-                                                                        <label>Show Barcode</label>
-                                                                        <div class="form-control-wrap">
-                                                                            <div class="form-group">
-                                                                                <div class="form-control-wrap">
-                                                                                    <select name="receipt_show_barcode" class="form-select form-control form-control-lg" data-search="on">
-                                                                                        <?php if ($receipt_conf->receipt_show_barcode  == 'true') { ?>
-                                                                                            <option value="true">Enabled</option>
-                                                                                            <option value="false">Disabled</option>
-                                                                                        <?php } else { ?>
-                                                                                            <option value="false">Disabled</option>
-                                                                                            <option value="true">Enabled</option>
-                                                                                        <?php } ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group col-md-6">
-                                                                        <label>Show Customer Details</label>
-                                                                        <div class="form-control-wrap">
-                                                                            <div class="form-group">
-                                                                                <div class="form-control-wrap">
-                                                                                    <select name="show_customer" class="form-select form-control form-control-lg" data-search="on">
-                                                                                        <?php if ($receipt_conf->show_customer  == 'true') { ?>
-                                                                                            <option value="true">Enabled</option>
-                                                                                            <option value="false">Disabled</option>
-                                                                                        <?php } else { ?>
-                                                                                            <option value="false">Disabled</option>
-                                                                                            <option value="true">Enabled</option>
-                                                                                        <?php } ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group col-md-6">
-                                                                        <label>Allow Discounts On Sales</label>
-                                                                        <div class="form-control-wrap">
-                                                                            <div class="form-group">
-                                                                                <div class="form-control-wrap">
-                                                                                    <select name="allow_discounts" class="form-select form-control form-control-lg" data-search="on">
-                                                                                        <?php if ($receipt_conf->allow_discounts  == 'true') { ?>
-                                                                                            <option value="true">Active</option>
-                                                                                            <option value="false">Disabled</option>
-                                                                                        <?php } else { ?>
-                                                                                            <option value="false">Disabled</option>
-                                                                                            <option value="true">Enabled</option>
-                                                                                        <?php } ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            <?php } ?>
-                                                            <br>
-                                                            <div class="text-right">
-                                                                <button name="update_receipt_settings" class="btn btn-primary" type="submit">
-                                                                    Update Configurations
+                                                            <div class="text-center">
+                                                                <button name="dump_database" class="btn btn-primary" type="submit">
+                                                                    Backup Database
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -248,13 +145,17 @@ require_once('../partials/head.php');
                                                 <div class="card-inner border-bottom">
                                                     <div class="card-title-group">
                                                         <div class="card-title">
-                                                            <h6 class="title">Export Preview</h6>
+                                                            <h6 class="title">Preview</h6>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="nk-tb-list">
                                                     <div class="nk-tb-item">
                                                         <!-- Load Database Dump Script -->
+                                                        <?php if (isset($_POST['dump_database'])) {
+                                                            include('../functions/database_dump.php');
+                                                        }
+                                                        ?>
                                                     </div>
                                                 </div>
                                             </div><!-- .card -->
