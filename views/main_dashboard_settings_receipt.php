@@ -276,7 +276,9 @@ require_once('../partials/head.php');
                                                                             <strong>
                                                                                 <?php echo $receipts_header['receipt_header_content']; ?>
                                                                                 Receipt No. <?php echo $b; ?> <br>
-                                                                                Customer : Test Customer <br>
+                                                                                <?php if ($receipts_header['show_customer'] == 'true') { ?>
+                                                                                    Customer : Test Customer <br>
+                                                                                <?php } ?>
                                                                                 Date: <?php echo date('d M Y H:i'); ?>
                                                                             </strong>
                                                                             <br><br>
