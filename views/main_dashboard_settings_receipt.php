@@ -62,6 +62,7 @@
 session_start();
 require_once('../config/config.php');
 require_once('../config/checklogin.php');
+require_once('../config/codeGen.php');
 check_login();
 /* Update Receipt Header And Footer */
 if (isset($_POST['update_receipt_settings'])) {
@@ -74,6 +75,7 @@ if (isset($_POST['update_receipt_settings'])) {
     $sql = "UPDATE receipt_customization SET receipt_store_id = '{$receipt_store_id}', receipt_header_content = '{$receipt_header_content}',
     receipt_footer_content = '{$receipt_footer_content}', receipt_show_barcode = '{$receipt_show_barcode}'";
     $prepare = $mysqli->prepare($sql);
+    $prepare->execute();
     if ($prepare) {
         $success = "Receipt Customizations Updated";
     } else {
@@ -213,7 +215,83 @@ require_once('../partials/head.php');
                                                 </div>
                                                 <div class="nk-tb-list">
                                                     <div class="nk-tb-item">
-
+                                                        <div class="card-body">
+                                                            <div>
+                                                                <style>
+                                                                    .heading {
+                                                                        letter-spacing: 1px;
+                                                                        text-align: center;
+                                                                    }
+                                                                </style>
+                                                                <h4 class="heading" style="font-size:10pt">
+                                                                    <?php
+                                                                    $raw_results = mysqli_query(
+                                                                        $mysqli,
+                                                                        "SELECT * FROM receipt_customization rc
+                                                                        INNER JOIN store_settings ss ON ss.store_id = rc.receipt_store_id
+                                                                        WHERE ss.store_status = 'active'"
+                                                                    );
+                                                                    if (mysqli_num_rows($raw_results) > 0) {
+                                                                        while ($receipts_header = mysqli_fetch_array($raw_results)) {
+                                                                    ?>
+                                                                            <strong>
+                                                                                <?php echo $receipts_header['receipt_header_content']; ?>
+                                                                                Receipt No. <?php echo $b; ?> <br>
+                                                                                Customer : Test Customer <br>
+                                                                                Date: <?php echo date('d M Y H:i'); ?>
+                                                                            </strong>
+                                                                    <?php }
+                                                                    }
+                                                                    ?>
+                                                                </h4>
+                                                            </div>
+                                                            <hr>
+                                                            <table cellspacing="5" style="font-size:8.4pt">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th style="text-align:left;" width="2%">SL</th>
+                                                                        <th width="100%" style="text-align:left;"><strong>ITEM DESC</strong></th>
+                                                                        <th width="100%" style="text-align:right;"><strong>TOTAL</strong></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <?php
+                                                                $test_product = "THIS IS A TEST ITEM";
+                                                                $test_product_price = "100";
+                                                                $cnt = 1;
+                                                                while ($cnt <= 5) {
+                                                                ?>
+                                                                    <tr>
+                                                                        <td style="text-align:left;"><strong><?php echo $cnt; ?></strong></td>
+                                                                        <td style="text-align:left; overflow-wrap: break-word">
+                                                                            <strong>
+                                                                            </strong>
+                                                                        </td>
+                                                                        <td style="text-align:right;"><strong></strong></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="1"><strong>TOTAL:</strong></td>
+                                                                        <td style="text-align:right;" colspan="2"><strong>Ksh 15000</strong></td>
+                                                                    </tr>
+                                                                <?php $cnt++;
+                                                                } ?>
+                                                            </table>
+                                                            <hr>
+                                                            <br><br>
+                                                            <?php
+                                                            $raw_results = mysqli_query(
+                                                                $mysqli,
+                                                                "SELECT * FROM receipt_customization rc
+                                                                    INNER JOIN store_settings ss ON ss.store_id = rc.receipt_store_id
+                                                                    WHERE ss.store_status = 'active'"
+                                                            );
+                                                            if (mysqli_num_rows($raw_results) > 0) {
+                                                                while ($receipts_header = mysqli_fetch_array($raw_results)) {
+                                                            ?>
+                                                                    <p align="center"><i><?php echo $receipts_header['receipt_footer_content']; ?></i></p>
+                                                                    <p align="center"><strong>You Were Served By Staff Name<strong></p>
+                                                            <?php }
+                                                            } ?>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div><!-- .card -->
