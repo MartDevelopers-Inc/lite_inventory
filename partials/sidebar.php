@@ -173,20 +173,33 @@ while ($settings = $res->fetch_object()) {
                                     <span class="nk-menu-text">Restock Limits</span>
                                 </a>
                             </li><!-- .nk-menu-item -->
-                            <li class="nk-menu-item">
-                                <a href="main_dashboard_settings_config" class="nk-menu-link">
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle">
                                     <span class="nk-menu-icon"><em class="icon ni ni-opt-dot-alt"></em></span>
                                     <span class="nk-menu-text">System Configs</span>
                                 </a>
-                            </li><!-- .nk-menu-item -->
-                            <li class="nk-menu-item">
-                                <a href="main_dashboard_settings_mailer" class="nk-menu-link">
-                                    <span class="nk-menu-icon"><em class="icon ni ni-emails-fill"></em></span>
-                                    <span class="nk-menu-text">STMP Settings</span>
-                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="main_dashboard_settings_receipt" class="nk-menu-link"><span class="nk-menu-text">Receipt Settings</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="main_dashboard_settings_settings" class="nk-menu-link"><span class="nk-menu-text">Sales Settings</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="main_dashboard_settings_permissions" class="nk-menu-link"><span class="nk-menu-text">Permissions</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="main_dashboard_settings_customizations" class="nk-menu-link"><span class="nk-menu-text">Customizations</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="main_dashboard_settings_mailer" class="nk-menu-link"><span class="nk-menu-text">STMP Mailer Settings</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="main_dashboard_settings_backups" class="nk-menu-link"><span class="nk-menu-text">Database Backups</span></a>
+                                    </li>
+                                </ul><!-- .nk-menu-sub -->
                             </li><!-- .nk-menu-item -->
                         <?php } ?>
-
                     </ul>
                 </div><!-- .nk-sidebar-menu -->
             </div><!-- .nk-sidebar-content -->
