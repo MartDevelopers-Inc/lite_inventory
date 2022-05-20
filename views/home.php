@@ -105,7 +105,7 @@ require_once('../helpers/admin_analytics.php');
                                     <div class="nk-block">
                                         <div class="row g-gs">
                                             <div class="col-md-4">
-                                                <div class="card card-bordered card-full">
+                                                <div class="card card-bordered card-full border border-success">
                                                     <div class="card-inner">
                                                         <div class="card-title-group align-start mb-0">
                                                             <div class="card-title">
@@ -124,7 +124,7 @@ require_once('../helpers/admin_analytics.php');
                                                 </div><!-- .card -->
                                             </div><!-- .col -->
                                             <div class="col-md-4">
-                                                <div class="card card-bordered card-full">
+                                                <div class="card card-bordered card-full border border-success">
                                                     <div class="card-inner">
                                                         <div class="card-title-group align-start mb-0">
                                                             <div class="card-title">
@@ -143,7 +143,7 @@ require_once('../helpers/admin_analytics.php');
                                                 </div><!-- .card -->
                                             </div><!-- .col -->
                                             <div class="col-md-4">
-                                                <div class="card card-bordered  card-full ">
+                                                <div class="card card-bordered  card-full border border-danger">
                                                     <div class="card-inner">
                                                         <div class="card-title-group align-start mb-0">
                                                             <div class="card-title">
@@ -174,7 +174,7 @@ require_once('../helpers/admin_analytics.php');
                                                 </div><!-- .card-preview -->
                                             </div>
                                             <div class="col-md-6 col-xxl-4">
-                                                <div class="card card-bordered h-100">
+                                                <div class="card card-bordered h-100 border border-success">
                                                     <div class="card-inner border-bottom">
                                                         <div class="card-title-group">
                                                             <div class="card-title">
@@ -228,7 +228,7 @@ require_once('../helpers/admin_analytics.php');
                                                 </div><!-- .card -->
                                             </div><!-- .col -->
                                             <div class="col-xl-6 col-xxl-8">
-                                                <div class="card card-bordered card-full">
+                                                <div class="card card-bordered card-full border border-success">
                                                     <div class="card-inner border-bottom">
                                                         <div class="card-title-group">
                                                             <div class="card-title">
