@@ -109,8 +109,13 @@ $html = '
                     $receipts_header = mysqli_fetch_assoc($res);
                     $html .= '
                         ' . $receipts_header['receipt_header_content'] . '
-                        Receipt No. ' . $_GET["number"] . ' <br>
-                        Customer : ' . $_GET["customer"] . ' <br>
+                        Receipt No. ' . $_GET["number"] . ' <br>';
+                        if($receipts_header['show_customer'] == 'true'){
+                        $html .=
+                        '
+                        Customer : ' . $_GET["customer"] . ' <br>';}
+                        $html .=
+                        '
                         Date: ' . $date->format('d M Y H:i') . 
                     '
             </strong>
