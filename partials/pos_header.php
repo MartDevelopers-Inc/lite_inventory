@@ -105,31 +105,28 @@ while ($settings = $res->fetch_object()) {
                         $stmt->execute(); //ok
                         $res = $stmt->get_result();
                         while ($settings = $res->fetch_object()) {
-                            if (
-                                $setting->permission_module == 'Sales Management' &&
-                                $setting->permission_module == 'Stocks Management' &&
-                                $setting->permission_module == 'Items Management'
-                            ) {
+                            if ($settings->permission_module == 'Sales Management') {
                         ?>
                                 <li class="nk-menu-item">
-                                    <a href="html/invest/schemes.html" class="nk-menu-link">
+                                    <a href="staff_manage_sales" class="nk-menu-link">
                                         <span class="nk-menu-text">Manage Sales</span>
                                     </a>
                                 </li>
+                            <?php }
+                            if ($settings->permission_module == 'Items Management') { ?>
                                 <li class="nk-menu-item">
-                                    <a href="html/invest/schemes.html" class="nk-menu-link">
+                                    <a href="staff_manage_items" class="nk-menu-link">
                                         <span class="nk-menu-text">Manage Items</span>
                                     </a>
                                 </li>
+                            <?php }
+                            if ($settings->permission_module == 'Stocks Management') { ?>
                                 <li class="nk-menu-item">
-                                    <a href="html/invest/schemes.html" class="nk-menu-link">
+                                    <a href="staff_manage_inventory" class="nk-menu-link">
                                         <span class="nk-menu-text">Inventory</span>
                                     </a>
                                 </li>
-                        <?php } else if (
-                                $setting->permission_module == 'Sales Management' &&
-                                $setting->permission_module == 'Stocks Management'
-                            ) {
+                        <?php
                             }
                         }
                         ?>
