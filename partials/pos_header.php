@@ -106,28 +106,33 @@ while ($settings = $res->fetch_object()) {
                         $res = $stmt->get_result();
                         while ($settings = $res->fetch_object()) {
                             if (
-                                $setting->permission_module == 'Sales Management' && 
+                                $setting->permission_module == 'Sales Management' &&
                                 $setting->permission_module == 'Stocks Management' &&
                                 $setting->permission_module == 'Items Management'
-                            ){
+                            ) {
                         ?>
-                            <li class="nk-menu-item">
-                                <a href="html/invest/schemes.html" class="nk-menu-link">
-                                    <span class="nk-menu-text">Manage Sales</span>
-                                </a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="html/invest/schemes.html" class="nk-menu-link">
-                                    <span class="nk-menu-text">Manage Items</span>
-                                </a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="html/invest/schemes.html" class="nk-menu-link">
-                                    <span class="nk-menu-text">Inventory</span>
-                                </a>
-                            </li>
-                        <?php }
-                    ?>
+                                <li class="nk-menu-item">
+                                    <a href="html/invest/schemes.html" class="nk-menu-link">
+                                        <span class="nk-menu-text">Manage Sales</span>
+                                    </a>
+                                </li>
+                                <li class="nk-menu-item">
+                                    <a href="html/invest/schemes.html" class="nk-menu-link">
+                                        <span class="nk-menu-text">Manage Items</span>
+                                    </a>
+                                </li>
+                                <li class="nk-menu-item">
+                                    <a href="html/invest/schemes.html" class="nk-menu-link">
+                                        <span class="nk-menu-text">Inventory</span>
+                                    </a>
+                                </li>
+                        <?php } else if (
+                                $setting->permission_module == 'Sales Management' &&
+                                $setting->permission_module == 'Stocks Management'
+                            ) {
+                            }
+                        }
+                        ?>
                         <li class="nk-menu-item">
                             <a href="logout" class="nk-menu-link">
                                 <span class="nk-menu-text">Log Out</span>
