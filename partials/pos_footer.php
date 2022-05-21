@@ -68,7 +68,7 @@ while ($settings = $res->fetch_object()) {
     <div class="nk-footer nk-footer-fluid bg-lighter">
         <div class="container-xl wide-lg">
             <div class="nk-footer-wrap">
-                <div class="nk-footer-copyright"> &copy; 2020 DashLite. Template by <a href="#">Softnio</a>
+                <div class="nk-footer-copyright"> &copy; <?php echo date('Y'); ?>. <?php echo $settings->system_name; ?> A <a href="https://devlan.co.ke"> Devlan Solutions LTD </a> Production
                 </div>
 
             </div>
