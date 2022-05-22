@@ -92,7 +92,7 @@ require_once('../partials/head.php');
                                 </div><!-- .nk-block-between -->
                             </div><!-- .nk-block-head -->
                             <div class="nk-block">
-                                <div class="nk-news card card-bordered border border-success">
+                                <div class="nk-news card  border border-success">
                                     <div class="card-inner">
                                         <form method="post" enctype="multipart/form-data">
                                             <div class="form-group col-md-12">
@@ -124,49 +124,63 @@ require_once('../partials/head.php');
                                     </div>
                                 </div><!-- .card -->
                             </div><!-- .nk-block -->
-                            <?php
-                            if (isset($_POST['search'])) {
-                                $query = htmlspecialchars($_POST['querry']);
-                                $product_array = $db_handle->runQuery("SELECT * 
+                            <br><br>
+                            <div class="nk-block">
+                                <?php
+                                if (isset($_POST['search'])) {
+                                    $query = htmlspecialchars($_POST['querry']);
+                                    $product_array = $db_handle->runQuery("SELECT * 
                                 FROM products WHERE product_status ='active' AND product_id = '$query'");
-                                if (!empty($product_array)) {
-                                    foreach ($product_array as $key => $value) {
-                            ?>
-                                        <div class="col-md-4">
-                                            <form method="post" class="form-inline my-2 my-lg-0" action="staff_dashboard?action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
-                                                <div class="card border border-success text-dark">
-                                                    <div class="card-body">
-                                                        <h5 id="product_details" class="card-title"><?php echo $product_array[$key]["product_code"] . ' ' . $product_array[$key]["product_name"]; ?> </h5>
-                                                        <p class="card-text"><?php echo $product_array[$key]["product_description"]; ?></p>
-                                                        <!-- Notify User If Product Has Reached Restock Limit -->
-                                                        <?php if ($product_array[$key]["product_quantity"] <= 0) { ?>
-                                                            <p class="card-text text-danger">Kindly Restock This Product, Current Qty is
-                                                                <?php echo $product_array[$key]["product_quantity"]; ?></p>
-                                                        <?php } else if ($product_array[$key]["product_quantity"] <= $product_array[$key]["product_quantity_limit"]) { ?>
-                                                            <p class="card-text text-danger">Kindly Restock This Product, Current Qty is
-                                                                <?php echo $product_array[$key]["product_quantity"]; ?>
+                                    if (!empty($product_array)) {
+                                        foreach ($product_array as $key => $value) {
+                                ?>
+                                            <div class="col-md-4">
+                                                <form method="post" class="form-inline my-2 my-lg-0" action="pos?action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
+                                                    <div class="card border border-success text-dark">
+                                                        <div class="card-body">
+                                                            <h5 id="product_details" class="card-title">
+                                                                <?php echo $product_array[$key]["product_code"] . ' ' . $product_array[$key]["product_name"]; ?>
+                                                            </h5>
+                                                            <p class="card-text">
+                                                                <?php echo $product_array[$key]["product_description"]; ?>
                                                             </p>
-                                                            <p class="card-text"><b><?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b></p>
-                                                            <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
-                                                            <label>Discount</label><br>
-                                                            <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
-                                                            <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
-                                                        <?php } else { ?>
-                                                            <p class="card-text text-success">Current Item Quantity is
-                                                                <?php echo $product_array[$key]["product_quantity"]; ?>
-                                                            </p>
-                                                            <p class="card-text"><b><?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b></p>
-                                                            <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
-                                                            <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
-                                                            <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
-                                                        <?php } ?>
+                                                            <!-- Notify User If Product Has Reached Restock Limit -->
+                                                            <?php if ($product_array[$key]["product_quantity"] <= 0) { ?>
+                                                                <p class="card-text text-danger">
+                                                                    Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                </p>
+                                                            <?php } else if ($product_array[$key]["product_quantity"] <= $product_array[$key]["product_quantity_limit"]) { ?>
+                                                                <p class="card-text text-danger">
+                                                                    Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                </p>
+                                                                <p class="card-text">
+                                                                    <b> <?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
+                                                                </p>
+                                                                <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
+
+                                                                <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
+
+                                                                <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
+                                                            <?php } else { ?>
+                                                                <p class="card-text text-success">
+                                                                    Current Item Quantity is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                </p>
+                                                                <p class="card-text">
+                                                                    <b><?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
+                                                                </p>
+                                                                <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
+                                                                <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
+                                                                <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
+                                                            <?php } ?>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                            <?php }
-                                }
-                            } ?>
+                                                </form>
+                                            </div>
+                                <?php }
+                                    }
+                                } ?>
+                            </div>
+                            <br><br><br>
                             <div class="nk-block">
                                 <div class="row gy-gs">
                                     <div class="col-md-12 col-lg-12">
