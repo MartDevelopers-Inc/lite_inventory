@@ -18,6 +18,7 @@ On Pushing To Live Server Kindly Update This Links <br>
 3. Top Navigation Mene Icons.
 4. Hold Sales
 5. Optimize Sales Cart.
+6. Posted Sales Without A Receipt Number
 
 # Login Credetials
 
