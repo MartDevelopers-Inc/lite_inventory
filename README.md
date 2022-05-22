@@ -16,6 +16,8 @@ On Pushing To Live Server Kindly Update This Links <br>
 1. Add Relevant Icons To Submit Buttons.
 2. Simplify POS Module Home Page.
 3. Top Navigation Mene Icons.
+4. Hold Sales
+5. Optimize Sales Cart.
 
 # Login Credetials
 
