@@ -317,9 +317,33 @@ require_once('../partials/head.php');
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="text-right">
-                                                <button type="button" data-toggle="modal" data-target="#checkout_modal" class="btn btn-primary">Checkout</button>
-                                            </div>
+                                            <?php
+                                            /* Check If Its Allowed To Pick Customer Details */
+                                            $ret = "SELECT * FROM  receipt_customization";
+                                            $stmt = $mysqli->prepare($ret);
+                                            $stmt->execute(); //ok
+                                            $res = $stmt->get_result();
+                                            while ($settings = $res->fetch_object()) {
+                                                if ($settings->show_customer == 'true') {
+                                                    /* Show Add Customer Details Module */
+                                            ?>
+                                                    <div class="text-right">
+                                                        <button type="button" data-toggle="modal" data-target="#checkout_modal" class="btn btn-primary">Checkout</button>
+                                                    </div>
+                                                <?php } else {
+                                                    /* Post Transaction Automatically Without Asking Customer Details */
+                                                ?>
+                                                    <form method="POST">
+                                                        <input type="hidden" name="total_payable_price" value="<?php echo $total_price; ?>">
+                                                        <input type="hidden" name="sale_payment_method" value="Cash">
+                                                        <div class="text-right">
+                                                            <button name="add_sale" class="btn btn-primary" type="submit">
+                                                                Checkout
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                            <?php }
+                                            } ?>
                                             <br>
                                             <!-- Modal To Post Captured Data -->
                                             <div class="modal fade" id="checkout_modal">
@@ -349,7 +373,7 @@ require_once('../partials/head.php');
                                                                 </div>
                                                                 <div class="text-right">
                                                                     <button name="add_sale" class="btn btn-primary" type="submit">
-                                                                        Proceed To Payment
+                                                                        Submit
                                                                     </button>
                                                                 </div>
                                                             </form>
