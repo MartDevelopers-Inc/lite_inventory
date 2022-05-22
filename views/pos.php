@@ -91,29 +91,33 @@ require_once('../partials/head.php');
                             <div class="nk-block">
                                 <div class="nk-news card card-bordered border border-success">
                                     <div class="card-inner">
-                                        <div class="nk-news-list">
-                                            <form class="inline" method="post">
-                                                <div class="form-group col-md-8">
-                                                    <select data-search="on" class="form-select form-control form-control-lg " name="querry" type="search">
-                                                        <option>Select Product To Add To Cart</option>
-                                                        <?php
-                                                        $ret = "SELECT * FROM products 
+                                        <form method="post" enctype="multipart/form-data">
+                                            <div class="form-group col-md-12">
+                                                <div class="form-control-wrap">
+                                                    <div class="form-group">
+                                                        <select data-search="on" class="form-select form-control form-control-lg " name="querry" type="search">
+                                                            <option>Select Product To Add To Cart</option>
+                                                            <?php
+                                                            $ret = "SELECT * FROM products 
                                                             WHERE product_status = 'active'
                                                             ORDER BY product_name ASC";
-                                                        $stmt = $mysqli->prepare($ret);
-                                                        $stmt->execute(); //ok
-                                                        $res = $stmt->get_result();
-                                                        while ($products = $res->fetch_object()) {
-                                                        ?>
-                                                            <option value="<?php echo $products->product_id; ?>"><?php echo $products->product_code . ' ' . $products->product_name; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                    <div class="text-center">
-                                                        <button name="search" class="text-center btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i>Search</button>
+                                                            $stmt = $mysqli->prepare($ret);
+                                                            $stmt->execute(); //ok
+                                                            $res = $stmt->get_result();
+                                                            while ($products = $res->fetch_object()) {
+                                                            ?>
+                                                                <option value="<?php echo $products->product_id; ?>"><?php echo $products->product_code . ' ' . $products->product_name; ?></option>
+                                                            <?php } ?>
+                                                        </select>
                                                     </div>
                                                 </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                            <div class="text-center">
+                                                <button name="update_receipt_settings" class="btn btn-primary" type="submit">
+                                                    Search
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div><!-- .card -->
                             </div><!-- .nk-block -->
