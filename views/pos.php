@@ -256,68 +256,65 @@ require_once('../partials/head.php');
                                             $total_price = 0;
                                         ?>
                                             <div class="card border border-primary text-dark">
-                                                <div class="card-header">
-                                                    <h5>Added Items</h5>
-                                                    <div class="text-left">
+                                                <div class="card-inner">
+                                                    <h5 class="text-center">Items Currently In The Cart</h5>
+                                                    <!-- <div class="text-left">
                                                         <form method="post" enctype="multipart/form-data">
                                                             <button name="hold_sale" class="btn btn-outline-primary btn-sm" type="submit">
                                                                 <i class="fas fa-pause"></i>
                                                                 Hold Sale
                                                             </button>
                                                         </form>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="text-right">
-                                                        <a class="btn btn-outline-danger btn-sm" href="staff_dashboard?action=empty">
-                                                            <i class="fas fa-trash"></i>
+                                                        <a class="btn btn-dim btn-danger btn-sm btn-round" href="pos?action=empty">
+                                                            <em class="icon ni ni-trash"></em>
                                                             Clear Cart
                                                         </a>
                                                     </div>
-                                                </div>
-                                                <div class="card-block">
-                                                    <table class="table" cellpadding="10" cellspacing="1">
-                                                        <tbody>
-                                                            <tr>
-                                                                <th style="text-align:left;">#</th>
-                                                                <th style="text-align:left;">Item</th>
-                                                                <th style="text-align:left;">Desc</th>
-                                                                <th style="text-align:right;" width="5%">QTY</th>
-                                                                <th style="text-align:right;" width="10%">Unit Price</th>
-                                                                <th style="text-align:right;" width="10%">Price</th>
-                                                                <th style="text-align:right;" width="10%">Action</th>
-                                                            </tr>
-                                                            <?php
-                                                            foreach ($_SESSION["cart_item"] as $item) {
-
-                                                                $item_price = $item["quantity"] * $item["product_sale_price"];
-
-
-
-                                                            ?>
+                                                    <hr>
+                                                    <div class="card-block">
+                                                        <table class="table" cellpadding="10" cellspacing="1">
+                                                            <tbody>
                                                                 <tr>
-                                                                    <td><?php echo $item["product_code"]; ?></td>
-                                                                    <td><?php echo  $item["product_name"]; ?></td>
-                                                                    <td><?php echo $item["product_description"]; ?></td>
-                                                                    <td style="text-align:right;"><?php echo $item["quantity"]; ?></td>
-                                                                    <td style="text-align:right;"><?php echo "Ksh " . number_format($item["product_sale_price"], 2); ?></td>
-                                                                    <td style="text-align:right;"><?php echo "Ksh " . number_format($item_price, 2); ?></td>
-                                                                    <td style="text-align:right;">
-                                                                        <a class="text-danger btn btn-outline-danger btn-sm" href="staff_dashboard?action=remove&product_code=<?php echo $item["product_code"]; ?>">
-                                                                            <i class="fas fa-trash"></i> Remove
-                                                                        </a>
-                                                                    </td>
+                                                                    <th style="text-align:left;">#</th>
+                                                                    <th style="text-align:left;">Item</th>
+                                                                    <th style="text-align:left;">Desc</th>
+                                                                    <th style="text-align:right;" width="5%">QTY</th>
+                                                                    <th style="text-align:right;" width="10%">Unit Cost</th>
+                                                                    <th style="text-align:right;" width="10%">Price</th>
+                                                                    <th style="text-align:right;" width="10%">Action</th>
                                                                 </tr>
-                                                            <?php
-                                                                $total_quantity += $item["quantity"];
-                                                                $total_price += ($item["product_sale_price"] * $item["quantity"]);
-                                                            }
-                                                            ?>
-                                                            <tr>
-                                                                <td colspan="3" align="right"><b>Total:</b></td>
-                                                                <td align="right"><b><?php echo $total_quantity; ?></b></td>
-                                                                <td align="right" colspan="2"><strong><?php echo "Ksh " . number_format($total_price, 2); ?></strong></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                                <?php
+                                                                foreach ($_SESSION["cart_item"] as $item) {
+                                                                    $item_price = $item["quantity"] * $item["product_sale_price"];
+                                                                ?>
+                                                                    <tr>
+                                                                        <td><?php echo $item["product_code"]; ?></td>
+                                                                        <td><?php echo  $item["product_name"]; ?></td>
+                                                                        <td><?php echo $item["product_description"]; ?></td>
+                                                                        <td style="text-align:right;"><?php echo $item["quantity"]; ?></td>
+                                                                        <td style="text-align:right;"><?php echo "Ksh " . number_format($item["product_sale_price"], 2); ?></td>
+                                                                        <td style="text-align:right;"><?php echo "Ksh " . number_format($item_price, 2); ?></td>
+                                                                        <td style="text-align:right;">
+                                                                            <a class="btn btn-dim btn-danger btn-sm btn-round" href="pos?action=remove&product_code=<?php echo $item["product_code"]; ?>">
+                                                                                <em class="icon ni ni-cross-round"></em> Remove
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php
+                                                                    $total_quantity += $item["quantity"];
+                                                                    $total_price += ($item["product_sale_price"] * $item["quantity"]);
+                                                                }
+                                                                ?>
+                                                                <tr>
+                                                                    <td colspan="3" align="right"><b>Total:</b></td>
+                                                                    <td align="right"><b><?php echo $total_quantity; ?></b></td>
+                                                                    <td align="right" colspan="2"><strong><?php echo "Ksh " . number_format($total_price, 2); ?></strong></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="text-right">
@@ -364,7 +361,7 @@ require_once('../partials/head.php');
                                         <?php } else {
                                         ?>
                                             <div class="card border border-danger text-dark">
-                                                <div class="card-block">
+                                                <div class="card-inner">
                                                     <table class="table" cellpadding="10" cellspacing="1">
                                                         <tbody>
                                                             <tr>
