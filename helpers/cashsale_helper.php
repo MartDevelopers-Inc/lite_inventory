@@ -118,7 +118,7 @@ foreach ($cart_products as $cart_products) {
             $update_prepare->execute();
             $sale_prepare->execute();
             /* Log This Operation */
-            require_once('../functions/logs.php');
+            include('../functions/logs.php');
             /* Alerts If Everything Is Okay */
             if ($update_prepare && $sale_prepare) {
                 header('Location: pos_receipt?receipt=' . $sale_receipt_no . '&customer=' . $sale_customer_name . '');
