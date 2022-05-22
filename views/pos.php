@@ -65,6 +65,67 @@ require_once('../config/dbcontroller.php');
 check_login();
 /* Initiate DB Controller */
 $db_handle = new DBController();
+if (!empty($_GET["action"])) {
+    switch ($_GET["action"]) {
+        case "add":
+            if (!empty($_POST["quantity"])) {
+                $productByCode = $db_handle->runQuery("SELECT * FROM products WHERE product_id='" . $_GET["product_id"] . "'");
+                /* Fetch All Products And Add Them In An Array */
+                if (!empty($_POST['Discount'])) {
+                    /* Check If Discount Is Empty */
+                    $Discount = $_POST['Discount'];
+                    /* Hold Discount */
+                } else {
+                    $Discount = 0;
+                }
+                $itemArray = array(
+                    $productByCode[0]["product_code"] => array(
+                        'product_name' => $productByCode[0]["product_name"],
+                        'product_code' => $productByCode[0]["product_code"],
+                        'quantity' => $_POST["quantity"],
+                        'product_sale_price' => ($productByCode[0]["product_sale_price"] - $Discount),
+                        'product_description' => $productByCode[0]["product_description"],
+                        'product_id' => $productByCode[0]["product_id"],
+                        'product_quantity_limit' => $productByCode[0]["product_quantity_limit"],
+                        'Discount' => $Discount
+                    )
+                );
+
+                if (!empty($_SESSION["cart_item"])) {
+                    if (in_array($productByCode[0]["product_code"], array_keys($_SESSION["cart_item"]))) {
+                        foreach ($_SESSION["cart_item"] as $k => $v) {
+                            if ($productByCode[0]["product_code"] == $k) {
+                                if (empty($_SESSION["cart_item"][$k]["quantity"])) {
+                                    $_SESSION["cart_item"][$k]["quantity"] = 0;
+                                }
+                                $_SESSION["cart_item"][$k]["quantity"] += $_POST["quantity"];
+                            }
+                        }
+                    } else {
+                        $_SESSION["cart_item"] = array_merge($_SESSION["cart_item"], $itemArray);
+                    }
+                } else {
+                    $_SESSION["cart_item"] = $itemArray;
+                }
+            }
+            break;
+
+        case "remove":
+            if (!empty($_SESSION["cart_item"])) {
+                foreach ($_SESSION["cart_item"] as $k => $v) {
+                    if ($_GET["product_code"] == $k)
+                        unset($_SESSION["cart_item"][$k]);
+                    if (empty($_SESSION["cart_item"]))
+                        unset($_SESSION["cart_item"]);
+                }
+            }
+            break;
+        case "empty":
+            unset($_SESSION["cart_item"]);
+            break;
+    }
+}
+
 require_once('../partials/head.php');
 ?>
 
@@ -94,6 +155,7 @@ require_once('../partials/head.php');
                             <div class="nk-block">
                                 <div class="nk-news card  border border-success">
                                     <div class="card-inner">
+
                                         <form method="post" enctype="multipart/form-data">
                                             <div class="form-group col-md-12">
                                                 <div class="form-control-wrap">
@@ -117,7 +179,7 @@ require_once('../partials/head.php');
                                             </div>
                                             <div class="text-center">
                                                 <button name="search" class="btn btn-primary" type="submit">
-                                                    Search
+                                                    <em class="icon ni ni-search"></em> Search
                                                 </button>
                                             </div>
                                         </form>
@@ -126,107 +188,217 @@ require_once('../partials/head.php');
                             </div><!-- .nk-block -->
                             <br><br>
                             <div class="nk-block">
-                                <?php
-                                if (isset($_POST['search'])) {
-                                    $query = htmlspecialchars($_POST['querry']);
-                                    $product_array = $db_handle->runQuery("SELECT * 
-                                FROM products WHERE product_status ='active' AND product_id = '$query'");
-                                    if (!empty($product_array)) {
-                                        foreach ($product_array as $key => $value) {
-                                ?>
-                                            <div class="col-md-4">
-                                                <form method="post" class="form-inline my-2 my-lg-0" action="pos?action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
-                                                    <div class="card border border-success text-dark">
-                                                        <div class="card-body">
-                                                            <h5 id="product_details" class="card-title">
-                                                                <?php echo $product_array[$key]["product_code"] . ' ' . $product_array[$key]["product_name"]; ?>
-                                                            </h5>
-                                                            <p class="card-text">
-                                                                <?php echo $product_array[$key]["product_description"]; ?>
-                                                            </p>
-                                                            <!-- Notify User If Product Has Reached Restock Limit -->
-                                                            <?php if ($product_array[$key]["product_quantity"] <= 0) { ?>
-                                                                <p class="card-text text-danger">
-                                                                    Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
-                                                                </p>
-                                                            <?php } else if ($product_array[$key]["product_quantity"] <= $product_array[$key]["product_quantity_limit"]) { ?>
-                                                                <p class="card-text text-danger">
-                                                                    Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
-                                                                </p>
+                                <div class="row gy-gs">
+                                    <?php
+                                    if (isset($_POST['search'])) {
+                                        $query = htmlspecialchars($_POST['querry']);
+                                        $product_array = $db_handle->runQuery("SELECT * FROM products p JOIN receipt_customization rc
+                                        WHERE p.product_status ='active' AND p.product_id = '$query'");
+                                        if (!empty($product_array)) {
+                                            foreach ($product_array as $key => $value) {
+                                    ?>
+                                                <div class="col-5">
+                                                    <form method="post" class="form-inline my-2 my-lg-0" action="pos?action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
+                                                        <div class="card border border-success text-dark">
+                                                            <div class="card-body">
+                                                                <h5 id="product_details" class="card-title">
+                                                                    <?php echo $product_array[$key]["product_code"] . ' ' . $product_array[$key]["product_name"]; ?>
+                                                                </h5>
                                                                 <p class="card-text">
-                                                                    <b> <?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
+                                                                    <?php echo $product_array[$key]["product_description"]; ?>
                                                                 </p>
-                                                                <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
-
-                                                                <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
-
-                                                                <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
-                                                            <?php } else { ?>
-                                                                <p class="card-text text-success">
-                                                                    Current Item Quantity is <?php echo $product_array[$key]["product_quantity"]; ?>.
-                                                                </p>
-                                                                <p class="card-text">
-                                                                    <b><?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
-                                                                </p>
-                                                                <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
-                                                                <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
-                                                                <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
-                                                            <?php } ?>
+                                                                <!-- Notify User If Product Has Reached Restock Limit -->
+                                                                <?php if ($product_array[$key]["product_quantity"] <= 0) { ?>
+                                                                    <p class="card-text text-danger">
+                                                                        Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                    </p>
+                                                                <?php } else if ($product_array[$key]["product_quantity"] <= $product_array[$key]["product_quantity_limit"]) { ?>
+                                                                    <p class="card-text text-danger">
+                                                                        Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                    </p>
+                                                                    <p class="card-text">
+                                                                        <b> <?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
+                                                                    </p>
+                                                                    <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
+                                                                    <?php if ($product_array[$key]['allow_discounts'] == 'true') { ?>
+                                                                        <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
+                                                                    <?php } ?>
+                                                                    <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
+                                                                <?php } else { ?>
+                                                                    <p class="card-text text-success">
+                                                                        Current Item Quantity is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                    </p>
+                                                                    <p class="card-text">
+                                                                        <b><?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
+                                                                    </p>
+                                                                    <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
+                                                                    <?php if ($product_array[$key]['allow_discounts'] == 'true') { ?>
+                                                                        <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
+                                                                    <?php } ?>
+                                                                    <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
+                                                                <?php } ?>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                <?php }
-                                    }
-                                } ?>
+                                                    </form>
+                                                </div>
+                                    <?php }
+                                        }
+                                    } ?>
+                                </div>
                             </div>
                             <br><br><br>
                             <div class="nk-block">
                                 <div class="row gy-gs">
                                     <div class="col-md-12 col-lg-12">
-                                        <div class="nk-wg-card card card-bordered h-100">
-                                            <div class="card-inner h-100">
-                                                <div class="nk-iv-wg2">
-                                                    <div class="nk-iv-wg2-title">
-                                                        <h6 class="title">Balance in Account</h6>
+                                        <?php
+                                        if (isset($_SESSION["cart_item"])) {
+                                            $total_quantity = 0;
+                                            $total_price = 0;
+                                        ?>
+                                            <div class="card border border-primary text-dark">
+                                                <div class="card-header">
+                                                    <h5>Added Items</h5>
+                                                    <div class="text-left">
+                                                        <form method="post" enctype="multipart/form-data">
+                                                            <button name="hold_sale" class="btn btn-outline-primary btn-sm" type="submit">
+                                                                <i class="fas fa-pause"></i>
+                                                                Hold Sale
+                                                            </button>
+                                                        </form>
                                                     </div>
-                                                    <div class="nk-iv-wg2-text">
-                                                        <div class="nk-iv-wg2-amount ui-v2">12,587.96</div>
-                                                        <ul class="nk-iv-wg2-list">
-                                                            <li>
-                                                                <span class="item-label">Available Funds</span>
-                                                                <span class="item-value">105.94</span>
-                                                            </li>
-                                                            <li>
-                                                                <span class="item-label">Invested Funds</span>
-                                                                <span class="item-value">12,582.02</span>
-                                                            </li>
-                                                            <li class="total">
-                                                                <span class="item-label">Total</span>
-                                                                <span class="item-value">12,587.96</span>
-                                                            </li>
-                                                        </ul>
+                                                    <div class="text-right">
+                                                        <a class="btn btn-outline-danger btn-sm" href="staff_dashboard?action=empty">
+                                                            <i class="fas fa-trash"></i>
+                                                            Clear Cart
+                                                        </a>
                                                     </div>
-                                                    <div class="nk-iv-wg2-cta">
-                                                        <a href="#" class="btn btn-primary btn-lg btn-block">Withdraw Funds</a>
-                                                        <a href="#" class="btn btn-trans btn-block">Deposit Funds</a>
+                                                </div>
+                                                <div class="card-block">
+                                                    <table class="table" cellpadding="10" cellspacing="1">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th style="text-align:left;">#</th>
+                                                                <th style="text-align:left;">Item</th>
+                                                                <th style="text-align:left;">Desc</th>
+                                                                <th style="text-align:right;" width="5%">QTY</th>
+                                                                <th style="text-align:right;" width="10%">Unit Price</th>
+                                                                <th style="text-align:right;" width="10%">Price</th>
+                                                                <th style="text-align:right;" width="10%">Action</th>
+                                                            </tr>
+                                                            <?php
+                                                            foreach ($_SESSION["cart_item"] as $item) {
+
+                                                                $item_price = $item["quantity"] * $item["product_sale_price"];
+
+
+
+                                                            ?>
+                                                                <tr>
+                                                                    <td><?php echo $item["product_code"]; ?></td>
+                                                                    <td><?php echo  $item["product_name"]; ?></td>
+                                                                    <td><?php echo $item["product_description"]; ?></td>
+                                                                    <td style="text-align:right;"><?php echo $item["quantity"]; ?></td>
+                                                                    <td style="text-align:right;"><?php echo "Ksh " . number_format($item["product_sale_price"], 2); ?></td>
+                                                                    <td style="text-align:right;"><?php echo "Ksh " . number_format($item_price, 2); ?></td>
+                                                                    <td style="text-align:right;">
+                                                                        <a class="text-danger btn btn-outline-danger btn-sm" href="staff_dashboard?action=remove&product_code=<?php echo $item["product_code"]; ?>">
+                                                                            <i class="fas fa-trash"></i> Remove
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php
+                                                                $total_quantity += $item["quantity"];
+                                                                $total_price += ($item["product_sale_price"] * $item["quantity"]);
+                                                            }
+                                                            ?>
+                                                            <tr>
+                                                                <td colspan="3" align="right"><b>Total:</b></td>
+                                                                <td align="right"><b><?php echo $total_quantity; ?></b></td>
+                                                                <td align="right" colspan="2"><strong><?php echo "Ksh " . number_format($total_price, 2); ?></strong></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" data-toggle="modal" data-target="#checkout_modal" class="btn btn-primary">Checkout</button>
+                                            </div>
+                                            <br>
+                                            <!-- Modal To Post Captured Data -->
+                                            <div class="modal fade" id="checkout_modal">
+                                                <div class="modal-dialog  modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Fill All Required Fields</h4>
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <span>&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form method="post" enctype="multipart/form-data">
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-md-6">
+                                                                        <label>Customer Name</label>
+                                                                        <input type="text" required name="sale_customer_name" class="form-control">
+                                                                    </div>
+                                                                    <div class="form-group col-md-6">
+                                                                        <label>Customer Phone Number</label>
+                                                                        <input type="text" required name="sale_customer_phoneno" class="form-control">
+                                                                        <!-- Hide This -->
+                                                                        <input type="hidden" name="total_payable_price" value="<?php echo $total_price; ?>">
+                                                                        <input type="hidden" name="sale_payment_method" value="Cash">
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="text-right">
+                                                                    <button name="add_sale" class="btn btn-primary" type="submit">
+                                                                        Proceed To Payment
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div><!-- .card -->
-                                    </div><!-- .col -->
-                                </div><!-- .row -->
-                            </div><!-- .nk-block -->
-                        </div>
+                                            <!-- End Modal -->
+                                        <?php } else {
+                                        ?>
+                                            <div class="card border border-danger text-dark">
+                                                <div class="card-block">
+                                                    <table class="table" cellpadding="10" cellspacing="1">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th style="text-align:left;">#</th>
+                                                                <th style="text-align:left;">Item</th>
+                                                                <th style="text-align:left;">Desc</th>
+                                                                <th style="text-align:right;" width="5%">QTY</th>
+                                                                <th style="text-align:right;" width="10%">Unit Price</th>
+                                                                <th style="text-align:right;" width="10%">Price</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="7" align="center" class="text-danger">There are no Items in the cart.</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        <?php
+                                        }
+                                        ?>
+                                    </div><!-- .card -->
+                                </div><!-- .col -->
+                            </div><!-- .row -->
+                        </div><!-- .nk-block -->
                     </div>
                 </div>
             </div>
-            <!-- content @e -->
-            <!-- footer @s -->
-            <?php require_once('../partials/pos_footer.php'); ?>
-            <!-- footer @e -->
         </div>
-        <!-- wrap @e -->
+        <!-- content @e -->
+        <!-- footer @s -->
+        <?php require_once('../partials/pos_footer.php'); ?>
+        <!-- footer @e -->
+    </div>
+    <!-- wrap @e -->
     </div>
     <!-- app-root @e -->
     <!-- JavaScript -->
