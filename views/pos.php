@@ -317,6 +317,7 @@ require_once('../partials/head.php');
                                                     </div>
                                                 </div>
                                             </div>
+                                            <br>
                                             <?php
                                             /* Check If Its Allowed To Pick Customer Details */
                                             $ret = "SELECT * FROM  receipt_customization";
@@ -328,7 +329,10 @@ require_once('../partials/head.php');
                                                     /* Show Add Customer Details Module */
                                             ?>
                                                     <div class="text-right">
-                                                        <button type="button" data-toggle="modal" data-target="#checkout_modal" class="btn btn-primary">Checkout</button>
+                                                        <button type="button" data-toggle="modal" data-target="#checkout_modal" class="btn btn-primary">
+                                                            <em class="icon ni ni-cart-fill"></em>
+                                                            Checkout
+                                                        </button>
                                                     </div>
                                                 <?php } else {
                                                     /* Post Transaction Automatically Without Asking Customer Details */
@@ -338,7 +342,7 @@ require_once('../partials/head.php');
                                                         <input type="hidden" name="sale_payment_method" value="Cash">
                                                         <div class="text-right">
                                                             <button name="add_sale" class="btn btn-primary" type="submit">
-                                                                Checkout
+                                                                <em class="icon ni ni-cart-fill"></em> Checkout
                                                             </button>
                                                         </div>
                                                     </form>
@@ -373,7 +377,7 @@ require_once('../partials/head.php');
                                                                 </div>
                                                                 <div class="text-right">
                                                                     <button name="add_sale" class="btn btn-primary" type="submit">
-                                                                        Submit
+                                                                        <em class="icon ni ni-list-check"></em> Save
                                                                     </button>
                                                                 </div>
                                                             </form>
