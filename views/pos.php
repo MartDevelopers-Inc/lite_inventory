@@ -125,6 +125,12 @@ if (!empty($_GET["action"])) {
             break;
     }
 }
+if (isset($_POST['add_sale'])) {
+    $sale_payment_method = $_POST['sale_payment_method'];
+    $cart_products = $_SESSION["cart_item"];
+    /* Load Sale Helper */
+    include('../helpers/cashsale_helper.php');
+}
 
 require_once('../partials/head.php');
 ?>

@@ -1,26 +1,26 @@
 <?php
 /*
- * Created on Fri Feb 11 2022
+ * Created on Sun May 22 2022
  *
- *  Devlan Agency - devlan.co.ke 
+ * Devlan Solutions LTD - www.devlan.co.ke 
  *
  * hello@devlan.co.ke
  *
  *
- * The Devlan End User License Agreement
+ * The Devlan Solutions LTD End User License Agreement
  *
- * Copyright (c) 2022 Devlan Agency
+ * Copyright (c) 2022 Devlan Solutions LTD
  *
  * 1. GRANT OF LICENSE
- * Devlan Agency hereby grants to you (an individual) the revocable, personal, non-exclusive, and nontransferable right to
+ * Devlan Solutions LTD hereby grants to you (an individual) the revocable, personal, non-exclusive, and nontransferable right to
  * install and activate this system on two separated computers solely for your personal and non-commercial use,
- * unless you have purchased a commercial license from Devlan Agency. Sharing this Software with other individuals, 
+ * unless you have purchased a commercial license from Devlan Solutions LTD. Sharing this Software with other individuals, 
  * or allowing other individuals to view the contents of this Software, is in violation of this license.
  * You may not make the Software available on a network, or in any way provide the Software to multiple users
- * unless you have first purchased at least a multi-user license from Devlan Agency.
+ * unless you have first purchased at least a multi-user license from Devlan Solutions LTD.
  *
  * 2. COPYRIGHT 
- * The Software is owned by Devlan Agency and protected by copyright law and international copyright treaties. 
+ * The Software is owned by Devlan Solutions LTD and protected by copyright law and international copyright treaties. 
  * You may not remove or conceal any proprietary notices, labels or marks from the Software.
  *
  * 3. RESTRICTIONS ON USE
@@ -37,8 +37,8 @@
  * Upon such termination, you agree to destroy the Software, together with all copies thereof.
  *
  * 5. NO OTHER WARRANTIES. 
- * DEVLAN AGENCY  DOES NOT WARRANT THAT THE SOFTWARE IS ERROR FREE. 
- * DEVLAN AGENCY SOFTWARE DISCLAIMS ALL OTHER WARRANTIES WITH RESPECT TO THE SOFTWARE, 
+ * DEVLAN SOLUTIONS LTD DOES NOT WARRANT THAT THE SOFTWARE IS ERROR FREE. 
+ * DEVLAN SOLUTIONS LTD SOFTWARE DISCLAIMS ALL OTHER WARRANTIES WITH RESPECT TO THE SOFTWARE, 
  * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, 
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS. 
  * SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF IMPLIED WARRANTIES OR LIMITATIONS
@@ -52,7 +52,7 @@
  * In the event of invalidity of any provision of this license, the parties agree that such invalidity shall not
  * affect the validity of the remaining portions of this license.
  *
- * 7. NO LIABILITY FOR CONSEQUENTIAL DAMAGES IN NO EVENT SHALL DEVLAN AGENCY  OR ITS SUPPLIERS BE LIABLE TO YOU FOR ANY
+ * 7. NO LIABILITY FOR CONSEQUENTIAL DAMAGES IN NO EVENT SHALL DEVLAN SOLUTIONS LTD  OR ITS SUPPLIERS BE LIABLE TO YOU FOR ANY
  * CONSEQUENTIAL, SPECIAL, INCIDENTAL OR INDIRECT DAMAGES OF ANY KIND ARISING OUT OF THE DELIVERY, PERFORMANCE OR 
  * USE OF THE SOFTWARE, EVEN IF DEVLAN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES
  * IN NO EVENT WILL DEVLAN  LIABILITY FOR ANY CLAIM, WHETHER IN CONTRACT 
@@ -61,68 +61,76 @@
 
 
 /* This Helper Handles Cash Payments Processing */
-
-/* Cash */
 $sale_user_id = $_SESSION['user_id'];
 $sale_customer_name = $_POST['sale_customer_name'];
 $sale_customer_phoneno  = $_POST['sale_customer_phoneno'];
 $sale_receipt_no = $b; /* Receipt Number */
 $sale_payment_method = $_POST['sale_payment_method'];
 $sale_payment_status  = 'paid';
+
 foreach ($cart_products as $cart_products) {
-    /* Loop */
     $sale_product_id = $cart_products['product_id'];
     $sale_quantity = $cart_products['quantity'];
     $product_limit = $cart_products['product_quantity_limit'];
     $log_sold_product = $cart_products['product_code'] . ' ' . $cart_products['product_name'];
-    /* Product Sale Price */
+    $Discount  = $cart_products['Discount'];
     $product_sale_price = $cart_products['product_sale_price'];
+
     /* Activity Logged */
-    $log_type = "Sold $sale_quantity items of $log_sold_product";
-    /* Mailer Variables */
-    $product_details = $cart_products['product_code'] . ' ' . $cart_products['product_name'];
+    $log_type = "Sales Management Logs";
+    $log_details = "Sold $sale_quantity items of $log_sold_product";
+
     /* Check If Product Count Is Over Given One */
     $sql = "SELECT * FROM  products  WHERE product_id = '$sale_product_id'";
     $res = mysqli_query($mysqli, $sql);
     if (mysqli_num_rows($res) > 0) {
         $products = mysqli_fetch_assoc($res);
+        /* Check If Current Product Quantity Has Reached Limit  $sale_quantity */
+        if ($products['product_quantity'] >= $sale_quantity) {
 
-        /* Deduct Product Sale Quantity From Products Table */
-        $new_product_qty = $products['product_quantity'] - $sale_quantity;
+            /* Deduct Product Sale Quantity From Products Table */
+            $new_product_qty = $products['product_quantity'] - $sale_quantity;
 
-        /* SQLS To Persist Changes */
-        $update_sql  = "UPDATE products SET product_quantity =? WHERE product_id  = ?";
-        $sale_sql =  "INSERT INTO sales (sale_product_id, sale_user_id, sale_quantity, sale_customer_name, sale_customer_phoneno, sale_receipt_no, sale_payment_amount, sale_payment_method, sale_payment_status)
-            VALUES(?,?,?,?,?,?,?,?,?)";
+            /* SQLS To Persist Changes */
+            $update_sql  = "UPDATE products SET product_quantity = '{$new_product_qty}' WHERE product_id  = '{$sale_product_id}'";
+            $sale_sql =  "INSERT INTO sales (sale_product_id, sale_user_id, sale_quantity, sale_customer_name, sale_customer_phoneno, sale_receipt_no, sale_payment_method, sale_payment_amount, sale_payment_status, sale_discount)
+            VALUES(?,?,?,?,?,?,?,?,?,?)";
 
-        /* Prepare */
-        $update_prepare = $mysqli->prepare($update_sql);
-        $sale_prepare = $mysqli->prepare($sale_sql);
+            /* Prepare */
+            $update_prepare = $mysqli->prepare($update_sql);
+            $sale_prepare = $mysqli->prepare($sale_sql);
 
-        /* Bind */
-        $update_bind = $update_prepare->bind_param('ss', $new_product_qty, $sale_product_id);
-        $sale_bind = $sale_prepare->bind_param(
-            'sssssssss',
-            $sale_product_id,
-            $sale_user_id,
-            $sale_quantity,
-            $sale_customer_name,
-            $sale_customer_phoneno,
-            $sale_receipt_no,
-            $product_sale_price,
-            $sale_payment_method,
-            $sale_payment_status
-        );
-        /* Execute */
-        $update_prepare->execute();
-        $sale_prepare->execute();
-        /* Log This Operation */
-        require_once('../functions/logs.php');
-        /* Alerts If Everything Is Okay */
-        if ($update_prepare && $sale_prepare) {
-            $success = "Sale Record(s) Posted";
+            /* Bind */
+            $sale_bind = $sale_prepare->bind_param(
+                'ssssssssss',
+                $sale_product_id,
+                $sale_user_id,
+                $sale_quantity,
+                $sale_customer_name,
+                $sale_customer_phoneno,
+                $sale_receipt_no,
+                $sale_payment_method,
+                $product_sale_price,
+                $sale_payment_status,
+                $Discount
+            );
+            /* Execute */
+            $update_prepare->execute();
+            $sale_prepare->execute();
+            /* Log This Operation */
+            require_once('../functions/logs.php');
+            /* Alerts If Everything Is Okay */
+            if ($update_prepare && $sale_prepare) {
+                header('Location: pos_receipt?receipt=' . $sale_receipt_no . '&customer=' . $sale_customer_name . '');
+            } else {
+                $err = "Failed!, Please Empty Cart And Repost Again";
+            }
+            /* Make Sure This Portion Will Never Be Triggered */
+        } else if ($sale_quantity > $products['product_quantity']) {
+            /* Error Quantity Sold Is Greeater Than The One In Stock */
+            $err = "There Are Only : " . $products['product_quantity'] . " Items Available For " . $products['product_name'];
         } else {
-            $err = "Failed!, Please Empty Cart And Repost Again";
+            $info = "Failed!, Kindly Restock That Product,It Has Reached Restock Limit";
         }
     } else {
         $err = "Failed, Kindly Try Again";
