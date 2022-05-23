@@ -160,89 +160,96 @@ require_once('../partials/head.php');
                                 </div><!-- .nk-block-between -->
                             </div><!-- .nk-block-head -->
                             <div class="nk-block">
-                                <div class="row gy-gs">
-                                    <div class="card border border-success col-12">
-                                        <?php
-                                        /* Load Receipt Settings */
-                                        $sql = "SELECT * FROM receipt_customization";
-                                        $stmt = $mysqli->prepare($sql);
-                                        $stmt->execute(); //ok
-                                        $res = $stmt->get_result();
-                                        while ($settings = $res->fetch_object()) {
-                                            if (isset($_GET['receipt']) && isset($_SESSION["cart_item"])) {
-                                                $total_quantity = 0;
-                                                $total_price = 0;
-                                        ?>
-                                                <div class="text-center">
-                                                    <h6>
-                                                        <?php
-                                                        echo $settings->receipt_header_content;
-                                                        $date = new DateTime("now", new DateTimeZone('EAT'));
-                                                        echo  $date->format('d M Y H:i') . '<br>';
-                                                        echo "Cash Sale Receipt # " . $_GET['receipt'] . '<br>';
-                                                        if ($settings->receipt_show_barcode == 'true') {
-                                                            /* Load Barcode Here */
-                                                            echo "<img alt='barcode' src='../functions/barcode.php?codetype=Code39&size=20&text=" . $_GET['receipt'] . "&print=true'/>";
-                                                        }
-                                                        ?>
+                                <div class="d-flex justify-content-center">
+                                    <div class="row gy-gs">
+                                        <div class="card border border-success col-12">
+                                            <?php
+                                            /* Load Receipt Settings */
+                                            $sql = "SELECT * FROM receipt_customization";
+                                            $stmt = $mysqli->prepare($sql);
+                                            $stmt->execute(); //ok
+                                            $res = $stmt->get_result();
+                                            while ($settings = $res->fetch_object()) {
+                                                if (isset($_GET['receipt']) && isset($_SESSION["cart_item"])) {
+                                                    $total_quantity = 0;
+                                                    $total_price = 0;
+                                            ?>
+                                                    <div class="text-center">
+                                                        <h6>
+                                                            <?php
+                                                            echo $settings->receipt_header_content;
+                                                            $date = new DateTime("now", new DateTimeZone('EAT'));
+                                                            echo  $date->format('d M Y H:i') . '<br>';
+                                                            echo "Cash Sale Receipt # " . $_GET['receipt'] . '<br>';
+                                                            if ($settings->receipt_show_barcode == 'true') {
+                                                                /* Load Barcode Here */
+                                                                echo "<img alt='barcode' src='../functions/barcode.php?codetype=Code39&size=20&text=" . $_GET['receipt'] . "&print=true'/>";
+                                                            }
+                                                            ?>
+                                                            <br>
+                                                        </h6>
                                                         <br>
-                                                    </h6>
-                                                    <br>
-                                                </div>
-                                                <table class="table" cellpadding="10" cellspacing="1">
-                                                    <tbody>
-                                                        <tr>
-                                                            <th style="text-align:left;">Name</th>
-                                                            <th style="text-align:right;" width="5%">Quantity</th>
-                                                            <th style="text-align:right;" width="10%">Unit Price</th>
-                                                            <th style="text-align:right;" width="10%">Price</th>
-                                                        </tr>
-                                                        <?php
-                                                        foreach ($_SESSION["cart_item"] as $item) {
-                                                            $item_price = $item["quantity"] * $item["product_sale_price"];
-                                                        ?>
+                                                    </div>
+                                                    <table class="table" cellpadding="10" cellspacing="1">
+                                                        <tbody>
                                                             <tr>
-                                                                <td><?php echo  $item["product_code"] . ' ' . $item["product_name"]; ?></td>
-                                                                <td style="text-align:right;"><?php echo $item["quantity"]; ?></td>
-                                                                <td style="text-align:right;"><?php echo "Ksh " . number_format($item["product_sale_price"], 2); ?></td>
-                                                                <td style="text-align:right;"><?php echo "Ksh " . number_format($item_price, 2); ?></td>
+                                                                <th style="text-align:left;">Name</th>
+                                                                <th style="text-align:right;" width="5%">Quantity</th>
+                                                                <th style="text-align:right;" width="10%">Unit Price</th>
+                                                                <th style="text-align:right;" width="10%">Price</th>
                                                             </tr>
-                                                        <?php
-                                                            $total_quantity += $item["quantity"];
-                                                            $total_price += ($item["product_sale_price"] * $item["quantity"]);
-                                                        }
-                                                        ?>
-                                                        <tr>
-                                                            <td colspan="1" align="right">Total:</td>
-                                                            <td align="right"><?php echo $total_quantity; ?></td>
-                                                            <td align="right" colspan="2"><strong><?php echo "Ksh " . number_format($total_price, 2); ?></strong></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <br>
-                                                <?php
-                                                /* Load Logged In User Session */
-                                                $user_id = $_SESSION['user_id'];
-                                                $sql = "SELECT * FROM  users  WHERE user_id = '$user_id'";
-                                                $res = mysqli_query($mysqli, $sql);
-                                                if (mysqli_num_rows($res) > 0) {
-                                                    $users = mysqli_fetch_assoc($res);
-                                                ?>
-                                                    <p class="text-center">You Were Served By <?php echo $users['user_name']; ?></p>
-                                                <?php } ?>
-                                        <?php }
-                                        }
-                                        ?>
-                                        <!-- End Receipt -->
+                                                            <?php
+                                                            foreach ($_SESSION["cart_item"] as $item) {
+                                                                $item_price = $item["quantity"] * $item["product_sale_price"];
+                                                            ?>
+                                                                <tr>
+                                                                    <td><?php echo  $item["product_code"] . ' ' . $item["product_name"]; ?></td>
+                                                                    <td style="text-align:right;"><?php echo $item["quantity"]; ?></td>
+                                                                    <td style="text-align:right;"><?php echo "Ksh " . number_format($item["product_sale_price"], 2); ?></td>
+                                                                    <td style="text-align:right;"><?php echo "Ksh " . number_format($item_price, 2); ?></td>
+                                                                </tr>
+                                                            <?php
+                                                                $total_quantity += $item["quantity"];
+                                                                $total_price += ($item["product_sale_price"] * $item["quantity"]);
+                                                            }
+                                                            ?>
+                                                            <tr>
+                                                                <td colspan="1" align="right">Total:</td>
+                                                                <td align="right"><?php echo $total_quantity; ?></td>
+                                                                <td align="right" colspan="2"><strong><?php echo "Ksh " . number_format($total_price, 2); ?></strong></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <br>
+                                                    <?php
+                                                    /* Load Logged In User Session */
+                                                    $user_id = $_SESSION['user_id'];
+                                                    $sql = "SELECT * FROM  users  WHERE user_id = '$user_id'";
+                                                    $res = mysqli_query($mysqli, $sql);
+                                                    if (mysqli_num_rows($res) > 0) {
+                                                        $users = mysqli_fetch_assoc($res);
+                                                    ?>
+                                                        <p class="text-center">You Were Served By <?php echo $users['user_name']; ?></p>
+                                                        <p class="text-center">
+                                                            <i>
+                                                                <?php echo $settings->receipt_footer_content; ?>
+                                                            </i>
+                                                        </p>
+                                                    <?php } ?>
+                                            <?php }
+                                            }
+                                            ?>
+                                            <!-- End Receipt -->
+                                        </div>
                                     </div>
                                 </div>
                                 <br><br>
                                 <div class="text-center">
-                                    <a href="pos?action=empty" class="btn btn-primary">
-                                        <i class="fas fa-cash-register"></i> Return To Sales
+                                    <a href="pos?action=empty" class="btn btn-primary btn-round">
+                                        <em class="icon ni ni-histroy"></em> Return To Sales
                                     </a>
-                                    <a href="main_dashboard_download_receipt?number=<?php echo $_GET['receipt']; ?>&customer=<?php echo $_GET['customer']; ?>" class="btn btn-primary">
-                                        <i class="fas fa-print"></i> Print Receipt
+                                    <a href="main_dashboard_download_receipt?number=<?php echo $_GET['receipt']; ?>&customer=<?php echo $_GET['customer']; ?>" class="btn btn-primary btn-round">
+                                        <em class="icon ni ni-printer-fill"></em> Print Receipt
                                     </a>
                                 </div>
                             </div>
@@ -251,8 +258,6 @@ require_once('../partials/head.php');
                 </div><!-- .row -->
             </div><!-- .nk-block -->
         </div>
-    </div>
-    </div>
     </div>
     <!-- content @e -->
     <!-- footer @s -->
