@@ -140,7 +140,16 @@ if (isset($_POST['hold_sale'])) {
     include('../helpers/holdsale_helper.php');
 }
 
-
+/* Restore Hold Sales */
+if (isset($_POST['restore_sale'])) {
+    $hold_sale_number = mysqli_real_escape_string($mysqli, $_POST['hold_sale_number']);
+    $items_sql = mysqli_query($mysqli, "SELECT * FROM hold_sales WHERE hold_sale_number = '{$hold_sale_number}'");
+    $items = array();
+    while ($row = mysqli_fetch_assoc($items_sql)) {
+        $items[] = $row;
+    }
+    $_SESSION["cart_item"] = $items;
+}
 require_once('../partials/head.php');
 ?>
 
