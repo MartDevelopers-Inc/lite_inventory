@@ -63,51 +63,37 @@ require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
 check_login();
-/* Roll Back Sale Record */
-if (isset($_POST['delete_sale'])) {
-    $sale_id = mysqli_real_escape_string($mysqli, $_POST['sale_id']);
+/* Update Stock And Log That Activity */
+if (isset($_POST['update_product_stock'])) {
+    /* Product Attributes */
     $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
-    $sale_quantity = mysqli_real_escape_string($mysqli, $_POST['sale_quantity']);
-    $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
-    $user_password = mysqli_real_escape_string($mysqli, sha1(md5($_POST['user_password'])));
-    /* Activity Logged */
-    $log_type = 'Sales Management Logs';
-    $log_details = mysqli_real_escape_string($mysqli, $_POST['log_details']);
+    $product_quantity = mysqli_real_escape_string($mysqli, $_POST['product_quantity']);
+    $product_details = mysqli_real_escape_string($mysqli, $_POST['product_details']);
 
-    /* Check If This Fella Password Matches */
-    $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
+    /* Log Details */
+    $log_type = 'Stock Management Logs';
+    $log_details = 'Added New Stock Of ' . $product_quantity . ' Items To ' . $product_details;
+
+    /* Get Product Details */
+    $sql = "SELECT * FROM  products  WHERE product_id = '{$product_id}'";
     $res = mysqli_query($mysqli, $sql);
     if (mysqli_num_rows($res) > 0) {
         $row = mysqli_fetch_assoc($res);
-        if ($user_password != $row['user_password']) {
-            $err = "Please Enter Correct Password";
+        /* Compute New Stock  */
+        $new_stock = $row['product_quantity'] + $product_quantity;
+        /* Persist New Stock */
+        $sql = "UPDATE products SET product_quantity = '{$new_stock}' WHERE product_id = '{$product_id}'";
+        $prepare = $mysqli->prepare($sql);
+        $prepare->execute();
+        /* Log This Operation */
+        include('../functions/logs.php');
+        if ($prepare) {
+            $success = "New Stock Of $product_details Has Been Added";
         } else {
-            /* Pop Product Details */
-            $sql = "SELECT * FROM  products  WHERE product_id = '{$product_id}'";
-            $return = mysqli_query($mysqli, $sql);
-            if (mysqli_num_rows($return) > 0) {
-                $product_details = mysqli_fetch_assoc($return);
-                /* New Quantity */
-                $new_stock = $product_details['product_quantity'] + $sale_quantity;
-                /* Persist */
-                $product_sql = "UPDATE products SET product_quantity = '{$new_stock}' WHERE product_id = '{$product_id}'";
-                $sale_sql = "DELETE FROM sales WHERE sale_id = '{$sale_id}'";
-
-                $product_prepare = $mysqli->prepare($product_sql);
-                $sale_prepare = $mysqli->prepare($sale_sql);
-
-                $product_prepare->execute();
-                $sale_prepare->execute();
-
-                /* Log Operation */
-                include('../functions/logs.php');
-                if ($product_prepare && $sale_prepare) {
-                    $success = "Cash Sale Rolled Back";
-                } else {
-                    $err = "Failed!, Please Try Again";
-                }
-            }
+            $err = "Failed!, Please Try Again";
         }
+    } else {
+        $err = "Please Try Again";
     }
 }
 require_once('../partials/head.php');
@@ -187,7 +173,7 @@ require_once('../partials/head.php');
                                                                         <div class="form-row">
                                                                             <div class="form-group col-md-12">
                                                                                 <label>New Item Quantity</label>
-                                                                                <input type="text" name="product_quantity" required class="form-control">
+                                                                                <input type="number" min="1" value="" id="number_entry"  name="product_quantity" required class="form-control">
                                                                                 <input type="hidden" name="product_id" value="<?php echo $products->product_id; ?>" required class="form-control">
                                                                                 <input type="hidden" name="product_details" value="<?php echo $products->product_code . ' ' . $products->product_name; ?>" required class="form-control">
                                                                             </div>
