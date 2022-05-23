@@ -162,33 +162,27 @@ require_once('../partials/head.php');
                             <div class="nk-block">
                                 <div class="nk-news card  border border-success">
                                     <div class="card-inner">
-
-                                        <form method="post" enctype="multipart/form-data">
-                                            <div class="form-group col-md-12">
-                                                <div class="form-control-wrap">
-                                                    <div class="form-group">
-                                                        <select data-search="on" class="form-select form-control form-control-lg " name="querry" type="search">
-                                                            <option>Select Item To Add To Cart</option>
-                                                            <?php
-                                                            $ret = "SELECT * FROM products 
-                                                            WHERE product_status = 'active'
-                                                            ORDER BY product_name ASC";
-                                                            $stmt = $mysqli->prepare($ret);
-                                                            $stmt->execute(); //ok
-                                                            $res = $stmt->get_result();
-                                                            while ($products = $res->fetch_object()) {
-                                                            ?>
-                                                                <option value="<?php echo $products->product_id; ?>"><?php echo $products->product_code . ' ' . $products->product_name; ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                        <form class="form-inline" method="POST">
+                                            <div class="form-row align-items-center col-md-6">
+                                                <select data-search="on" class="form-select" name="querry" type="search">
+                                                    <option>Select Item To Add To Cart</option>
+                                                    <?php
+                                                    $ret = "SELECT * FROM products 
+                                                    WHERE product_status = 'active'
+                                                    ORDER BY product_name ASC";
+                                                    $stmt = $mysqli->prepare($ret);
+                                                    $stmt->execute(); //ok
+                                                    $res = $stmt->get_result();
+                                                    while ($products = $res->fetch_object()) {
+                                                    ?>
+                                                        <option value="<?php echo $products->product_id; ?>"><?php echo $products->product_code . ' ' . $products->product_name; ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
-                                            <div class="text-center">
-                                                <button name="search" class="btn btn-primary" type="submit">
-                                                    <em class="icon ni ni-search"></em> Search
-                                                </button>
-                                            </div>
+                                            <br>
+                                            <button name="search" class="btn btn-primary" type="submit">
+                                                <em class="icon ni ni-search"></em> Search
+                                            </button>
                                         </form>
                                     </div>
                                 </div><!-- .card -->
