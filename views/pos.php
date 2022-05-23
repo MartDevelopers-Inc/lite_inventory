@@ -160,94 +160,97 @@ require_once('../partials/head.php');
                                 </div><!-- .nk-block-between -->
                             </div><!-- .nk-block-head -->
                             <div class="nk-block">
-                                <div class="nk-news card  border border-success">
-                                    <div class="card-inner">
-                                        <form class="form-inline" method="POST">
-                                            <div class="form-row align-items-center col-md-6">
-                                                <select data-search="on" class="form-select" name="querry" type="search">
-                                                    <option>Select Item To Add To Cart</option>
-                                                    <?php
-                                                    $ret = "SELECT * FROM products 
-                                                    WHERE product_status = 'active'
-                                                    ORDER BY product_name ASC";
-                                                    $stmt = $mysqli->prepare($ret);
-                                                    $stmt->execute(); //ok
-                                                    $res = $stmt->get_result();
-                                                    while ($products = $res->fetch_object()) {
-                                                    ?>
-                                                        <option value="<?php echo $products->product_id; ?>"><?php echo $products->product_code . ' ' . $products->product_name; ?></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
-                                            <br>
-                                            <button name="search" class="btn btn-primary" type="submit">
-                                                <em class="icon ni ni-search"></em> Search
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div><!-- .card -->
-                            </div><!-- .nk-block -->
-                            <br><br>
-                            <div class="nk-block">
-                                <div class="row gy-gs">
-                                    <?php
-                                    if (isset($_POST['search'])) {
-                                        $query = htmlspecialchars($_POST['querry']);
-                                        $product_array = $db_handle->runQuery("SELECT * FROM products p JOIN receipt_customization rc
-                                        WHERE p.product_status ='active' AND p.product_id = '$query'");
-                                        if (!empty($product_array)) {
-                                            foreach ($product_array as $key => $value) {
-                                    ?>
-                                                <div class="col-5">
-                                                    <form method="post" class="form-inline my-2 my-lg-0" action="pos?action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
-                                                        <div class="card border border-success text-dark">
-                                                            <div class="card-body">
-                                                                <h5 id="product_details" class="card-title">
-                                                                    <?php echo $product_array[$key]["product_code"] . ' ' . $product_array[$key]["product_name"]; ?>
-                                                                </h5>
-                                                                <p class="card-text">
-                                                                    <?php echo $product_array[$key]["product_description"]; ?>
-                                                                </p>
-                                                                <!-- Notify User If Product Has Reached Restock Limit -->
-                                                                <?php if ($product_array[$key]["product_quantity"] <= 0) { ?>
-                                                                    <p class="card-text text-danger">
-                                                                        Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
-                                                                    </p>
-                                                                <?php } else if ($product_array[$key]["product_quantity"] <= $product_array[$key]["product_quantity_limit"]) { ?>
-                                                                    <p class="card-text text-danger">
-                                                                        Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
-                                                                    </p>
-                                                                    <p class="card-text">
-                                                                        <b> <?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
-                                                                    </p>
-                                                                    <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
-                                                                    <?php if ($product_array[$key]['allow_discounts'] == 'true') { ?>
-                                                                        <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
-                                                                    <?php } ?>
-                                                                    <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
-                                                                <?php } else { ?>
-                                                                    <p class="card-text text-success">
-                                                                        Current Item Quantity is <?php echo $product_array[$key]["product_quantity"]; ?>.
-                                                                    </p>
-                                                                    <p class="card-text">
-                                                                        <b><?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
-                                                                    </p>
-                                                                    <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
-                                                                    <?php if ($product_array[$key]['allow_discounts'] == 'true') { ?>
-                                                                        <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
-                                                                    <?php } ?>
-                                                                    <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
-                                                                <?php } ?>
-                                                            </div>
-                                                        </div>
-                                                    </form>
+                                <div class="d-flex justify-content-center">
+                                    <div class="card border border-success col-6">
+                                        <div class="card-inner">
+                                            <form class="form-inline" method="POST">
+                                                <div class="form-row align-items-center col-9">
+                                                    <select data-search="on" class="form-select" name="querry" type="search">
+                                                        <option>Select Item To Add To Cart</option>
+                                                        <?php
+                                                        $ret = "SELECT * FROM products WHERE product_status = 'active'
+                                                        ORDER BY product_name ASC";
+                                                        $stmt = $mysqli->prepare($ret);
+                                                        $stmt->execute(); //ok
+                                                        $res = $stmt->get_result();
+                                                        while ($products = $res->fetch_object()) {
+                                                        ?>
+                                                            <option value="<?php echo $products->product_id; ?>"><?php echo $products->product_code . ' ' . $products->product_name; ?></option>
+                                                        <?php } ?>
+                                                    </select>
                                                 </div>
-                                    <?php }
-                                        }
-                                    } ?>
+                                                <br>
+                                                <button name="search" class="btn btn-primary" type="submit">
+                                                    <em class="icon ni ni-search"></em> Search
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <br><br><br>
+                            <br>
+                            <div class="d-flex justify-content-center">
+                                <div class="nk-block">
+                                    <div class="row gy-gs">
+                                        <?php
+                                        if (isset($_POST['search'])) {
+                                            $query = htmlspecialchars($_POST['querry']);
+                                            $product_array = $db_handle->runQuery("SELECT * FROM products p JOIN receipt_customization rc
+                                        WHERE p.product_status ='active' AND p.product_id = '$query'");
+                                            if (!empty($product_array)) {
+                                                foreach ($product_array as $key => $value) {
+                                        ?>
+                                                    <div class="col-12">
+                                                        <form method="post" class="form-inline my-2 my-lg-0" action="pos?action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
+                                                            <div class="card border border-success text-dark">
+                                                                <div class="card-body">
+                                                                    <h5 id="product_details" class="card-title">
+                                                                        <?php echo $product_array[$key]["product_code"] . ' ' . $product_array[$key]["product_name"]; ?>
+                                                                    </h5>
+                                                                    <p class="card-text">
+                                                                        <?php echo $product_array[$key]["product_description"]; ?>
+                                                                    </p>
+                                                                    <!-- Notify User If Product Has Reached Restock Limit -->
+                                                                    <?php if ($product_array[$key]["product_quantity"] <= 0) { ?>
+                                                                        <p class="card-text text-danger">
+                                                                            Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                        </p>
+                                                                    <?php } else if ($product_array[$key]["product_quantity"] <= $product_array[$key]["product_quantity_limit"]) { ?>
+                                                                        <p class="card-text text-danger">
+                                                                            Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                        </p>
+                                                                        <p class="card-text">
+                                                                            <b> <?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
+                                                                        </p>
+                                                                        <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
+                                                                        <?php if ($product_array[$key]['allow_discounts'] == 'true') { ?>
+                                                                            <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
+                                                                        <?php } ?>
+                                                                        <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
+                                                                    <?php } else { ?>
+                                                                        <p class="card-text text-success">
+                                                                            Current Item Quantity is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                        </p>
+                                                                        <p class="card-text">
+                                                                            <b><?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
+                                                                        </p>
+                                                                        <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
+                                                                        <?php if ($product_array[$key]['allow_discounts'] == 'true') { ?>
+                                                                            <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
+                                                                        <?php } ?>
+                                                                        <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                        <?php }
+                                            }
+                                        } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
                             <div class="nk-block">
                                 <div class="row gy-gs">
                                     <div class="col-md-12 col-lg-12">
@@ -268,6 +271,10 @@ require_once('../partials/head.php');
                                                         </form>
                                                     </div> -->
                                                     <div class="text-right">
+                                                        <a class="btn btn-dim btn-danger btn-sm btn-round" href="pos?action=empty">
+                                                            <em class="icon ni ni-trash"></em>
+                                                            Hold Cart
+                                                        </a>
                                                         <a class="btn btn-dim btn-danger btn-sm btn-round" href="pos?action=empty">
                                                             <em class="icon ni ni-trash"></em>
                                                             Clear Cart
