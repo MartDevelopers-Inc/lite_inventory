@@ -71,16 +71,15 @@ while ($settings = $res->fetch_object()) {
     if (isset($_POST['restore_sale'])) {
         $hold_sale_number = mysqli_real_escape_string($mysqli, $_POST['hold_sale_number']);
         /* Fetch All Hold Sales With This Number */
-        $sql = "SELECT * FROM hold_sales WHERE hold_sale_number = '{$hold_sale_number}'";
-        $res = mysqli_query($mysqli, $sql);
+        $items = mysqli_query($mysqli, "SELECT * FROM hold_sales WHERE hold_sale_number = '{$hold_sale_number}'");
         $itemArray = array();
-        if (mysqli_num_rows($res) > 0) {
-            $hold_sale = mysqli_fetch_assoc($res);
-            /* Push Hold Sale Into A Cart Session Array */
-            $itemArray[] = $hold_sale;
+        while ($row = mysqli_fetch_assoc($items)) {
+            $itemArray[] = $row;
         }
         $_SESSION["cart_item"] = $itemArray;
     }
+
+
 ?>
     <div class="nk-header nk-header-fluid is-theme">
         <div class="container-xl wide-lg">

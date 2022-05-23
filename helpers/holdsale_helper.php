@@ -73,8 +73,8 @@ foreach ($cart_products as $cart_products) {
     $hold_sale_Discount = $cart_products['Discount'];
 
     /* Insert This Hold Details To A Hold Details */
-    $sql  = "INSERT INTO hold_sales (hold_sale_number, hold_sale_product_name, hold_sale_product_code, hold_sale_quantity, hold_sale_product_sale_price,
-    hold_sale_product_description, hold_sale_product_id, hold_sale_product_quantity_limit, hold_sale_Discount)
+    $sql  = "INSERT INTO hold_sales (hold_sale_number, product_name, product_code, sale_quantity, product_sale_price,
+    product_description, product_id, product_quantity_limit, Discount)
     VALUES('{$hold_sale_number}', '{$hold_sale_product_name}', '{$hold_sale_product_code}', '{$hold_sale_quantity}', '{$hold_sale_product_sale_price}',
     '{$hold_sale_product_description}', '{$hold_sale_product_id}', '{$hold_sale_product_quantity_limit}', '{$hold_sale_Discount}')";
     $prepare = $mysqli->prepare($sql);
