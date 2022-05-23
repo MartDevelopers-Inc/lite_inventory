@@ -144,11 +144,16 @@ if (isset($_POST['hold_sale'])) {
 if (isset($_POST['restore_sale'])) {
     $hold_sale_number = mysqli_real_escape_string($mysqli, $_POST['hold_sale_number']);
     $items_sql = mysqli_query($mysqli, "SELECT * FROM hold_sales WHERE hold_sale_number = '{$hold_sale_number}'");
-    $items = array();
+    $itemArray = array();
     while ($row = mysqli_fetch_assoc($items_sql)) {
-        $items[] = $row;
+        $itemArray[] = $row;
     }
-    $_SESSION["cart_item"] = $items;
+    /* Clear Everything From Hold Sales */
+    $sql = "DELETE FROM hold_sales WHERE hold_sale_number = '{$hold_sale_number}'";
+    $prepare = $mysqli->prepare($sql);
+    $prepare->execute();
+    /* Add Everything To The Items */
+    $_SESSION["cart_item"] = $itemArray;
 }
 require_once('../partials/head.php');
 ?>

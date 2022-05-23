@@ -166,7 +166,7 @@ require_once('../partials/head.php');
                                                 ?>
                                                     <tr>
                                                         <td><?php echo $sales->sale_receipt_no; ?></td>
-                                                        <td><?php echo $sale->product_code . ' ' . $sales->product_name; ?></td>
+                                                        <td><?php echo $sales->product_code . ' ' . $sales->product_name; ?></td>
                                                         <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?></td>
                                                         <td><?php echo $sales->sale_quantity; ?></td>
                                                         <td>
