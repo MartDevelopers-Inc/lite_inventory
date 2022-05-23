@@ -136,7 +136,8 @@ if (isset($_POST['add_sale'])) {
 /* Hold This Sale */
 if (isset($_POST['hold_sale'])) {
     /* Load Hold Sale Helper */
-    
+    $cart_products = $_SESSION["cart_item"];
+    include('../helpers/holdsale_helper.php');
 }
 require_once('../partials/head.php');
 ?>

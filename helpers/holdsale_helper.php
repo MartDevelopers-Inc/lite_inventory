@@ -77,7 +77,7 @@ foreach ($cart_products as $cart_products) {
     hold_sale_product_description, hold_sale_product_id, hold_sale_product_quantity_limit, hold_sale_Discount)
     VALUES('{$hold_sale_number}', '{$hold_sale_product_name}', '{$hold_sale_product_code}', '{$hold_sale_quantity}', '{$hold_sale_product_sale_price}',
     '{$hold_sale_product_description}', '{$hold_sale_product_id}', '{$hold_sale_product_quantity_limit}', '{$hold_sale_Discount}')";
-    $sql = $mysqli->prepare($sql);
+    $prepare = $mysqli->prepare($sql);
     $prepare->execute();
     if ($prepare) {
         /* Clear Cart And Show Success */
