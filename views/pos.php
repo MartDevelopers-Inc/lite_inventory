@@ -202,14 +202,11 @@ require_once('../partials/head.php');
                                         ?>
                                                     <div class="col-12">
                                                         <form method="post" class="form-inline my-2 my-lg-0" action="pos?action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
-                                                            <div class="card border border-success text-dark">
+                                                            <div class="card border border-primary text-dark">
                                                                 <div class="card-body">
                                                                     <h5 id="product_details" class="card-title">
                                                                         <?php echo $product_array[$key]["product_code"] . ' ' . $product_array[$key]["product_name"]; ?>
                                                                     </h5>
-                                                                    <p class="card-text">
-                                                                        <?php echo $product_array[$key]["product_description"]; ?>
-                                                                    </p>
                                                                     <!-- Notify User If Product Has Reached Restock Limit -->
                                                                     <?php if ($product_array[$key]["product_quantity"] <= 0) { ?>
                                                                         <p class="card-text text-danger">
@@ -271,7 +268,7 @@ require_once('../partials/head.php');
                                                         </form>
                                                     </div> -->
                                                     <div class="text-right">
-                                                        <a class="btn btn-dim btn-danger btn-sm btn-round" href="pos?action=empty">
+                                                        <a class="btn btn-dim btn-primary btn-sm btn-round" href="pos?action=empty">
                                                             <em class="icon ni ni-trash"></em>
                                                             Hold Cart
                                                         </a>
@@ -397,13 +394,11 @@ require_once('../partials/head.php');
                                                     <table class="table" cellpadding="10" cellspacing="1">
                                                         <tbody>
                                                             <tr>
-                                                                <th style="text-align:left;">#</th>
                                                                 <th style="text-align:left;">Item</th>
-                                                                <th style="text-align:left;">Desc</th>
                                                                 <th style="text-align:right;" width="5%">QTY</th>
                                                                 <th style="text-align:right;" width="10%">Unit Price</th>
-                                                                <th style="text-align:right;" width="10%">Price</th>
-                                                            </tr>
+                                                                <th style="text-align:right;" width="10%">Sub Total</th>
+                                                            </tr> 
                                                             <tr>
                                                                 <td colspan="7" align="center" class="text-danger">There are no Items in the cart.</td>
                                                             </tr>
