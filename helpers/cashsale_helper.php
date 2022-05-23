@@ -64,7 +64,7 @@
 $sale_user_id = $_SESSION['user_id'];
 $sale_customer_name = $_POST['sale_customer_name'];
 $sale_customer_phoneno  = $_POST['sale_customer_phoneno'];
-$sale_receipt_no = substr(str_shuffle("1234567890"), 1, 4);
+$sale_receipt_no = $b;
 $sale_payment_method = $_POST['sale_payment_method'];
 $sale_payment_status  = 'paid';
 
