@@ -141,7 +141,7 @@ require_once('../partials/head.php');
         <!-- wrap @s -->
         <div class="nk-wrap ">
             <!-- main header @s -->
-            <?php require_once('../partials/pos_header.php'); ?>
+            <?php require_once('../partials/pos_header_receipt.php'); ?>
             <!-- main header @e -->
             <!-- content @s -->
             <div class="nk-content nk-content-lg nk-content-fluid">
@@ -160,6 +160,15 @@ require_once('../partials/head.php');
                                 </div><!-- .nk-block-between -->
                             </div><!-- .nk-block-head -->
                             <div class="nk-block">
+                                <div class="text-center">
+                                    <a href="pos?action=empty" class="btn btn-primary btn-round">
+                                        <em class="icon ni ni-histroy"></em> Return To Sales
+                                    </a>
+                                    <a href="main_dashboard_download_receipt?number=<?php echo $_GET['receipt']; ?>&customer=<?php echo $_GET['customer']; ?>" class="btn btn-primary btn-round">
+                                        <em class="icon ni ni-printer-fill"></em> Print Receipt
+                                    </a>
+                                </div>
+                                <br>
                                 <div class="d-flex justify-content-center">
                                     <div class="row gy-gs">
                                         <div class="card border border-success col-12">
@@ -242,15 +251,6 @@ require_once('../partials/head.php');
                                             <!-- End Receipt -->
                                         </div>
                                     </div>
-                                </div>
-                                <br><br>
-                                <div class="text-center">
-                                    <a href="pos?action=empty" class="btn btn-primary btn-round">
-                                        <em class="icon ni ni-histroy"></em> Return To Sales
-                                    </a>
-                                    <a href="main_dashboard_download_receipt?number=<?php echo $_GET['receipt']; ?>&customer=<?php echo $_GET['customer']; ?>" class="btn btn-primary btn-round">
-                                        <em class="icon ni ni-printer-fill"></em> Print Receipt
-                                    </a>
                                 </div>
                             </div>
                         </div><!-- .card -->
