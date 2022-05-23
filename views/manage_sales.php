@@ -63,7 +63,53 @@ require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
 check_login();
-/* Cancel Sale And Log It */
+/* Roll Back Sale Record */
+if (isset($_POST['delete_sale'])) {
+    $sale_id = mysqli_real_escape_string($mysqli, $_POST['sale_id']);
+    $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
+    $sale_quantity = mysqli_real_escape_string($mysqli, $_POST['sale_quantity']);
+    $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
+    $user_password = mysqli_real_escape_string($mysqli, sha1(md5($_POST['user_password'])));
+    /* Activity Logged */
+    $log_type = 'Sales Management Logs';
+    $log_details = mysqli_real_escape_string($mysqli, $_POST['log_details']);
+
+    /* Check If This Fella Password Matches */
+    $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
+    $res = mysqli_query($mysqli, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        if ($user_password != $row['user_password']) {
+            $err = "Please Enter Correct Password";
+        } else {
+            /* Pop Product Details */
+            $sql = "SELECT * FROM  products  WHERE product_id = '{$product_id}'";
+            $return = mysqli_query($mysqli, $sql);
+            if (mysqli_num_rows($return) > 0) {
+                $product_details = mysqli_fetch_assoc($return);
+                /* New Quantity */
+                $new_stock = $product_details['product_quantity'] + $sale_quantity;
+                /* Persist */
+                $product_sql = "UPDATE products SET product_quantity = '{$new_stock}' WHERE product_id = '{$product_id}'";
+                $sale_sql = "DELETE FROM sales WHERE sale_id = '{$sale_id}'";
+
+                $product_prepare = $mysqli->prepare($product_sql);
+                $sale_prepare = $mysqli->prepare($sale_sql);
+
+                $product_prepare->execute();
+                $sale_prepare->execute();
+
+                /* Log Operation */
+                include('../functions/logs.php');
+                if ($product_prepare && $sale_prepare) {
+                    $success = "Cash Sale Rolled Back";
+                } else {
+                    $err = "Failed!, Please Try Again";
+                }
+            }
+        }
+    }
+}
 require_once('../partials/head.php');
 ?>
 
@@ -100,9 +146,9 @@ require_once('../partials/head.php');
                                             <thead>
                                                 <tr>
                                                     <th>Receipt Number</th>
+                                                    <th>Item Details</th>
                                                     <th>Date Posted</th>
                                                     <th>Items Qty</th>
-                                                    <th>Posted By</th>
                                                     <th>Manage</th>
                                                 </tr>
                                             </thead>
@@ -120,14 +166,19 @@ require_once('../partials/head.php');
                                                 ?>
                                                     <tr>
                                                         <td><?php echo $sales->sale_receipt_no; ?></td>
+                                                        <td><?php echo $sale->product_code . ' ' . $sales->product_name; ?></td>
                                                         <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?></td>
                                                         <td><?php echo $sales->sale_quantity; ?></td>
-                                                        <td><?php echo $sales->user_name; ?></td>
                                                         <td>
-                                                            <a href="main_dashboard_manage_sale?view=<?php echo $sales->sale_receipt_no; ?>" class="badge badge-dim badge-pill badge-outline-primary"><em class="icon ni ni-external"></em> View Details</a>
+                                                            <a href="main_dashboard_download_receipt?number=<?php echo $sales->sale_receipt_no; ?>&customer=<?php echo $sales->sale_customer_name; ?>" class="badge badge-dim badge-pill badge-outline-primary">
+                                                                <em class="icon ni ni-printer-fill"></em>
+                                                                Print Receipt
+                                                            </a>
+                                                            <a data-toggle="modal" href="#delete_<?php echo $sales->sale_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
                                                         </td>
                                                     </tr>
-                                                <?php
+                                                    <!-- Load Manage Sale Helper-->
+                                                <?php include('../helpers/modals/sale_modal.php');
                                                 }
                                                 ?>
                                             </tbody>
