@@ -133,6 +133,11 @@ if (isset($_POST['add_sale'])) {
     include('../helpers/cashsale_helper.php');
 }
 
+/* Hold This Sale */
+if (isset($_POST['hold_sale'])) {
+    /* Load Hold Sale Helper */
+    
+}
 require_once('../partials/head.php');
 ?>
 
@@ -267,16 +272,18 @@ require_once('../partials/head.php');
                                                             </button>
                                                         </form>
                                                     </div> -->
-                                                    <div class="text-right">
-                                                        <a class="btn btn-dim btn-primary btn-sm btn-round" href="pos?action=empty">
-                                                            <em class="icon ni ni-pause-circle"></em>
-                                                            Hold Cart
-                                                        </a>
-                                                        <a class="btn btn-dim btn-danger btn-sm btn-round" href="pos?action=empty">
-                                                            <em class="icon ni ni-trash"></em>
-                                                            Clear Cart
-                                                        </a>
-                                                    </div>
+                                                    <form method="POST">
+                                                        <div class="text-right">
+                                                            <button name="hold_sale" class="btn btn-dim btn-primary btn-sm btn-round" type="submit">
+                                                                <em class="icon ni ni-pause-circle"></em>
+                                                                Hold Cart
+                                                            </button>
+                                                            <a class="btn btn-dim btn-danger btn-sm btn-round" href="pos?action=empty">
+                                                                <em class="icon ni ni-trash"></em>
+                                                                Clear Cart
+                                                            </a>
+                                                        </div>
+                                                    </form>
                                                     <hr>
                                                     <div class="card-block">
                                                         <table class="table" cellpadding="10" cellspacing="1">
