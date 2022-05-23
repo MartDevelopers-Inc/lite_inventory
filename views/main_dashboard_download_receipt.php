@@ -77,11 +77,11 @@ $dompdf = new Dompdf();
 $total_quantity = 0;
 $total_price = 0;
 $number = $_GET['number'];
+$customer = $_GET['customer'];
 
 $date = new DateTime("now", new DateTimeZone('EAT'));
 
 /* Convert Image To Base 64 */
-
 
 $html = '
     <style>
