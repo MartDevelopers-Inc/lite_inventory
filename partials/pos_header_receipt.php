@@ -108,21 +108,21 @@ while ($settings = $res->fetch_object()) {
                             if ($settings->permission_module == 'Sales Management') {
                         ?>
                                 <li class="nk-menu-item">
-                                    <a href="pos_manage_sales" class="nk-menu-link">
+                                    <a href="manage_sales" class="nk-menu-link">
                                         <span class="nk-menu-text">Manage Sales</span>
                                     </a>
                                 </li>
                             <?php }
                             if ($settings->permission_module == 'Items Management') { ?>
                                 <li class="nk-menu-item">
-                                    <a href="pos_manage_items" class="nk-menu-link">
+                                    <a href="items_manage" class="nk-menu-link">
                                         <span class="nk-menu-text">Manage Items</span>
                                     </a>
                                 </li>
                             <?php }
                             if ($settings->permission_module == 'Stocks Management') { ?>
                                 <li class="nk-menu-item">
-                                    <a href="pos_manage_inventory" class="nk-menu-link">
+                                    <a href="inventory_manage" class="nk-menu-link">
                                         <span class="nk-menu-text">Inventory</span>
                                     </a>
                                 </li>

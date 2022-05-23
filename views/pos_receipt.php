@@ -61,78 +61,8 @@
 session_start();
 require_once('../config/config.php');
 require_once('../config/checklogin.php');
-require_once('../config/dbcontroller.php');
 require_once('../config/codeGen.php');
 check_login();
-/* Initiate DB Controller */
-$db_handle = new DBController();
-if (!empty($_GET["action"])) {
-    switch ($_GET["action"]) {
-        case "add":
-            if (!empty($_POST["quantity"])) {
-                $productByCode = $db_handle->runQuery("SELECT * FROM products WHERE product_id='" . $_GET["product_id"] . "'");
-                /* Fetch All Products And Add Them In An Array */
-                if (!empty($_POST['Discount'])) {
-                    /* Check If Discount Is Empty */
-                    $Discount = $_POST['Discount'];
-                    /* Hold Discount */
-                } else {
-                    $Discount = 0;
-                }
-                $itemArray = array(
-                    $productByCode[0]["product_code"] => array(
-                        'product_name' => $productByCode[0]["product_name"],
-                        'product_code' => $productByCode[0]["product_code"],
-                        'quantity' => $_POST["quantity"],
-                        'product_sale_price' => ($productByCode[0]["product_sale_price"] - $Discount),
-                        'product_description' => $productByCode[0]["product_description"],
-                        'product_id' => $productByCode[0]["product_id"],
-                        'product_quantity_limit' => $productByCode[0]["product_quantity_limit"],
-                        'Discount' => $Discount
-                    )
-                );
-
-                if (!empty($_SESSION["cart_item"])) {
-                    if (in_array($productByCode[0]["product_code"], array_keys($_SESSION["cart_item"]))) {
-                        foreach ($_SESSION["cart_item"] as $k => $v) {
-                            if ($productByCode[0]["product_code"] == $k) {
-                                if (empty($_SESSION["cart_item"][$k]["quantity"])) {
-                                    $_SESSION["cart_item"][$k]["quantity"] = 0;
-                                }
-                                $_SESSION["cart_item"][$k]["quantity"] += $_POST["quantity"];
-                            }
-                        }
-                    } else {
-                        $_SESSION["cart_item"] = array_merge($_SESSION["cart_item"], $itemArray);
-                    }
-                } else {
-                    $_SESSION["cart_item"] = $itemArray;
-                }
-            }
-            break;
-
-        case "remove":
-            if (!empty($_SESSION["cart_item"])) {
-                foreach ($_SESSION["cart_item"] as $k => $v) {
-                    if ($_GET["product_code"] == $k)
-                        unset($_SESSION["cart_item"][$k]);
-                    if (empty($_SESSION["cart_item"]))
-                        unset($_SESSION["cart_item"]);
-                }
-            }
-            break;
-        case "empty":
-            unset($_SESSION["cart_item"]);
-            break;
-    }
-}
-if (isset($_POST['add_sale'])) {
-    $sale_payment_method = $_POST['sale_payment_method'];
-    $cart_products = $_SESSION["cart_item"];
-    /* Load Sale Helper */
-    include('../helpers/cashsale_helper.php');
-}
-
 require_once('../partials/head.php');
 ?>
 
