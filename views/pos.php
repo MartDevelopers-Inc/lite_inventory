@@ -64,26 +64,6 @@ require_once('../config/checklogin.php');
 require_once('../config/dbcontroller.php');
 require_once('../config/codeGen.php');
 check_login();
-/* Restore Hold Sales */
-if (isset($_POST['restore_sale'])) {
-    $hold_sale_number = mysqli_real_escape_string($mysqli, $_POST['hold_sale_number']);
-    
-    $productByCode = $db_handle->runQuery("SELECT * FROM hold_sales WHERE hold_sale_number = '{$hold_sale_number}'");
-    /* Fetch All Products And Add Them In An Array */
-    $itemArray = array(
-        $productByCode[0]["product_code"] => array(
-            'product_name' => $productByCode[0]["product_name"],
-            'product_code' => $productByCode[0]["product_code"],
-            'quantity' => $_POST["quantity"],
-            'product_sale_price' => ($productByCode[0]["product_sale_price"] - $Discount),
-            'product_description' => $productByCode[0]["product_description"],
-            'product_id' => $productByCode[0]["product_id"],
-            'product_quantity_limit' => $productByCode[0]["product_quantity_limit"],
-            'Discount' => $Discount
-        )
-    );
-    $_SESSION["cart_item"] = $itemArray;
-}
 /* Initiate DB Controller */
 $db_handle = new DBController();
 if (!empty($_GET["action"])) {
@@ -159,6 +139,8 @@ if (isset($_POST['hold_sale'])) {
     $cart_products = $_SESSION["cart_item"];
     include('../helpers/holdsale_helper.php');
 }
+
+
 require_once('../partials/head.php');
 ?>
 
@@ -222,7 +204,7 @@ require_once('../partials/head.php');
                                         if (isset($_POST['search'])) {
                                             $query = htmlspecialchars($_POST['querry']);
                                             $product_array = $db_handle->runQuery("SELECT * FROM products p JOIN receipt_customization rc
-                                        WHERE p.product_status ='active' AND p.product_id = '$query'");
+                                            WHERE p.product_status ='active' AND p.product_id = '$query'");
                                             if (!empty($product_array)) {
                                                 foreach ($product_array as $key => $value) {
                                         ?>
@@ -285,19 +267,11 @@ require_once('../partials/head.php');
                                             <div class="card border border-primary text-dark">
                                                 <div class="card-inner">
                                                     <h5 class="text-center">Items Currently In The Cart</h5>
-                                                    <!-- <div class="text-left">
-                                                        <form method="post" enctype="multipart/form-data">
-                                                            <button name="hold_sale" class="btn btn-outline-primary btn-sm" type="submit">
-                                                                <i class="fas fa-pause"></i>
-                                                                Hold Sale
-                                                            </button>
-                                                        </form>
-                                                    </div> -->
                                                     <form method="POST">
                                                         <div class="text-right">
                                                             <button name="hold_sale" class="btn btn-dim btn-primary btn-sm btn-round" type="submit">
                                                                 <em class="icon ni ni-pause-circle"></em>
-                                                                Hold Cart
+                                                                Suspend
                                                             </button>
                                                             <a class="btn btn-dim btn-danger btn-sm btn-round" href="pos?action=empty">
                                                                 <em class="icon ni ni-trash"></em>
