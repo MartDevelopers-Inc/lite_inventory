@@ -67,7 +67,7 @@ $stmt->execute(); //ok
 $res = $stmt->get_result();
 while ($settings = $res->fetch_object()) {
 
-   
+
 ?>
     <div class="nk-header nk-header-fluid is-theme">
         <div class="container-xl wide-lg">
@@ -142,7 +142,7 @@ while ($settings = $res->fetch_object()) {
                             </a>
                             <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1">
                                 <div class="dropdown-head">
-                                    <span class="sub-title nk-dropdown-title">Sales On Hold</span>
+                                    <span class="sub-title nk-dropdown-title">Suspended Sales</span>
                                 </div>
                                 <div class="dropdown-body">
                                     <div class="nk-notification">
@@ -154,6 +154,13 @@ while ($settings = $res->fetch_object()) {
                                         $stmt->execute(); //ok
                                         $res = $stmt->get_result();
                                         while ($hold_sales = $res->fetch_object()) {
+                                            /* Load This Hidden */
+                                            $hold_sale_number = $hold_sales->hold_sale_number;
+                                            $items_sql = mysqli_query($mysqli, "SELECT * FROM hold_sales WHERE hold_sale_number = '{$hold_sale_number}'");
+                                            $itemArray = array();
+                                            while ($row = mysqli_fetch_assoc($items_sql)) {
+                                                $itemArray[] = $row;
+                                            }
                                         ?>
                                             <div class="nk-notification-item dropdown-inner">
                                                 <div class="nk-notification-icon">
@@ -162,7 +169,7 @@ while ($settings = $res->fetch_object()) {
                                                 <div class="nk-notification-content">
                                                     <div class="nk-notification-text"><span>Hold Sale Number #<?php echo $hold_sales->hold_sale_number; ?></span></div>
                                                     <div class="nk-notification-time"><?php echo date('d M Y g:ia', strtotime($hold_sales->hold_sale_time)); ?></div>
-                                                    <form method="POST">
+                                                    <form method="POST" action="pos">
                                                         <input type="hidden" name="hold_sale_number" value="<?php echo $hold_sales->hold_sale_number; ?>">
                                                         <button class="badge badge-dim badge-pill badge-outline-danger" type="submit" name="restore_sale">
                                                             Restore
