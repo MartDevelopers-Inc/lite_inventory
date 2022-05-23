@@ -66,13 +66,7 @@ $stmt = $mysqli->prepare($ret);
 $stmt->execute(); //ok
 $res = $stmt->get_result();
 while ($settings = $res->fetch_object()) {
-    /* Count Number Of Sales On Hold */
-    $query = "SELECT COUNT(*)  FROM hold_sales";
-    $stmt = $mysqli->prepare($query);
-    $stmt->execute();
-    $stmt->bind_result($number_of_sales);
-    $stmt->fetch();
-    $stmt->close();
+
 ?>
     <div class="nk-header nk-header-fluid is-theme">
         <div class="container-xl wide-lg">
@@ -139,6 +133,15 @@ while ($settings = $res->fetch_object()) {
                         ?>
                     </ul>
                 </div><!-- .nk-header-menu -->
+                <?php /* Count Number Of Sales On Hold */
+                $query = "SELECT COUNT(hold_sale_number)  FROM hold_sales 
+                GROUP BY hold_sale_number";
+                $stmt = $mysqli->prepare($query);
+                $stmt->execute();
+                $stmt->bind_result($number_of_sales);
+                $stmt->fetch();
+                $stmt->close();
+                ?>
                 <div class="nk-header-tools">
                     <ul class="nk-quick-nav">
                         <li class="dropdown notification-dropdown">

@@ -67,7 +67,7 @@ $stmt->execute(); //ok
 $res = $stmt->get_result();
 while ($settings = $res->fetch_object()) {
     /* Count Number Of Sales On Hold */
-    $query = "SELECT COUNT(*)  FROM hold_sales 
+    $query = "SELECT COUNT(hold_sale_number)  FROM hold_sales 
     GROUP BY hold_sale_number";
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
