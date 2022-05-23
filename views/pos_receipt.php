@@ -241,7 +241,7 @@ require_once('../partials/head.php');
                                     <a href="pos?action=empty" class="btn btn-primary">
                                         <i class="fas fa-cash-register"></i> Return To Sales
                                     </a>
-                                    <a href="main_dashboard_download_receipt?number=<?php echo $_GET['number']; ?>&customer=<?php echo $_GET['customer']; ?>" class="btn btn-primary">
+                                    <a href="main_dashboard_download_receipt?number=<?php echo $_GET['receipt']; ?>&customer=<?php echo $_GET['customer']; ?>" class="btn btn-primary">
                                         <i class="fas fa-print"></i> Print Receipt
                                     </a>
                                 </div>
