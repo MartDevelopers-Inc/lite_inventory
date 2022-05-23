@@ -284,12 +284,10 @@ require_once('../partials/head.php');
                                                         <table class="table" cellpadding="10" cellspacing="1">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th style="text-align:left;">#</th>
                                                                     <th style="text-align:left;">Item</th>
-                                                                    <th style="text-align:left;">Desc</th>
                                                                     <th style="text-align:right;" width="5%">QTY</th>
                                                                     <th style="text-align:right;" width="10%">Unit Cost</th>
-                                                                    <th style="text-align:right;" width="10%">Price</th>
+                                                                    <th style="text-align:right;" width="10%">Sub Total</th>
                                                                     <th style="text-align:right;" width="10%">Action</th>
                                                                 </tr>
                                                                 <?php
@@ -297,9 +295,7 @@ require_once('../partials/head.php');
                                                                     $item_price = $item["quantity"] * $item["product_sale_price"];
                                                                 ?>
                                                                     <tr>
-                                                                        <td><?php echo $item["product_code"]; ?></td>
-                                                                        <td><?php echo  $item["product_name"]; ?></td>
-                                                                        <td><?php echo $item["product_description"]; ?></td>
+                                                                        <td><?php echo  $item["product_code"] . ' ' . $item["product_name"]; ?></td>
                                                                         <td style="text-align:right;"><?php echo $item["quantity"]; ?></td>
                                                                         <td style="text-align:right;"><?php echo "Ksh " . number_format($item["product_sale_price"], 2); ?></td>
                                                                         <td style="text-align:right;"><?php echo "Ksh " . number_format($item_price, 2); ?></td>
@@ -315,7 +311,7 @@ require_once('../partials/head.php');
                                                                 }
                                                                 ?>
                                                                 <tr>
-                                                                    <td colspan="3" align="right"><b>Total:</b></td>
+                                                                    <td colspan="1" align="right"><b>Total:</b></td>
                                                                     <td align="right"><b><?php echo $total_quantity; ?></b></td>
                                                                     <td align="right" colspan="2"><strong><?php echo "Ksh " . number_format($total_price, 2); ?></strong></td>
                                                                 </tr>
