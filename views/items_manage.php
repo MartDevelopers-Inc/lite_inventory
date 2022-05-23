@@ -63,37 +63,33 @@ require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
 check_login();
-/* Update Stock And Log That Activity */
-if (isset($_POST['update_product_stock'])) {
-    /* Product Attributes */
+/* Update Product */
+if (isset($_POST['update_item'])) {
     $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
+    $product_name = mysqli_real_escape_string($mysqli, $_POST['product_name']);
+    $product_description = $_POST['product_description'];
+    $product_purchase_price = mysqli_real_escape_string($mysqli, $_POST['product_purchase_price']);
+    $product_sale_price  = mysqli_real_escape_string($mysqli, $_POST['product_sale_price']);
     $product_quantity = mysqli_real_escape_string($mysqli, $_POST['product_quantity']);
-    $product_details = mysqli_real_escape_string($mysqli, $_POST['product_details']);
+    $product_quantity_limit  = mysqli_real_escape_string($mysqli, '2');
+    $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
 
     /* Log Details */
-    $log_type = 'Stock Management Logs';
-    $log_details = 'Added New Stock Of ' . $product_quantity . ' Items To ' . $product_details;
+    $log_type = "Items Management Logs";
+    $log_details = "Updated  $product_code - $product_name Details";
 
-    /* Get Product Details */
-    $sql = "SELECT * FROM  products  WHERE product_id = '{$product_id}'";
-    $res = mysqli_query($mysqli, $sql);
-    if (mysqli_num_rows($res) > 0) {
-        $row = mysqli_fetch_assoc($res);
-        /* Compute New Stock  */
-        $new_stock = $row['product_quantity'] + $product_quantity;
-        /* Persist New Stock */
-        $sql = "UPDATE products SET product_quantity = '{$new_stock}' WHERE product_id = '{$product_id}'";
-        $prepare = $mysqli->prepare($sql);
-        $prepare->execute();
-        /* Log This Operation */
-        include('../functions/logs.php');
-        if ($prepare) {
-            $success = "New Stock Of $product_details Has Been Added";
-        } else {
-            $err = "Failed!, Please Try Again";
-        }
+    $sql = "UPDATE  products SET product_name = '{$product_name}' , product_description = '{$product_description}',
+    product_purchase_price = '{$product_purchase_price}', product_sale_price = '{$product_sale_price}',
+    product_quantity = '{$product_quantity}' , product_quantity_limit = '{$product_quantity_limit}',
+    product_code  = '{$product_code}' WHERE product_id = '{$product_id}' ";
+    $prepare = $mysqli->prepare($sql);
+    $prepare->execute();
+    /* Persist Log */
+    include('../functions/logs.php');
+    if ($prepare) {
+        $success = "$product_name Updated ";
     } else {
-        $err = "Please Try Again";
+        $err = 'Please Try Again Or Try Later';
     }
 }
 require_once('../partials/head.php');
@@ -116,9 +112,9 @@ require_once('../partials/head.php');
                                     <div class="nk-block-head-content">
                                         <div class="align-center flex-wrap pb-2 gx-4 gy-3">
                                             <div>
-                                                <h4 class="nk-block-title fw-normal">Inventory & Stocks Management Module</h4>
+                                                <h4 class="nk-block-title fw-normal">Manage Items</h4>
                                                 <p>
-                                                    This module allows you to update your stock, keep your inventory in check <br>
+                                                    This module allows you to update<br>
                                                 </p>
                                             </div>
                                         </div>
@@ -133,7 +129,9 @@ require_once('../partials/head.php');
                                                 <tr>
                                                     <th>Item Code</th>
                                                     <th>Item Name</th>
-                                                    <th>Current Quantity</th>
+                                                    <th>QTY</th>
+                                                    <th>Purchase Price</th>
+                                                    <th>Retail Price</th>
                                                     <th>Manage</th>
                                                 </tr>
                                             </thead>
@@ -150,47 +148,14 @@ require_once('../partials/head.php');
                                                         <td><?php echo $products->product_code; ?></td>
                                                         <td><?php echo $products->product_name; ?></td>
                                                         <td><?php echo $products->product_quantity; ?></td>
+                                                        <td>Ksh <?php echo $products->product_purchase_price; ?></td>
+                                                        <td>Ksh <?php echo $products->product_sale_price; ?></td>
                                                         <td>
-                                                            <a data-toggle="modal" href="#edit_stock_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-success"><em class="icon ni ni-edit"></em> Add Stock</a>
+                                                            <a data-toggle="modal" href="#update_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-warning"><em class="icon ni ni-edit"></em> Edit</a>
                                                         </td>
                                                     </tr>
-                                                    <!-- Load Update Stock Modal -->
-                                                    <div class="modal fade" id="edit_stock_<?php echo $products->product_id; ?>">
-                                                        <div class="modal-dialog  modal-lg">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h4 class="modal-title text-center">Add New Stock Of <?php echo  $products->product_name; ?></h4>
-                                                                    <button type="button" class="close" data-dismiss="modal">
-                                                                        <span>&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="text-center">
-                                                                        <h4 class="text-success">Current Quantity In Store Is : <?php echo $products->product_quantity; ?></h4>
-                                                                    </div>
-                                                                    <hr>
-                                                                    <form method="post" enctype="multipart/form-data">
-                                                                        <div class="form-row">
-                                                                            <div class="form-group col-md-12">
-                                                                                <label>New Item Quantity</label>
-                                                                                <input type="number" min="1" value="" id="number_entry" name="product_quantity" required class="form-control">
-                                                                                <input type="hidden" name="product_id" value="<?php echo $products->product_id; ?>" required class="form-control">
-                                                                                <input type="hidden" name="product_details" value="<?php echo $products->product_code . ' ' . $products->product_name; ?>" required class="form-control">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br><br>
-                                                                        <div class="text-right">
-                                                                            <button name="update_product_stock" class="btn btn-primary" type="submit">
-                                                                                Add Stock
-                                                                            </button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- End Modal -->
-                                                <?php
+                                                    <!-- Load Modals Via Partials -->
+                                                <?php require('../helpers/modals/items_modals.php');
                                                 }
                                                 ?>
                                             </tbody>
