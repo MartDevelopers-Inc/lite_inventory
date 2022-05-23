@@ -269,7 +269,7 @@ require_once('../partials/head.php');
                                                     </div> -->
                                                     <div class="text-right">
                                                         <a class="btn btn-dim btn-primary btn-sm btn-round" href="pos?action=empty">
-                                                            <em class="icon ni ni-trash"></em>
+                                                            <em class="icon ni ni-pause-circle"></em>
                                                             Hold Cart
                                                         </a>
                                                         <a class="btn btn-dim btn-danger btn-sm btn-round" href="pos?action=empty">
@@ -298,7 +298,7 @@ require_once('../partials/head.php');
                                                                         <td style="text-align:right;"><?php echo "Ksh " . number_format($item["product_sale_price"], 2); ?></td>
                                                                         <td style="text-align:right;"><?php echo "Ksh " . number_format($item_price, 2); ?></td>
                                                                         <td style="text-align:right;">
-                                                                            <a class="btn btn-dim btn-danger btn-sm btn-round" href="pos?action=remove&product_code=<?php echo $item["product_code"]; ?>">
+                                                                            <a class="text-right btn btn-dim btn-danger btn-sm btn-round" href="pos?action=remove&product_code=<?php echo $item["product_code"]; ?>">
                                                                                 <em class="icon ni ni-cross-round"></em> Remove
                                                                             </a>
                                                                         </td>
@@ -398,7 +398,7 @@ require_once('../partials/head.php');
                                                                 <th style="text-align:right;" width="5%">QTY</th>
                                                                 <th style="text-align:right;" width="10%">Unit Price</th>
                                                                 <th style="text-align:right;" width="10%">Sub Total</th>
-                                                            </tr> 
+                                                            </tr>
                                                             <tr>
                                                                 <td colspan="7" align="center" class="text-danger">There are no Items in the cart.</td>
                                                             </tr>
