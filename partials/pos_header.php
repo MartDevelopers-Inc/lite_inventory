@@ -140,8 +140,7 @@ while ($settings = $res->fetch_object()) {
                             </a>
                             <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1">
                                 <div class="dropdown-head">
-                                    <span class="sub-title nk-dropdown-title">Notifications</span>
-                                    <a href="#">Mark All as Read</a>
+                                    <span class="sub-title nk-dropdown-title">Sales On Hold</span>
                                 </div>
                                 <div class="dropdown-body">
                                     <div class="nk-notification">
@@ -154,12 +153,9 @@ while ($settings = $res->fetch_object()) {
                                                 <div class="nk-notification-time">2 hrs ago</div>
                                             </div>
                                         </div>
-                                        
+
                                     </div><!-- .nk-notification -->
                                 </div><!-- .nk-dropdown-body -->
-                                <div class="dropdown-foot center">
-                                    <a href="#">View All</a>
-                                </div>
                             </div>
                         </li><!-- .dropdown -->
                         <li class="hide-mb-sm"><a href="logout" class="nk-quick-nav-icon"><em class="icon ni ni-signout"></em></a></li>
@@ -170,7 +166,7 @@ while ($settings = $res->fetch_object()) {
                                 </div>
                                 <div class="user-info d-none d-xl-block">
                                     <div class="user-status user-status-unverified"><?php echo $settings->user_access_level; ?></div>
-                                    <div class="user-name dropdown-indicator"><?php echo $settings->user_name; ?></div>
+                                    <div class="user-name"><?php echo $settings->user_name; ?></div>
                                 </div>
                             </div>
                         </li><!-- .dropdown -->

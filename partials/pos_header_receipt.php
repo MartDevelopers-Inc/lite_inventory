@@ -104,8 +104,8 @@ while ($settings = $res->fetch_object()) {
                         $stmt = $mysqli->prepare($ret);
                         $stmt->execute(); //ok
                         $res = $stmt->get_result();
-                        while ($settings = $res->fetch_object()) {
-                            if ($settings->permission_module == 'Sales Management') {
+                        while ($permissions = $res->fetch_object()) {
+                            if ($permissions->permission_module == 'Sales Management') {
                         ?>
                                 <li class="nk-menu-item">
                                     <a href="manage_sales" class="nk-menu-link">
@@ -113,14 +113,14 @@ while ($settings = $res->fetch_object()) {
                                     </a>
                                 </li>
                             <?php }
-                            if ($settings->permission_module == 'Items Management') { ?>
+                            if ($permissions->permission_module == 'Items Management') { ?>
                                 <li class="nk-menu-item">
                                     <a href="items_manage" class="nk-menu-link">
                                         <span class="nk-menu-text">Manage Items</span>
                                     </a>
                                 </li>
                             <?php }
-                            if ($settings->permission_module == 'Stocks Management') { ?>
+                            if ($permissions->permission_module == 'Stocks Management') { ?>
                                 <li class="nk-menu-item">
                                     <a href="inventory_manage" class="nk-menu-link">
                                         <span class="nk-menu-text">Inventory</span>
@@ -130,14 +130,50 @@ while ($settings = $res->fetch_object()) {
                             }
                         }
                         ?>
-                        <li class="nk-menu-item">
-                            <a href="logout" class="nk-menu-link">
-                                <span class="nk-menu-text">Log Out</span>
-                            </a>
-                        </li>
                     </ul>
                 </div><!-- .nk-header-menu -->
-            </div><!-- .nk-header-wrap -->
-        </div><!-- .container-fliud -->
-    </div>
+                <div class="nk-header-tools">
+                    <ul class="nk-quick-nav">
+                        <li class="dropdown notification-dropdown">
+                            <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-toggle="dropdown">
+                                <div class="icon-status icon-status-info"><em class="icon ni ni-bell"></em></div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1">
+                                <div class="dropdown-head">
+                                    <span class="sub-title nk-dropdown-title">Sales On Hold</span>
+                                </div>
+                                <div class="dropdown-body">
+                                    <div class="nk-notification">
+                                        <div class="nk-notification-item dropdown-inner">
+                                            <div class="nk-notification-icon">
+                                                <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
+                                            </div>
+                                            <div class="nk-notification-content">
+                                                <div class="nk-notification-text">You have requested to <span>Widthdrawl</span></div>
+                                                <div class="nk-notification-time">2 hrs ago</div>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- .nk-notification -->
+                                </div><!-- .nk-dropdown-body -->
+                            </div>
+                        </li><!-- .dropdown -->
+                        <li class="hide-mb-sm"><a href="logout" class="nk-quick-nav-icon"><em class="icon ni ni-signout"></em></a></li>
+                        <li class="dropdown user-dropdown order-sm-first">
+                            <div class="user-toggle">
+                                <div class="user-avatar sm">
+                                    <em class="icon ni ni-user-alt"></em>
+                                </div>
+                                <div class="user-info d-none d-xl-block">
+                                    <div class="user-status user-status-unverified"><?php echo $settings->user_access_level; ?></div>
+                                    <div class="user-name"><?php echo $settings->user_name; ?></div>
+                                </div>
+                            </div>
+                        </li><!-- .dropdown -->
+                    </ul><!-- .nk-quick-nav -->
+                </div><!-- .nk-header-tools -->
+                </ul>
+            </div><!-- .nk-header-menu -->
+        </div><!-- .nk-header-wrap -->
+    </div><!-- .container-fliud -->
 <?php } ?>
