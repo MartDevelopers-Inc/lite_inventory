@@ -81,7 +81,8 @@ foreach ($cart_products as $cart_products) {
     $prepare->execute();
     if ($prepare) {
         /* Clear Cart And Show Success */
-        $success = "Sale Number #$hold_sale_number, Hold";
+        $success = "Sale Number #$hold_sale_number Put On Hold" &&
+            header('Location: pos?action=empty');
     } else {
         $err = "Failed!, Please Try Again";
     }
