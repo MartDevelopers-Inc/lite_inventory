@@ -66,6 +66,14 @@ $stmt = $mysqli->prepare($ret);
 $stmt->execute(); //ok
 $res = $stmt->get_result();
 while ($settings = $res->fetch_object()) {
+    /* Count Number Of Sales On Hold */
+    $query = "SELECT COUNT(*)  FROM hold_sales 
+    GROUP BY hold_sale_number";
+    $stmt = $mysqli->prepare($query);
+    $stmt->execute();
+    $stmt->bind_result($number_of_sales);
+    $stmt->fetch();
+    $stmt->close();
 
 
 ?>
@@ -138,11 +146,14 @@ while ($settings = $res->fetch_object()) {
                     <ul class="nk-quick-nav">
                         <li class="dropdown notification-dropdown">
                             <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-toggle="dropdown">
-                                <div class="icon-status icon-status-info"><em class="icon ni ni-bell"></em></div>
+                                <em class="icon ni ni-bell"></em>
+                                <span class="badge badge-danger btn-round"><?php echo $number_of_sales; ?></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1">
                                 <div class="dropdown-head">
-                                    <span class="sub-title nk-dropdown-title">Suspended Sales</span>
+                                    <span class="sub-title nk-dropdown-title">Suspended Sales
+                                        <span class="btn-danger btn-sm btn-round"><?php echo $number_of_sales; ?></span>
+                                    </span>
                                 </div>
                                 <div class="dropdown-body">
                                     <div class="nk-notification">
