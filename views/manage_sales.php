@@ -85,13 +85,55 @@ require_once('../partials/head.php');
                                         <div class="align-center flex-wrap pb-2 gx-4 gy-3">
                                             <div>
                                                 <h4 class="nk-block-title fw-normal">Manage Sales</h4>
+                                                <p>
+                                                    This module allows you to manage all posted sales records <br>
+                                                </p>
                                             </div>
                                         </div>
                                     </div><!-- .nk-block-head-content -->
                                 </div><!-- .nk-block-between -->
                             </div><!-- .nk-block-head -->
                             <div class="nk-block">
-
+                                <div class="card mb-3 col-md-12 border border-success">
+                                    <div class="card-body">
+                                        <table class="datatable-init table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Receipt Number</th>
+                                                    <th>Date Posted</th>
+                                                    <th>Items Qty</th>
+                                                    <th>Posted By</th>
+                                                    <th>Manage</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $user_id = $_SESSION['user_id'];
+                                                $ret = "SELECT * FROM sales s
+                                                INNER JOIN products p ON p.product_id =  s.sale_product_id
+                                                INNER JOIN users u ON u.user_id = s.sale_user_id 
+                                                WHERE u.user_id = '{$user_id}'";
+                                                $stmt = $mysqli->prepare($ret);
+                                                $stmt->execute(); //ok
+                                                $res = $stmt->get_result();
+                                                while ($sales = $res->fetch_object()) {
+                                                ?>
+                                                    <tr>
+                                                        <td><?php echo $sales->sale_receipt_no; ?></td>
+                                                        <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?></td>
+                                                        <td><?php echo $sales->sale_quantity; ?></td>
+                                                        <td><?php echo $sales->user_name; ?></td>
+                                                        <td>
+                                                            <a href="main_dashboard_manage_sale?view=<?php echo $sales->sale_receipt_no; ?>" class="badge badge-dim badge-pill badge-outline-primary"><em class="icon ni ni-external"></em> View Details</a>
+                                                        </td>
+                                                    </tr>
+                                                <?php
+                                                }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div><!-- .card -->
                     </div><!-- .col -->

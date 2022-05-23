@@ -80,7 +80,7 @@ $checksum = bin2hex(random_bytes($length));
 $alpha = 1;
 $beta = 4;
 $a = substr(str_shuffle("QWERTYUIOPLKJHGFDSAZXCVBNM"), 1, $alpha);
-$b = substr(str_shuffle("1234567890"), 1, $beta);
+$b = substr(str_shuffle("1234567890"), 1, 4);
 
 $alpha = 10;
 $paycode = substr(str_shuffle("QWERTYUIOPLKJHGFDSAZXCVBNM1234567890"), 1, $alpha);
