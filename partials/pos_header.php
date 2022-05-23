@@ -82,7 +82,7 @@ while ($settings = $res->fetch_object()) {
                 <div class="nk-header-menu" data-content="headerNav">
                     <div class="nk-header-mobile">
                         <div class="nk-header-brand">
-                            <a href="html/index.html" class="logo-link">
+                            <a href="pos" class="logo-link">
                                 <img class="logo-light logo-img" src="../public/images/logo.png" srcset="../public/images/logo.png 2x" alt="logo">
                                 <?php echo $settings->system_name; ?>
                             </a>
@@ -108,21 +108,21 @@ while ($settings = $res->fetch_object()) {
                             if ($settings->permission_module == 'Sales Management') {
                         ?>
                                 <li class="nk-menu-item">
-                                    <a href="staff_manage_sales" class="nk-menu-link">
+                                    <a href="pos_manage_sales" class="nk-menu-link">
                                         <span class="nk-menu-text">Manage Sales</span>
                                     </a>
                                 </li>
                             <?php }
                             if ($settings->permission_module == 'Items Management') { ?>
                                 <li class="nk-menu-item">
-                                    <a href="staff_manage_items" class="nk-menu-link">
+                                    <a href="pos_manage_items" class="nk-menu-link">
                                         <span class="nk-menu-text">Manage Items</span>
                                     </a>
                                 </li>
                             <?php }
                             if ($settings->permission_module == 'Stocks Management') { ?>
                                 <li class="nk-menu-item">
-                                    <a href="staff_manage_inventory" class="nk-menu-link">
+                                    <a href="pos_manage_inventory" class="nk-menu-link">
                                         <span class="nk-menu-text">Inventory</span>
                                     </a>
                                 </li>
