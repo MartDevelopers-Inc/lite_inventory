@@ -149,14 +149,15 @@ while ($settings = $res->fetch_object()) {
                                         <?php
                                         /* Load Hold Sales */
                                         $ret = "SELECT * FROM hold_sales GROUP BY hold_sale_number 
-                                        ORDER BY hold_sale_time ASC";
+                                        ORDER BY hold_sale_time DESC";
                                         $stmt = $mysqli->prepare($ret);
                                         $stmt->execute(); //ok
                                         $res = $stmt->get_result();
                                         while ($hold_sales = $res->fetch_object()) {
                                             /* Load This Hidden */
                                             $hold_sale_number = $hold_sales->hold_sale_number;
-                                            $items_sql = mysqli_query($mysqli, "SELECT * FROM hold_sales WHERE hold_sale_number = '{$hold_sale_number}'");
+                                            $items_sql = mysqli_query($mysqli, "SELECT * FROM hold_sales 
+                                            WHERE hold_sale_number = '{$hold_sale_number}'");
                                             $itemArray = array();
                                             while ($row = mysqli_fetch_assoc($items_sql)) {
                                                 $itemArray[] = $row;
@@ -167,12 +168,12 @@ while ($settings = $res->fetch_object()) {
                                                     <em class="icon icon-circle bg-warning-dim ni ni-pause-fill"></em>
                                                 </div>
                                                 <div class="nk-notification-content">
-                                                    <div class="nk-notification-text"><span>Hold Sale Number #<?php echo $hold_sales->hold_sale_number; ?></span></div>
+                                                    <div class="nk-notification-text"><span>Suspended Sale Number #<?php echo $hold_sales->hold_sale_number; ?></span></div>
                                                     <div class="nk-notification-time"><?php echo date('d M Y g:ia', strtotime($hold_sales->hold_sale_time)); ?></div>
                                                     <form method="POST" action="pos">
                                                         <input type="hidden" name="hold_sale_number" value="<?php echo $hold_sales->hold_sale_number; ?>">
                                                         <button class="badge badge-dim badge-pill badge-outline-danger" type="submit" name="restore_sale">
-                                                            Restore
+                                                            Unsuspend
                                                         </button>
                                                     </form>
                                                 </div>

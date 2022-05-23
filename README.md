@@ -6,10 +6,11 @@ On Pushing To Live Server Kindly Update This Links <br>
 
 # Known Issues
 
-1. Slow Loading On Items Tables - They Are Many.
-2. Multiple Stores - Cannot Manage More Than One Store.
-3. All Payments Are In Cash.
-4. Cannot Print Receipt Directly From System, It downloads Instead.
+1. Multiple Stores - Cannot Manage More Than One Store.
+2. All Payments Are In Cash.
+3. Cannot Print Receipt Directly From System, It downloads Instead.
+4. Cannot Suspend A Sale Record Twice.
+5. Items In A Suspended Sale Cannot Be Deleted, But You Can Add More Items After Restoring
 
 # Todos
 

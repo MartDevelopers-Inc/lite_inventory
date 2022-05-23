@@ -140,19 +140,43 @@ while ($settings = $res->fetch_object()) {
                             </a>
                             <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1">
                                 <div class="dropdown-head">
-                                    <span class="sub-title nk-dropdown-title">Sales On Hold</span>
+                                    <span class="sub-title nk-dropdown-title">Suspended Sales</span>
                                 </div>
                                 <div class="dropdown-body">
                                     <div class="nk-notification">
-                                        <div class="nk-notification-item dropdown-inner">
-                                            <div class="nk-notification-icon">
-                                                <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
+                                        <?php
+                                        /* Load Hold Sales */
+                                        $ret = "SELECT * FROM hold_sales GROUP BY hold_sale_number 
+                                        ORDER BY hold_sale_time DESC";
+                                        $stmt = $mysqli->prepare($ret);
+                                        $stmt->execute(); //ok
+                                        $res = $stmt->get_result();
+                                        while ($hold_sales = $res->fetch_object()) {
+                                            /* Load This Hidden */
+                                            $hold_sale_number = $hold_sales->hold_sale_number;
+                                            $items_sql = mysqli_query($mysqli, "SELECT * FROM hold_sales 
+                                            WHERE hold_sale_number = '{$hold_sale_number}'");
+                                            $itemArray = array();
+                                            while ($row = mysqli_fetch_assoc($items_sql)) {
+                                                $itemArray[] = $row;
+                                            }
+                                        ?>
+                                            <div class="nk-notification-item dropdown-inner">
+                                                <div class="nk-notification-icon">
+                                                    <em class="icon icon-circle bg-warning-dim ni ni-pause-fill"></em>
+                                                </div>
+                                                <div class="nk-notification-content">
+                                                    <div class="nk-notification-text"><span>Suspended Sale Number #<?php echo $hold_sales->hold_sale_number; ?></span></div>
+                                                    <div class="nk-notification-time"><?php echo date('d M Y g:ia', strtotime($hold_sales->hold_sale_time)); ?></div>
+                                                    <form method="POST" action="pos">
+                                                        <input type="hidden" name="hold_sale_number" value="<?php echo $hold_sales->hold_sale_number; ?>">
+                                                        <button class="badge badge-dim badge-pill badge-outline-danger" type="submit" name="restore_sale">
+                                                            Unsuspend
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
-                                            <div class="nk-notification-content">
-                                                <div class="nk-notification-text">You have requested to <span>Widthdrawl</span></div>
-                                                <div class="nk-notification-time">2 hrs ago</div>
-                                            </div>
-                                        </div>
+                                        <?php } ?>
 
                                     </div><!-- .nk-notification -->
                                 </div><!-- .nk-dropdown-body -->
@@ -172,7 +196,6 @@ while ($settings = $res->fetch_object()) {
                         </li><!-- .dropdown -->
                     </ul><!-- .nk-quick-nav -->
                 </div><!-- .nk-header-tools -->
-                </ul>
             </div><!-- .nk-header-menu -->
         </div><!-- .nk-header-wrap -->
     </div><!-- .container-fliud -->
