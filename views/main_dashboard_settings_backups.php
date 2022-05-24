@@ -132,7 +132,7 @@ require_once('../partials/head.php');
                                                         <form method="post" enctype="multipart/form-data">
                                                             <div class="text-center">
                                                                 <button name="dump_database" class="btn btn-primary" type="submit">
-                                                                    Backup Database
+                                                                    <em class="icon ni ni-download"></em> Backup Database
                                                                 </button>
                                                             </div>
                                                         </form>

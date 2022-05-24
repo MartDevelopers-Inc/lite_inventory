@@ -282,7 +282,7 @@ require_once('../partials/head.php')
                                                     </div><br><br>
                                                     <div class="text-right">
                                                         <button name="add_user" class="btn btn-primary" type="submit">
-                                                            Register User
+                                                            <em class="icon ni ni-user-add"></em> Register User
                                                         </button>
                                                     </div>
                                                 </form>

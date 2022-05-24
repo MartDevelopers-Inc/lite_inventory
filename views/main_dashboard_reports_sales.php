@@ -130,7 +130,7 @@ require_once('../partials/head.php');
                                                         </div>
                                                         <div class="text-right">
                                                             <button name="get_sale_reports" class="btn btn-primary" type="submit">
-                                                                Get Reports
+                                                                <em class="icon ni ni-report-profit"></em> Get Reports
                                                             </button>
                                                         </div>
                                                     </form>

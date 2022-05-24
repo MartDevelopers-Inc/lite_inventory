@@ -141,7 +141,7 @@ require_once('../partials/head.php');
                                                             <br>
                                                             <div class="text-right">
                                                                 <button name="update_system_settings" class="btn btn-primary" type="submit">
-                                                                    Update Configurations
+                                                                    <em class="icon ni ni-update"></em> Update Configurations
                                                                 </button>
                                                             </div>
                                                         </form>

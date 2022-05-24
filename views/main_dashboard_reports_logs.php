@@ -134,7 +134,7 @@ require_once('../partials/head.php');
                                                         </div>
                                                         <div class="text-right">
                                                             <button name="get_logs" class="btn btn-primary" type="submit">
-                                                                Get Reports
+                                                                <em class="icon ni ni-reports-alt"></em> Get Reports
                                                             </button>
                                                         </div>
                                                     </form>

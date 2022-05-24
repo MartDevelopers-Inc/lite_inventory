@@ -173,7 +173,7 @@ require_once('../partials/head.php')
                                                     <br><br>
                                                     <div class="text-right">
                                                         <button name="upload" class="btn btn-primary" type="submit">
-                                                            Upload
+                                                            <em class="icon ni ni-upload-cloud"></em> Upload
                                                         </button>
                                                     </div>
                                                 </div>

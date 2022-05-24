@@ -103,7 +103,7 @@
                         <input type="password" required name="user_password" class="form-control">
                     </div>
                     <button type="button" class="text-center btn btn-success" data-dismiss="modal"><em class="icon ni ni-cross-round"></em> No</button>
-                    <button type="submit" name="close_account" class="text-center btn btn-success"><em class="icon ni ni-trash-fill"></em> Yes Delete</button>
+                    <button type="submit" name="close_account" class="text-center btn btn-danger"><em class="icon ni ni-trash-fill"></em> Yes Delete</button>
                 </div>
             </form>
         </div>

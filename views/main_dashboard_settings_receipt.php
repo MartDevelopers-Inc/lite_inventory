@@ -235,7 +235,7 @@ require_once('../partials/head.php');
                                                             <br>
                                                             <div class="text-right">
                                                                 <button name="update_receipt_settings" class="btn btn-primary" type="submit">
-                                                                    Update Configurations
+                                                                    <em class="icon ni ni-update"></em> Update Configurations
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -305,6 +305,7 @@ require_once('../partials/head.php');
                                                                 $test_product = "THIS IS A TEST ITEM";
                                                                 $test_product_price = "100";
                                                                 $test_qty = '5';
+                                                                $total = 0;
                                                                 $cnt = 1;
                                                                 while ($cnt <= 5) {
                                                                 ?>

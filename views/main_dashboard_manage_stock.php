@@ -189,7 +189,7 @@ require_once('../partials/head.php')
                                                                                 <br><br>
                                                                                 <div class="text-right">
                                                                                     <button name="update_product_stock" class="btn btn-primary" type="submit">
-                                                                                        Update Stock
+                                                                                        <em class="icon ni ni-list-check"></em> Update Stock
                                                                                     </button>
                                                                                 </div>
                                                                             </form>

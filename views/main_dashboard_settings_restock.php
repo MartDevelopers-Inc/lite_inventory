@@ -131,7 +131,7 @@ require_once('../partials/head.php');
                                                         </div><br><br>
                                                         <div class="text-right">
                                                             <button name="update_restock_limit" class="btn btn-primary" type="submit">
-                                                                Save
+                                                                <em class="icon ni ni-save"></em> Save
                                                             </button>
                                                         </div>
                                                     </form>
