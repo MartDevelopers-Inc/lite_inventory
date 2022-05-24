@@ -190,7 +190,9 @@ require_once('../partials/head.php');
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="text-right">
-                                                                                    <button type="submit" name="update_personal_info" class="btn btn-primary">Submit</button>
+                                                                                    <button type="submit" name="update_personal_info" class="btn btn-primary">
+                                                                                        <em class="icon ni ni-save-fill"></em> Save
+                                                                                    </button>
                                                                                 </div>
                                                                             </form>
                                                                         </div>
@@ -233,7 +235,9 @@ require_once('../partials/head.php');
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="text-right">
-                                                                                    <button type="submit" name="update_auth_details" class="btn btn-primary">Submit</button>
+                                                                                    <button type="submit" name="update_auth_details" class="btn btn-primary">
+                                                                                        <em class="icon ni ni-save-fill"></em> Save
+                                                                                    </button>
                                                                                 </div>
                                                                             </form>
                                                                         </div>

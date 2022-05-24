@@ -255,7 +255,7 @@ require_once('../partials/head.php');
                                                     <br><br>
                                                     <div class="text-right">
                                                         <button name="create_store" class="btn btn-primary" type="submit">
-                                                            Create Store
+                                                            <em class="icon ni ni-list-check"></em> Create Store
                                                         </button>
                                                     </div>
                                                 </form>
