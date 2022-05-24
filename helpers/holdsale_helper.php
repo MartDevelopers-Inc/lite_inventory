@@ -79,11 +79,12 @@ foreach ($cart_products as $cart_products) {
     '{$hold_sale_product_description}', '{$hold_sale_product_id}', '{$hold_sale_product_quantity_limit}', '{$hold_sale_Discount}')";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
-    if ($prepare) {
-        /* Clear Cart And Show Success */
-        $success = "Sale Number #$hold_sale_number Put On Hold" &&
-            header('Location: pos?action=empty');
-    } else {
-        $err = "Failed!, Please Try Again";
-    }
+}
+if ($prepare) {
+    /* Clear Cart And Show Success */
+    $_SESSION['success'] = "Sale Number #$hold_sale_number Is Suspended";
+    header('Location: pos?action=empty');
+    exit();
+} else {
+    $err = "Failed!, Please Try Again";
 }
