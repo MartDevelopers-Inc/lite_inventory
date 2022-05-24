@@ -142,14 +142,14 @@ require_once('../partials/head.php')
                                                         <label class="form-label" for="default-06">Spreadsheet File</label>
                                                         <div class="form-control-wrap">
                                                             <div class="custom-file">
-                                                                <input type="file" accept=".xlsx , .xls" name="file" multiple class="custom-file-input" id="customFile">
+                                                                <input required type="file" accept=".xlsx , .xls" name="file" multiple class="custom-file-input" id="customFile">
                                                                 <label class="custom-file-label" for="customFile">Choose file</label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="text-right">
                                                         <button name="upload" class="btn btn-primary" type="submit">
-                                                            Upload
+                                                            <em class="icon ni ni-upload-cloud"></em> Upload
                                                         </button>
                                                     </div>
                                                 </form>

@@ -244,7 +244,7 @@ require_once('../partials/head.php')
                                                     <br><br>
                                                     <div class="text-right">
                                                         <button name="add_item" class="btn btn-primary" type="submit">
-                                                            Register Item
+                                                            <em class="icon ni ni-list-check"></em> Register Item
                                                         </button>
                                                     </div>
                                                 </form>
