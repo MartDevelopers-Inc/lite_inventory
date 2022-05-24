@@ -67,15 +67,12 @@ $stmt->execute(); //ok
 $res = $stmt->get_result();
 while ($settings = $res->fetch_object()) {
     /* Count Number Of Sales On Hold */
-    $query = "SELECT COUNT(hold_sale_number)  FROM hold_sales 
-    GROUP BY hold_sale_number";
+    $query = "SELECT COUNT(*)  FROM hold_sales";
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
     $stmt->bind_result($number_of_sales);
     $stmt->fetch();
     $stmt->close();
-
-
 ?>
     <div class="nk-header nk-header-fluid is-theme">
         <div class="container-xl wide-lg">
@@ -146,13 +143,19 @@ while ($settings = $res->fetch_object()) {
                     <ul class="nk-quick-nav">
                         <li class="dropdown notification-dropdown">
                             <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-toggle="dropdown">
-                                <em class="icon ni ni-bell"></em>
-                                <span class="badge badge-danger btn-round"><?php echo $number_of_sales; ?></span>
+                                <?php
+                                if ($number_of_sales > 0) {
+                                ?>
+                                    <em class="icon ni ni-bell"></em>
+                                    <div class="icon-status icon-status-info spinner-grow"><span class="" role="status" aria-hidden="true"></span></div>
+                                <?php } else { ?>
+                                    <em class="icon ni ni-bell"></em>
+                                <?php } ?>
                             </a>
                             <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1">
                                 <div class="dropdown-head">
-                                    <span class="sub-title nk-dropdown-title">Suspended Sales
-                                        <span class="btn-danger btn-sm btn-round"><?php echo $number_of_sales; ?></span>
+                                    <span class="sub-title nk-dropdown-title">
+                                        Suspended Sales
                                     </span>
                                 </div>
                                 <div class="dropdown-body">
@@ -173,13 +176,28 @@ while ($settings = $res->fetch_object()) {
                                             while ($row = mysqli_fetch_assoc($items_sql)) {
                                                 $itemArray[] = $row;
                                             }
+                                            /* Count Number Of Sales On Hold */
+                                            $query = "SELECT COUNT(*)  FROM hold_sales WHERE hold_sale_number = '{$hold_sales->hold_sale_number}'";
+                                            $stmt = $mysqli->prepare($query);
+                                            $stmt->execute();
+                                            $stmt->bind_result($number_of_sales);
+                                            $stmt->fetch();
+                                            $stmt->close();
                                         ?>
                                             <div class="nk-notification-item dropdown-inner">
                                                 <div class="nk-notification-icon">
                                                     <em class="icon icon-circle bg-warning-dim ni ni-pause-fill"></em>
                                                 </div>
                                                 <div class="nk-notification-content">
-                                                    <div class="nk-notification-text"><span>Suspended Sale Number #<?php echo $hold_sales->hold_sale_number; ?></span></div>
+                                                    <div class="nk-notification-text">
+                                                        <span>
+                                                            Suspended Sale Number #<?php echo $hold_sales->hold_sale_number; ?>
+                                                        </span>
+                                                        <br>
+                                                        <span class="text-right btn-primary btn-sm btn-round">
+                                                            <?php echo $number_of_sales; ?> Items Suspended
+                                                        </span>
+                                                    </div>
                                                     <div class="nk-notification-time"><?php echo date('d M Y g:ia', strtotime($hold_sales->hold_sale_time)); ?></div>
                                                     <form method="POST" action="pos">
                                                         <input type="hidden" name="hold_sale_number" value="<?php echo $hold_sales->hold_sale_number; ?>">
