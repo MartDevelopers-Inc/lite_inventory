@@ -122,11 +122,19 @@ require_once('../partials/head.php')
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
                                                         while ($sales = $res->fetch_object()) {
+                                                            /* Count Number Of Sales */
+                                                            $query = "SELECT SUM(sale_quantity)  FROM sales 
+                                                            WHERE sale_receipt_no = '$sales->sale_receipt_no'";
+                                                            $stmt = $mysqli->prepare($query);
+                                                            $stmt->execute();
+                                                            $stmt->bind_result($number_of_items);
+                                                            $stmt->fetch();
+                                                            $stmt->close();
                                                         ?>
                                                             <tr>
                                                                 <td><?php echo $sales->sale_receipt_no; ?></td>
                                                                 <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?></td>
-                                                                <td><?php echo $sales->sale_quantity; ?></td>
+                                                                <td><?php echo $number_of_items; ?></td>
                                                                 <td><?php echo $sales->user_name; ?></td>
                                                                 <td>
                                                                     <a href="main_dashboard_manage_sale?view=<?php echo $sales->sale_receipt_no; ?>" class="badge badge-dim badge-pill badge-outline-primary"><em class="icon ni ni-external"></em> View Details</a>
