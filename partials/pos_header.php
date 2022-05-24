@@ -181,6 +181,8 @@ while ($settings = $res->fetch_object()) {
                                             while ($row = mysqli_fetch_assoc($items_sql)) {
                                                 $itemArray[] = $row;
                                             }
+                                            /* Compute Price */
+
                                         ?>
                                             <div class="nk-notification-item dropdown-inner">
                                                 <div class="nk-notification-icon">
@@ -189,14 +191,14 @@ while ($settings = $res->fetch_object()) {
                                                 <div class="nk-notification-content">
                                                     <div class="nk-notification-text">
                                                         <span>
-                                                            Suspended Sale Number #<?php echo $hold_sales->hold_sale_number; ?>
+                                                            Suspended Sale Number #<?php echo $hold_sales->hold_sale_number; ?> <br>
                                                         </span>
                                                     </div>
                                                     <div class="nk-notification-time"><?php echo date('d M Y g:ia', strtotime($hold_sales->hold_sale_time)); ?></div>
                                                     <form method="POST" action="pos">
                                                         <input type="hidden" name="hold_sale_number" value="<?php echo $hold_sales->hold_sale_number; ?>">
                                                         <button class="badge badge-dim badge-pill badge-outline-danger" type="submit" name="restore_sale">
-                                                            Unsuspend Sale
+                                                            Restore Sale
                                                         </button>
                                                     </form>
                                                 </div>

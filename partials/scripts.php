@@ -11,12 +11,10 @@
     <!-- Pop Success Alert -->
     <script>
         toastr.success("<?php echo $success; ?>", "", {
-            positionClass: "toast-top-left",
-            timeOut: 5e3,
-            newestOnTop: !0,
-            progressBar: !0,
+            positionClass: "toast-top-center",
+            timeOut: 4e3,
             onclick: null,
-            showDuration: "300",
+            showDuration: "200",
             hideDuration: "1000",
             extendedTimeOut: "1000",
             showEasing: "swing",
@@ -30,10 +28,8 @@
 if (isset($err)) { ?>
     <script>
         toastr.error("<?php echo $err; ?>", "", {
-            positionClass: "toast-top-left",
+            positionClass: "toast-top-center",
             timeOut: 5e3,
-            newestOnTop: !0,
-            progressBar: !0,
             onclick: null,
             showDuration: "300",
             hideDuration: "1000",
@@ -48,10 +44,8 @@ if (isset($err)) { ?>
 if (isset($info)) { ?>
     <script>
         toastr.warning("<?php echo $info; ?>", "", {
-            positionClass: "toast-top-left",
+            positionClass: "toast-top-center",
             timeOut: 5e3,
-            newestOnTop: !0,
-            progressBar: !0,
             onclick: null,
             showDuration: "300",
             hideDuration: "1000",
