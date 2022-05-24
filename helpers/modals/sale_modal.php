@@ -24,8 +24,8 @@
                     <div class="form-group col-md-12">
                         <input type="password" required name="user_password" class="form-control">
                     </div>
-                    <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
-                    <input type="submit" name="delete_sale" value="Delete" class="text-center btn btn-danger">
+                    <button type="button" class="text-center btn btn-success" data-dismiss="modal"><em class="icon ni ni-cross-round"></em> No</button>
+                    <button type="submit" name="delete_sale" class="text-center btn btn-danger"><em class="icon ni ni-trash-fill"></em> Yes Delete</button>
                 </div>
             </form>
         </div>

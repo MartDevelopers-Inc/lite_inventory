@@ -69,7 +69,7 @@
                     </div><br><br>
                     <div class="text-right">
                         <button name="update_user" class="btn btn-primary" type="submit">
-                            Update User
+                            <em class="icon ni ni-list-check"></em> Update User
                         </button>
                     </div>
                 </form>
@@ -81,7 +81,6 @@
 
 <!-- Delete Modal -->
 <div class="modal fade" id="delete_<?php echo $users->user_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -93,7 +92,7 @@
             <form method="POST">
                 <div class="modal-body text-center ">
                     <h4 class="text-danger">
-                        Delete <?php echo $users->user_name; ?>'s  account? <br>
+                        Delete <?php echo $users->user_name; ?>'s account? <br>
                         This operation is delicate. Kindly enter your password to delete.
                     </h4>
                     <br>
@@ -103,8 +102,8 @@
                     <div class="form-group col-md-12">
                         <input type="password" required name="user_password" class="form-control">
                     </div>
-                    <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
-                    <input type="submit" name="close_account" value="Delete" class="text-center btn btn-danger">
+                    <button type="button" class="text-center btn btn-success" data-dismiss="modal"><em class="icon ni ni-cross-round"></em> No</button>
+                    <button type="submit" name="close_account" class="text-center btn btn-success"><em class="icon ni ni-trash-fill"></em> Yes Delete</button>
                 </div>
             </form>
         </div>

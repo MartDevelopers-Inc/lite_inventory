@@ -41,7 +41,7 @@
                     <br><br>
                     <div class="text-right">
                         <button name="update_item" class="btn btn-primary" type="submit">
-                            Update Item
+                            <em class="icon ni ni-list-check"></em> Update Item
                         </button>
                     </div>
                 </form>
@@ -75,8 +75,8 @@
                     <div class="form-group col-md-12">
                         <input type="password" required name="user_password" class="form-control">
                     </div>
-                    <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
-                    <input type="submit" name="delete_item" value="Delete" class="text-center btn btn-danger">
+                    <button type="button" class="text-center btn btn-success" data-dismiss="modal"><em class="icon ni ni-cross-round"></em> No</button>
+                    <button type="submit" class="text-center btn btn-danger" name="delete_item"> <em class="icon ni ni-trash-fill"></em> Delete</button>
                 </div>
             </form>
         </div>
