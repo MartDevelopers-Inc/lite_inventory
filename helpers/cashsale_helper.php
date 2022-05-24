@@ -132,7 +132,7 @@ foreach ($cart_products as $cart_products) {
 }
 /* Alerts If Everything Is Okay */
 if ($update_prepare && $sale_prepare) {
-    $_SESSION['success'] = "Sale Number $sale_receipt_no Is Posted, Proceed To Pi";
+    $_SESSION['success'] = "Sale Number $sale_receipt_no Is Posted";
     header('Location: pos_receipt?receipt=' . $sale_receipt_no . '&customer=' . $sale_customer_name . '');
     exit();
 } else {
