@@ -154,6 +154,10 @@ if (isset($_POST['restore_sale'])) {
     $prepare->execute();
     /* Add Everything To The Items */
     $_SESSION["cart_item"] = $itemArray;
+    /* Show An Alert That sale has been unsuspended */
+    $_SESSION['success'] = "Sale Number #$hold_sale_number Is Restored To Cart";
+    header('Location: pos');
+    exit();
 }
 require_once('../partials/head.php');
 ?>
