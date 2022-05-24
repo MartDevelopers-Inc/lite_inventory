@@ -119,14 +119,6 @@ foreach ($cart_products as $cart_products) {
             $sale_prepare->execute();
             /* Log This Operation */
             include('../functions/logs.php');
-            /* Alerts If Everything Is Okay */
-            if ($update_prepare && $sale_prepare) {
-                $_SESSION['success'] = "Sale Number $sale_receipt_no Is Posted";
-                header('Location: pos_receipt?receipt=' . $sale_receipt_no . '&customer=' . $sale_customer_name . '');
-                exit();
-            } else {
-                $err = "Failed!, Please Empty Cart And Repost Again";
-            }
             /* Make Sure This Portion Will Never Be Triggered */
         } else if ($sale_quantity > $products['product_quantity']) {
             /* Error Quantity Sold Is Greeater Than The One In Stock */
@@ -137,4 +129,12 @@ foreach ($cart_products as $cart_products) {
     } else {
         $err = "Failed, Kindly Try Again";
     }
+}
+/* Alerts If Everything Is Okay */
+if ($update_prepare && $sale_prepare) {
+    $_SESSION['success'] = "Sale Number $sale_receipt_no Is Posted, Proceed To Pi";
+    header('Location: pos_receipt?receipt=' . $sale_receipt_no . '&customer=' . $sale_customer_name . '');
+    exit();
+} else {
+    $err = "Failed!, Please Empty Cart And Repost Again";
 }
