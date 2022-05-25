@@ -70,10 +70,16 @@ if (isset($_POST['update_system_settings'])) {
     $system_name = mysqli_real_escape_string($mysqli, $_POST['system_name']);
     $system_tagline = mysqli_real_escape_string($mysqli, $_POST['system_tagline']);
 
+    /* Log Attributes */
+    $log_type = "Settings & Configurations Logs";
+    $log_details = "Edited Core System Customizations";
+
     /* Persist */
     $sql = "UPDATE system_settings SET system_name = '{$system_name}', system_tagline = '{$system_tagline}' ";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
+    /* Load Logs */
+    include('../functions/logs.php');
     if ($prepare) {
         $success = "Updated System Settings";
     } else {

@@ -75,7 +75,7 @@ if (isset($_POST['update_receipt_settings'])) {
 
     /* Log Details */
     $log_type = "Settings & Configurations Logs";
-    $log_details = "Updated Receipt & Sales Customizations";
+    $log_details = "Edited Receipt & Sales Customizations";
 
     /* Persist */
     $sql = "UPDATE receipt_customization SET receipt_store_id = '{$receipt_store_id}', receipt_header_content = '{$receipt_header_content}',

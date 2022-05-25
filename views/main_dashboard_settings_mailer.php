@@ -74,12 +74,18 @@ if (isset($_POST['upadate_mailer'])) {
     $mailer_mail_from_name = mysqli_real_escape_string($mysqli, $_POST['mailer_mail_from_name']);
     $mailer_mail_from_email  = mysqli_real_escape_string($mysqli, $_POST['mailer_mail_from_email']);
 
+    /* Log Attributes */
+    $log_type = "Settings & Configurations Logs";
+    $log_details = "Edited STMP Mailer Settings";
+
     /* Persist */
     $sql = "UPDATE mailer_settings SET mailer_host = '{$mailer_host}', mailer_port = '{$mailer_port}',
     mailer_protocol = '{$mailer_protocol}', mailer_username = '{$mailer_username}', mailer_mail_from_name = '{$mailer_mail_from_name}',
     mailer_mail_from_email = '{$mailer_mail_from_email}'";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
+    /* Log This Operation */
+    include('../functions/logs.php');
     if ($prepare) {
         $success = "Mailer Details Updated Settings";
     } else {
