@@ -103,7 +103,7 @@ while ($settings = $res->fetch_object()) {
                     <ul class="nk-menu nk-menu-main">
                         <li class="nk-menu-item">
                             <a href="pos?action=empty" class="nk-menu-link">
-                                <span class="nk-menu-text">Home</span>
+                                <span class="nk-menu-text"> <em class="icon ni ni-home"></em> Home</span>
                             </a>
                         </li>
                         <?php
@@ -117,21 +117,21 @@ while ($settings = $res->fetch_object()) {
                         ?>
                                 <li class="nk-menu-item">
                                     <a href="manage_sales" class="nk-menu-link">
-                                        <span class="nk-menu-text">Manage Sales</span>
+                                        <span class="nk-menu-text"> <em class="icon ni ni-cart-fill"></em> Sales</span>
                                     </a>
                                 </li>
                             <?php }
                             if ($permissions->permission_module == 'Items Management') { ?>
                                 <li class="nk-menu-item">
                                     <a href="items_manage" class="nk-menu-link">
-                                        <span class="nk-menu-text">Manage Items</span>
+                                        <span class="nk-menu-text"> <em class="icon ni ni-package"></em>Items</span>
                                     </a>
                                 </li>
                             <?php }
                             if ($permissions->permission_module == 'Stocks Management') { ?>
                                 <li class="nk-menu-item">
                                     <a href="inventory_manage" class="nk-menu-link">
-                                        <span class="nk-menu-text">Inventory</span>
+                                        <span class="nk-menu-text"> <em class="icon ni ni-inbox-fill"></em>Inventory & Stock</span>
                                     </a>
                                 </li>
                         <?php
