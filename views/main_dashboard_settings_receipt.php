@@ -365,35 +365,17 @@ require_once('../partials/head.php');
                                                             if (mysqli_num_rows($raw_results) > 0) {
                                                                 while ($receipts_header = mysqli_fetch_array($raw_results)) {
                                                                     /* Load Loyalty Points  */
-                                                                    if ($total > 0 && $total <= 100) {
-                                                                        $point = 1;
-                                                                    } else if ($total > 100 && $total <= 200) {
-                                                                        $point = 2;
-                                                                    } else if ($total > 200 && $total <= 300) {
-                                                                        $point = 3;
-                                                                    } else if ($total > 300 && $total <= 400) {
-                                                                        $point = 4;
-                                                                    } else if ($total > 400 && $total <= 500) {
-                                                                        $point = 5;
-                                                                    } else if ($total > 500 && $total <= 600) {
-                                                                        $point = 6;
-                                                                    } else if ($total > 700 && $total <= 800) {
-                                                                        $point = 7;
-                                                                    } else if ($total > 900 && $total <= 1000) {
-                                                                        $point = 8;
-                                                                    } else if ($total > 1000 && $total <= 5000) {
-                                                                        $point = 9;
-                                                                    } else if ($total > 5000) {
-                                                                        $point = 10;
-                                                                    } else {
-                                                                        $point = 0;
-                                                                    }
+                                                                    include('../functions/loyalty_points.php');
                                                             ?>
                                                                     <p align="center"><strong>You Were Served By Staff Name<strong></p>
                                                                     <p align="center"><i><?php echo $receipts_header['receipt_footer_content']; ?></i></p>
                                                                     <?php if ($receipts_header['allow_loyalty_points'] == 'true') { ?>
                                                                         <hr>
-                                                                        <p align="center"><strong>Loyalty Points Credited : <?php echo  $point; ?> Points <strong></p>
+                                                                        <p align="center">
+                                                                            <strong>Loyalty Point # <?php echo $a . $b; ?><br>
+                                                                                Loyalty Points Credited : <?php echo  $points_awarded; ?> Points
+                                                                                <strong>
+                                                                        </p>
                                                                     <?php } ?>
                                                             <?php }
                                                             } ?>

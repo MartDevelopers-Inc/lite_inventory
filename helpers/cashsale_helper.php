@@ -61,13 +61,17 @@
 
 
 /* This Helper Handles Cash Payments Processing */
-$sale_user_id = $_SESSION['user_id'];
-$sale_customer_name = $_POST['sale_customer_name'];
-$sale_customer_phoneno  = $_POST['sale_customer_phoneno'];
-$sale_receipt_no = $b;
-$sale_payment_method = $_POST['sale_payment_method'];
-$sale_payment_status  = 'paid';
+$sale_user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
+$sale_customer_name = mysqli_real_escape_string($mysqli, $_POST['sale_customer_name']);
+$sale_customer_phoneno  = mysqli_real_escape_string($mysqli, $_POST['sale_customer_phoneno']);
+$sale_receipt_no = mysqli_real_escape_string($mysqli, $b);
+$sale_payment_method = mysqli_real_escape_string($mysqli, $_POST['sale_payment_method']);
+$sale_payment_status  = mysqli_real_escape_string($mysqli, 'paid');
+$total = mysqli_real_escape_string($mysqli, $_POST['total_payable_price']);
+$loyalty_points_code = mysqli_real_escape_string($mysqli, $a . $b);
 
+
+/* Persist Items On Cart */
 foreach ($cart_products as $cart_products) {
     $sale_product_id = $cart_products['product_id'];
     $sale_quantity = $cart_products['quantity'];
@@ -130,6 +134,33 @@ foreach ($cart_products as $cart_products) {
         $err = "Failed, Kindly Try Again";
     }
 }
+if (!empty($sale_customer_phoneno)) {
+    /* Load Points Awarder Helper Based On Expenditure */
+    include('../functions/loyalty_points.php');
+    /* Fetch Number Of Loyalty Point This Customer Has */
+    $raw_results = mysqli_query(
+        $mysqli,
+        "SELECT * FROM loyalty_points WHERE loyalty_points_customer_phone_no = '{$sale_customer_phoneno}'"
+    );
+    if (mysqli_num_rows($raw_results) > 0) {
+        while ($results = mysqli_fetch_array($raw_results)) {
+            /* Increment Customer Loyalty Points */
+            $new_points = ($results['loyalty_points_count'] + $points_awarded);
+
+            /* Persist New Points */
+            $sql = "UPDATE loyalty_points SET loyalty_points_count = '{$new_points}' WHERE  loyalty_points_customer_phone_no = '{$sale_customer_phoneno}' ";
+            $prepare = $mysqli->prepare($sql);
+            $prepare->execute();
+        }
+    } else {
+        /* Enroll That Customer To Loyalty Points And Add Them */
+        $sql = "INSERT INTO loyalty_points (loyalty_points_code, loyalty_points_customer_name, loyalty_points_customer_phone_no, loyalty_points_count)
+        VALUES('{$loyalty_points_code}','{$sale_customer_name}', '{$sale_customer_phoneno}', '{$points_awarded}')";
+        $prepare = $mysqli->prepare($sql);
+        $prepare->execute();
+    }
+}
+
 /* Alerts If Everything Is Okay */
 if ($update_prepare && $sale_prepare) {
     $_SESSION['success'] = "Sale Number $sale_receipt_no Is Posted";
