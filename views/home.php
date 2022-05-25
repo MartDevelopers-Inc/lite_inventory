@@ -109,7 +109,7 @@ require_once('../helpers/admin_analytics.php');
                                                     <div class="card-inner">
                                                         <div class="card-title-group align-start mb-0">
                                                             <div class="card-title">
-                                                                <h6 class="subtitle">Today's Sales Revenue</h6>
+                                                                <h6 class="subtitle">Today's Overall Sales Revenue</h6>
                                                             </div>
                                                             <div class="card-tools">
                                                                 <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="<?php echo date('d M Y'); ?> Sales Revenue"></em>
@@ -165,7 +165,7 @@ require_once('../helpers/admin_analytics.php');
                                                 <div class="card mb-3  border border-success">
                                                     <div class="card-inner">
                                                         <div class="card-title">
-                                                            <h6 class="title text-center"><?php echo date('M d Y'); ?> Sales Revenue Overview</h6>
+                                                            <h6 class="title text-center"><?php echo date('M d Y'); ?> Overall Stores Sales Revenue Overview</h6>
                                                         </div>
                                                         <div class="nk-ck">
                                                             <canvas class="line-chart" id="filledLineChart"></canvas>
@@ -178,7 +178,7 @@ require_once('../helpers/admin_analytics.php');
                                                     <div class="card-inner border-bottom">
                                                         <div class="card-title-group">
                                                             <div class="card-title">
-                                                                <h6 class="title">Today Sales Logs</h6>
+                                                                <h6 class="title">Today Overall Stores Sales Logs</h6>
                                                             </div>
                                                             <div class="card-tools">
                                                                 <a href="main_dashboard_manage_sales" class="link">View All</a>
@@ -244,7 +244,8 @@ require_once('../helpers/admin_analytics.php');
                                                             <ul class="nk-activity">
                                                                 <?php
                                                                 /* Load Recent Out Of Stock Products */
-                                                                $raw_results = mysqli_query($mysqli, "SELECT  * FROM `products` 
+                                                                $raw_results = mysqli_query($mysqli, "SELECT  * FROM products p
+                                                                INNER JOIN store_settings ss ON ss.store_id = p.product_store_id 
                                                                 WHERE product_quantity <= 1 ORDER BY product_name ASC LIMIT 10");
                                                                 if (mysqli_num_rows($raw_results) > 0) {
                                                                     while ($results = mysqli_fetch_array($raw_results)) {
@@ -252,7 +253,7 @@ require_once('../helpers/admin_analytics.php');
                                                                         <li class="nk-activity-item">
                                                                             <div class="nk-activity-data">
                                                                                 <div class="label">
-                                                                                    <span class="text-danger"><?php echo $results['product_code'] . ' ' . $results['product_name']; ?> </span> is out of stock, kindly plan to restock it.
+                                                                                    <span class="text-danger"><?php echo $results['product_code'] . ' ' . $results['product_name']; ?> </span> from <?php echo $results['store_name']; ?> is out of stock, kindly plan to restock it.
                                                                                 </div>
                                                                             </div>
                                                                         </li>
