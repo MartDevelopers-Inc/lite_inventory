@@ -12,10 +12,10 @@ On Pushing To Live Server Kindly Update This Links <br>
 4. Cannot Suspend A Sale Record Twice. - Fixed
 5. Items In A Suspended Sale Cannot Be Deleted, But You Can Add More Items After Restoring
 6. Loyalty Points Only Can Go To 10
+7. Redeeming Loyalty Points, Can Only Redeem When Points Are Above 100
 
-# Todos
+# Todos 
 
-3. Top Navigation Menu Icons.
 
 # Login Credetials
 
