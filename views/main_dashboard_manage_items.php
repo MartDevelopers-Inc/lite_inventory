@@ -292,7 +292,7 @@ require_once('../partials/head.php')
                                                         <?php
                                                         $ret = "SELECT * FROM products p 
                                                         INNER JOIN store_settings ss ON ss.store_id = p.product_store_id
-                                                        WHERE p.product_status = 'active'";
+                                                        WHERE p.product_status = 'active' AND ss.store_status ='active'";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
