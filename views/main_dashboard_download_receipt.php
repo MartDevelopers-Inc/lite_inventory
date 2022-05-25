@@ -78,6 +78,8 @@ $total_quantity = 0;
 $total_price = 0;
 $number = $_GET['number'];
 $customer = $_GET['customer'];
+$phone = $_GET['phone'];
+$points = $_GET['points'];
 
 $date = new DateTime("now", new DateTimeZone('EAT'));
 
@@ -95,6 +97,9 @@ $html = '
     }
     .break-text{
         inline-size: 150px;
+    }
+    .footer{
+        font-size:8.4pt
     }
     </style>
     <body>
@@ -135,56 +140,66 @@ $html = '
                     <th width="100%" style="text-align:right;"><strong>TOTAL</strong></th>
                 </tr>
             </thead>
-            ';
-            $ret = "SELECT * FROM sales s INNER JOIN products p ON p.product_id = s.sale_product_id
-            WHERE s.sale_receipt_no = '{$number}'";
-            $stmt = $mysqli->prepare($ret);
-            $stmt->execute(); //ok
-            $res = $stmt->get_result();
-            $cnt = 1;
-            while ($sales = $res->fetch_object()) {
-                /* Amount */
-
-                $html .=
-                    '
-                    <tr>
-                        <td style="text-align:left;"><strong>' . $cnt . '. </strong></td>
-                        <td style="text-align:left; overflow-wrap: break-word">
-                            <strong>
-                                ' . $sales->product_name . '<br>
-                                ' . $sales->sale_quantity . ' X  Ksh ' . number_format($sales->sale_payment_amount, 2) . '
-                            </strong>
-                        </td>
-                        <td style="text-align:right;"><strong>' . "Ksh " . number_format(($sales->sale_payment_amount * $sales->sale_quantity), 2) . '</strong></td>
-                    </tr>
-                        ';
-                $total_quantity += $sales->sale_quantity;
-                $total_price += ($sales->sale_payment_amount * $sales->sale_quantity);
-                $cnt++;
-            }
-
-            $html .= '
-                <tr>
-                    <td colspan="1"><strong>TOTAL:</strong></td>
-                    <td style="text-align:right;" colspan="2"><strong>Ksh ' . number_format($total_price, 2) . '</strong></td>
-                </tr>
-                <br><br>
+            <tbody>
                 ';
-                $sql = "SELECT * FROM sales s INNER JOIN users u ON
-                u.user_id = s.sale_user_id
+                $ret = "SELECT * FROM sales s INNER JOIN products p ON p.product_id = s.sale_product_id
                 WHERE s.sale_receipt_no = '{$number}'";
-                $res = mysqli_query($mysqli, $sql);
-                if (mysqli_num_rows($res) > 0) {
-                    $users = mysqli_fetch_assoc($res);
-                    $html .= 
+                $stmt = $mysqli->prepare($ret);
+                $stmt->execute(); //ok
+                $res = $stmt->get_result();
+                $cnt = 1;
+                while ($sales = $res->fetch_object()) {
+                    /* Amount */
+
+                    $html .=
+                        '
+                        <tr>
+                            <td style="text-align:left;"><strong>' . $cnt . '. </strong></td>
+                            <td style="text-align:left; overflow-wrap: break-word">
+                                <strong>
+                                    ' . $sales->product_name . '<br>
+                                    ' . $sales->sale_quantity . ' X  Ksh ' . number_format($sales->sale_payment_amount, 2) . '
+                                </strong>
+                            </td>
+                            <td style="text-align:right;"><strong>' . "Ksh " . number_format(($sales->sale_payment_amount * $sales->sale_quantity), 2) . '</strong></td>
+                        </tr>
+                            ';
+                    $total_quantity += $sales->sale_quantity;
+                    $total_price += ($sales->sale_payment_amount * $sales->sale_quantity);
+                    $cnt++;
+                }
+
+                $html .= '
+                    <tr>
+                        <td colspan="1"><strong>TOTAL:</strong></td>
+                        <td style="text-align:right;" colspan="2"><strong>Ksh ' . number_format($total_price, 2) . '</strong></td>
+                    </tr>';
+                    $html .= '
+            </tbody>
+        </table>';
+        $sql = "SELECT * FROM sales s INNER JOIN users u ON
+        u.user_id = s.sale_user_id
+        WHERE s.sale_receipt_no = '{$number}'";
+        $res = mysqli_query($mysqli, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            $users = mysqli_fetch_assoc($res);
+            $html .=
+            '<div class="footer">
+                <hr>
+                <p align="center"><strong>You Were Served By ' . $users['user_name'] . '<strong></p>
+                ';
+                if($receipts_header['allow_loyalty_points'] == 'true'){
+                    /* Load Loyalty Points Details */
+                    $html .=
                     '
-                        <p align="center"><i>' . $receipts_header['receipt_footer_content'] . '</i></p>
-                        <p align="center"><strong>You Were Served By ' . $users['user_name'] . '<strong></p>
-                        <hr>
+                        <p align="center"><strong>Credited Points: ' . $points . '<strong></p>
                     ';
                 }
-        $html .='</table>';
-    }
+                $html .=
+                '<p align="center"><i>' . $receipts_header['receipt_footer_content'] . '</i></p>
+            </div>';
+        }
+}
 $html .= '</body>';
 $dompdf = new Dompdf();
 $dompdf->load_html($html);
