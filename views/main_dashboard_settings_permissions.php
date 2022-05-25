@@ -102,7 +102,7 @@ if (isset($_POST['roll_permissions'])) {
     $permission_module = mysqli_real_escape_string($mysqli, $_POST['permission_module']);
     /* Log This Operation */
     $log_type = "Settings & Configurations Logs";
-    $log_details = "Revoked $permission_access_level To Have Access To $permission_module";
+    $log_details = "Revoked $permission_access_level Permission To Access $permission_module";
 
     /* Persist */
     $sql = "DELETE FROM user_permissions WHERE permission_id  = '{$permission_id}'";
@@ -227,7 +227,10 @@ require_once('../partials/head.php');
                                                                     # <?php echo $cnt . ' ' . $permissions->permission_module; ?>
                                                                     <div class="text-right">
                                                                         <form method="POST">
+                                                                            <!-- Hide All This Please -->
                                                                             <input type="hidden" name="permission_id" value="<?php echo $permissions->permission_id; ?>">
+                                                                            <input type="hidden" name="permission_access_level" value="<?php echo $permissions->permission_access_level; ?>">
+                                                                            <input type="hidden" name="permission_module" value="<?php echo $permissions->permission_module; ?>">
                                                                             <button class="badge badge-dim badge-pill badge-outline-danger" type="submit" name="roll_permissions">Revoke</button>
                                                                         </form>
                                                                     </div>
