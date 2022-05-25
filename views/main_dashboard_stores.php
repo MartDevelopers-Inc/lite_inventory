@@ -296,6 +296,7 @@ require_once('../partials/head.php');
                                                                 <p class="card-text">Store Email: <?php echo $stores['store_email']; ?></p>
                                                                 <p class="card-text">Store Address: <?php echo $stores['store_adr']; ?></p>
                                                                 <p class="card-text">
+                                                                    <a href="store_dashboard?view=<?php echo $stores['store_id']; ?>" class="badge badge-dim badge-pill badge-outline-success">View Store</a>
                                                                     <?php
                                                                     if ($stores['store_status'] == 'active') { ?>
                                                                         <a data-toggle="modal" href="#update_store_<?php echo $stores['store_id']; ?>" class="badge badge-dim badge-pill badge-outline-warning">Update</a>
@@ -308,6 +309,7 @@ require_once('../partials/head.php');
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <!-- Load Modals Via Helpers -->
                                                 <?php require('../helpers/modals/stores_modals.php'); ?>
                                             <?php }
