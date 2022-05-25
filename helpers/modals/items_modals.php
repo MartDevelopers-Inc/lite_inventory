@@ -33,6 +33,24 @@
                             <label>Item Retail Sale Price (Ksh)</label>
                             <input type="text" name="product_sale_price" value="<?php echo $products->product_sale_price; ?>" required class="form-control">
                         </div>
+                        <div class="form-group col-md-4">
+                            <label>Items Store</label>
+                            <div class="form-group">
+                                <div class="form-control-wrap">
+                                    <select name="product_store_id" class="form-select form-control form-control-lg" data-search="on">
+                                        <?php
+                                        $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
+                                        if (mysqli_num_rows($raw_results) > 0) {
+                                            while ($stores = mysqli_fetch_array($raw_results)) {
+                                        ?>
+                                                <option value="<?php echo $stores['store_id']; ?>"><?php echo $stores['store_name']; ?></option>
+                                        <?php }
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group col-md-12">
                             <label>Item Description</label>
                             <textarea type="text" name="product_description" rows="3" required class="form-control"><?php echo $products->product_description; ?></textarea>

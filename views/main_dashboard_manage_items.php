@@ -76,15 +76,16 @@ if (isset($_POST['add_item'])) {
     $product_quantity = mysqli_real_escape_string($mysqli, $_POST['product_quantity']);
     $product_quantity_limit  = mysqli_real_escape_string($mysqli, '2');
     $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
+    $product_store_id = mysqli_real_escape_string($mysqli, $_POST['product_store_id']);
 
     /* Log Attributes */
     $log_type = "Items Management Logs";
     $log_details = "Added  $product_code - $product_name, With A Total Quantity Of  $product_quantity";
 
     /* Persist This */
-    $sql = "INSERT INTO products (product_id, product_name, product_description, product_purchase_price, 
+    $sql = "INSERT INTO products (product_id, product_store_id, product_name, product_description, product_purchase_price, 
     product_sale_price, product_quantity, product_quantity_limit, product_code)
-    VALUES ('{$product_id}', '{$product_name}', '{$product_description}', '{$product_purchase_price}', '{$product_sale_price}', 
+    VALUES ('{$product_id}', '{$product_store_id}', '{$product_name}', '{$product_description}', '{$product_purchase_price}', '{$product_sale_price}', 
     '{$product_quantity}', '{$product_quantity_limit}', '{$product_code}')";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
@@ -107,6 +108,7 @@ if (isset($_POST['update_item'])) {
     $product_quantity = mysqli_real_escape_string($mysqli, $_POST['product_quantity']);
     $product_quantity_limit  = mysqli_real_escape_string($mysqli, '2');
     $product_code  = mysqli_real_escape_string($mysqli, $_POST['product_code']);
+    $product_store_id = mysqli_real_escape_string($mysqli, $_POST['product_store_id']);
 
     /* Log Details */
     $log_type = "Items Management Logs";
@@ -228,13 +230,31 @@ require_once('../partials/head.php')
                                                             <label>Item Quantity</label>
                                                             <input type="text" name="product_quantity" required class="form-control">
                                                         </div>
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-4">
                                                             <label>Item Purchase Price (Ksh)</label>
                                                             <input type="text" name="product_purchase_price" required class="form-control">
                                                         </div>
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-4">
                                                             <label>Item Retail Sale Price (Ksh)</label>
                                                             <input type="text" name="product_sale_price" required class="form-control">
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            <label>Items Store</label>
+                                                            <div class="form-group">
+                                                                <div class="form-control-wrap">
+                                                                    <select name="product_store_id" class="form-select form-control form-control-lg" data-search="on">
+                                                                        <?php
+                                                                        $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
+                                                                        if (mysqli_num_rows($raw_results) > 0) {
+                                                                            while ($stores = mysqli_fetch_array($raw_results)) {
+                                                                        ?>
+                                                                                <option value="<?php echo $stores['store_id']; ?>"><?php echo $stores['store_name']; ?></option>
+                                                                        <?php }
+                                                                        }
+                                                                        ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div class="form-group col-md-12">
                                                             <label>Item Description</label>
