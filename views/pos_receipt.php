@@ -94,7 +94,7 @@ require_once('../partials/head.php');
                                     <a href="pos?action=empty" class="btn btn-primary btn-round">
                                         <em class="icon ni ni-histroy"></em> Return To Sales
                                     </a>
-                                    <a href="main_dashboard_download_receipt?number=<?php echo $_GET['receipt']; ?>&customer=<?php echo $_GET['customer']; ?>" class="btn btn-primary btn-round">
+                                    <a href="main_dashboard_download_receipt?number=<?php echo $_GET['receipt']; ?>&customer=<?php echo $_GET['customer']; ?>&phone=<?php echo $_GET['phone']; ?>&points=<?php echo $_GET['points']; ?>" class="btn btn-primary btn-round">
                                         <em class="icon ni ni-printer-fill"></em> Print Receipt
                                     </a>
                                 </div>

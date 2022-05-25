@@ -134,6 +134,7 @@ foreach ($cart_products as $cart_products) {
         $err = "Failed, Kindly Try Again";
     }
 }
+
 if (!empty($sale_customer_phoneno)) {
     /* Load Points Awarder Helper Based On Expenditure */
     include('../functions/loyalty_points.php');
@@ -164,7 +165,9 @@ if (!empty($sale_customer_phoneno)) {
 /* Alerts If Everything Is Okay */
 if ($update_prepare && $sale_prepare) {
     $_SESSION['success'] = "Sale Number $sale_receipt_no Is Posted";
-    header('Location: pos_receipt?receipt=' . $sale_receipt_no . '&customer=' . $sale_customer_name . '&points=' . $points_awarded);
+    header(
+        'Location: pos_receipt?receipt=' . $sale_receipt_no . '&customer=' . $sale_customer_name . '&points=' . $points_awarded . '&phone=' . $sale_customer_phoneno
+    );
     exit();
 } else {
     $err = "Failed!, Please Empty Cart And Repost Again";
