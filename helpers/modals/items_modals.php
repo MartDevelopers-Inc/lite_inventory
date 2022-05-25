@@ -21,23 +21,24 @@
                             <label>Item Code</label>
                             <input type="text" name="product_code" value="<?php echo $products->product_code; ?>" required class="form-control">
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label>Item Quantity</label>
                             <input type="text" name="product_quantity" value="<?php echo $products->product_quantity; ?>" required class="form-control">
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label>Item Purchase Price (Ksh)</label>
                             <input type="text" name="product_purchase_price" value="<?php echo $products->product_purchase_price; ?>" required class="form-control">
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label>Item Retail Sale Price (Ksh)</label>
                             <input type="text" name="product_sale_price" value="<?php echo $products->product_sale_price; ?>" required class="form-control">
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label>Items Store</label>
                             <div class="form-group">
                                 <div class="form-control-wrap">
                                     <select name="product_store_id" class="form-select form-control form-control-lg" data-search="on">
+                                        <option value="<?php echo $products->product_store_id; ?>"><?php echo $products->store_name; ?></option>
                                         <?php
                                         $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
                                         if (mysqli_num_rows($raw_results) > 0) {

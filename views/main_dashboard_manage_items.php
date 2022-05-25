@@ -290,8 +290,9 @@ require_once('../partials/head.php')
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $ret = "SELECT * FROM products 
-                                                        WHERE product_status = 'active'";
+                                                        $ret = "SELECT * FROM products p 
+                                                        INNER JOIN store_settings ss ON ss.store_id = p.product_store_id
+                                                        WHERE p.product_status = 'active'";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
