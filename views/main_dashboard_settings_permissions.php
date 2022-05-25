@@ -69,6 +69,10 @@ check_login();
 if (isset($_POST['update_permissions'])) {
     $permission_access_level = mysqli_real_escape_string($mysqli, $_POST['permission_access_level']);
     $permission_module = mysqli_real_escape_string($mysqli, $_POST['permission_module']);
+    /* Log Attributes */
+    $log_type = "Settings & Configurations Logs";
+    $log_details = "Allowed $permission_access_level To Have Access To $permission_module";
+
     /* Prevent Double Entries */
     $sql = "SELECT * FROM  user_permissions WHERE permission_access_level = '{$permission_access_level}' 
     AND permission_module = '{$permission_module}'";
@@ -81,6 +85,8 @@ if (isset($_POST['update_permissions'])) {
         VALUES('{$permission_access_level}', '{$permission_module}')";
         $prepare = $mysqli->prepare($sql);
         $prepare->execute();
+        /* Load Logs */
+        include('../functions/logs.php');
         if ($prepare) {
             $success = "$permission_module Added To Staff Access Level";
         } else {
@@ -92,11 +98,19 @@ if (isset($_POST['update_permissions'])) {
 /* Delete Access Levels */
 if (isset($_POST['roll_permissions'])) {
     $permission_id = mysqli_real_escape_string($mysqli, $_POST['permission_id']);
+    $permission_access_level = mysqli_real_escape_string($mysqli, $_POST['permission_access_level']);
+    $permission_module = mysqli_real_escape_string($mysqli, $_POST['permission_module']);
+    /* Log This Operation */
+    $log_type = "Settings & Configurations Logs";
+    $log_details = "Revoked $permission_access_level To Have Access To $permission_module";
 
     /* Persist */
     $sql = "DELETE FROM user_permissions WHERE permission_id  = '{$permission_id}'";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
+    /* Load Log File */
+    include('../functions/logs.php');
+
     if ($prepare) {
         $success = "Permission Revoked";
     } else {
