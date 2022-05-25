@@ -9,17 +9,13 @@ On Pushing To Live Server Kindly Update This Links <br>
 1. Multiple Stores - Cannot Manage More Than One Store.
 2. All Payments Are In Cash.
 3. Cannot Print Receipt Directly From System, It downloads Instead.
-4. Cannot Suspend A Sale Record Twice.
+4. Cannot Suspend A Sale Record Twice. - Fixed
 5. Items In A Suspended Sale Cannot Be Deleted, But You Can Add More Items After Restoring
+6. Loyalty Points Only Can Go To 10
 
 # Todos
 
-1. Add Relevant Icons To Submit Buttons.
-2. Simplify POS Module Home Page.
-3. Top Navigation Mene Icons.
-4. Hold Sales
-5. Optimize Sales Cart.
-6. Posted Sales Without A Receipt Number
+3. Top Navigation Menu Icons.
 
 # Login Credetials
 

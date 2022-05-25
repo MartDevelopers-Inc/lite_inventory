@@ -72,6 +72,7 @@ if (isset($_POST['update_receipt_settings'])) {
     $receipt_show_barcode = mysqli_real_escape_string($mysqli, $_POST['receipt_show_barcode']);
     $show_customer = mysqli_real_escape_string($mysqli, $_POST['show_customer']);
     $allow_discounts = mysqli_real_escape_string($mysqli, $_POST['allow_discounts']);
+    $allow_loyalty_points = mysqli_real_escape_string($mysqli, $_POST['allow_loyalty_points']);
 
     /* Log Details */
     $log_type = "Settings & Configurations Logs";
@@ -80,7 +81,7 @@ if (isset($_POST['update_receipt_settings'])) {
     /* Persist */
     $sql = "UPDATE receipt_customization SET receipt_store_id = '{$receipt_store_id}', receipt_header_content = '{$receipt_header_content}',
     receipt_footer_content = '{$receipt_footer_content}', receipt_show_barcode = '{$receipt_show_barcode}', show_customer = '{$show_customer}',
-    allow_discounts = '{$allow_discounts}'";
+    allow_discounts = '{$allow_discounts}', allow_loyalty_points = '{$allow_loyalty_points}'";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
     /* Load Logs */
@@ -146,23 +147,9 @@ require_once('../partials/head.php');
                                                             $res = $stmt->get_result();
                                                             while ($receipt_conf = $res->fetch_object()) {
                                                             ?>
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-md-12">
-                                                                        <label>Receipt Header Details</label>
-                                                                        <textarea type="text" required name="receipt_header_content" rows="2" class="form-control"><?php echo $receipt_conf->receipt_header_content; ?></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-md-12">
-                                                                        <label>Receipt Footer Details</label>
-                                                                        <textarea type="text" name="receipt_footer_content" rows="2" class="form-control"><?php echo $receipt_conf->receipt_footer_content; ?></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <div class="form-row">
 
-                                                                    <div class="form-group col-md-6">
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-md-12">
                                                                         <label>Store</label>
                                                                         <div class="form-control-wrap">
                                                                             <div class="form-group">
@@ -183,13 +170,45 @@ require_once('../partials/head.php');
                                                                             </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="form-group col-md-12">
+                                                                        <label>Receipt Header Details</label>
+                                                                        <textarea type="text" required name="receipt_header_content" rows="2" class="form-control"><?php echo $receipt_conf->receipt_header_content; ?></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-md-12">
+                                                                        <label>Receipt Footer Details</label>
+                                                                        <textarea type="text" name="receipt_footer_content" rows="2" class="form-control"><?php echo $receipt_conf->receipt_footer_content; ?></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="form-row">
                                                                     <div class="form-group col-md-6">
-                                                                        <label>Show Barcode</label>
+                                                                        <label>Show Barcode On Receipts</label>
                                                                         <div class="form-control-wrap">
                                                                             <div class="form-group">
                                                                                 <div class="form-control-wrap">
                                                                                     <select name="receipt_show_barcode" class="form-select form-control form-control-lg" data-search="on">
                                                                                         <?php if ($receipt_conf->receipt_show_barcode  == 'true') { ?>
+                                                                                            <option value="true">Enabled</option>
+                                                                                            <option value="false">Disabled</option>
+                                                                                        <?php } else { ?>
+                                                                                            <option value="false">Disabled</option>
+                                                                                            <option value="true">Enabled</option>
+                                                                                        <?php } ?>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group col-md-6">
+                                                                        <label>Award Loyalty Points</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <div class="form-group">
+                                                                                <div class="form-control-wrap">
+                                                                                    <select name="allow_loyalty_points" class="form-select form-control form-control-lg" data-search="on">
+                                                                                        <?php if ($receipt_conf->allow_loyalty_points  == 'true') { ?>
                                                                                             <option value="true">Enabled</option>
                                                                                             <option value="false">Disabled</option>
                                                                                         <?php } else { ?>
@@ -340,14 +359,42 @@ require_once('../partials/head.php');
                                                             $raw_results = mysqli_query(
                                                                 $mysqli,
                                                                 "SELECT * FROM receipt_customization rc
-                                                                    INNER JOIN store_settings ss ON ss.store_id = rc.receipt_store_id
-                                                                    WHERE ss.store_status = 'active'"
+                                                                INNER JOIN store_settings ss ON ss.store_id = rc.receipt_store_id
+                                                                WHERE ss.store_status = 'active'"
                                                             );
                                                             if (mysqli_num_rows($raw_results) > 0) {
                                                                 while ($receipts_header = mysqli_fetch_array($raw_results)) {
+                                                                    /* Load Loyalty Points  */
+                                                                    if ($total > 0 && $total <= 100) {
+                                                                        $point = 1;
+                                                                    } else if ($total > 100 && $total <= 200) {
+                                                                        $point = 2;
+                                                                    } else if ($total > 200 && $total <= 300) {
+                                                                        $point = 3;
+                                                                    } else if ($total > 300 && $total <= 400) {
+                                                                        $point = 4;
+                                                                    } else if ($total > 400 && $total <= 500) {
+                                                                        $point = 5;
+                                                                    } else if ($total > 500 && $total <= 600) {
+                                                                        $point = 6;
+                                                                    } else if ($total > 700 && $total <= 800) {
+                                                                        $point = 7;
+                                                                    } else if ($total > 900 && $total <= 1000) {
+                                                                        $point = 8;
+                                                                    } else if ($total > 1000 && $total <= 5000) {
+                                                                        $point = 9;
+                                                                    } else if ($total > 5000) {
+                                                                        $point = 10;
+                                                                    } else {
+                                                                        $point = 0;
+                                                                    }
                                                             ?>
-                                                                    <p align="center"><i><?php echo $receipts_header['receipt_footer_content']; ?></i></p>
                                                                     <p align="center"><strong>You Were Served By Staff Name<strong></p>
+                                                                    <p align="center"><i><?php echo $receipts_header['receipt_footer_content']; ?></i></p>
+                                                                    <?php if ($receipts_header['allow_loyalty_points'] == 'true') { ?>
+                                                                        <hr>
+                                                                        <p align="center"><strong>Loyalty Points Credited : <?php echo  $point; ?> Points <strong></p>
+                                                                    <?php } ?>
                                                             <?php }
                                                             } ?>
                                                         </div>
