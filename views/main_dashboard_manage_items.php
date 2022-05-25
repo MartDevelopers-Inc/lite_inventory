@@ -114,7 +114,7 @@ if (isset($_POST['update_item'])) {
     $log_type = "Items Management Logs";
     $log_details = "Updated  $product_code - $product_name Details";
 
-    $sql = "UPDATE  products SET product_name = '{$product_name}' , product_description = '{$product_description}',
+    $sql = "UPDATE  products SET product_name = '{$product_name}', product_store_id = '{$product_store_id}' , product_description = '{$product_description}',
     product_purchase_price = '{$product_purchase_price}', product_sale_price = '{$product_sale_price}',
     product_quantity = '{$product_quantity}' , product_quantity_limit = '{$product_quantity_limit}',
     product_code  = '{$product_code}' WHERE product_id = '{$product_id}' ";
