@@ -73,12 +73,19 @@ if (isset($_POST['update_receipt_settings'])) {
     $show_customer = mysqli_real_escape_string($mysqli, $_POST['show_customer']);
     $allow_discounts = mysqli_real_escape_string($mysqli, $_POST['allow_discounts']);
 
+    /* Log Details */
+    $log_type = "Settings & Configurations Logs";
+    $log_details = "Updated Receipt & Sales Customizations";
+
     /* Persist */
     $sql = "UPDATE receipt_customization SET receipt_store_id = '{$receipt_store_id}', receipt_header_content = '{$receipt_header_content}',
     receipt_footer_content = '{$receipt_footer_content}', receipt_show_barcode = '{$receipt_show_barcode}', show_customer = '{$show_customer}',
     allow_discounts = '{$allow_discounts}'";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
+    /* Load Logs */
+    include('../functions/logs.php');
+
     if ($prepare) {
         $success = "Receipt Customizations Updated";
     } else {

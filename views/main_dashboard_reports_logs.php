@@ -126,6 +126,7 @@ require_once('../partials/head.php');
                                                                                 <option>Stock Management Logs</option>
                                                                                 <option>Sales Management Logs</option>
                                                                                 <option>Stores Management Logs</option>
+                                                                                <option>Settings & Configurations Logs</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
