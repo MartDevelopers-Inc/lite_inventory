@@ -123,18 +123,21 @@ if (isset($_POST["upload"])) {
                 $product_code = mysqli_real_escape_string($conn, $spreadSheetAry[$i][6]);
             }
 
+            $product_store_id = mysqli_real_escape_string($mysqli, $_POST['product_store_id']);
+
             /* Activity Logged */
             $log_type = "Items Management Logs";
             $log_details = "Added  $product_code - $product_name, With A Total Quantity Of  $product_quantity";
 
             if (!empty($product_name)) {
-                $query = "INSERT INTO products (product_id, product_name, product_description, product_purchase_price, product_sale_price, product_quantity, product_quantity_limit, product_code) 
-                VALUES(?,?,?,?,?,?,?,?)";
+                $query = "INSERT INTO products (product_id, product_store_id, product_name, product_description, product_purchase_price, product_sale_price, product_quantity, product_quantity_limit, product_code) 
+                VALUES(?,?,?,?,?,?,?,?,?)";
                 /* Log This Operation */
                 require('../functions/logs.php');
-                $paramType = "ssssssss";
+                $paramType = "sssssssss";
                 $paramArray = array(
                     $product_id,
+                    $product_store_id,
                     $product_name,
                     $product_description,
                     $product_purchase_price,

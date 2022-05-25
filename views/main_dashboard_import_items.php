@@ -138,12 +138,34 @@ require_once('../partials/head.php')
                                         <div class="card mb-3 col-md-12 border border-success">
                                             <div class="card-body">
                                                 <form method="post" enctype="multipart/form-data">
-                                                    <div class="form-group">
-                                                        <label class="form-label" for="default-06">Spreadsheet File</label>
-                                                        <div class="form-control-wrap">
-                                                            <div class="custom-file">
-                                                                <input required type="file" accept=".xlsx , .xls" name="file" multiple class="custom-file-input" id="customFile">
-                                                                <label class="custom-file-label" for="customFile">Choose file</label>
+                                                    <div class="form-row">
+                                                        <div class="col-md-6">
+                                                            <label class="form-label" for="default-06">Spreadsheet File</label>
+                                                            <div class="form-control-wrap">
+                                                                <div class="custom-file">
+                                                                    <input type="file" required accept=".xlsx , .xls" name="file" multiple class="custom-file-input" id="customFile">
+                                                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label class="form-label" for="default-06">Items Store</label>
+                                                            <div class="form-control-wrap">
+                                                                <div class="form-group">
+                                                                    <div class="form-control-wrap">
+                                                                        <select name="product_store_id" class="form-select form-control form-control-lg" data-search="on">
+                                                                            <?php
+                                                                            $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
+                                                                            if (mysqli_num_rows($raw_results) > 0) {
+                                                                                while ($stores = mysqli_fetch_array($raw_results)) {
+                                                                            ?>
+                                                                                    <option value="<?php echo $stores['store_id']; ?>"><?php echo $stores['store_name']; ?></option>
+                                                                            <?php }
+                                                                            }
+                                                                            ?>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
