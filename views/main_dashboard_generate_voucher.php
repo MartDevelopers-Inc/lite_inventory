@@ -206,7 +206,7 @@ while ($voucher_details = $res->fetch_object()) {
                         for redeeming  ' . $voucher_details->loyalty_points_count . ' loyalty points. <br> Thank you for being our loyal customer.
                     </h4>
                 </div>';
-            $html .= '
+    $html .= '
             </body>
             <br><br><br>
             <div class="list_header letter_head" align="center">
@@ -215,31 +215,38 @@ while ($voucher_details = $res->fetch_object()) {
             </div>
         </div>
     </div>';
-}
-$dompdf->load_html($html);
-$canvas = $dompdf->getCanvas();
-$w = $canvas->get_width();
-$h = $canvas->get_height();
-$imageURL = '../public/images/logo.png';
-$imgWidth = 500;
-$imgHeight = 500;
-$canvas->set_opacity(.3);
-$x = (($w - $imgWidth) / 2);
-$y = (($h - $imgHeight) / 2);
-$canvas->image($imageURL, $x, $y, $imgWidth, $imgHeight);
-$dompdf->render();
-$dompdf->stream('Voucher Number ' . $code, array("Attachment" => 1));
-$options = $dompdf->getOptions();
-$dompdf->set_paper('A4');
-$dompdf->set_option('isHtml5ParserEnabled', true);
-$options->setDefaultFont('');
-$dompdf->setOptions($options);
-/* Delete QR Code After Burning It To The DOM PDF */
-unlink($qrpath);
 
-/* Set Points To Zero After Successful Model */
-if (isset($_GET['code'])) {
-    $sql = "UPDATE loyalty_points SET loyalty_points_count  = '0' WHERE loyalty_points_code = '{$code}'";
-    $prepare = $mysqli->prepare($sql);
-    $prepare->execute();
+    $dompdf->load_html($html);
+    $canvas = $dompdf->getCanvas();
+    $w = $canvas->get_width();
+    $h = $canvas->get_height();
+    $imageURL = '../public/images/logo.png';
+    $imgWidth = 500;
+    $imgHeight = 500;
+    $canvas->set_opacity(.3);
+    $x = (($w - $imgWidth) / 2);
+    $y = (($h - $imgHeight) / 2);
+    $canvas->image($imageURL, $x, $y, $imgWidth, $imgHeight);
+    $dompdf->render();
+    $dompdf->stream('Voucher Number ' . $code, array("Attachment" => 1));
+    $options = $dompdf->getOptions();
+    $dompdf->set_paper('A4');
+    $dompdf->set_option('isHtml5ParserEnabled', true);
+    $options->setDefaultFont('');
+    $dompdf->setOptions($options);
+    /* Delete QR Code After Burning It To The DOM PDF */
+    unlink($qrpath);
+
+    /* Set Points To Zero After Successful Model */
+    if (isset($_GET['code'])) {
+        $log_type =  "Sales Management Logs";
+        $log_details = "$voucher_details->loyalty_points_customer_name,
+        $voucher_details->loyalty_points_customer_phone_no Redeemed $voucher_details->loyalty_points_count Points To $amount";
+
+        $sql = "UPDATE loyalty_points SET loyalty_points_count  = '0' WHERE loyalty_points_code = '{$code}'";
+        $prepare = $mysqli->prepare($sql);
+        $prepare->execute();
+        /* Log This Operation */
+        include('../functions/logs.php');
+    }
 }
