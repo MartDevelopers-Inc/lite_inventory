@@ -66,7 +66,34 @@ require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
 include '../vendor/autoload.php';
 check_login();
+/* Clear Loyalty Points */
+if (isset($_POST['clear_voucher'])) {
+    $loyalty_points_id = mysqli_real_escape_string($mysqli, $_POST['loyalty_points_id']);
+    $user_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['user_password'])));
+    $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
 
+
+    /* Check Of This User Password Really Adds Up */
+    $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
+    $res = mysqli_query($mysqli, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        if ($user_password != $row['user_password']) {
+            $err = "Please Enter Correct Password";
+        } else {
+            /* Persist */
+            $sql = "UPDATE loyalty_points SET loyalty_points_count  = '0' WHERE loyalty_points_id = '{$loyalty_points_id}'";
+            $prepare = $mysqli->prepare($sql);
+            $prepare->execute();
+            /* Load Logs */
+            if ($prepare) {
+                $success = "Credited Loyalty Points Redeemed";
+            } else {
+                $err = "Failed!, Please Try Again";
+            }
+        }
+    }
+}
 /* Load Header Partial */
 require_once('../partials/head.php')
 ?>
@@ -153,18 +180,18 @@ require_once('../partials/head.php')
                                                                         <form method="POST">
                                                                             <div class="modal-body text-center ">
                                                                                 <h4 class="text-danger">
-                                                                                    Heads Up, You are about to clear this customer loyalty points. <br>
+                                                                                    Heads Up, You are about to clear this customer loyalty points record. <br>
                                                                                     Make sure you have given the customer their voucher and made a copy of it for backup purposes. <br>
-                                                                                    This operation is delicate, please re enter your user password to confirm <br>.
+                                                                                    This operation is delicate, please re enter your user password to confirm.
                                                                                 </h4>
                                                                                 <br>
                                                                                 <!-- Hide This -->
-                                                                                <input type="hidden" name="loyalty_points_id" value="<?php echo $products->product_id; ?>">
+                                                                                <input type="hidden" name="loyalty_points_id" value="<?php echo $points->loyalty_points_id; ?>">
                                                                                 <div class="form-group col-md-12">
                                                                                     <input type="password" required name="user_password" class="form-control">
                                                                                 </div>
                                                                                 <button type="button" class="text-center btn btn-success" data-dismiss="modal"><em class="icon ni ni-cross-round"></em> No</button>
-                                                                                <button type="submit" class="text-center btn btn-danger" name="delete_product"> <em class="icon ni ni-trash-fill"></em> Yes Clear</button>
+                                                                                <button type="submit" class="text-center btn btn-danger" name="clear_voucher"> <em class="icon ni ni-trash-fill"></em> Yes Clear</button>
                                                                             </div>
                                                                         </form>
                                                                     </div>
