@@ -196,14 +196,14 @@ while ($voucher_details = $res->fetch_object()) {
                 </h3>
                 <h3 class="list_header letter_head" align="center">
                     <hr style="width:100%" >
-                    LOYALTY POINTS VOUCHER OF '.$amount.' <br>
+                    LOYALTY POINTS VOUCHER OF ' . $amount . ' <br>
                     <hr style="width:100%" >
                 </h3>
                 <br>
                 <div id="textbox">
                     <h4 class="list_header" align="center">
                         We have awarded this gift voucher to ' . $voucher_details->loyalty_points_customer_name . ', ' . $voucher_details->loyalty_points_customer_phone_no . ' 
-                        for redeeming  '.$voucher_details->loyalty_points_count .' loyalty points. <br> Thank you for being our loyal customer.
+                        for redeeming  ' . $voucher_details->loyalty_points_count . ' loyalty points. <br> Thank you for being our loyal customer.
                     </h4>
                 </div>';
             $html .= '
@@ -234,3 +234,5 @@ $dompdf->set_paper('A4');
 $dompdf->set_option('isHtml5ParserEnabled', true);
 $options->setDefaultFont('');
 $dompdf->setOptions($options);
+/* Delete QR Code After Burning It To The DOM PDF */
+unlink($qrpath);
