@@ -128,47 +128,43 @@ require_once('../partials/head.php')
                                                                 <td><?php echo $points->loyalty_points_customer_name; ?></td>
                                                                 <td><?php echo $points->loyalty_points_customer_phone_no; ?></td>
                                                                 <td><?php echo $points->loyalty_points_count; ?></td>
-                                                                <td><?php echo $points->product_quantity; ?></td>
                                                                 <td>
-                                                                    <a data-toggle="modal" href="#edit_stock_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-success"><em class="icon ni ni-edit"></em> Update Quantity</a>
+                                                                    <?php
+                                                                    /* Load Redeem Helper */
+                                                                    if ($points->loyalty_points_count >= 100 && $points->loyalty_points_count <= 500) {
+                                                                        $amount =  "Ksh " . number_format(100, 2);
+                                                                    } else if ($points->loyalty_points_count >= 500 && $points->loyalty_points_count <= 800) {
+                                                                        $amount = "Ksh " . number_format(200, 2);
+                                                                    } else if ($points->loyalty_points_count >= 800 && $points->loyalty_points_count <= 1000) {
+                                                                        $amount = "Ksh " . number_format(300, 2);
+                                                                    } else if ($points->loyalty_points_count >= 1000 && $points->loyalty_points_count <= 1500) {
+                                                                        $amount = "Ksh " . number_format(400, 2);
+                                                                    } else if ($points->loyalty_points_count >= 1500 && $points->loyalty_points_count <= 1800) {
+                                                                        $amount = "Ksh " . number_format(500, 2);
+                                                                    } else if ($points->loyalty_points_count >= 1800 && $points->loyalty_points_count <= 2000) {
+                                                                        $amount = "Ksh " . number_format(600, 2);
+                                                                    } else if ($points->loyalty_points_count >= 2000 && $points->loyalty_points_count <= 2500) {
+                                                                        $amount = "Ksh " . number_format(700, 2);
+                                                                    } else if ($points->loyalty_points_count >= 2500 && $points->loyalty_points_count <= 2800) {
+                                                                        $amount = "Ksh " . number_format(800, 2);
+                                                                    } else if ($points->loyalty_points_count >= 2800 && $points->loyalty_points_count <= 3000) {
+                                                                        $amount = "Ksh " . number_format(900, 2);
+                                                                    } else if ($points->loyalty_points_count > 3500) {
+                                                                        $amount = "Ksh " . number_format(1000, 2);
+                                                                    } else {
+                                                                        $amount = "Ksh " . number_format(0, 2);
+                                                                    }
+                                                                    echo $amount;
+                                                                    ?>
+                                                                </td>
+                                                                <td>
+                                                                    <?php if ($amount == "Ksh " . number_format(0, 2)) { ?>
+                                                                        <span class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-cc-off"></em> Low Points</span>
+                                                                    <?php } else { ?>
+                                                                        <a href="main_dashboard_generate_voucher?view=<?php echo $points->loyalty_points_id; ?>" class="badge badge-dim badge-pill badge-outline-success"><em class="icon ni ni-cc-new"></em> Generate Voucher</a>
+                                                                    <?php } ?>
                                                                 </td>
                                                             </tr>
-                                                            <!-- Load Update Stock Modal -->
-                                                            <div class="modal fade" id="edit_stock_<?php echo $products->product_id; ?>">
-                                                                <div class="modal-dialog  modal-lg">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h4 class="modal-title text-center">Add New Stock Of <?php echo  $products->product_name; ?></h4>
-                                                                            <button type="button" class="close" data-dismiss="modal">
-                                                                                <span>&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <div class="text-center">
-                                                                                <h4 class="text-success">Current Quantity In Store Is : <?php echo $products->product_quantity; ?></h4>
-                                                                            </div>
-                                                                            <hr>
-                                                                            <form method="post" enctype="multipart/form-data">
-                                                                                <div class="form-row">
-                                                                                    <div class="form-group col-md-12">
-                                                                                        <label>New Item Quantity</label>
-                                                                                        <input type="text" name="product_quantity" required class="form-control">
-                                                                                        <input type="hidden" name="product_id" value="<?php echo $products->product_id; ?>" required class="form-control">
-                                                                                        <input type="hidden" name="product_details" value="<?php echo $products->product_code . ' ' . $products->product_name; ?>" required class="form-control">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <br><br>
-                                                                                <div class="text-right">
-                                                                                    <button name="update_product_stock" class="btn btn-primary" type="submit">
-                                                                                        <em class="icon ni ni-list-check"></em> Update Stock
-                                                                                    </button>
-                                                                                </div>
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Modal -->
                                                         <?php
                                                         }
                                                         ?>
