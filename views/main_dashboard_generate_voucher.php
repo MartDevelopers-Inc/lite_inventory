@@ -236,3 +236,10 @@ $options->setDefaultFont('');
 $dompdf->setOptions($options);
 /* Delete QR Code After Burning It To The DOM PDF */
 unlink($qrpath);
+
+/* Set Points To Zero After Successful Model */
+if (isset($_GET['code'])) {
+    $sql = "UPDATE loyalty_points SET loyalty_points_count  = '0' WHERE loyalty_points_code = '{$code}'";
+    $prepare = $mysqli->prepare($sql);
+    $prepare->execute();
+}
