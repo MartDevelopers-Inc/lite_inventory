@@ -160,7 +160,109 @@ require_once('../helpers/store_analytics.php');
                                         </div><!-- .col -->
                                     </div><!-- .row -->
                                 </div><!-- .nk-block -->
-                                
+                                <div class="nk-block">
+                                    <div class="nk-refwg">
+                                        <div class="col-md-6 col-xxl-4">
+                                            <div class="card card-bordered h-100 border border-success">
+                                                <div class="card-inner border-bottom">
+                                                    <div class="card-title-group">
+                                                        <div class="card-title">
+                                                            <h6 class="title">Today Overall Stores Sales Logs</h6>
+                                                        </div>
+                                                        <div class="card-tools">
+                                                            <a href="store_sales_manage" class="link">View All</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-inner">
+                                                    <div class="timeline">
+                                                        <h6 class="timeline-head"><?php echo date('d M Y'); ?></h6>
+                                                        <ul class="timeline-list">
+                                                            <?php
+                                                            /* Load Recent Sales Today */
+                                                            $raw_results = mysqli_query($mysqli, "SELECT  * FROM sales s
+                                                                INNER JOIN products p ON p.product_id = s.sale_product_id
+                                                                INNER JOIN users u ON u.user_id = s.sale_user_id
+                                                                WHERE DATE(s.sale_datetime)=CURDATE()  AND p.product_store_id = '{$view}'
+                                                                ORDER BY s.sale_datetime DESC LIMIT 10");
+                                                            if (mysqli_num_rows($raw_results) > 0) {
+                                                                while ($results = mysqli_fetch_array($raw_results)) {
+                                                            ?>
+                                                                    <li class="timeline-item">
+                                                                        <div class="timeline-status bg-primary is-outline"></div>
+                                                                        <div class="timeline-date"><?php echo date('g:ia', strtotime($results['sale_datetime'])); ?> <em class="text-success icon ni ni-clipboad-check-fill"></em></div>
+                                                                        <div class="timeline-data">
+                                                                            <h6 class="timeline-title"><?php echo $results['user_name']; ?> Sold <span class="text-success"><?php echo $results['product_name']; ?></span></h6>
+                                                                            <div class="timeline-des">
+                                                                                <p>
+                                                                                    To <span class="text-success"><?php echo $results['sale_customer_name']; ?></span>.
+                                                                                    Quantity Sold Is <span class="text-success"><?php echo $results['sale_quantity']; ?>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                <?php }
+                                                            } else { ?>
+                                                                <li class="timeline-item">
+                                                                    <div class="timeline-status bg-danger is-outline"></div>
+                                                                    <div class="timeline-date text-danger"><?php echo date('g:ia'); ?><em class="text-danger icon ni ni-alert-fill"></em></div>
+                                                                    <div class="timeline-data ">
+                                                                        <h6 class="timeline-title text-danger">No Sales Recorded So Far</span></h6>
+                                                                    </div>
+                                                                </li>
+                                                            <?php } ?>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div><!-- .card -->
+                                        </div><!-- .col -->
+                                        <div class="col-xl-6 col-xxl-8">
+                                            <div class="card card-bordered card-full border border-success">
+                                                <div class="card-inner border-bottom">
+                                                    <div class="card-title-group">
+                                                        <div class="card-title">
+                                                            <h6 class="title">Low / Out Of Stock Items</h6>
+                                                        </div>
+                                                        <div class="card-tools">
+                                                            <a href="store_items_inventory" class="link">View All</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="nk-tb-list">
+                                                    <div class="nk-tb-item">
+                                                        <ul class="nk-activity">
+                                                            <?php
+                                                            /* Load Recent Out Of Stock Products */
+                                                            $raw_results = mysqli_query($mysqli, "SELECT  * FROM products p
+                                                                INNER JOIN store_settings ss ON ss.store_id = p.product_store_id 
+                                                                WHERE product_quantity <= 1 AND p.product_store_id = '{$view}'  ORDER BY product_name ASC LIMIT 10");
+                                                            if (mysqli_num_rows($raw_results) > 0) {
+                                                                while ($results = mysqli_fetch_array($raw_results)) {
+                                                            ?>
+                                                                    <li class="nk-activity-item">
+                                                                        <div class="nk-activity-data">
+                                                                            <div class="label">
+                                                                                <span class="text-danger"><?php echo $results['product_code'] . ' ' . $results['product_name']; ?> </span> from <?php echo $results['store_name']; ?> is out of stock, kindly plan to restock it.
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                <?php }
+                                                            } else { ?>
+                                                                <li class="nk-activity-item">
+                                                                    <div class="nk-activity-data">
+                                                                        <div class="label">
+                                                                            <span class="text-success"> No out of stock items, good job in keeping your store stocked </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            <?php } ?>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div><!-- .card -->
+                                        </div><!-- .col -->
+                                    </div>
+                                </div><!-- .nk-block -->
                             </div>
                         </div>
                     </div>
