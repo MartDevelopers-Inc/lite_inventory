@@ -139,8 +139,8 @@ while ($settings = $res->fetch_object()) {
                         $stmt = $mysqli->prepare($ret);
                         $stmt->execute(); //ok
                         $res = $stmt->get_result();
-                        while ($settings = $res->fetch_object()) {
-                            if ($settings->allow_loyalty_points == 'true') {
+                        while ($receipt_settings = $res->fetch_object()) {
+                            if ($receipt_settings->allow_loyalty_points == 'true') {
                         ?>
                                 <li class="nk-menu-item">
                                     <a href="main_dashboard_manage_vouchers" class="nk-menu-link">

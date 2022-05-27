@@ -163,7 +163,7 @@ if (isset($_POST['delete_item'])) {
     }
 }
 /* Load Header Partial */
-require_once('../partials/head.php')
+require_once('../partials/head.php');
 ?>
 
 <body class="nk-body bg-lighter npc-general has-sidebar ">
