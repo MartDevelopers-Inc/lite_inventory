@@ -144,22 +144,7 @@ require_once('../helpers/store_analytics.php');
                                         </div><!-- .col -->
                                     </div><!-- .row -->
                                 </div><!-- .nk-block -->
-                                <div class="nk-block">
-                                    <div class="row gy-gs">
-                                        <div class="col-md-12 col-lg-12">
-                                            <div class="card mb-3  border border-success">
-                                                <div class="card-inner">
-                                                    <div class="card-title">
-                                                        <h6 class="title text-center"><?php echo date('M d Y'); ?> Overall Stores Sales Revenue Overview</h6>
-                                                    </div>
-                                                    <div class="nk-ck">
-                                                        <canvas class="line-chart" id="filledLineChart"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div><!-- .card-preview -->
-                                        </div><!-- .col -->
-                                    </div><!-- .row -->
-                                </div><!-- .nk-block -->
+                                
                                 <div class="nk-block">
                                     <div class="nk-refwg">
                                         <div class="col-md-6 col-xxl-4">
@@ -270,14 +255,19 @@ require_once('../helpers/store_analytics.php');
             <?php } ?>
             <!-- content @e -->
             <!-- footer @s -->
-            <?php require_once('../partials/pos_footer.php'); ?>
+            <?php
+            require_once('../partials/pos_footer.php');
+            ?>
             <!-- footer @e -->
         </div>
         <!-- wrap @e -->
     </div>
     <!-- app-root @e -->
     <!-- JavaScript -->
-    <?php require_once('../partials/scripts.php'); ?>
+    <?php
+    require_once('../partials/scripts.php');
+    require_once('../functions/store_sales_chart.php');
+    ?>
 </body>
 
 </html>
