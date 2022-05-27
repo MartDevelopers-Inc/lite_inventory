@@ -111,17 +111,17 @@ while ($settings = $res->fetch_object()) {
                             </a>
                             <ul class="nk-menu-sub">
                                 <li class="nk-menu-item">
-                                    <a href="store_items_bulk_import" class="nk-menu-link">
+                                    <a href="store_items_bulk_import?view=<?php echo $view; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text"> Bulk Import</span>
                                     </a>
                                 </li>
                                 <li class="nk-menu-item">
-                                    <a href="store_items_manage" class="nk-menu-link">
+                                    <a href="store_items_manage?view=<?php echo $view; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text"> Manage</span>
                                     </a>
                                 </li>
                                 <li class="nk-menu-item">
-                                    <a href="store_items_inventory" class="nk-menu-link">
+                                    <a href="store_items_inventory?view=<?php echo $view; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text"> Inventory</span>
                                     </a>
                                 </li>
@@ -133,12 +133,12 @@ while ($settings = $res->fetch_object()) {
                             </a>
                             <ul class="nk-menu-sub">
                                 <li class="nk-menu-item">
-                                    <a href="store_sales_manage" class="nk-menu-link">
+                                    <a href="store_sales_manage?view=<?php echo $view; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text">Manage</span>
                                     </a>
                                 </li>
                                 <li class="nk-menu-item">
-                                    <a href="store_sales_vouchers" class="nk-menu-link">
+                                    <a href="store_sales_vouchers?view=<?php echo $view; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text">Vouchers</span>
                                     </a>
                                 </li>
@@ -150,12 +150,12 @@ while ($settings = $res->fetch_object()) {
                             </a>
                             <ul class="nk-menu-sub">
                                 <li class="nk-menu-item">
-                                    <a href="store_reports_sales" class="nk-menu-link">
+                                    <a href="store_reports_sales?view=<?php echo $view; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text">Sales</span>
                                     </a>
                                 </li>
                                 <li class="nk-menu-item">
-                                    <a href="store_reports_stock" class="nk-menu-link">
+                                    <a href="store_reports_stock?view=<?php echo $view; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text">Stock</span>
                                     </a>
                                 </li>
@@ -167,17 +167,17 @@ while ($settings = $res->fetch_object()) {
                             </a>
                             <ul class="nk-menu-sub">
                                 <li class="nk-menu-item">
-                                    <a href="store_restock_limits" class="nk-menu-link">
+                                    <a href="store_restock_limits?view=<?php echo $view; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text">Restock Limits</span>
                                     </a>
                                 </li>
                                 <li class="nk-menu-item">
-                                    <a href="store_receipt_settings" class="nk-menu-link">
+                                    <a href="store_receipt_settings?view=<?php echo $view; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text">Receipt And Sales</span>
                                     </a>
                                 </li>
                                 <li class="nk-menu-item">
-                                    <a href="store_stock_settings" class="nk-menu-link">
+                                    <a href="store_stock_settings?view=<?php echo $view; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text">Stock</span>
                                     </a>
                                 </li>
@@ -227,7 +227,7 @@ while ($settings = $res->fetch_object()) {
                                     </div><!-- .nk-notification -->
                                 </div><!-- .nk-dropdown-body -->
                                 <div class="dropdown-foot center">
-                                    <a href="store_inventory">View All</a>
+                                    <a href="store_inventory?view=<?php echo $view; ?>">View All</a>
                                 </div>
                             </div>
                         </li><!-- .dropdown -->

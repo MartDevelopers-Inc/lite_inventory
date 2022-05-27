@@ -126,7 +126,7 @@ require_once('../partials/head.php')
                                                     To Bulk Import Items Kindly Use This Template. <br>
                                                 </p>
                                                 <div class="text-center">
-                                                    <a href="../public/system_data/templates/product_template.xlsx" class="btn btn-outline-success"><em class="icon ni ni-download"></em>Download</a>
+                                                    <a href="../storage/templates/product_template.xlsx" class="btn btn-outline-success"><em class="icon ni ni-download"></em>Download</a>
                                                 </div>
                                             </div>
                                         </div>
