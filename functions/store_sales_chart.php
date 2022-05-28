@@ -58,13 +58,13 @@
      * IN NO EVENT WILL DEVLAN  LIABILITY FOR ANY CLAIM, WHETHER IN CONTRACT 
      * TORT OR ANY OTHER THEORY OF LIABILITY, EXCEED THE LICENSE FEE PAID BY YOU, IF ANY.
      */
-    $view = $_GET['view'];
 
     "use strict";
     ! function(NioApp, $) {
-        var filled_LineChart = {
+        var filledLineChart = {
             labels: [
                 <?php
+                $view = $_GET['view'];
                 /* Fetch Todays Sales Only */
                 $ret = "SELECT * FROM sales s
                 INNER JOIN products p ON p.product_id = sale_product_id
@@ -98,6 +98,7 @@
                     $res = $stmt->get_result();
                     $cumulative_income = 0;
                     while ($sales = $res->fetch_object()) {
+
                         echo $sales->sale_payment_amount . ',';
                     } ?>
                 ]

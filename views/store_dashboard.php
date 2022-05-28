@@ -273,7 +273,7 @@ require_once('../helpers/store_analytics.php');
     <!-- JavaScript -->
     <?php
     require_once('../partials/scripts.php');
-    require_once('../functions/dashboard_sales_chart.php');
+    require_once('../functions/store_sales_chart.php');
     ?>
 </body>
 
