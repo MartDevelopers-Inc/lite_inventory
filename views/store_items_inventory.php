@@ -64,7 +64,38 @@ require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
 check_login();
+if (isset($_POST['update_product_stock'])) {
+    /* Product Attributes */
+    $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
+    $product_quantity = mysqli_real_escape_string($mysqli, $_POST['product_quantity']);
+    $product_details = mysqli_real_escape_string($mysqli, $_POST['product_details']);
 
+    /* Log Details */
+    $log_type = 'Stock Management Logs';
+    $log_details = 'Added New Stock Of ' . $product_quantity . ' Items To ' . $product_details;
+
+    /* Get Product Details */
+    $sql = "SELECT * FROM  products  WHERE product_id = '{$product_id}'";
+    $res = mysqli_query($mysqli, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        /* Compute New Stock  */
+        $new_stock = $row['product_quantity'] + $product_quantity;
+        /* Persist New Stock */
+        $sql = "UPDATE products SET product_quantity = '{$new_stock}' WHERE product_id = '{$product_id}'";
+        $prepare = $mysqli->prepare($sql);
+        $prepare->execute();
+        /* Log This Operation */
+        include('../functions/logs.php');
+        if ($prepare) {
+            $success = "New Stock Of $product_details Has Been Added";
+        } else {
+            $err = "Failed!, Please Try Again";
+        }
+    } else {
+        $err = "Please Try Again";
+    }
+}
 require_once('../partials/head.php');
 ?>
 

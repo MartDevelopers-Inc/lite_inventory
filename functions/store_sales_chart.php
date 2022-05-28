@@ -99,7 +99,7 @@
                     $cumulative_income = 0;
                     while ($sales = $res->fetch_object()) {
 
-                        echo $sales->sale_payment_amount . ',';
+                        echo ($sales->sale_payment_amount) * ($sales->sale_quantity) . ',';
                     } ?>
                 ]
             }]
