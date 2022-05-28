@@ -62,8 +62,6 @@ session_start();
 require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
-require_once '../config/DataSource.php';
-include '../vendor/autoload.php';
 check_login();
 
 /* Add Product */
