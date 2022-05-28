@@ -142,11 +142,6 @@ require_once('../helpers/store_analytics.php');
                                                 </div>
                                             </div><!-- .card -->
                                         </div><!-- .col -->
-                                    </div><!-- .row -->
-                                </div><!-- .nk-block -->
-                                
-                                <div class="nk-block">
-                                    <div class="nk-refwg">
                                         <div class="col-md-6 col-xxl-4">
                                             <div class="card card-bordered h-100 border border-success">
                                                 <div class="card-inner border-bottom">
@@ -246,7 +241,7 @@ require_once('../helpers/store_analytics.php');
                                                 </div>
                                             </div><!-- .card -->
                                         </div><!-- .col -->
-                                    </div>
+                                    </div><!-- .row -->
                                 </div><!-- .nk-block -->
                             </div>
                         </div>
