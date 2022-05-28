@@ -248,7 +248,45 @@ require_once('../partials/head.php');
                             <div class="nk-block">
                                 <div class="card mb-3 col-md-12 border border-success">
                                     <div class="card-body">
-
+                                        <table class="datatable-init table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Item Code</th>
+                                                    <th>Item Name</th>
+                                                    <th>QTY</th>
+                                                    <th>Purchase Price</th>
+                                                    <th>Retail Price</th>
+                                                    <th>Manage</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $store_id = $_GET['view'];
+                                                $ret = "SELECT * FROM products p 
+                                                INNER JOIN store_settings ss ON ss.store_id = p.product_store_id
+                                                WHERE p.product_store_id = '{$store_id}' AND p.product_status = 'active' AND ss.store_status ='active'";
+                                                $stmt = $mysqli->prepare($ret);
+                                                $stmt->execute(); //ok
+                                                $res = $stmt->get_result();
+                                                while ($products = $res->fetch_object()) {
+                                                ?>
+                                                    <tr>
+                                                        <td><?php echo $products->product_code; ?></td>
+                                                        <td><?php echo $products->product_name; ?></td>
+                                                        <td><?php echo $products->product_quantity; ?></td>
+                                                        <td>Ksh <?php echo $products->product_purchase_price; ?></td>
+                                                        <td>Ksh <?php echo $products->product_sale_price; ?></td>
+                                                        <td>
+                                                            <a data-toggle="modal" href="#update_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-warning"><em class="icon ni ni-edit"></em> Edit</a>
+                                                            <a data-toggle="modal" href="#delete_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Load Modals Via Partials -->
+                                                <?php require('../helpers/modals/store_items_modals.php');
+                                                }
+                                                ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
