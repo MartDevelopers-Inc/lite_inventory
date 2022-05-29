@@ -166,7 +166,45 @@ require_once('../partials/head.php');
                             <div class="nk-block">
                                 <div class="card mb-3 col-md-12 border border-success">
                                     <div class="card-body">
-
+                                        <table class="datatable-init table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Item Details</th>
+                                                    <th>Quantity</th>
+                                                    <th>Item Unit Price</th>
+                                                    <th>Item Sale Price</th>
+                                                    <th>Manage</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $ret = "SELECT * FROM sales s
+                                                INNER JOIN products p ON p.product_id =  s.sale_product_id
+                                                INNER JOIN users u ON u.user_id = s.sale_user_id
+                                                WHERE s.sale_receipt_no = '{$receipt}'";
+                                                $stmt = $mysqli->prepare($ret);
+                                                $stmt->execute(); //ok
+                                                $res = $stmt->get_result();
+                                                while ($sales = $res->fetch_object()) {
+                                                    /* Compute Price */
+                                                    $total_sale = ($sales->sale_quantity * $sales->sale_payment_amount);
+                                                ?>
+                                                    <tr>
+                                                        <td><?php echo $sales->product_code . ' ' . $sales->product_name; ?></td>
+                                                        <td><?php echo $sales->sale_quantity; ?></td>
+                                                        <td>Ksh <?php echo number_format($sales->sale_payment_amount, 2); ?></td>
+                                                        <td>Ksh <?php echo number_format($total_sale, 2); ?></td>
+                                                        <td>
+                                                            <a data-toggle="modal" href="#delete_<?php echo $sales->sale_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
+                                                        </td>
+                                                    </tr>
+                                                <?php
+                                                    /* Sale Delete Modal */
+                                                    include('../helpers/modals/sale_modal.php');
+                                                }
+                                                ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
