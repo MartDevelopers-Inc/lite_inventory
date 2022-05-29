@@ -96,7 +96,50 @@ require_once('../partials/head.php');
                             <div class="nk-block">
                                 <div class="card mb-3 col-md-12 border border-success">
                                     <div class="card-body">
-
+                                        <table class="datatable-init table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Receipt Number</th>
+                                                    <th>Date Posted</th>
+                                                    <th>Items Qty</th>
+                                                    <th>Posted By</th>
+                                                    <th>Manage</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $store_id = $_GET['view'];
+                                                $ret = "SELECT * FROM sales s
+                                                INNER JOIN products p ON p.product_id =  s.sale_product_id
+                                                INNER JOIN users u ON u.user_id = s.sale_user_id 
+                                                WHERE p.product_store_id = '{$store_id}' GROUP BY s.sale_receipt_no";
+                                                $stmt = $mysqli->prepare($ret);
+                                                $stmt->execute(); //ok
+                                                $res = $stmt->get_result();
+                                                while ($sales = $res->fetch_object()) {
+                                                    /* Count Number Of Sales */
+                                                    $query = "SELECT SUM(sale_quantity)  FROM sales 
+                                                    WHERE sale_receipt_no = '{$sales->sale_receipt_no}'";
+                                                    $stmt = $mysqli->prepare($query);
+                                                    $stmt->execute();
+                                                    $stmt->bind_result($number_of_items);
+                                                    $stmt->fetch();
+                                                    $stmt->close();
+                                                ?>
+                                                    <tr>
+                                                        <td><?php echo $sales->sale_receipt_no; ?></td>
+                                                        <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?></td>
+                                                        <td><?php echo $number_of_items; ?></td>
+                                                        <td><?php echo $sales->user_name; ?></td>
+                                                        <td>
+                                                            <a href="store_sale_manage?receipt=<?php echo $sales->sale_receipt_no; ?>&view=<?php echo $store_id; ?>" class="badge badge-dim badge-pill badge-outline-primary"><em class="icon ni ni-external"></em> View Details</a>
+                                                        </td>
+                                                    </tr>
+                                                <?php
+                                                }
+                                                ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
