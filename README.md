@@ -13,9 +13,10 @@ On Pushing To Live Server Kindly Update This Links <br>
 5. Items In A Suspended Sale Cannot Be Deleted, But You Can Add More Items After Restoring
 6. Loyalty Points Only Can Go To 10
 7. Redeeming Loyalty Points, Can Only Redeem When Points Are Above 100
+8. Receipt Headers Must Be Tied To A Store
+9. Downloaded Receipt From Admin End Has No Loyalty Points.
 
-# Todos 
-
+# Todos
 
 # Login Credetials
 

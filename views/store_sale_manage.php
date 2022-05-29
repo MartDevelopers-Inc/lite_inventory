@@ -64,6 +64,53 @@ require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
 check_login();
+/* Roll Back Sale Record */
+if (isset($_POST['delete_sale'])) {
+    $sale_id = mysqli_real_escape_string($mysqli, $_POST['sale_id']);
+    $product_id = mysqli_real_escape_string($mysqli, $_POST['product_id']);
+    $sale_quantity = mysqli_real_escape_string($mysqli, $_POST['sale_quantity']);
+    $user_id = mysqli_real_escape_string($mysqli, $_SESSION['user_id']);
+    $user_password = mysqli_real_escape_string($mysqli, sha1(md5($_POST['user_password'])));
+    /* Activity Logged */
+    $log_type = 'Sales Management Logs';
+    $log_details = mysqli_real_escape_string($mysqli, $_POST['log_details']);
+
+    /* Check If This Fella Password Matches */
+    $sql = "SELECT * FROM  users  WHERE user_id = '{$user_id}'";
+    $res = mysqli_query($mysqli, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        if ($user_password != $row['user_password']) {
+            $err = "Please Enter Correct Password";
+        } else {
+            /* Pop Product Details */
+            $sql = "SELECT * FROM  products  WHERE product_id = '{$product_id}'";
+            $return = mysqli_query($mysqli, $sql);
+            if (mysqli_num_rows($return) > 0) {
+                $product_details = mysqli_fetch_assoc($return);
+                /* New Quantity */
+                $new_stock = $product_details['product_quantity'] + $sale_quantity;
+                /* Persist */
+                $product_sql = "UPDATE products SET product_quantity = '{$new_stock}' WHERE product_id = '{$product_id}'";
+                $sale_sql = "DELETE FROM sales WHERE sale_id = '{$sale_id}'";
+
+                $product_prepare = $mysqli->prepare($product_sql);
+                $sale_prepare = $mysqli->prepare($sale_sql);
+
+                $product_prepare->execute();
+                $sale_prepare->execute();
+
+                /* Log Operation */
+                include('../functions/logs.php');
+                if ($product_prepare && $sale_prepare) {
+                    $success = "Cash Sale Rolled Back";
+                } else {
+                    $err = "Failed!, Please Try Again";
+                }
+            }
+        }
+    }
+}
 require_once('../partials/head.php');
 ?>
 
@@ -72,7 +119,12 @@ require_once('../partials/head.php');
         <!-- wrap @s -->
         <div class="nk-wrap ">
             <!-- main header @s -->
-            <?php require_once('../partials/store_header.php'); ?>
+            <?php require_once('../partials/store_header.php');
+            /* Get Receipt Number */
+            $receipt = mysqli_real_escape_string($mysqli, $_GET['receipt']);
+            /* Get Store_ID */
+            $store_id = mysqli_real_escape_string($mysqli, $_GET['view']);
+            ?>
             <!-- main header @e -->
             <!-- content @s -->
             <div class="nk-content nk-content-lg nk-content-fluid">
@@ -84,62 +136,37 @@ require_once('../partials/head.php');
                                     <div class="nk-block-head-content">
                                         <div class="align-center flex-wrap pb-2 gx-4 gy-3">
                                             <div>
-                                                <h4 class="nk-block-title fw-normal">Manage Posted Sales</h4>
+                                                <h4 class="nk-block-title fw-normal">Receipt #<?php echo $receipt; ?> Details</h4>
                                                 <p>
-                                                    This module allows you to manage all posted sales records <br>
+                                                    This is a detailed record of sale receipt #<?php echo $receipt; ?> <br>
                                                 </p>
                                             </div>
                                         </div>
+                                    </div><!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content">
+                                        <div class="toggle-wrap nk-block-tools-toggle">
+                                            <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                            <div class="toggle-expand-content" data-content="pageMenu">
+                                                <ul class="nk-block-tools g-3">
+                                                    <?php
+                                                    /* Get Receipt Attributes */
+                                                    $sql = "SELECT * FROM sales WHERE sale_receipt_no = '{$receipt}'";
+                                                    $res = mysqli_query($mysqli, $sql);
+                                                    if (mysqli_num_rows($res) > 0) {
+                                                        $receipts = mysqli_fetch_assoc($res);
+                                                    ?>
+                                                        <li><a href="main_dashboard_download_receipt?number=<?php echo $receipt; ?>&customer=<?php echo $receipts['sale_customer_name']; ?>" class="btn btn-white btn-outline-light"><em class="icon ni ni-download"></em><span>Download Receipt</span></a></li>
+                                                    <?php } ?>
+                                                </ul>
+                                            </div>
+                                        </div><!-- .toggle-wrap -->
                                     </div><!-- .nk-block-head-content -->
                                 </div><!-- .nk-block-between -->
                             </div><!-- .nk-block-head -->
                             <div class="nk-block">
                                 <div class="card mb-3 col-md-12 border border-success">
                                     <div class="card-body">
-                                        <table class="datatable-init table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Receipt Number</th>
-                                                    <th>Date Posted</th>
-                                                    <th>Items Qty</th>
-                                                    <th>Posted By</th>
-                                                    <th>Manage</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                $store_id = $_GET['view'];
-                                                $ret = "SELECT * FROM sales s
-                                                INNER JOIN products p ON p.product_id =  s.sale_product_id
-                                                INNER JOIN users u ON u.user_id = s.sale_user_id 
-                                                WHERE p.product_store_id = '{$store_id}' GROUP BY s.sale_receipt_no";
-                                                $stmt = $mysqli->prepare($ret);
-                                                $stmt->execute(); //ok
-                                                $res = $stmt->get_result();
-                                                while ($sales = $res->fetch_object()) {
-                                                    /* Count Number Of Sales */
-                                                    $query = "SELECT SUM(sale_quantity)  FROM sales 
-                                                    WHERE sale_receipt_no = '{$sales->sale_receipt_no}'";
-                                                    $stmt = $mysqli->prepare($query);
-                                                    $stmt->execute();
-                                                    $stmt->bind_result($number_of_items);
-                                                    $stmt->fetch();
-                                                    $stmt->close();
-                                                ?>
-                                                    <tr>
-                                                        <td><?php echo $sales->sale_receipt_no; ?></td>
-                                                        <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?></td>
-                                                        <td><?php echo $number_of_items; ?></td>
-                                                        <td><?php echo $sales->user_name; ?></td>
-                                                        <td>
-                                                            <a href="store_sale_manage?receipt=<?php echo $sales->sale_receipt_no; ?>&view=<?php echo $store_id; ?>" class="badge badge-dim badge-pill badge-outline-primary"><em class="icon ni ni-external"></em> View Details</a>
-                                                        </td>
-                                                    </tr>
-                                                <?php
-                                                }
-                                                ?>
-                                            </tbody>
-                                        </table>
+
                                     </div>
                                 </div>
                             </div>
