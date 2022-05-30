@@ -154,8 +154,18 @@ require_once('../partials/head.php');
                                                     $res = mysqli_query($mysqli, $sql);
                                                     if (mysqli_num_rows($res) > 0) {
                                                         $receipts = mysqli_fetch_assoc($res);
+                                                        /* Compute Number Of Loyalty Points */
+                                                        $query = "SELECT SUM(sale_payment_amount)  FROM sales WHERE sale_receipt_no = '{$receipt}'";
+                                                        $stmt = $mysqli->prepare($query);
+                                                        $stmt->execute();
+                                                        $stmt->bind_result($total);
+                                                        $stmt->fetch();
+                                                        $stmt->close();
+
+                                                        /* Load Loyalty Points Helper */
+                                                        include('../functions/loyalty_points.php');
                                                     ?>
-                                                        <li><a href="main_dashboard_download_receipt?number=<?php echo $receipt; ?>&customer=<?php echo $receipts['sale_customer_name']; ?>" class="btn btn-white btn-outline-light"><em class="icon ni ni-download"></em><span>Download Receipt</span></a></li>
+                                                        <li><a href="main_dashboard_download_receipt?number=<?php echo $receipt; ?>&customer=<?php echo $receipts['sale_customer_name']; ?>&points=<?php echo $points_awarded; ?>" class="btn btn-white btn-outline-light"><em class="icon ni ni-download"></em><span>Download Receipt</span></a></li>
                                                     <?php } ?>
                                                 </ul>
                                             </div>
