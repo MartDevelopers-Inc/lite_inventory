@@ -67,6 +67,13 @@ require_once('../config/codeGen.php');
 include '../vendor/autoload.php';
 check_login();
 /* Load Header Partial */
+if (isset($_POST['redeem_points'])) {
+    $view = mysqli_real_escape_string($mysqli, $_POST['view']);
+    $code = mysqli_real_escape_string($mysqli, $_POST['code']);
+    $store = mysqli_real_escape_string($mysqli, $_POST['store']);
+    $amount = mysqli_real_escape_string($mysqli, $_POST['amount']);
+    header("Location: main_dashboard_generate_voucher?view=$view&code=$code&amount=$amount&store=$store");
+}
 require_once('../partials/head.php')
 ?>
 
@@ -134,10 +141,58 @@ require_once('../partials/head.php')
                                                                     <?php if ($amount == "Ksh " . number_format(0, 2)) { ?>
                                                                         <span class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-cc-off"></em> Low Points</span>
                                                                     <?php } else { ?>
-                                                                        <a href="main_dashboard_generate_voucher?view=<?php echo $points->loyalty_points_id; ?>&code=<?php echo $points->loyalty_points_code; ?>&amount=<?php echo $amount; ?>" class="badge badge-dim badge-pill badge-outline-success">
+                                                                        <!-- Load A Modal To Select Store Where This Points Has Been Redeemed -->
+                                                                        <a data-toggle="modal" href="#redeem_<?php echo $points->loyalty_points_id; ?>" class="badge badge-dim badge-pill badge-outline-success">
                                                                             <em class="icon ni ni-cc-new"></em>
                                                                             Redeem Points
                                                                         </a>
+                                                                        <!-- Load Modal -->
+                                                                        <div class="modal fade" id="redeem_<?php echo $points->loyalty_points_id; ?>">
+                                                                            <div class="modal-dialog  modal-lg">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <h4 class="modal-title">Redeem Points - Select A Store To Redeem Points To</h4>
+                                                                                        <button type="button" class="close" data-dismiss="modal">
+                                                                                            <span>&times;</span>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        <form method="post" enctype="multipart/form-data">
+                                                                                            <div class="form-row">
+                                                                                                <div class="form-group col-md-12">
+                                                                                                    <label>Items Store</label>
+                                                                                                    <div class="form-group">
+                                                                                                        <!-- Hidden Values -->
+                                                                                                        <input name="view" value="<?php echo $points->loyalty_points_id; ?>" type="hidden">
+                                                                                                        <input name="code" value="<?php echo $points->loyalty_points_code; ?>" type="hidden">
+                                                                                                        <input name="amount" value="<?php echo $amount; ?>" type="hidden">
+                                                                                                        <div class="form-control-wrap">
+                                                                                                            <select name="store" class="form-select form-control form-control-lg" data-search="on">
+                                                                                                                <?php
+                                                                                                                $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
+                                                                                                                if (mysqli_num_rows($raw_results) > 0) {
+                                                                                                                    while ($stores = mysqli_fetch_array($raw_results)) {
+                                                                                                                ?>
+                                                                                                                        <option value="<?php echo $stores['store_id']; ?>"><?php echo $stores['store_name']; ?></option>
+                                                                                                                <?php }
+                                                                                                                }
+                                                                                                                ?>
+                                                                                                            </select>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <br><br>
+                                                                                            <div class="text-right">
+                                                                                                <button name="redeem_points" class="btn btn-primary" type="submit">
+                                                                                                    <em class="icon ni ni-list-check"></em> Redeem Points
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                     <?php } ?>
                                                                 </td>
                                                             </tr>
