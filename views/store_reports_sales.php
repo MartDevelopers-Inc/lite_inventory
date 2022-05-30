@@ -163,7 +163,10 @@ require_once('../partials/head.php');
     </div>
     <!-- app-root @e -->
     <!-- JavaScript -->
-    <?php require_once('../partials/scripts.php'); ?>
+    <?php
+    require_once('../partials/scripts.php');
+    include('../functions/store_sales_reports_chart.php');
+    ?>
 </body>
 
 </html>
