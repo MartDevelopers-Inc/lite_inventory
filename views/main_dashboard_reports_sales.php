@@ -108,11 +108,11 @@ require_once('../partials/head.php');
                                                         <div class="form-row">
                                                             <div class="form-group col-md-4">
                                                                 <label>Sales From Date</label>
-                                                                <input type="date" name="start_date" required class="form-control">
+                                                                <input type="text" name="start_date" required class="date-picker form-control">
                                                             </div>
                                                             <div class="form-group col-md-4">
                                                                 <label>Sales To Date</label>
-                                                                <input type="date" name="end_date" required class="form-control">
+                                                                <input type="text" name="end_date" required class="date-picker form-control">
                                                             </div>
                                                             <div class="form-group col-md-4">
                                                                 <label>Sales Report Type</label>
