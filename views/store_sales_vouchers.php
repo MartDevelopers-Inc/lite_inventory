@@ -132,7 +132,7 @@ require_once('../partials/head.php');
                                                             <?php if ($amount == "Ksh " . number_format(0, 2)) { ?>
                                                                 <span class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-cc-off"></em> Low Points</span>
                                                             <?php } else { ?>
-                                                                <a href="main_dashboard_generate_voucher?view=<?php echo $points->loyalty_points_id; ?>&code=<?php echo $points->loyalty_points_code; ?>&amount=<?php echo $amount; ?>" class="badge badge-dim badge-pill badge-outline-success">
+                                                                <a href="main_dashboard_generate_voucher?view=<?php echo $points->loyalty_points_id; ?>&code=<?php echo $points->loyalty_points_code; ?>&amount=<?php echo $amount; ?>&store=<?php echo $view; ?>" class="badge badge-dim badge-pill badge-outline-success">
                                                                     <em class="icon ni ni-cc-new"></em>
                                                                     Redeem Points
                                                                 </a>

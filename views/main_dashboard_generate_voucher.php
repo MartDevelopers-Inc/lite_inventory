@@ -68,6 +68,7 @@ require_once('../vendor/autoload.php');
 $view = $_GET['view'];
 $code = $_GET['code'];
 $amount = $_GET['amount'];
+$store = $_GET['store'];
 
 use Dompdf\Dompdf;
 
@@ -107,7 +108,7 @@ $qrbase64 = 'data:image/' . $qrtype . ';base64,' . base64_encode($qrdata);
 
 /* Load Customer Details */
 $ret = "SELECT * FROM  loyalty_points JOIN store_settings  
-WHERE loyalty_points_code = '{$code}'";
+WHERE loyalty_points_code = '{$code}' AND store_id = '{$store}'";
 $stmt = $mysqli->prepare($ret);
 $stmt->execute(); //ok
 $res = $stmt->get_result();
@@ -188,8 +189,6 @@ while ($voucher_details = $res->fetch_object()) {
             </div>
             <body>
                 <h3 class="list_header" align="center">
-                    <img src="' . $app_logo . '" width ="10%" align="center">
-                    <br>
                     ' . $voucher_details->store_name . ' <br>
                     ' . $voucher_details->store_adr  . ' <br>
                     ' . $voucher_details->store_email  . ' <br>
