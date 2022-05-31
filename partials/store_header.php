@@ -96,7 +96,7 @@ while ($settings = $res->fetch_object()) {
                     <!-- Menu -->
                     <ul class="nk-menu nk-menu-main">
                         <li class="nk-menu-item">
-                            <a href="home" class="nk-menu-link">
+                            <a href="main_dashboard_stores" class="nk-menu-link">
                                 <span class="nk-menu-text"> Home</span>
                             </a>
                         </li>
