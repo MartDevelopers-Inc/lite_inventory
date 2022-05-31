@@ -155,14 +155,25 @@ require_once('../partials/head.php');
                                             <tbody>
                                                 <?php
                                                 $user_id = $_SESSION['user_id'];
+                                                $store = $_GET['store'];
                                                 $ret = "SELECT * FROM sales s
                                                 INNER JOIN products p ON p.product_id =  s.sale_product_id
                                                 INNER JOIN users u ON u.user_id = s.sale_user_id 
-                                                WHERE u.user_id = '{$user_id}'";
+                                                WHERE u.user_id = '{$user_id}' AND p.product_store_id = '{$store}'";
                                                 $stmt = $mysqli->prepare($ret);
                                                 $stmt->execute(); //ok
                                                 $res = $stmt->get_result();
                                                 while ($sales = $res->fetch_object()) {
+                                                    /* Compute Number Of Loyalty Points */
+                                                    $query = "SELECT SUM(sale_payment_amount)  FROM sales WHERE sale_receipt_no = '{$sales->sale_receipt_no}'";
+                                                    $stmt = $mysqli->prepare($query);
+                                                    $stmt->execute();
+                                                    $stmt->bind_result($total);
+                                                    $stmt->fetch();
+                                                    $stmt->close();
+
+                                                    include('../functions/loyalty_points.php');
+
                                                 ?>
                                                     <tr>
                                                         <td><?php echo $sales->sale_receipt_no; ?></td>
@@ -170,7 +181,7 @@ require_once('../partials/head.php');
                                                         <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?></td>
                                                         <td><?php echo $sales->sale_quantity; ?></td>
                                                         <td>
-                                                            <a href="main_dashboard_download_receipt?number=<?php echo $sales->sale_receipt_no; ?>&customer=<?php echo $sales->sale_customer_name; ?>" class="badge badge-dim badge-pill badge-outline-primary">
+                                                            <a href="main_dashboard_download_receipt?number=<?php echo $sales->sale_receipt_no; ?>&customer=<?php echo $sales->sale_customer_name; ?>&phone=<?php echo $sales->sale_customer_phoneno; ?>&points=<?php echo $points_awarded; ?>" class="badge badge-dim badge-pill badge-outline-primary">
                                                                 <em class="icon ni ni-printer-fill"></em>
                                                                 Print Receipt
                                                             </a>
