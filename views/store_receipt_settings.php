@@ -64,7 +64,36 @@ require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
 check_login();
+/* Update Receipt Header And Footer */
+if (isset($_POST['update_receipt_settings'])) {
+    $receipt_id = mysqli_real_escape_string($mysqli, $_POST['receipt_id']);
+    $receipt_header_content = mysqli_real_escape_string($mysqli, $_POST['receipt_header_content']);
+    $receipt_footer_content = mysqli_real_escape_string($mysqli, $_POST['receipt_footer_content']);
+    $receipt_show_barcode = mysqli_real_escape_string($mysqli, $_POST['receipt_show_barcode']);
+    $show_customer = mysqli_real_escape_string($mysqli, $_POST['show_customer']);
+    $allow_discounts = mysqli_real_escape_string($mysqli, $_POST['allow_discounts']);
+    $allow_loyalty_points = mysqli_real_escape_string($mysqli, $_POST['allow_loyalty_points']);
+    $store_name = mysqli_real_escape_string($mysqli, $_POST['store_name']);
 
+    /* Log Details */
+    $log_type = "Settings & Configurations Logs";
+    $log_details = "Edited Receipt & Sales Customizations For $store_name Store";
+
+    /* Persist */
+    $sql = "UPDATE receipt_customization SET receipt_header_content = '{$receipt_header_content}',
+    receipt_footer_content = '{$receipt_footer_content}', receipt_show_barcode = '{$receipt_show_barcode}', show_customer = '{$show_customer}',
+    allow_discounts = '{$allow_discounts}', allow_loyalty_points = '{$allow_loyalty_points}' WHERE receipt_id = '{$receipt_id}'";
+    $prepare = $mysqli->prepare($sql);
+    $prepare->execute();
+    /* Load Logs */
+    include('../functions/logs.php');
+
+    if ($prepare) {
+        $success = "Receipt Customizations Updated";
+    } else {
+        $err = "Failed!, Please Try Again";
+    }
+}
 require_once('../partials/head.php');
 ?>
 
@@ -85,20 +114,256 @@ require_once('../partials/head.php');
                                     <div class="nk-block-head-content">
                                         <div class="align-center flex-wrap pb-2 gx-4 gy-3">
                                             <div>
-                                                <h4 class="nk-block-title fw-normal">Restock Limits Settings</h4>
-                                                <p>
-                                                    Customize and manipulate your items restock limits, according to your business rules.<br>
-                                                </p>
+                                                <h4 class="nk-block-title fw-normal">Sales Receipt Customizations</h4>
+                                                <p>This module allows you to customize receipt header, footer and barcodes on sales receipt</p>
                                             </div>
                                         </div>
                                     </div><!-- .nk-block-head-content -->
                                 </div><!-- .nk-block-between -->
                             </div><!-- .nk-block-head -->
                             <div class="nk-block">
-                                <div class="card mb-3 col-md-12 border border-success">
-                                    <div class="card-body">
-                                        
-                                    </div>
+                                <div class="row g-gs">
+
+                                    <div class="col-md-6 col-xxl-4">
+                                        <div class="card card-bordered h-100 border border-success">
+                                            <div class="card-inner border-bottom">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">Edit Sales Receipt & Core Sales Module Configurations</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner">
+                                                <div class="timeline">
+                                                    <form method="post" enctype="multipart/form-data">
+                                                        <?php
+                                                        $view = $_GET['view'];
+                                                        $ret = "SELECT * FROM receipt_customization rc 
+                                                        INNER JOIN store_settings st ON st.store_id = rc.receipt_store_id 
+                                                        WHERE st.store_status ='active' AND st.store_id = '{$view}'";
+                                                        $stmt = $mysqli->prepare($ret);
+                                                        $stmt->execute(); //ok
+                                                        $res = $stmt->get_result();
+                                                        while ($receipt_conf = $res->fetch_object()) {
+                                                        ?>
+
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-12">
+                                                                    <label>Receipt Header Details</label>
+                                                                    <textarea type="text" required name="receipt_header_content" rows="2" class="form-control"><?php echo $receipt_conf->receipt_header_content; ?></textarea>
+                                                                    <input type="hidden" required name="receipt_id" value="<?php echo $receipt_conf->receipt_id; ?>" class="form-control">
+                                                                    <input type="hidden" required name="store_name" value="<?php echo $receipt_conf->store_name; ?>" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-12">
+                                                                    <label>Receipt Footer Details</label>
+                                                                    <textarea type="text" name="receipt_footer_content" rows="2" class="form-control"><?php echo $receipt_conf->receipt_footer_content; ?></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Show Barcode On Receipts</label>
+                                                                    <div class="form-control-wrap">
+                                                                        <div class="form-group">
+                                                                            <div class="form-control-wrap">
+                                                                                <select name="receipt_show_barcode" class="form-select form-control form-control-lg" data-search="on">
+                                                                                    <?php if ($receipt_conf->receipt_show_barcode  == 'true') { ?>
+                                                                                        <option value="true">Enabled</option>
+                                                                                        <option value="false">Disabled</option>
+                                                                                    <?php } else { ?>
+                                                                                        <option value="false">Disabled</option>
+                                                                                        <option value="true">Enabled</option>
+                                                                                    <?php } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Award Loyalty Points</label>
+                                                                    <div class="form-control-wrap">
+                                                                        <div class="form-group">
+                                                                            <div class="form-control-wrap">
+                                                                                <select name="allow_loyalty_points" class="form-select form-control form-control-lg" data-search="on">
+                                                                                    <?php if ($receipt_conf->allow_loyalty_points  == 'true') { ?>
+                                                                                        <option value="true">Enabled</option>
+                                                                                        <option value="false">Disabled</option>
+                                                                                    <?php } else { ?>
+                                                                                        <option value="false">Disabled</option>
+                                                                                        <option value="true">Enabled</option>
+                                                                                    <?php } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Show Customer Details</label>
+                                                                    <div class="form-control-wrap">
+                                                                        <div class="form-group">
+                                                                            <div class="form-control-wrap">
+                                                                                <select name="show_customer" class="form-select form-control form-control-lg" data-search="on">
+                                                                                    <?php if ($receipt_conf->show_customer  == 'true') { ?>
+                                                                                        <option value="true">Enabled</option>
+                                                                                        <option value="false">Disabled</option>
+                                                                                    <?php } else { ?>
+                                                                                        <option value="false">Disabled</option>
+                                                                                        <option value="true">Enabled</option>
+                                                                                    <?php } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Allow Discounts On Sales</label>
+                                                                    <div class="form-control-wrap">
+                                                                        <div class="form-group">
+                                                                            <div class="form-control-wrap">
+                                                                                <select name="allow_discounts" class="form-select form-control form-control-lg" data-search="on">
+                                                                                    <?php if ($receipt_conf->allow_discounts  == 'true') { ?>
+                                                                                        <option value="true">Active</option>
+                                                                                        <option value="false">Disabled</option>
+                                                                                    <?php } else { ?>
+                                                                                        <option value="false">Disabled</option>
+                                                                                        <option value="true">Enabled</option>
+                                                                                    <?php } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <?php } ?>
+                                                        <br>
+                                                        <div class="text-right">
+                                                            <button name="update_receipt_settings" class="btn btn-primary" type="submit">
+                                                                <em class="icon ni ni-update"></em> Update Configurations
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div><!-- .card -->
+                                    </div><!-- .col -->
+                                    <div class="col-xl-6 col-xxl-8">
+                                        <div class="card card-bordered card-full border border-success">
+                                            <div class="card-inner border-bottom">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">Sales Receipt Preview</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="nk-tb-list">
+                                                <div class="nk-tb-item">
+                                                    <div class="card-body">
+                                                        <div>
+                                                            <style>
+                                                                .heading {
+                                                                    letter-spacing: 1px;
+                                                                    text-align: center;
+                                                                }
+                                                            </style>
+                                                            <h4 class="heading" style="font-size:10pt">
+                                                                <?php
+                                                                $raw_results = mysqli_query(
+                                                                    $mysqli,
+                                                                    "SELECT * FROM receipt_customization rc
+                                                                    INNER JOIN store_settings ss ON ss.store_id = rc.receipt_store_id
+                                                                    WHERE ss.store_status = 'active' AND ss.store_id = '{$view}'"
+                                                                );
+                                                                if (mysqli_num_rows($raw_results) > 0) {
+                                                                    while ($receipts_header = mysqli_fetch_array($raw_results)) {
+                                                                ?>
+                                                                        <strong>
+                                                                            <?php echo $receipts_header['receipt_header_content']; ?>
+                                                                            Receipt No. <?php echo $b; ?> <br>
+                                                                            <?php if ($receipts_header['show_customer'] == 'true') { ?>
+                                                                                Customer : Test Customer <br>
+                                                                            <?php } ?>
+                                                                            Date: <?php echo date('d M Y H:i'); ?>
+                                                                        </strong>
+                                                                        <br><br>
+                                                                <?php
+                                                                        /* Show Barcode */
+                                                                        if ($receipts_header['receipt_show_barcode'] == 'true') {
+                                                                            echo "<img alt='barcode' src='../functions/barcode.php?codetype=Code39&size=20&text=" . $b . "&print=true'/>";
+                                                                        }
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </h4>
+                                                        </div>
+                                                        <hr>
+                                                        <table cellspacing="5" style="font-size:8.4pt">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="text-align:left;" width="2%">SL</th>
+                                                                    <th width="100%" style="text-align:left;"><strong>ITEM DETAILS</strong></th>
+                                                                    <th width="100%" style="text-align:right;"><strong>TOTAL</strong></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <?php
+                                                            $test_product = "THIS IS A TEST ITEM";
+                                                            $test_product_price = "100";
+                                                            $test_qty = '5';
+                                                            $total = 0;
+                                                            $cnt = 1;
+                                                            while ($cnt <= 5) {
+                                                            ?>
+                                                                <tr>
+                                                                    <td style="text-align:left;"><strong><?php echo $cnt; ?></strong></td>
+                                                                    <td style="text-align:left; overflow-wrap: break-word">
+                                                                        <strong>
+                                                                            <?php echo $test_product; ?> <br>
+                                                                            <?php echo $test_qty . ' X Ksh' . number_format($test_product_price, 2); ?>
+                                                                        </strong>
+                                                                    </td>
+                                                                    <td style="text-align:right;"><strong>Ksh <?php echo number_format(($test_qty * $test_product_price), 2); ?></strong></td>
+                                                                </tr>
+                                                            <?php
+                                                                $cnt++;
+                                                                $total += ($test_qty * $test_product_price);
+                                                            } ?>
+                                                            <tr>
+                                                                <td colspan="1"><strong>TOTAL:</strong></td>
+                                                                <td style="text-align:right;" colspan="2"><strong>Ksh <?php echo number_format($total, 2); ?></strong></td>
+                                                            </tr>
+                                                        </table>
+                                                        <hr>
+                                                        <?php
+                                                        $raw_results = mysqli_query(
+                                                            $mysqli,
+                                                            "SELECT * FROM receipt_customization rc
+                                                            INNER JOIN store_settings ss ON ss.store_id = rc.receipt_store_id
+                                                            WHERE ss.store_status = 'active' AND ss.store_id = '{$view}'"
+                                                        );
+                                                        if (mysqli_num_rows($raw_results) > 0) {
+                                                            while ($receipts_header = mysqli_fetch_array($raw_results)) {
+                                                                /* Load Loyalty Points  */
+                                                                include('../functions/loyalty_points.php');
+                                                        ?>
+                                                                <p align="center"><strong>You Were Served By Staff Name<strong></p>
+                                                                <p align="center"><i><?php echo $receipts_header['receipt_footer_content']; ?></i></p>
+                                                                <?php if ($receipts_header['allow_loyalty_points'] == 'true') { ?>
+                                                                    <hr>
+                                                                    <p align="center">
+                                                                        <strong>Loyalty Point # <?php echo $a . $b; ?><br>
+                                                                            Loyalty Points Credited : <?php echo  $points_awarded; ?> Points
+                                                                            <strong>
+                                                                    </p>
+                                                                <?php } ?>
+                                                        <?php }
+                                                        } ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- .card -->
+                                    </div><!-- .col -->
                                 </div>
                             </div>
                         </div><!-- .card -->
