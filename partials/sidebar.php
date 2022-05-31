@@ -133,23 +133,12 @@ while ($settings = $res->fetch_object()) {
                                 </li>
                             </ul><!-- .nk-menu-sub -->
                         </li><!-- .nk-menu-item -->
-                        <?php
-                        /* Show This If Loyalty Points Has Been Allowed */
-                        $ret = "SELECT * FROM receipt_customization";
-                        $stmt = $mysqli->prepare($ret);
-                        $stmt->execute(); //ok
-                        $res = $stmt->get_result();
-                        while ($receipt_settings = $res->fetch_object()) {
-                            if ($receipt_settings->allow_loyalty_points == 'true') {
-                        ?>
-                                <li class="nk-menu-item">
-                                    <a href="main_dashboard_manage_vouchers" class="nk-menu-link">
-                                        <span class="nk-menu-icon"><em class="icon ni ni-cc-new"></em></span>
-                                        <span class="nk-menu-text">Vouchers</span>
-                                    </a>
-                                </li><!-- .nk-menu-item -->
-                        <?php }
-                        } ?>
+                        <li class="nk-menu-item">
+                            <a href="main_dashboard_manage_vouchers" class="nk-menu-link">
+                                <span class="nk-menu-icon"><em class="icon ni ni-cc-new"></em></span>
+                                <span class="nk-menu-text">Vouchers</span>
+                            </a>
+                        </li><!-- .nk-menu-item -->
                         <li class="nk-menu-item">
                             <a href="main_dashboard_manage_sales" class="nk-menu-link">
                                 <span class="nk-menu-icon"><em class="icon ni ni-cart"></em></span>

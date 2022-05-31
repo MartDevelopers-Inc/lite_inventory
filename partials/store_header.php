@@ -95,11 +95,15 @@ while ($settings = $res->fetch_object()) {
                     </div>
                     <!-- Menu -->
                     <ul class="nk-menu nk-menu-main">
-                        <li class="nk-menu-item">
-                            <a href="main_dashboard_stores" class="nk-menu-link">
-                                <span class="nk-menu-text"> Home</span>
-                            </a>
-                        </li>
+                        <?php
+                        if ($settings->user_access_level == 'Admin') {
+                        ?>
+                            <li class="nk-menu-item">
+                                <a href="main_dashboard_stores" class="nk-menu-link">
+                                    <span class="nk-menu-text"> Home</span>
+                                </a>
+                            </li>
+                        <?php } ?>
                         <li class="nk-menu-item">
                             <a href="store_dashboard?view=<?php echo $view; ?>" class="nk-menu-link">
                                 <span class="nk-menu-text"> Store Home</span>
@@ -174,11 +178,6 @@ while ($settings = $res->fetch_object()) {
                                 <li class="nk-menu-item">
                                     <a href="store_receipt_settings?view=<?php echo $view; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text">Receipt And Sales</span>
-                                    </a>
-                                </li>
-                                <li class="nk-menu-item">
-                                    <a href="store_stock_settings?view=<?php echo $view; ?>" class="nk-menu-link">
-                                        <span class="nk-menu-text">Stock</span>
                                     </a>
                                 </li>
                             </ul>
