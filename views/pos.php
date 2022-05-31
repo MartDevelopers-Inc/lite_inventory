@@ -320,7 +320,7 @@ require_once('../partials/head.php');
                                                                         <td style="text-align:right;"><?php echo "Ksh " . number_format($item["product_sale_price"], 2); ?></td>
                                                                         <td style="text-align:right;"><?php echo "Ksh " . number_format($item_price, 2); ?></td>
                                                                         <td style="text-align:right;">
-                                                                            <a class="text-right btn btn-dim btn-danger btn-sm btn-round" href="pos?action=remove&product_code=<?php echo $item["product_code"]; ?>">
+                                                                            <a class="text-right btn btn-dim btn-danger btn-sm btn-round" href="pos?store=<?php echo $store; ?>&action=remove&product_code=<?php echo $item["product_code"]; ?>">
                                                                                 <em class="icon ni ni-cross-round"></em> Remove
                                                                             </a>
                                                                         </td>
