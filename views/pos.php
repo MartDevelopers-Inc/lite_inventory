@@ -65,6 +65,7 @@ require_once('../config/dbcontroller.php');
 require_once('../config/codeGen.php');
 check_login();
 /* Initiate DB Controller */
+$store = $_GET['store'];/* Store Details */
 $db_handle = new DBController();
 if (!empty($_GET["action"])) {
     switch ($_GET["action"]) {
@@ -156,7 +157,7 @@ if (isset($_POST['restore_sale'])) {
     $_SESSION["cart_item"] = $itemArray;
     /* Show An Alert That sale has been unsuspended */
     $_SESSION['success'] = "Sale Number #$hold_sale_number Is Restored To Cart";
-    header('Location: pos');
+    header("Location: pos?store=$store");
     exit();
 }
 require_once('../partials/head.php');
@@ -194,8 +195,8 @@ require_once('../partials/head.php');
                                                     <select data-search="on" class="form-select" name="querry" type="search">
                                                         <option>Select Item To Add To Cart</option>
                                                         <?php
-                                                        $ret = "SELECT * FROM products WHERE product_status = 'active'
-                                                        ORDER BY product_name ASC";
+                                                        $ret = "SELECT * FROM products WHERE product_status = 'active' 
+                                                        AND product_store_id = '{$store}' ORDER BY product_name ASC";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
@@ -221,13 +222,14 @@ require_once('../partials/head.php');
                                         <?php
                                         if (isset($_POST['search'])) {
                                             $query = htmlspecialchars($_POST['querry']);
-                                            $product_array = $db_handle->runQuery("SELECT * FROM products p JOIN receipt_customization rc
+                                            $product_array = $db_handle->runQuery("SELECT * FROM products p 
+                                            JOIN receipt_customization rc ON p.product_store_id = rc.receipt_store_id
                                             WHERE p.product_status ='active' AND p.product_id = '$query'");
                                             if (!empty($product_array)) {
                                                 foreach ($product_array as $key => $value) {
                                         ?>
                                                     <div class="col-12">
-                                                        <form method="post" class="form-inline my-2 my-lg-0" action="pos?action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
+                                                        <form method="post" class="form-inline my-2 my-lg-0" action="pos?store=<?php echo $store; ?>&action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
                                                             <div class="card border border-primary text-dark">
                                                                 <div class="card-body">
                                                                     <h5 id="product_details" class="card-title">
@@ -341,7 +343,7 @@ require_once('../partials/head.php');
                                             <br>
                                             <?php
                                             /* Check If Its Allowed To Pick Customer Details */
-                                            $ret = "SELECT * FROM  receipt_customization";
+                                            $ret = "SELECT * FROM  receipt_customization WHERE receipt_store_id = '{$view}'";
                                             $stmt = $mysqli->prepare($ret);
                                             $stmt->execute(); //ok
                                             $res = $stmt->get_result();

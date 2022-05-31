@@ -83,7 +83,7 @@ foreach ($cart_products as $cart_products) {
 if ($prepare) {
     /* Clear Cart And Show Success */
     $_SESSION['success'] = "Sale Number #$hold_sale_number Is Suspended";
-    header('Location: pos?action=empty');
+    header("Location: pos?store=$store&action=empty");
     exit();
 } else {
     $err = "Failed!, Please Try Again";

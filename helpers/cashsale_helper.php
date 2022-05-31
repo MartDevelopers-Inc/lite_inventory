@@ -166,7 +166,7 @@ if (!empty($sale_customer_phoneno)) {
 if ($update_prepare && $sale_prepare) {
     $_SESSION['success'] = "Sale Number $sale_receipt_no Is Posted";
     header(
-        'Location: pos_receipt?receipt=' . $sale_receipt_no . '&customer=' . $sale_customer_name . '&points=' . $points_awarded . '&phone=' . $sale_customer_phoneno
+        'Location: pos_receipt?store=' . $store . '&receipt=' . $sale_receipt_no . '&customer=' . $sale_customer_name . '&points=' . $points_awarded . '&phone=' . $sale_customer_phoneno
     );
     exit();
 } else {

@@ -92,7 +92,7 @@ if ($num > 0) {
     } else if ($num['user_access_level'] == 'Staff') {
         /* Staff Dashboard */
         mysqli_query($mysqli, "INSERT INTO system_logs(log_user_id, log_ip_address, log_type, log_details) VALUES('{$_SESSION['user_id']}','{$log_ip}', '{$log_type}', '{$log_details}')");
-        $extra = "pos";
+        $extra = "pos?store=" . $num['user_store_id'];
         $host = $_SERVER['HTTP_HOST'];
         $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
         header("location:http://$host$uri/$extra");
