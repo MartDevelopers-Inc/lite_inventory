@@ -293,7 +293,7 @@ require_once('../partials/head.php');
                                                                 <em class="icon ni ni-pause-circle"></em>
                                                                 Suspend
                                                             </button>
-                                                            <a class="btn btn-dim btn-danger btn-sm btn-round" href="pos?action=empty">
+                                                            <a class="btn btn-dim btn-danger btn-sm btn-round" href="pos?store=<?php echo $store; ?>&action=empty">
                                                                 <em class="icon ni ni-trash"></em>
                                                                 Clear Cart
                                                             </a>
@@ -343,7 +343,7 @@ require_once('../partials/head.php');
                                             <br>
                                             <?php
                                             /* Check If Its Allowed To Pick Customer Details */
-                                            $ret = "SELECT * FROM  receipt_customization WHERE receipt_store_id = '{$view}'";
+                                            $ret = "SELECT * FROM  receipt_customization WHERE receipt_store_id = '{$store}'";
                                             $stmt = $mysqli->prepare($ret);
                                             $stmt->execute(); //ok
                                             $res = $stmt->get_result();

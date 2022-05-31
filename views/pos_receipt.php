@@ -91,7 +91,7 @@ require_once('../partials/head.php');
                             </div><!-- .nk-block-head -->
                             <div class="nk-block">
                                 <div class="text-center">
-                                    <a href="pos?action=empty" class="btn btn-primary btn-round">
+                                    <a href="pos?store=<?php echo $_GET['store']; ?>&action=empty" class="btn btn-primary btn-round">
                                         <em class="icon ni ni-histroy"></em> Return To Sales
                                     </a>
                                     <a href="main_dashboard_download_receipt?number=<?php echo $_GET['receipt']; ?>&customer=<?php echo $_GET['customer']; ?>&phone=<?php echo $_GET['phone']; ?>&points=<?php echo $_GET['points']; ?>" class="btn btn-primary btn-round">
