@@ -139,8 +139,9 @@ require_once('../partials/head.php');
                                             </thead>
                                             <tbody>
                                                 <?php
+                                                $store = $_GET['store'];
                                                 $ret = "SELECT * FROM products 
-                                                WHERE product_status = 'active'";
+                                                WHERE product_status = 'active' AND product_store_id = '{$store}'";
                                                 $stmt = $mysqli->prepare($ret);
                                                 $stmt->execute(); //ok
                                                 $res = $stmt->get_result();
