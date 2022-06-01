@@ -154,7 +154,9 @@ require_once('../partials/head.php')
                                                     <ul class="nk-block-tools g-3">
                                                         <?php
                                                         /* Get Receipt Attributes */
-                                                        $sql = "SELECT * FROM sales WHERE sale_receipt_no = '{$view}'";
+                                                        $sql = "SELECT * FROM sales s 
+                                                        INNER JOIN products p ON p.product_id = s.sale_product_id
+                                                        WHERE s.sale_receipt_no = '{$view}'";
                                                         $res = mysqli_query($mysqli, $sql);
                                                         if (mysqli_num_rows($res) > 0) {
                                                             $receipts = mysqli_fetch_assoc($res);
@@ -169,7 +171,7 @@ require_once('../partials/head.php')
                                                             /* Load Loyalty Points Helper */
                                                             include('../functions/loyalty_points.php');
                                                         ?>
-                                                            <li><a href="main_dashboard_download_receipt?number=<?php echo $view; ?>&customer=<?php echo $receipts['sale_customer_name']; ?>&points=<?php echo $points_awarded; ?>" class="btn btn-white btn-outline-light"><em class="icon ni ni-download"></em><span>Download Receipt</span></a></li>
+                                                            <li><a href="main_dashboard_download_receipt?store=<?php echo $receipts['product_store_id']; ?>&number=<?php echo $view; ?>&customer=<?php echo $receipts['sale_customer_name']; ?>&points=<?php echo $points_awarded; ?>" class="btn btn-white btn-outline-light"><em class="icon ni ni-download"></em><span>Download Receipt</span></a></li>
                                                         <?php } ?>
                                                     </ul>
                                                 </div>

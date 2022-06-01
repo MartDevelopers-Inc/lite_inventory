@@ -78,6 +78,7 @@ $number = $_GET['number'];
 $customer = $_GET['customer'];
 $phone = $_GET['phone'];
 $points = $_GET['points'];
+$store = $_GET['store'];
 
 $date = new DateTime("now", new DateTimeZone('EAT'));
 
@@ -106,7 +107,7 @@ $html = '
             <strong>';
                 $sql = "SELECT * FROM receipt_customization rc
                 INNER JOIN store_settings ss ON ss.store_id = rc.receipt_store_id
-                WHERE ss.store_status = 'active'";
+                WHERE ss.store_status = 'active' AND ss.store_id = '{$store}'";
                 $res = mysqli_query($mysqli, $sql);
                 if (mysqli_num_rows($res) > 0) {
                     $receipts_header = mysqli_fetch_assoc($res);
