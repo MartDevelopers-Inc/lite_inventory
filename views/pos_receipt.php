@@ -104,7 +104,9 @@ require_once('../partials/head.php');
                                         <div class="card border border-success col-12">
                                             <?php
                                             /* Load Receipt Settings */
-                                            $sql = "SELECT * FROM receipt_customization";
+                                            $store_id = $_GET['store'];
+                                            $sql = "SELECT * FROM receipt_customization WHERE 
+                                            receipt_store_id = '{$store_id}'";
                                             $stmt = $mysqli->prepare($sql);
                                             $stmt->execute(); //ok
                                             $res = $stmt->get_result();
