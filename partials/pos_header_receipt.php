@@ -82,7 +82,7 @@ while ($settings = $res->fetch_object()) {
                     <a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="headerNav"><em class="icon ni ni-menu"></em></a>
                 </div>
                 <div class="nk-header-brand">
-                    <a href="pos?action=empty" class="logo-link text-light">
+                    <a href="pos?store=<?php echo $settings->user_store_id; ?>&action=empty" class="logo-link text-light">
                         <img class="logo-light logo-img" src="../public/images/logo.png" srcset="../public/images/logo.png 2x" alt="logo">
                         <?php echo $settings->system_name; ?>
                     </a>
@@ -90,7 +90,7 @@ while ($settings = $res->fetch_object()) {
                 <div class="nk-header-menu" data-content="headerNav">
                     <div class="nk-header-mobile">
                         <div class="nk-header-brand">
-                            <a href="pos?action=empty" class="logo-link">
+                            <a href="pos?store=<?php echo $settings->user_store_id; ?>&action=empty" class="logo-link">
                                 <img class="logo-light logo-img" src="../public/images/logo.png" srcset="../public/images/logo.png 2x" alt="logo">
                                 <?php echo $settings->system_name; ?>
                             </a>
@@ -102,7 +102,7 @@ while ($settings = $res->fetch_object()) {
                     <!-- Menu -->
                     <ul class="nk-menu nk-menu-main">
                         <li class="nk-menu-item">
-                            <a href="pos?action=empty" class="nk-menu-link">
+                            <a href="pos?store=<?php echo $settings->user_store_id; ?>&action=empty" class="nk-menu-link">
                                 <span class="nk-menu-text"> <em class="icon ni ni-home"></em> Home</span>
                             </a>
                         </li>
@@ -116,21 +116,21 @@ while ($settings = $res->fetch_object()) {
                             if ($permissions->permission_module == 'Sales Management') {
                         ?>
                                 <li class="nk-menu-item">
-                                    <a href="manage_sales" class="nk-menu-link">
+                                    <a href="manage_sales?store=<?php echo $settings->user_store_id; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text"> <em class="icon ni ni-cart-fill"></em> Sales</span>
                                     </a>
                                 </li>
                             <?php }
                             if ($permissions->permission_module == 'Items Management') { ?>
                                 <li class="nk-menu-item">
-                                    <a href="items_manage" class="nk-menu-link">
+                                    <a href="items_manage?store=<?php echo $settings->user_store_id; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text"> <em class="icon ni ni-package"></em>Items</span>
                                     </a>
                                 </li>
                             <?php }
                             if ($permissions->permission_module == 'Stocks Management') { ?>
                                 <li class="nk-menu-item">
-                                    <a href="inventory_manage" class="nk-menu-link">
+                                    <a href="inventory_manage?store=<?php echo $settings->user_store_id; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text"> <em class="icon ni ni-inbox-fill"></em>Inventory & Stock</span>
                                     </a>
                                 </li>
@@ -193,7 +193,7 @@ while ($settings = $res->fetch_object()) {
                                                         </span>
                                                     </div>
                                                     <div class="nk-notification-time"><?php echo date('d M Y g:ia', strtotime($hold_sales->hold_sale_time)); ?></div>
-                                                    <form method="POST" action="pos">
+                                                    <form method="POST" action="pos?store=<?php echo $settings->user_store_id; ?>">
                                                         <input type="hidden" name="hold_sale_number" value="<?php echo $hold_sales->hold_sale_number; ?>">
                                                         <button class="badge badge-dim badge-pill badge-outline-danger" type="submit" name="restore_sale">
                                                             Unsuspend Sale
