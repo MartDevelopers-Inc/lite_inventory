@@ -61,25 +61,25 @@
 
 
 /* Loyalty Points Calculator - Tweak It As Client Needs It */
-if ($total > 0 && $total <= 100) {
+if ($total >= 0 && $total <= 100) {
     $points_awarded = 1;
-} else if ($total > 100 && $total <= 200) {
+} else if ($total >= 100 && $total <= 200) {
     $points_awarded = 2;
-} else if ($total > 200 && $total <= 300) {
+} else if ($total >= 200 && $total <= 300) {
     $points_awarded = 3;
-} else if ($total > 300 && $total <= 400) {
+} else if ($total >= 300 && $total <= 400) {
     $points_awarded = 4;
-} else if ($total > 400 && $total <= 500) {
+} else if ($total >= 400 && $total <= 500) {
     $points_awarded = 5;
-} else if ($total > 500 && $total <= 600) {
+} else if ($total >= 500 && $total <= 600) {
     $points_awarded = 6;
-} else if ($total > 700 && $total <= 800) {
+} else if ($total >= 700 && $total <= 800) {
     $points_awarded = 7;
-} else if ($total > 900 && $total <= 1000) {
+} else if ($total >= 900 && $total <= 1000) {
     $points_awarded = 8;
-} else if ($total > 1000 && $total <= 5000) {
+} else if ($total >= 1000 && $total <= 5000) {
     $points_awarded = 9;
-} else if ($total > 5000) {
+} else if ($total >= 5000) {
     $points_awarded = 10;
 } else {
     $points_awarded = 0;
