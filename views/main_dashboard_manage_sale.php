@@ -171,7 +171,7 @@ require_once('../partials/head.php')
                                                             /* Load Loyalty Points Helper */
                                                             include('../functions/loyalty_points.php');
                                                         ?>
-                                                            <li><a href="main_dashboard_download_receipt?store=<?php echo $receipts['product_store_id']; ?>&number=<?php echo $view; ?>&customer=<?php echo $receipts['sale_customer_name']; ?>&points=<?php echo $points_awarded; ?>" class="btn btn-white btn-outline-light"><em class="icon ni ni-download"></em><span>Download Receipt</span></a></li>
+                                                            <li><a href="main_dashboard_download_receipt?store=<?php echo $receipts['product_store_id']; ?>&number=<?php echo $view; ?>&customer=<?php echo $receipts['sale_customer_name']; ?>&points=<?php echo $points_awarded; ?>&phone=<?php echo $receipts['sale_customer_phoneno']; ?>" class="btn btn-white btn-outline-light"><em class="icon ni ni-download"></em><span>Download Receipt</span></a></li>
                                                         <?php } ?>
                                                     </ul>
                                                 </div>
