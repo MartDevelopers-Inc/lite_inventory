@@ -81,7 +81,7 @@ if (isset($_POST['update_receipt_settings'])) {
     /* Persist */
     $sql = "UPDATE receipt_customization SET receipt_store_id = '{$receipt_store_id}', receipt_header_content = '{$receipt_header_content}',
     receipt_footer_content = '{$receipt_footer_content}', receipt_show_barcode = '{$receipt_show_barcode}', show_customer = '{$show_customer}',
-    allow_discounts = '{$allow_discounts}', allow_loyalty_points = '{$allow_loyalty_points}'";
+    allow_discounts = '{$allow_discounts}', allow_loyalty_points = '{$allow_loyalty_points}' WHERE receipt_store_id = '{$receipt_store_id}'";
     $prepare = $mysqli->prepare($sql);
     $prepare->execute();
     /* Load Logs */
@@ -142,7 +142,7 @@ require_once('../partials/head.php');
                                                             /*  Store Details */
                                                             $store = $_GET['store'];
                                                             $ret = "SELECT * FROM receipt_customization rc INNER JOIN store_settings st ON st.store_id = rc.receipt_store_id 
-                                                            WHERE st.store_status ='active' AND ss.store_id = '{$store}'";
+                                                            WHERE st.store_status ='active' AND st.store_id = '{$store}'";
                                                             $stmt = $mysqli->prepare($ret);
                                                             $stmt->execute(); //ok
                                                             $res = $stmt->get_result();
@@ -150,27 +150,6 @@ require_once('../partials/head.php');
                                                             ?>
 
                                                                 <div class="form-row">
-                                                                    <div class="form-group col-md-12">
-                                                                        <label>Store</label>
-                                                                        <div class="form-control-wrap">
-                                                                            <div class="form-group">
-                                                                                <div class="form-control-wrap">
-                                                                                    <select name="receipt_store_id" class="form-select form-control form-control-lg" data-search="on">
-                                                                                        <option value="<?php echo $receipt_conf->store_id; ?>"><?php echo $receipt_conf->store_name; ?></option>
-                                                                                        <?php
-                                                                                        $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
-                                                                                        if (mysqli_num_rows($raw_results) > 0) {
-                                                                                            while ($stores = mysqli_fetch_array($raw_results)) {
-                                                                                        ?>
-                                                                                                <option value="<?php echo $stores['store_id']; ?>"><?php echo $stores['store_name']; ?></option>
-                                                                                        <?php }
-                                                                                        }
-                                                                                        ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
                                                                     <div class="form-group col-md-12">
                                                                         <label>Receipt Header Details</label>
                                                                         <textarea type="text" required name="receipt_header_content" rows="2" class="form-control"><?php echo $receipt_conf->receipt_header_content; ?></textarea>
@@ -358,6 +337,7 @@ require_once('../partials/head.php');
                                                             </table>
                                                             <hr>
                                                             <?php
+                                                            $store = $_GET['store'];
                                                             $raw_results = mysqli_query(
                                                                 $mysqli,
                                                                 "SELECT * FROM receipt_customization rc
