@@ -156,7 +156,7 @@ require_once('../partials/head.php');
                                                         </td>
                                                     </tr>
                                                     <!-- Load Modals Via Partials -->
-                                                <?php require('../helpers/modals/items_modals.php');
+                                                <?php require('../helpers/modals/store_items_modals.php');
                                                 }
                                                 ?>
                                             </tbody>
