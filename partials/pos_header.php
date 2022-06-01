@@ -58,6 +58,7 @@
  * IN NO EVENT WILL DEVLAN  LIABILITY FOR ANY CLAIM, WHETHER IN CONTRACT 
  * TORT OR ANY OTHER THEORY OF LIABILITY, EXCEED THE LICENSE FEE PAID BY YOU, IF ANY.
  */
+$store = $_GET['store'];
 $user_id = $_SESSION['user_id'];
 $ret = "SELECT * FROM  system_settings 
 JOIN users WHERE user_id = '{$user_id}' ";
@@ -66,7 +67,8 @@ $stmt->execute(); //ok
 $res = $stmt->get_result();
 while ($settings = $res->fetch_object()) {
     /* Load Number Of Sales On Hold */
-    $query = "SELECT COUNT(DISTINCT hold_sale_number) FROM hold_sales";
+    $query = "SELECT COUNT(DISTINCT hold_sale_number) 
+    FROM hold_sales hs INNER JOIN products p ON p.product_id = hs.product_id WHERE p.product_store_id = '{$store}'";
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
     $stmt->bind_result($hold_sales_count);
@@ -166,7 +168,9 @@ while ($settings = $res->fetch_object()) {
                                     <div class="nk-notification">
                                         <?php
                                         /* Load Hold Sales */
-                                        $ret = "SELECT * FROM hold_sales GROUP BY hold_sale_number 
+                                        $ret = "SELECT * FROM hold_sales hs
+                                        INNER JOIN products p ON p.product_id = hs.product_id 
+                                        WHERE p.product_store_id = '{$store}' GROUP BY hold_sale_number 
                                         ORDER BY hold_sale_time DESC";
                                         $stmt = $mysqli->prepare($ret);
                                         $stmt->execute(); //ok
