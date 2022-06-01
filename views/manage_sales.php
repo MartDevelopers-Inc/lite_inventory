@@ -181,7 +181,7 @@ require_once('../partials/head.php');
                                                         <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?></td>
                                                         <td><?php echo $sales->sale_quantity; ?></td>
                                                         <td>
-                                                            <a href="main_dashboard_download_receipt?number=<?php echo $sales->sale_receipt_no; ?>&customer=<?php echo $sales->sale_customer_name; ?>&phone=<?php echo $sales->sale_customer_phoneno; ?>&points=<?php echo $points_awarded; ?>" class="badge badge-dim badge-pill badge-outline-primary">
+                                                            <a href="main_dashboard_download_receipt?store=<?php echo $store; ?>&number=<?php echo $sales->sale_receipt_no; ?>&customer=<?php echo $sales->sale_customer_name; ?>&phone=<?php echo $sales->sale_customer_phoneno; ?>&points=<?php echo $points_awarded; ?>" class="badge badge-dim badge-pill badge-outline-primary">
                                                                 <em class="icon ni ni-printer-fill"></em>
                                                                 Print Receipt
                                                             </a>
