@@ -191,52 +191,91 @@ require_once('../partials/head.php')
                                                 </p>
                                             </div>
                                         </div><!-- .nk-block-head-content -->
-                                        <div class="nk-block-head-content">
-                                            <div class="toggle-wrap nk-block-tools-toggle">
-                                                <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
-                                                <div class="toggle-expand-content" data-content="pageMenu">
-                                                    <ul class="nk-block-tools g-3">
-                                                        <li><a href="main_dashboard_system_inventory_pdf_dump" class="btn btn-primary"><em class="icon ni ni-file-docs"></em><span>Export To PDF</span></a></li>
-                                                        <li><a href="main_dashboard_system_inventory_xls_dump" class="btn btn-primary"><em class="icon ni ni-grid-add-fill-c"></em><span>Export To Excel</span></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div><!-- .toggle-wrap -->
-                                        </div><!-- .nk-block-head-content -->
                                     </div><!-- .nk-block-between -->
                                 </div><!-- .nk-block-head -->
 
-                                <div class="">
-                                    <div class="row">
-                                        <div class="card mb-3 col-md-12 border border-success">
-                                            <div class="card-body">
-                                                <table class="datatable-init table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Item Details</th>
-                                                            <th>Current Item Quantity</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        $ret = "SELECT * FROM products 
-                                                        WHERE product_status = 'active'";
-                                                        $stmt = $mysqli->prepare($ret);
-                                                        $stmt->execute(); //ok
-                                                        $res = $stmt->get_result();
-                                                        while ($products = $res->fetch_object()) {
-                                                        ?>
-                                                            <tr>
-                                                                <td><?php echo $products->product_code . ' ' . $products->product_name; ?></td>
-                                                                <td><?php echo $products->product_quantity; ?></td>
-                                                            </tr>
-                                                        <?php }
-                                                        ?>
-                                                    </tbody>
-                                                </table>
+                                <div class="row">
+                                    <div class="card mb-3 col-12 border border-success">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-12">
+                                                <div class="card-body">
+                                                    <form method="post" enctype="multipart/form-data">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12">
+                                                                <label>Select Store</label>
+                                                                <div class="form-control-wrap">
+                                                                    <div class="form-group">
+                                                                        <div class="form-control-wrap">
+                                                                            <select name="store_id" class="form-select form-control form-control-lg" data-search="on">
+                                                                                <?php
+                                                                                $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
+                                                                                if (mysqli_num_rows($raw_results) > 0) {
+                                                                                    while ($stores = mysqli_fetch_array($raw_results)) {
+                                                                                ?>
+                                                                                        <option value="<?php echo $stores['store_id']; ?>"><?php echo $stores['store_name']; ?></option>
+                                                                                <?php }
+                                                                                }
+                                                                                ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="text-right">
+                                                            <button name="get_sale_reports" class="btn btn-primary" type="submit">
+                                                                <em class="icon ni ni-report-profit"></em> Get Items
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div><!-- .nk-block -->
+                                </div>
+                                <?php
+                                if (isset($_POST['store_id'])) {
+                                ?>
+                                    <div class="">
+                                        <div class="row">
+                                            <div class="card mb-3 col-md-12 border border-success">
+                                                <div class="card-body">
+                                                    <div class="text-right">
+                                                        <a href="main_dashboard_system_inventory_pdf_dump" class="btn btn-primary"><em class="icon ni ni-file-docs"></em><span>Export To PDF</span></a>
+                                                        <a href="main_dashboard_system_inventory_xls_dump" class="btn btn-primary"><em class="icon ni ni-grid-add-fill-c"></em><span>Export To Excel</span></a>
+                                                    </div>
+                                                    <hr>
+                                                    <table class="datatable-init table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Item Details</th>
+                                                                <th>Current Item Quantity</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                            $store = $_POST['store_id'];
+                                                            $ret = "SELECT * FROM products 
+                                                            WHERE product_status = 'active' AND product_store_id = '{$store}'";
+                                                            $stmt = $mysqli->prepare($ret);
+                                                            $stmt->execute(); //ok
+                                                            $res = $stmt->get_result();
+                                                            while ($products = $res->fetch_object()) {
+                                                            ?>
+                                                                <tr>
+                                                                    <td><?php echo $products->product_code . ' ' . $products->product_name; ?></td>
+                                                                    <td><?php echo $products->product_quantity; ?></td>
+                                                                </tr>
+                                                            <?php }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- .nk-block -->
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
