@@ -80,7 +80,7 @@ if ($report_type == 'Summarized Report') {
     }
 
     /* Excel File Name */
-    $fileName = 'Summarized Sales Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($start)) . 'xls';
+    $fileName = 'Summarized Sales Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($start)) . '.xls';
 
     /* Excel Column Name */
     $fields = array('Item Details ', 'Quantity Sold ', 'Sold By ', 'Sold To ', 'Date Sold', 'Amount (Ksh)');
@@ -88,7 +88,6 @@ if ($report_type == 'Summarized Report') {
 
     /* Implode Excel Data */
     $excelData = implode("\t", array_values($fields)) . "\n";
-
     /* Fetch All Records From The Database */
     $query = $mysqli->query("SELECT * FROM sales s
     INNER JOIN products p ON p.product_id = sale_product_id
@@ -107,7 +106,7 @@ if ($report_type == 'Summarized Report') {
             $excelData .= implode("\t", array_values($lineData)) . "\n";
         }
     } else {
-        $excelData .= 'Sales Records Available...' . "\n";
+        $excelData .= 'No Sales Records Available...' . "\n";
     }
 
     /* Generate Header File Encodings For Download */
