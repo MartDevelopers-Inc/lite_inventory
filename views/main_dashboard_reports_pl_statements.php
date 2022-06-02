@@ -118,7 +118,7 @@ require_once('../partials/head.php');
                                                                 <div class="form-control-wrap">
                                                                     <div class="form-group">
                                                                         <div class="form-control-wrap">
-                                                                            <select name="product_store_id" class="form-select form-control form-control-lg" data-search="on">
+                                                                            <select name="store" class="form-select form-control form-control-lg" data-search="on">
                                                                                 <?php
                                                                                 $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
                                                                                 if (mysqli_num_rows($raw_results) > 0) {
@@ -148,16 +148,98 @@ require_once('../partials/head.php');
                                     if (isset($_POST['get_statements'])) {
                                         $start = date('Y-m-d', strtotime($_POST['start_date']));
                                         $end = date('Y-m-d', strtotime($_POST['end_date']));
-                                        $sale_report_type = $_POST['sale_report_type'];
-                                        /* Deteermine What Type Of Sale Report To Show Based On Option Selected */
-                                        if ($sale_report_type == 'Summarized Report') {
-                                            /* Show Summarized Sales */
-                                            include('../helpers/reports/summarized_sales.php');
-                                        } else if ($sale_report_type == 'Composite Report') {
-                                            /* Show Composite Report */
-                                            include('../helpers/reports/composite_sales.php');
-                                        }
-                                    } ?>
+                                        $store = $_POST['store'];
+                                    ?>
+                                        <div class="card mb-3 col-12 border border-success">
+                                            <div class="card-body">
+                                                <h5 class="text-right">
+                                                    <a class="btn btn-primary" href="store_system_pl_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&store=<?php echo $store; ?>"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
+                                                    <a class="btn btn-primary" href="store_system_pl_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&store=<?php echo $store; ?>"><em class="icon ni ni-grid-add-fill-c"></em> Export To Excel</a>
+                                                </h5>
+                                                <div class="card-header">
+                                                    <h5 class="text-center text-primary">P&L Report Of All Posted Sales From <?php echo date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)); ?></h5>
+                                                </div>
+                                                <table class="table table-bordered dt-responsive" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Item</th>
+                                                            <th>Date Sold</th>
+                                                            <th>Purchase Price</th>
+                                                            <th>Sale Price</th>
+                                                            <th>Discounted Amount</th>
+                                                            <th>QTY Sold</th>
+                                                            <th>Margin</th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        $ret = "SELECT * FROM sales s
+                                                        INNER JOIN products p ON p.product_id = sale_product_id
+                                                        INNER JOIN users us ON us.user_id = s.sale_user_id
+                                                        WHERE p.product_store_id = '{$store}' AND s.sale_datetime BETWEEN '{$start}' AND '{$end}'
+                                                        ORDER BY sale_datetime ASC ";
+                                                        $stmt = $mysqli->prepare($ret);
+                                                        $stmt->execute(); //ok
+                                                        $res = $stmt->get_result();
+                                                        $cumulative_income = 0;
+                                                        $cumulative_expenditure = 0;
+                                                        while ($sales = $res->fetch_object()) {
+                                                            /* Sale Amount  */
+                                                            $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
+                                                            $discounted_price = $sales->product_sale_price - $sales->sale_discount;
+                                                            $sale_margin = ($sales->product_sale_price - $sales->product_purchase_price) * $sales->sale_quantity;
+
+                                                        ?>
+                                                            <tr>
+                                                                <td><?php echo $sales->product_name ?></td>
+                                                                <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)) ?></td>
+                                                                <td><?php echo "Ksh " . number_format($sales->product_purchase_price, 2); ?></td>
+                                                                <td><?php echo "Ksh " . number_format($sales->product_sale_price, 2); ?></td>
+                                                                <td><?php echo "Ksh " . number_format($discounted_price, 2); ?></td>
+                                                                <td><?php echo $sales->sale_quantity ?></td>
+                                                                <td><?php echo "Ksh " . number_format($sale_margin); ?></td>
+                                                                <td>
+                                                                    <?php echo "Ksh " . number_format($sales_amount, 2);
+                                                                    $cumulative_income += $sales_amount;
+                                                                    $cumulative_expenditure += ($sales->product_purchase_price * $sales->sale_quantity);
+                                                                    ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                        <tr>
+                                                            <td colspan="7"><b>Cumulative Sales :</b></td>
+                                                            <td><b><?php echo  "Ksh " . number_format($cumulative_income, 2); ?></b></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="7"><b>Cumulative Purchase:</b></td>
+                                                            <td><b><?php echo  "Ksh " . number_format($cumulative_expenditure, 2); ?></b></td>
+                                                        </tr>
+                                                        <?php
+                                                        if ($cumulative_expenditure > $cumulative_income) {
+                                                        ?>
+                                                            <tr>
+                                                                <td colspan="7"><b>Cumulative Loss :</b></td>
+                                                                <td><b><?php echo  "Ksh " . number_format(abs($cumulative_income - $cumulative_expenditure), 2); ?></b></td>
+                                                            </tr>
+                                                        <?php } else if ($cumulative_expenditure < $cumulative_income) { ?>
+                                                            <tr>
+                                                                <td colspan="7"><b>Cumulative Profit:</b></td>
+                                                                <td><b><?php echo  "Ksh " . number_format(abs($cumulative_income - $cumulative_expenditure), 2); ?></b></td>
+                                                            </tr>
+                                                        <?php } else { ?>
+                                                            <tr>
+                                                                <td colspan="7"><b>Cumulative Loss Or Profit:</b></td>
+                                                                <td><b><?php echo  "Ksh " . number_format(($cumulative_income - $cumulative_expenditure), 2); ?></b></td>
+                                                            </tr>
+                                                        <?php } ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
