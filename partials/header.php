@@ -157,7 +157,7 @@ while ($settings = $res->fetch_object()) {
 
                                 </div><!-- .nk-dropdown-body -->
                                 <div class="dropdown-foot center">
-                                    <a href="main_dashboard_inventory_reports">View All</a>
+                                    <a href="main_dashboard_manage_stock">View All</a>
                                 </div>
                             </div>
                         </li><!-- .dropdown -->
