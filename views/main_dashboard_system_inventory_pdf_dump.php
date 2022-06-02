@@ -69,8 +69,8 @@ require_once('../vendor/autoload.php');
 use Dompdf\Dompdf;
 
 $dompdf = new Dompdf();
-
-$ret = "SELECT * FROM store_settings  WHERE store_status  = 'active'";
+$store = $_GET['store'];
+$ret = "SELECT * FROM store_settings  WHERE store_status  = 'active' AND store_id = '{$store}'";
 $stmt = $mysqli->prepare($ret);
 $stmt->execute(); //ok
 $res = $stmt->get_result();
@@ -172,7 +172,7 @@ while ($stores = $res->fetch_object()) {
                     ' . $stores->store_adr . ' 
                 </h4>
                 <hr style="width:100%" , color=black>
-                <h5>Inventory Report On ' . date('d M Y') . ' </h5>
+                <h5>Current Store Inventory Report On ' . date('d M Y') . ' </h5>
             </div>
             <table border="1" cellspacing="0" width="98%" style="font-size:9pt">
                 <thead>
@@ -183,7 +183,7 @@ while ($stores = $res->fetch_object()) {
                 </thead>
                 <tbody>
                     ';
-                    $ret = "SELECT * FROM `products` ORDER BY `product_name` ASC";
+                    $ret = "SELECT * FROM products WHERE product_store_id = '{$store}' ORDER BY product_name ASC";
                     $stmt = $mysqli->prepare($ret);
                     $stmt->execute(); //ok
                     $res = $stmt->get_result();
