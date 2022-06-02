@@ -177,7 +177,7 @@ require_once('../partials/head.php');
                                                             <td>
                                                                 <?php echo "Ksh " . number_format($sales_amount, 2);
                                                                 $cumulative_income += $sales_amount;
-                                                                $cumulative_expenditure += $sales->product_purchase_price;
+                                                                $cumulative_expenditure += ($sales->product_purchase_price * $sales->sale_quantity);
                                                                 ?>
                                                             </td>
                                                         </tr>
@@ -185,24 +185,24 @@ require_once('../partials/head.php');
                                                     }
                                                     ?>
                                                     <tr>
-                                                        <td colspan="7"><b>Cumulative Sales Amount:</b></td>
+                                                        <td colspan="7"><b>Cumulative Sales :</b></td>
                                                         <td><b><?php echo  "Ksh " . number_format($cumulative_income, 2); ?></b></td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="7"><b>Cumulative Purchase Amount:</b></td>
+                                                        <td colspan="7"><b>Cumulative Purchase:</b></td>
                                                         <td><b><?php echo  "Ksh " . number_format($cumulative_expenditure, 2); ?></b></td>
                                                     </tr>
                                                     <?php
                                                     if ($cumulative_expenditure > $cumulative_income) {
                                                     ?>
                                                         <tr>
-                                                            <td colspan="7"><b>Cumulative Loss Amount:</b></td>
-                                                            <td><b><?php echo  "Ksh " . number_format(($cumulative_income - $cumulative_expenditure), 2); ?></b></td>
+                                                            <td colspan="7"><b>Cumulative Loss :</b></td>
+                                                            <td><b><?php echo  "Ksh " . number_format(abs($cumulative_income - $cumulative_expenditure), 2); ?></b></td>
                                                         </tr>
                                                     <?php } else if ($cumulative_expenditure < $cumulative_income) { ?>
                                                         <tr>
-                                                            <td colspan="7"><b>Cumulative Profit Amount:</b></td>
-                                                            <td><b><?php echo  "Ksh " . number_format(($cumulative_income - $cumulative_expenditure), 2); ?></b></td>
+                                                            <td colspan="7"><b>Cumulative Profit:</b></td>
+                                                            <td><b><?php echo  "Ksh " . number_format(abs($cumulative_income - $cumulative_expenditure), 2); ?></b></td>
                                                         </tr>
                                                     <?php } else { ?>
                                                         <tr>
