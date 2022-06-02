@@ -81,10 +81,10 @@ $fields = array('Item Details', 'Current Stock');
 
 /* Implode Excel Data */
 $excelData = implode("\t", array_values($fields)) . "\n";
-
+$store = $_GET['store'];
 /* Fetch All Records From The Database */
-$query = $mysqli->query("SELECT * FROM products 
-ORDER BY Product_name ASC");
+$query = $mysqli->query("SELECT * FROM products  WHERE product_store_id = '{$store}'
+ORDER BY product_name ASC");
 if ($query->num_rows > 0) {
     /* Load All Fetched Rows */
     while ($row = $query->fetch_assoc()) {
