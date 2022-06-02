@@ -170,8 +170,9 @@ require_once('../partials/head.php');
                                                     <tbody>
                                                         <?php
                                                         $ret = "SELECT * FROM inventory i 
-                                                                INNER JOIN products p ON p.product_id = i.inventory_product_id
-                                                                WHERE p.product_store_id = '{$store_id}'";
+                                                        INNER JOIN products p ON p.product_id = i.inventory_product_id
+                                                        WHERE p.product_store_id = '{$store_id}' 
+                                                        AND i.inventory_date_added BETWEEN '{$start}' AND '{$end}'";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
