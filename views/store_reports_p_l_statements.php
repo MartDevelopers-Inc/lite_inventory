@@ -163,7 +163,7 @@ require_once('../partials/head.php');
                                                         /* Sale Amount  */
                                                         $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
                                                         $discounted_price = $sales->product_sale_price - $sales->sale_discount;
-                                                        $sale_margin = $sales->product_sale_price - $sales->product_purchase_price;
+                                                        $sale_margin = ($sales->product_sale_price - $sales->product_purchase_price) * $sales->sale_quantity;
 
                                                     ?>
                                                         <tr>
