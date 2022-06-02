@@ -271,52 +271,97 @@ require_once('../partials/head.php');
                                     </div>
                                 </div>
                                 <!-- End Modal -->
-                                <div class="">
-                                    <div class="row">
-                                        <div class="card mb-3 col-md-12 border border-success">
-                                            <div class="card-body">
-                                                <table class="datatable-init table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Item Code</th>
-                                                            <th>Item Name</th>
-                                                            <th>QTY</th>
-                                                            <th>Purchase Price</th>
-                                                            <th>Retail Price</th>
-                                                            <th>Manage</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        $ret = "SELECT * FROM products p 
-                                                        INNER JOIN store_settings ss ON ss.store_id = p.product_store_id
-                                                        WHERE p.product_status = 'active' AND ss.store_status ='active'";
-                                                        $stmt = $mysqli->prepare($ret);
-                                                        $stmt->execute(); //ok
-                                                        $res = $stmt->get_result();
-                                                        while ($products = $res->fetch_object()) {
-                                                        ?>
-                                                            <tr>
-                                                                <td><?php echo $products->product_code; ?></td>
-                                                                <td><?php echo $products->product_name; ?></td>
-                                                                <td><?php echo $products->product_quantity; ?></td>
-                                                                <td>Ksh <?php echo $products->product_purchase_price; ?></td>
-                                                                <td>Ksh <?php echo $products->product_sale_price; ?></td>
-                                                                <td>
-                                                                    <a data-toggle="modal" href="#update_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-warning"><em class="icon ni ni-edit"></em> Edit</a>
-                                                                    <a data-toggle="modal" href="#delete_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
-                                                                </td>
-                                                            </tr>
-                                                            <!-- Load Modals Via Partials -->
-                                                        <?php require('../helpers/modals/items_modals.php');
-                                                        }
-                                                        ?>
-                                                    </tbody>
-                                                </table>
+                                <div class="row">
+                                    <div class="card mb-3 col-12 border border-success">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-12">
+                                                <div class="card-body">
+                                                    <form method="post" enctype="multipart/form-data">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12">
+                                                                <label>Select Store</label>
+                                                                <div class="form-control-wrap">
+                                                                    <div class="form-group">
+                                                                        <div class="form-control-wrap">
+                                                                            <select name="store_id" class="form-select form-control form-control-lg" data-search="on">
+                                                                                <?php
+                                                                                $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
+                                                                                if (mysqli_num_rows($raw_results) > 0) {
+                                                                                    while ($stores = mysqli_fetch_array($raw_results)) {
+                                                                                ?>
+                                                                                        <option value="<?php echo $stores['store_id']; ?>"><?php echo $stores['store_name']; ?></option>
+                                                                                <?php }
+                                                                                }
+                                                                                ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="text-right">
+                                                            <button name="get_sale_reports" class="btn btn-primary" type="submit">
+                                                                <em class="icon ni ni-report-profit"></em> Get Items
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div><!-- .nk-block -->
+                                </div>
+                                <?php
+                                if (isset($_POST['store_id'])) {
+                                ?>
+                                    <div class="">
+                                        <div class="row">
+                                            <div class="card mb-3 col-md-12 border border-success">
+                                                <div class="card-body">
+                                                    <table class="datatable-init table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Item Code</th>
+                                                                <th>Item Name</th>
+                                                                <th>QTY</th>
+                                                                <th>Purchase Price</th>
+                                                                <th>Retail Price</th>
+                                                                <th>Manage</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                            $store = $_POST['store_id'];
+                                                            $ret = "SELECT * FROM products p 
+                                                            INNER JOIN store_settings ss ON ss.store_id = p.product_store_id
+                                                            WHERE p.product_status = 'active' AND ss.store_status ='active' AND p.product_store_id = '{$store}'";
+                                                            $stmt = $mysqli->prepare($ret);
+                                                            $stmt->execute(); //ok
+                                                            $res = $stmt->get_result();
+                                                            while ($products = $res->fetch_object()) {
+                                                            ?>
+                                                                <tr>
+                                                                    <td><?php echo $products->product_code; ?></td>
+                                                                    <td><?php echo $products->product_name; ?></td>
+                                                                    <td><?php echo $products->product_quantity; ?></td>
+                                                                    <td>Ksh <?php echo $products->product_purchase_price; ?></td>
+                                                                    <td>Ksh <?php echo $products->product_sale_price; ?></td>
+                                                                    <td>
+                                                                        <a data-toggle="modal" href="#update_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-warning"><em class="icon ni ni-edit"></em> Edit</a>
+                                                                        <a data-toggle="modal" href="#delete_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
+                                                                    </td>
+                                                                </tr>
+                                                                <!-- Load Modals Via Partials -->
+                                                            <?php require('../helpers/modals/items_modals.php');
+                                                            }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- .nk-block -->
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
