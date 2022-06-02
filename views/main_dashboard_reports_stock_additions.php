@@ -155,8 +155,8 @@ require_once('../partials/head.php');
                                         <div class="card mb-3 col-md-12 border border-success">
                                             <div class="card-body">
                                                 <div class="text-right">
-                                                    <a href="main_dashboard_system_inventory_pdf_dump?store=<?php echo $_POST['store_id']; ?>" class="btn btn-primary"><em class="icon ni ni-file-docs"></em><span>Export To PDF</span></a>
-                                                    <a href="main_dashboard_system_inventory_xls_dump?store=<?php echo $_POST['store_id']; ?>" class="btn btn-primary"><em class="icon ni ni-grid-add-fill-c"></em><span>Export To Excel</span></a>
+                                                    <a href="main_dashboard_system_stock_addition_pdf_dump?store=<?php echo $_POST['store_id']; ?>&start=<?php echo $start; ?>&end=<?php echo $end; ?>" class="btn btn-primary"><em class="icon ni ni-file-docs"></em><span>Export To PDF</span></a>
+                                                    <a href="main_dashboard_system_stock_addition_xls_dump?store=<?php echo $_POST['store_id']; ?>&start=<?php echo $start; ?>&end=<?php echo $end; ?>" class="btn btn-primary"><em class="icon ni ni-grid-add-fill-c"></em><span>Export To Excel</span></a>
                                                 </div>
                                                 <hr>
                                                 <table class="datatable-init table">
