@@ -139,81 +139,126 @@ require_once('../partials/head.php')
                                         </div><!-- .nk-block-head-content -->
                                     </div><!-- .nk-block-between -->
                                 </div><!-- .nk-block-head -->
-                                <div class="">
-                                    <div class="row">
-                                        <div class="card mb-3 col-md-12 border border-success">
-                                            <div class="card-body">
-                                                <table class="datatable-init table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Item Code</th>
-                                                            <th>Item Name</th>
-                                                            <th>Current Quantity</th>
-                                                            <th>Manage</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        $ret = "SELECT * FROM products 
-                                                        WHERE product_status = 'active'";
-                                                        $stmt = $mysqli->prepare($ret);
-                                                        $stmt->execute(); //ok
-                                                        $res = $stmt->get_result();
-                                                        while ($products = $res->fetch_object()) {
-                                                        ?>
-                                                            <tr>
-                                                                <td><?php echo $products->product_code; ?></td>
-                                                                <td><?php echo $products->product_name; ?></td>
-                                                                <td><?php echo $products->product_quantity; ?></td>
-                                                                <td>
-                                                                    <a data-toggle="modal" href="#edit_stock_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-success"><em class="icon ni ni-edit"></em> Update Quantity</a>
-                                                                </td>
-                                                            </tr>
-                                                            <!-- Load Update Stock Modal -->
-                                                            <div class="modal fade" id="edit_stock_<?php echo $products->product_id; ?>">
-                                                                <div class="modal-dialog  modal-lg">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h4 class="modal-title text-center">Add New Stock Of <?php echo  $products->product_name; ?></h4>
-                                                                            <button type="button" class="close" data-dismiss="modal">
-                                                                                <span>&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <div class="text-center">
-                                                                                <h4 class="text-success">Current Quantity In Store Is : <?php echo $products->product_quantity; ?></h4>
-                                                                            </div>
-                                                                            <hr>
-                                                                            <form method="post" enctype="multipart/form-data">
-                                                                                <div class="form-row">
-                                                                                    <div class="form-group col-md-12">
-                                                                                        <label>New Item Quantity</label>
-                                                                                        <input type="text" name="product_quantity" required class="form-control">
-                                                                                        <input type="hidden" name="product_id" value="<?php echo $products->product_id; ?>" required class="form-control">
-                                                                                        <input type="hidden" name="product_details" value="<?php echo $products->product_code . ' ' . $products->product_name; ?>" required class="form-control">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <br><br>
-                                                                                <div class="text-right">
-                                                                                    <button name="update_product_stock" class="btn btn-primary" type="submit">
-                                                                                        <em class="icon ni ni-list-check"></em> Update Stock
-                                                                                    </button>
-                                                                                </div>
-                                                                            </form>
+                                <div class="row">
+                                    <div class="card mb-3 col-12 border border-success">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-12">
+                                                <div class="card-body">
+                                                    <form method="post" enctype="multipart/form-data">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12">
+                                                                <label>Select Store</label>
+                                                                <div class="form-control-wrap">
+                                                                    <div class="form-group">
+                                                                        <div class="form-control-wrap">
+                                                                            <select name="store_id" class="form-select form-control form-control-lg" data-search="on">
+                                                                                <?php
+                                                                                $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
+                                                                                if (mysqli_num_rows($raw_results) > 0) {
+                                                                                    while ($stores = mysqli_fetch_array($raw_results)) {
+                                                                                ?>
+                                                                                        <option value="<?php echo $stores['store_id']; ?>"><?php echo $stores['store_name']; ?></option>
+                                                                                <?php }
+                                                                                }
+                                                                                ?>
+                                                                            </select>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <!-- End Modal -->
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </tbody>
-                                                </table>
+                                                        </div>
+                                                        <br>
+                                                        <div class="text-right">
+                                                            <button name="get_sale_reports" class="btn btn-primary" type="submit">
+                                                                <em class="icon ni ni-report-profit"></em> Get Items
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div><!-- .nk-block -->
+                                </div>
+                                <?php
+                                if (isset($_POST['store_id'])) {
+                                ?>
+                                    <div class="">
+                                        <div class="row">
+                                            <div class="card mb-3 col-md-12 border border-success">
+                                                <div class="card-body">
+                                                    <table class="datatable-init table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Item Code</th>
+                                                                <th>Item Name</th>
+                                                                <th>Current Quantity</th>
+                                                                <th>Manage</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                            $store = $_POST['store_id'];
+                                                            $ret = "SELECT * FROM products 
+                                                            WHERE product_status = 'active' AND product_store_id = '{$store}'";
+                                                            $stmt = $mysqli->prepare($ret);
+                                                            $stmt->execute(); //ok
+                                                            $res = $stmt->get_result();
+                                                            while ($products = $res->fetch_object()) {
+                                                            ?>
+                                                                <tr>
+                                                                    <td><?php echo $products->product_code; ?></td>
+                                                                    <td><?php echo $products->product_name; ?></td>
+                                                                    <td><?php echo $products->product_quantity; ?></td>
+                                                                    <td>
+                                                                        <a data-toggle="modal" href="#edit_stock_<?php echo $products->product_id; ?>" class="badge badge-dim badge-pill badge-outline-success"><em class="icon ni ni-edit"></em> Update Quantity</a>
+                                                                    </td>
+                                                                </tr>
+                                                                <!-- Load Update Stock Modal -->
+                                                                <div class="modal fade" id="edit_stock_<?php echo $products->product_id; ?>">
+                                                                    <div class="modal-dialog  modal-lg">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h4 class="modal-title text-center">Add New Stock Of <?php echo  $products->product_name; ?></h4>
+                                                                                <button type="button" class="close" data-dismiss="modal">
+                                                                                    <span>&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div class="text-center">
+                                                                                    <h4 class="text-success">Current Quantity In Store Is : <?php echo $products->product_quantity; ?></h4>
+                                                                                </div>
+                                                                                <hr>
+                                                                                <form method="post" enctype="multipart/form-data">
+                                                                                    <div class="form-row">
+                                                                                        <div class="form-group col-md-12">
+                                                                                            <label>New Item Quantity</label>
+                                                                                            <input type="text" name="product_quantity" required class="form-control">
+                                                                                            <input type="hidden" name="product_id" value="<?php echo $products->product_id; ?>" required class="form-control">
+                                                                                            <input type="hidden" name="product_details" value="<?php echo $products->product_code . ' ' . $products->product_name; ?>" required class="form-control">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <br><br>
+                                                                                    <div class="text-right">
+                                                                                        <button name="update_product_stock" class="btn btn-primary" type="submit">
+                                                                                            <em class="icon ni ni-list-check"></em> Update Stock
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- End Modal -->
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- .nk-block -->
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
