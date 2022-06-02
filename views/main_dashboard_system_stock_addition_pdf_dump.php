@@ -190,7 +190,8 @@ while ($stores = $res->fetch_object()) {
                     $ret = "SELECT * FROM inventory i 
                     INNER JOIN products p ON p.product_id = i.inventory_product_id
                     WHERE p.product_store_id = '{$store}' 
-                    AND i.inventory_date_added BETWEEN '{$start}' AND '{$end}'";
+                    AND i.inventory_date_added BETWEEN '{$start}' AND '{$end}'
+                    ORDER BY i.inventory_date_added ASC ";
                     $stmt = $mysqli->prepare($ret);
                     $stmt->execute(); //ok
                     $res = $stmt->get_result();
