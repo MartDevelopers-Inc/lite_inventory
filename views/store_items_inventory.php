@@ -83,11 +83,17 @@ if (isset($_POST['update_product_stock'])) {
         $new_stock = $row['product_quantity'] + $product_quantity;
         /* Persist New Stock */
         $sql = "UPDATE products SET product_quantity = '{$new_stock}' WHERE product_id = '{$product_id}'";
+        $inventory_sql = "INSERT INTO inventory (inventory_product_id, inventory_qty_added) VALUES('{$product_id}', '{$product_quantity}')";
+
         $prepare = $mysqli->prepare($sql);
+        $inventory_prepare = $mysqli->prepare($inventory_sql);
+
         $prepare->execute();
+        $inventory_prepare->execute();
+
         /* Log This Operation */
         include('../functions/logs.php');
-        if ($prepare) {
+        if ($prepare && $inventory_prepare) {
             $success = "New Stock Of $product_details Has Been Added";
         } else {
             $err = "Failed!, Please Try Again";
