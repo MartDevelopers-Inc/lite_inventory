@@ -1,3 +1,7 @@
+# LITE INVENTORY MIS
+
+From our servers to your clients` endpoints, at full throttle with no loss of data, fluctuations, signal interferance or doubt it can only be Lite Invetory MIS.
+
 # DISCLAIMER
 
 On Pushing To Live Server Kindly Update This Links <br>
