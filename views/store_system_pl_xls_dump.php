@@ -93,7 +93,7 @@ $fields = array(
     'Unit Discounted Amount (Ksh)',
     'Quantity Sold',
     'Margin (Ksh)',
-    'Amount (Ksh)'
+    'Amount (Ksh)',
 );
 
 
