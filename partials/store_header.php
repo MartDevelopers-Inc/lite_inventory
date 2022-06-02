@@ -159,8 +159,18 @@ while ($settings = $res->fetch_object()) {
                                     </a>
                                 </li>
                                 <li class="nk-menu-item">
+                                    <a href="store_reports_p_l_statements?view=<?php echo $view; ?>" class="nk-menu-link">
+                                        <span class="nk-menu-text">P&L Statements</span>
+                                    </a>
+                                </li>
+                                <li class="nk-menu-item">
                                     <a href="store_reports_stock?view=<?php echo $view; ?>" class="nk-menu-link">
-                                        <span class="nk-menu-text">Stock</span>
+                                        <span class="nk-menu-text">Current Stock</span>
+                                    </a>
+                                </li>
+                                <li class="nk-menu-item">
+                                    <a href="store_reports_stock_additions?view=<?php echo $view; ?>" class="nk-menu-link">
+                                        <span class="nk-menu-text">Stock Additions</span>
                                     </a>
                                 </li>
                             </ul>
@@ -226,7 +236,7 @@ while ($settings = $res->fetch_object()) {
                                     </div><!-- .nk-notification -->
                                 </div><!-- .nk-dropdown-body -->
                                 <div class="dropdown-foot center">
-                                    <a href="store_inventory?view=<?php echo $view; ?>">View All</a>
+                                    <a href="store_reports_stock?view=<?php echo $view; ?>">View All</a>
                                 </div>
                             </div>
                         </li><!-- .dropdown -->
