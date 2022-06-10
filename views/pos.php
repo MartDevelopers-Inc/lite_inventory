@@ -188,15 +188,14 @@ require_once('../partials/head.php');
                             </div><!-- .nk-block-head -->
                             <div class="nk-block">
                                 <div class="row g-gs">
+                                    <div class="col-12">
+                                        <input class="form-control" type="text" id="Product_Search" onkeyup="FilterFunction()" placeholder="Search Products">
+                                    </div>
                                     <div class="col-6">
                                         <div class="card  border border-success">
                                             <div class="card-body">
-                                                <div class="row g-gs">
-                                                    <div class="col-12">
-                                                        <input class="form-control" type="text" id="Product_Search" onkeyup="FilterFunction()" placeholder="Search Products">
-                                                    </div>
+                                                <div class="row g-gs" style="overflow: auto; height: 500px;">
                                                     <?php
-                                                    //$query = htmlspecialchars($_POST['querry']);
                                                     $product_array = $db_handle->runQuery("SELECT * FROM products p 
                                                     JOIN receipt_customization rc ON p.product_store_id = rc.receipt_store_id
                                                     WHERE p.product_status ='active'");
