@@ -191,6 +191,10 @@ require_once('../partials/head.php');
                                     <div class="col-6">
                                         <div class="card  border border-success">
                                             <div class="card-body">
+                                                <div class="col-12">
+                                                    <input class="form-control" type="text" id="Product_Search" onkeyup="FilterFunction()" placeholder="Search Products">
+                                                    <br>
+                                                </div>
                                                 <div class="row g-gs">
                                                     <?php
                                                     //$query = htmlspecialchars($_POST['querry']);
