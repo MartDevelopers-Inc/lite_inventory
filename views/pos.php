@@ -191,11 +191,10 @@ require_once('../partials/head.php');
                                     <div class="col-6">
                                         <div class="card  border border-success">
                                             <div class="card-body">
-                                                <div class="col-12">
-                                                    <input class="form-control" type="text" id="Product_Search" onkeyup="FilterFunction()" placeholder="Search Products">
-                                                    <br>
-                                                </div>
                                                 <div class="row g-gs">
+                                                    <div class="col-12">
+                                                        <input class="form-control" type="text" id="Product_Search" onkeyup="FilterFunction()" placeholder="Search Products">
+                                                    </div>
                                                     <?php
                                                     //$query = htmlspecialchars($_POST['querry']);
                                                     $product_array = $db_handle->runQuery("SELECT * FROM products p 
@@ -204,7 +203,7 @@ require_once('../partials/head.php');
                                                     if (!empty($product_array)) {
                                                         foreach ($product_array as $key => $value) {
                                                     ?>
-                                                            <div class="col-6">
+                                                            <div class="col-6 Product_Name">
                                                                 <form method="post" class="form-inline my-2 my-lg-0" action="pos?store=<?php echo $store; ?>&action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
                                                                     <div class="card border border-primary text-dark">
                                                                         <div class="card-body">
@@ -414,7 +413,9 @@ require_once('../partials/head.php');
     </div>
     <!-- app-root @e -->
     <!-- JavaScript -->
-    <?php require_once('../partials/scripts.php'); ?>
+    <?php require_once('../partials/scripts.php');
+    require_once('../partials/filter_js.php');
+    ?>
 </body>
 
 </html>
