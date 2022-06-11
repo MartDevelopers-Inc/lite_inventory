@@ -202,7 +202,7 @@ require_once('../partials/head.php');
                                                     if (!empty($product_array)) {
                                                         foreach ($product_array as $key => $value) {
                                                     ?>
-                                                            <div class="col-6 Product_Name">
+                                                            <div class="col-12 Product_Name">
                                                                 <form method="post" class="form-inline my-2 my-lg-0" action="pos?store=<?php echo $store; ?>&action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
                                                                     <div class="card border border-primary text-dark">
                                                                         <div class="card-body">
