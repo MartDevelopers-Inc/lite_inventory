@@ -188,9 +188,11 @@ require_once('../partials/head.php');
                             </div><!-- .nk-block-head -->
                             <div class="nk-block">
                                 <div class="row g-gs">
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <input class="form-control" type="text" id="Product_Search" onkeyup="FilterFunction()" placeholder="Search Products">
                                     </div>
+                                </div>
+                                <div class="row g-gs">
                                     <div class="col-6">
                                         <div class="card  border border-success">
                                             <div class="card-body">
