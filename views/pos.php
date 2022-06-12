@@ -203,49 +203,90 @@ require_once('../partials/head.php');
                                                     WHERE p.product_status ='active'");
                                                     if (!empty($product_array)) {
                                                         foreach ($product_array as $key => $value) {
+                                                            if ($product_array[$key]['allow_discounts'] == 'true') {
                                                     ?>
-                                                            <div class="col-12 Product_Name">
-                                                                <form method="post" class="form-inline my-2 my-lg-0" action="pos?store=<?php echo $store; ?>&action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
-                                                                    <div class="card border border-primary text-dark">
-                                                                        <div class="card-body">
-                                                                            <h5 id="product_details" class="card-title">
-                                                                                <?php echo $product_array[$key]["product_code"] . ' ' . $product_array[$key]["product_name"]; ?>
-                                                                            </h5>
-                                                                            <!-- Notify User If Product Has Reached Restock Limit -->
-                                                                            <?php if ($product_array[$key]["product_quantity"] <= 0) { ?>
-                                                                                <p class="card-text text-danger">
-                                                                                    Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
-                                                                                </p>
-                                                                            <?php } else if ($product_array[$key]["product_quantity"] <= $product_array[$key]["product_quantity_limit"]) { ?>
-                                                                                <p class="card-text text-danger">
-                                                                                    Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
-                                                                                </p>
-                                                                                <p class="card-text">
-                                                                                    <b> <?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
-                                                                                </p>
-                                                                                <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
-                                                                                <?php if ($product_array[$key]['allow_discounts'] == 'true') { ?>
+                                                                <div class="col-12 Product_Name">
+                                                                    <form method="post" class="form-inline my-2 my-lg-0" action="pos?store=<?php echo $store; ?>&action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
+                                                                        <div class="card border border-primary text-dark">
+                                                                            <div class="card-body">
+                                                                                <h5 id="product_details" class="card-title">
+                                                                                    <?php echo $product_array[$key]["product_code"] . ' ' . $product_array[$key]["product_name"]; ?>
+                                                                                </h5>
+                                                                                <!-- Notify User If Product Has Reached Restock Limit -->
+                                                                                <?php if ($product_array[$key]["product_quantity"] <= 0) { ?>
+                                                                                    <p class="card-text text-danger">
+                                                                                        Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                                    </p>
+                                                                                <?php } else if ($product_array[$key]["product_quantity"] <= $product_array[$key]["product_quantity_limit"]) { ?>
+                                                                                    <p class="card-text text-danger">
+                                                                                        Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                                    </p>
+                                                                                    <p class="card-text">
+                                                                                        <b> <?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
+                                                                                    </p>
+                                                                                    <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
                                                                                     <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
+                                                                                    <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
+                                                                                <?php } else { ?>
+                                                                                    <p class="card-text text-success">
+                                                                                        Current Item Quantity is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                                    </p>
+                                                                                    <p class="card-text">
+                                                                                        <b><?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
+                                                                                    </p>
+                                                                                    <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
+                                                                                    <?php if ($product_array[$key]['allow_discounts'] == 'true') { ?>
+                                                                                        <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
+                                                                                    <?php } ?>
+                                                                                    <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
                                                                                 <?php } ?>
-                                                                                <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
-                                                                            <?php } else { ?>
-                                                                                <p class="card-text text-success">
-                                                                                    Current Item Quantity is <?php echo $product_array[$key]["product_quantity"]; ?>.
-                                                                                </p>
-                                                                                <p class="card-text">
-                                                                                    <b><?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
-                                                                                </p>
-                                                                                <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
-                                                                                <?php if ($product_array[$key]['allow_discounts'] == 'true') { ?>
-                                                                                    <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
-                                                                                <?php } ?>
-                                                                                <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
-                                                                            <?php } ?>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                    <?php }
+                                                                    </form>
+                                                                </div>
+                                                            <?php } else { ?>
+                                                                <div class="col-6 Product_Name">
+                                                                    <form method="post" class="form-inline my-2 my-lg-0" action="pos?store=<?php echo $store; ?>&action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
+                                                                        <div class="card border border-primary text-dark">
+                                                                            <div class="card-body">
+                                                                                <h5 id="product_details" class="card-title">
+                                                                                    <?php echo $product_array[$key]["product_code"] . ' ' . $product_array[$key]["product_name"]; ?>
+                                                                                </h5>
+                                                                                <!-- Notify User If Product Has Reached Restock Limit -->
+                                                                                <?php if ($product_array[$key]["product_quantity"] <= 0) { ?>
+                                                                                    <p class="card-text text-danger">
+                                                                                        Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                                    </p>
+                                                                                <?php } else if ($product_array[$key]["product_quantity"] <= $product_array[$key]["product_quantity_limit"]) { ?>
+                                                                                    <p class="card-text text-danger">
+                                                                                        Kindly Restock This Product, Current Qty is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                                    </p>
+                                                                                    <p class="card-text">
+                                                                                        <b> <?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
+                                                                                    </p>
+                                                                                    <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
+                                                                                    <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
+                                                                                    <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
+                                                                                <?php } else { ?>
+                                                                                    <p class="card-text text-success">
+                                                                                        Current Item Quantity is <?php echo $product_array[$key]["product_quantity"]; ?>.
+                                                                                    </p>
+                                                                                    <p class="card-text">
+                                                                                        <b><?php echo "Ksh " . $product_array[$key]["product_sale_price"]; ?></b>
+                                                                                    </p>
+                                                                                    <input type="text" class="form-control mr-sm-2" name="quantity" value="1" size="2" />
+                                                                                    <?php if ($product_array[$key]['allow_discounts'] == 'true') { ?>
+                                                                                        <input type="text" class="form-control mr-sm-4" name="Discount" placeholder="Discount" size="8" />
+                                                                                    <?php } ?>
+                                                                                    <input type="submit" value="Add" class="btn btn-outline-success my-2 my-sm-0" />
+                                                                                <?php } ?>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                    <?php
+                                                            }
+                                                        }
                                                     }
                                                     ?>
                                                 </div>
