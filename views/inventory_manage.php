@@ -180,7 +180,7 @@ require_once('../partials/head.php');
                                                                         <div class="form-row">
                                                                             <div class="form-group col-md-12">
                                                                                 <label>New Item Quantity</label>
-                                                                                <input type="number" name="product_quantity" required class="form-control">
+                                                                                <input type="number"  name="product_quantity" required class="form-control">
                                                                                 <input type="hidden" name="product_id" value="<?php echo $products->product_id; ?>" required class="form-control">
                                                                                 <input type="hidden" name="product_details" value="<?php echo $products->product_code . ' ' . $products->product_name; ?>" required class="form-control">
                                                                             </div>

@@ -198,9 +198,10 @@ require_once('../partials/head.php');
                                             <div class="card-body">
                                                 <div class="row g-gs" style="overflow: auto; height: 500px;">
                                                     <?php
+                                                    $store = $_GET['store'];
                                                     $product_array = $db_handle->runQuery("SELECT * FROM products p 
                                                     JOIN receipt_customization rc ON p.product_store_id = rc.receipt_store_id
-                                                    WHERE p.product_status ='active'");
+                                                    WHERE p.product_status ='active' AND p.product_store_id = '{$store}'");
                                                     if (!empty($product_array)) {
                                                         foreach ($product_array as $key => $value) {
                                                             if ($product_array[$key]['allow_discounts'] == 'true') {
@@ -210,7 +211,7 @@ require_once('../partials/head.php');
                                                                         <div class="card border border-primary text-dark">
                                                                             <div class="card-body">
                                                                                 <h5 id="product_details" class="card-title">
-                                                                                    <?php echo $product_array[$key]["product_code"] . ' ' . $product_array[$key]["product_name"]; ?>
+                                                                                    <?php echo $product_array[$key]["product_name"]; ?>
                                                                                 </h5>
                                                                                 <!-- Notify User If Product Has Reached Restock Limit -->
                                                                                 <?php if ($product_array[$key]["product_quantity"] <= 0) { ?>
@@ -250,7 +251,7 @@ require_once('../partials/head.php');
                                                                         <div class="card border border-primary text-dark">
                                                                             <div class="card-body">
                                                                                 <h5 id="product_details" class="card-title">
-                                                                                    <?php echo $product_array[$key]["product_code"] . ' ' . $product_array[$key]["product_name"]; ?>
+                                                                                    <?php echo  $product_array[$key]["product_name"]; ?>
                                                                                 </h5>
                                                                                 <!-- Notify User If Product Has Reached Restock Limit -->
                                                                                 <?php if ($product_array[$key]["product_quantity"] <= 0) { ?>
