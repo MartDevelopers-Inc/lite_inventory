@@ -83,11 +83,17 @@ if (isset($_POST['update_product_stock'])) {
         $new_stock = $row['product_quantity'] + $product_quantity;
         /* Persist New Stock */
         $sql = "UPDATE products SET product_quantity = '{$new_stock}' WHERE product_id = '{$product_id}'";
+        $inventory_sql = "INSERT INTO inventory (inventory_product_id, inventory_qty_added) VALUES('{$product_id}', '{$product_quantity}')";
+
         $prepare = $mysqli->prepare($sql);
+        $inventory_prepare = $mysqli->prepare($inventory_sql);
+
         $prepare->execute();
+        $inventory_prepare->execute();
+
         /* Log This Operation */
         include('../functions/logs.php');
-        if ($prepare) {
+        if ($prepare && $inventory_prepare) {
             $success = "New Stock Of $product_details Has Been Added";
         } else {
             $err = "Failed!, Please Try Again";
@@ -174,7 +180,7 @@ require_once('../partials/head.php');
                                                                         <div class="form-row">
                                                                             <div class="form-group col-md-12">
                                                                                 <label>New Item Quantity</label>
-                                                                                <input type="number" min="1" value="" id="number_entry" name="product_quantity" required class="form-control">
+                                                                                <input type="number" name="product_quantity" required class="form-control">
                                                                                 <input type="hidden" name="product_id" value="<?php echo $products->product_id; ?>" required class="form-control">
                                                                                 <input type="hidden" name="product_details" value="<?php echo $products->product_code . ' ' . $products->product_name; ?>" required class="form-control">
                                                                             </div>
