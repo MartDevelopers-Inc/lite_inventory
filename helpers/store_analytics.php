@@ -72,7 +72,7 @@ $stmt->fetch();
 $stmt->close();
 
 /* Products */
-$query = "SELECT COUNT(*)  FROM `products` WHERE product_store_id = '{$view}'";
+$query = "SELECT COUNT(*)  FROM `products` WHERE product_store_id = '{$view}' AND product_status ='Active'";
 $stmt = $mysqli->prepare($query);
 $stmt->execute();
 $stmt->bind_result($products);

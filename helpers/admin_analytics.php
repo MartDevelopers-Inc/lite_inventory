@@ -70,7 +70,7 @@ $stmt->fetch();
 $stmt->close();
 
 /* 2. Total Registered Products */
-$query = "SELECT COUNT(*)  FROM `products`";
+$query = "SELECT COUNT(*)  FROM `products` WHERE product_status ='Active'";
 $stmt = $mysqli->prepare($query);
 $stmt->execute();
 $stmt->bind_result($products);
