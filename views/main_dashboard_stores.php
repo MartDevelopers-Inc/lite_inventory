@@ -71,6 +71,16 @@ if (isset($_POST['create_store'])) {
     $store_adr = mysqli_real_escape_string($mysqli, $_POST['store_adr']);
     $store_email = mysqli_real_escape_string($mysqli, $_POST['store_email']);
 
+    /* Sales And Receipt Customizations */
+    $receipt_store_id = mysqli_real_escape_string($mysqli, $store_id);
+    $receipt_header_content = mysqli_real_escape_string($mysqli, $_POST['store_adr']);
+    $receipt_footer_content = mysqli_real_escape_string($mysqli, '');
+    $receipt_show_barcode = mysqli_real_escape_string($mysqli, 'false');
+    $show_customer = mysqli_real_escape_string($mysqli, 'false');
+    $allow_discounts = mysqli_real_escape_string($mysqli, 'false');
+    $allow_loyalty_points = mysqli_real_escape_string($mysqli, 'false');
+
+
     /* Log Attributes */
     $log_type = "Stores Management Logs";
     $log_details = "Registered " . $store_name . " As A New Store";
@@ -78,11 +88,28 @@ if (isset($_POST['create_store'])) {
     /* Persist */
     $sql = "INSERT INTO store_settings(store_id, store_name, store_email, store_adr)
     VALUES('{$store_id}', '{$store_name}', '{$store_email}', '{$store_adr}')";
+
+    $settings = "INSERT INTO receipt_customization(receipt_store_id, receipt_header_content, receipt_footer_content, receipt_show_barcode,
+    show_customer, allow_discounts, allow_loyalty_points) 
+    VALUES(
+        '{$receipt_store_id}',
+        '{$receipt_header_content}',
+        '{$receipt_footer_content}',
+        '{$receipt_show_barcode}',
+        '{$show_customer}',
+        '{$allow_discounts}',
+        '{$allow_loyalty_points}'
+        )";
+
     $prepare = $mysqli->prepare($sql);
+    $settings_prepare = $mysqli->prepare($settings);
+
     $prepare->execute();
+    $settings_prepare->execute();
+
     /* Log This Operation */
     include('../functions/logs.php');
-    if ($prepare) {
+    if ($prepare && $settings_prepare) {
         $success = "Store Registered";
     } else {
         $err = "Failed!, Please Try Again";
