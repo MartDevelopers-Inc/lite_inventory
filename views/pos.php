@@ -63,6 +63,7 @@ require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/dbcontroller.php');
 require_once('../config/codeGen.php');
+require_once('../vendor/autoload.php');
 check_login();
 /* Initiate DB Controller */
 $store = $_GET['store'];/* Store Details */
@@ -131,7 +132,13 @@ if (isset($_POST['add_sale'])) {
     $sale_payment_method = $_POST['sale_payment_method'];
     $cart_products = $_SESSION["cart_item"];
     /* Load Sale Helper */
-    include('../helpers/cashsale_helper.php');
+    if ($sale_payment_method == 'Cash') {
+        include('../helpers/cashsale_helper.php');
+    } else if ($sale_payment_method == 'MPESA') {
+        include('../helpers/mpesa_helper.php');
+    } else {
+        include('../helpers/card_helper.php');
+    }
 }
 
 /* Hold This Sale */
@@ -402,6 +409,7 @@ require_once('../partials/head.php');
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <form method="post" enctype="multipart/form-data">
+                                                                            <input type="hidden" name="total_payable_price" value="<?php echo $total_price; ?>">
                                                                             <div class="form-row">
                                                                                 <?php if ($settings->payment_settings_means == 'MPESA') { ?>
                                                                                     <div class="form-group col-md-4">
@@ -418,7 +426,7 @@ require_once('../partials/head.php');
                                                                                         <label>Payment Means</label>
                                                                                         <select name="sale_payment_method" class="form-select form-control form-control-lg" data-search="on">
                                                                                             <option value="Cash">Cash</option>
-                                                                                            <option value="Mpesa">Mpesa</option>
+                                                                                            <option value="MPESA">Mpesa</option>
                                                                                         </select>
                                                                                     </div>
                                                                                 <?php } else if ($settings->payment_settings_means == 'Cedit / Debit Card') { ?>
