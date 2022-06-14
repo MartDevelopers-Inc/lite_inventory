@@ -80,6 +80,10 @@ if (isset($_POST['create_store'])) {
     $allow_discounts = mysqli_real_escape_string($mysqli, 'false');
     $allow_loyalty_points = mysqli_real_escape_string($mysqli, 'false');
 
+    /* Persit Payment Means */
+    $payment_settings_store_id  = mysqli_real_escape_string($mysqli, $store_id);
+    $payment_settings_means = mysqli_real_escape_string($mysqli, 'Cash'); /* Set Default To Cash */
+
 
     /* Log Attributes */
     $log_type = "Stores Management Logs";
@@ -99,17 +103,25 @@ if (isset($_POST['create_store'])) {
         '{$show_customer}',
         '{$allow_discounts}',
         '{$allow_loyalty_points}'
-        )";
+    )";
+
+    $payments = "INSERT INTO payment_settings (payment_settings_store_id, payment_settings_means) 
+    VALUES(
+        '{$payment_settings_store_id}',
+        '{$payment_settings_means}'
+    )";
 
     $prepare = $mysqli->prepare($sql);
     $settings_prepare = $mysqli->prepare($settings);
+    $payment_prepare = $mysqli->prepare($payments);
 
     $prepare->execute();
     $settings_prepare->execute();
+    $payment_prepare->execute();
 
     /* Log This Operation */
     include('../functions/logs.php');
-    if ($prepare && $settings_prepare) {
+    if ($prepare && $settings_prepare && $payment_prepare) {
         $success = "Store Registered";
     } else {
         $err = "Failed!, Please Try Again";

@@ -128,7 +128,7 @@ require_once('../helpers/admin_analytics.php');
                                                     <div class="card-inner">
                                                         <div class="card-title-group align-start mb-0">
                                                             <div class="card-title">
-                                                                <h6 class="subtitle">Total Items</h6>
+                                                                <h6 class="subtitle">Overall Total Items</h6>
                                                             </div>
                                                             <div class="card-tools">
                                                                 <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="Total Registered Items"></em>
@@ -147,7 +147,7 @@ require_once('../helpers/admin_analytics.php');
                                                     <div class="card-inner">
                                                         <div class="card-title-group align-start mb-0">
                                                             <div class="card-title">
-                                                                <h6 class="subtitle">Low / Out Of Stock Items</h6>
+                                                                <h6 class="subtitle">Overall Low / Out Of Stock Items</h6>
                                                             </div>
                                                             <div class="card-tools">
                                                                 <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="Total Items That Have Reached Restock Limit Or Low In Qty"></em>
@@ -232,7 +232,7 @@ require_once('../helpers/admin_analytics.php');
                                                     <div class="card-inner border-bottom">
                                                         <div class="card-title-group">
                                                             <div class="card-title">
-                                                                <h6 class="title">Low / Out Of Stock Items</h6>
+                                                                <h6 class="title">Overall Low / Out Of Stock Items</h6>
                                                             </div>
                                                             <div class="card-tools">
                                                                 <a href="main_dashboard_manage_stock" class="link">View All</a>
@@ -246,7 +246,7 @@ require_once('../helpers/admin_analytics.php');
                                                                 /* Load Recent Out Of Stock Products */
                                                                 $raw_results = mysqli_query($mysqli, "SELECT  * FROM products p
                                                                 INNER JOIN store_settings ss ON ss.store_id = p.product_store_id 
-                                                                WHERE product_quantity <= 1 ORDER BY product_name ASC LIMIT 10");
+                                                                WHERE product_quantity <= 1 ORDER BY RAND() ASC LIMIT 10");
                                                                 if (mysqli_num_rows($raw_results) > 0) {
                                                                     while ($results = mysqli_fetch_array($raw_results)) {
                                                                 ?>
