@@ -200,9 +200,10 @@ while ($settings = $res->fetch_object()) {
                                     <span class="nk-menu-text">System Configs</span>
                                 </a>
                                 <ul class="nk-menu-sub">
+                                    <!-- 
                                     <li class="nk-menu-item">
                                         <a href="main_dashboard_payment_settings" class="nk-menu-link"><span class="nk-menu-text">Payment Settings</span></a>
-                                    </li>
+                                    </li> -->
                                     <li class="nk-menu-item">
                                         <a href="main_dashboard_settings_receipt" class="nk-menu-link"><span class="nk-menu-text">Receipt & Sales Settings</span></a>
                                     </li>
