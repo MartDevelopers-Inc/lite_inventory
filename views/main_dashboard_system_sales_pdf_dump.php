@@ -72,11 +72,12 @@ $dompdf = new Dompdf();
 
 $start = date('Y-m-d', strtotime($_GET['from']));
 $end = date('Y-m-d', strtotime($_GET['to']));
+$store = $_GET['store'];
 
 $report_type = $_GET['type'];
 
 /* Wrap All This Under System Settings */
-$ret = "SELECT * FROM store_settings  WHERE store_status  = 'active'";
+$ret = "SELECT * FROM store_settings  WHERE store_status  = 'active' AND store_id = '{$store}'";
 $stmt = $mysqli->prepare($ret);
 $stmt->execute(); //ok
 $res = $stmt->get_result();
@@ -199,7 +200,7 @@ while ($stores = $res->fetch_object()) {
                                     $ret = "SELECT * FROM sales s
                                     INNER JOIN products p ON p.product_id = sale_product_id
                                     INNER JOIN users us ON us.user_id = s.sale_user_id
-                                    WHERE s.sale_datetime BETWEEN '$start' AND '$end'
+                                    WHERE p.product_store_id = '{$store}' AND  s.sale_datetime BETWEEN '$start' AND '$end'
                                     ORDER BY sale_datetime ASC ";
                                     $stmt = $mysqli->prepare($ret);
                                     $stmt->execute(); //ok
@@ -361,7 +362,7 @@ while ($stores = $res->fetch_object()) {
                                     $ret = "SELECT * FROM sales s
                                     INNER JOIN products p ON p.product_id = sale_product_id
                                     INNER JOIN users us ON us.user_id = s.sale_user_id
-                                    WHERE s.sale_datetime BETWEEN '$start' AND '$end'
+                                    WHERE p.product_store_id = '{$store}' AND s.sale_datetime BETWEEN '$start' AND '$end'
                                     ORDER BY sale_datetime ASC ";
                                     $stmt = $mysqli->prepare($ret);
                                     $stmt->execute(); //ok
