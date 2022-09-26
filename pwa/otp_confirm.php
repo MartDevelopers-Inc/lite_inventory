@@ -69,53 +69,25 @@ session_start();
 require_once('../config/config.php');
 require_once('../config/codeGen.php');
 
-/* Handle Password Reset */
-if (isset($_POST['ResetPassword'])) {
-    $user_email = mysqli_real_escape_string($mysqli, $_POST['user_email']);
-    $password_reset_token = $otp;
-    /* Filter And Validate Email */
-    if (filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
-        $sql = mysqli_query($mysqli, "SELECT * FROM users WHERE user_email = '{$user_email}' AND user_access_level = 'Manager'");
-        if (mysqli_num_rows($sql) > 0) {
-            /* Persist OTP And Email It */
-            $sql = "UPDATE users SET  user_password_reset_token ='{$password_reset_token}' WHERE  user_email ='{$user_email}'";
-            $prepare = $mysqli->prepare($sql);
-            $prepare->execute();
-            /* Detect Internet Connection First */
-            switch (connection_status()) {
-                case CONNECTION_NORMAL:
-                    /* Load Mailer & Send Password Reset Instructions*/
-                    require_once('../mailers/pwa_reset_password.php');
-                    if ($prepare && $mail->send()) {
-                        $_SESSION['success'] = 'Enter the code we have sent to your email';
-                        header("Location: otp_confirm");
-                        exit;
-                        $success = "Password Reset Instructions Send To Your Email";
-                    } else if (CONNECTION_ABORTED && CONNECTION_TIMEOUT) {
-                        /* If No Connection Detected, Just Take User To Password Reset */
-                        if ($prepare) {
-                            $_SESSION['success'] = 'Confirm your new password';
-                            header("Location: confirm_password?token=$password_reset_token");
-                            exit;
-                        } else {
-                            $info = "Failed!, please try again we there";
-                        }
-                    }
-                    break;
-                default:
-                    /* Do Not Mail Just Take User To Password Reset  */
-                    if ($prepare) {
-                        $_SESSION['success'] = 'Confirm your new password';
-                        header("Location: confirm_password?token=$password_reset_token");
-                        exit;
-                    } else {
-                        $err = "Please check your internet connectivity";
-                    }
-                    break;
-            }
-        } else {
-            $err =  "No manager account with this email";
-        }
+/* Handle Code Confirmation */
+if (isset($_POST['verify_otp'])) {
+    $otp_1 = mysqli_real_escape_string($mysqli, $_POST['otp_1']);
+    $otp_2 = mysqli_real_escape_string($mysqli, $_POST['otp_2']);
+    $otp_3 = mysqli_real_escape_string($mysqli, $_POST['otp_3']);
+    $otp_4 = mysqli_real_escape_string($mysqli, $_POST['otp_4']);
+
+    /* Concatnate These Posted Characters To Single String */
+    $final_otp = $otp_1 . $otp_2 . $otp_3 . $otp_4;
+
+    /* Verify These Codes */
+    $sql = mysqli_query($mysqli, "SELECT * FROM users WHERE user_password_reset_token = '{$final_otp}'");
+    if (mysqli_num_rows($sql) > 0) {
+        /* Redirect User To Reset Password */
+        $_SESSION['success'] = 'Confirm your new password';
+        header("Location: confirm_password?token=$final_otp");
+        exit;
+    } else {
+        $err =  "Invalid code";
     }
 }
 
@@ -139,39 +111,60 @@ require_once('../partials/pwa_head.php');
     <!--start wrapper-->
     <div class="wrapper">
 
+
         <!--start to page content-->
         <div class="page-content">
 
             <div class="login-body">
                 <div class="text-center">
                     <img class="thubnail" width="50%" src="../public/images/logo.png" alt="">
-                    <h5 class="fw-bold text-primary"><?php echo $system_name; ?></h5>
-                    <p class="mb-0">Login to your account</p>
+                    <h5 class="fw-bold text-primary"><br><?php echo $system_name; ?></h5>
+                    <p class="mb-0">Kindly Enter the 4 digits code sent to your email</p>
                 </div>
-                <br><br>
-                <form class="mt-4" method="POST">
-                    <div class="form-floating mb-3">
-                        <input type="email" required class="form-control rounded-3" id="floatingInputEmail" name="user_email">
-                        <label for="floatingInputEmail">Email</label>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="text-right"><a href="index" class="forgot-link">Remember Password?</a></div>
-                    </div>
-                    <br><br><br><br>
-                    <div class="mb-0 d-grid">
-                        <button type="submit" name="ResetPassword" class="btn btn-primary btn-ecomm rounded-3">Reset Password</button>
-                    </div>
-                </form>
+                <div class="pt-5">
+                    <form class="mt-5" method="POST">
+                        <div class="verification-controls d-flex align-items-center justify-content-center gap-3 mb-5">
+                            <div class="">
+                                <input type="text" class="form-control form-control-lg rounded-3" required name="otp_1">
+                            </div>
+                            <div class="">
+                                <input type="text" class="form-control form-control-lg rounded-3" required name="otp_2">
+                            </div>
+                            <div class="">
+                                <input type="text" class="form-control form-control-lg rounded-3" required name="otp_3">
+                            </div>
+                            <div class="">
+                                <input type="text" class="form-control form-control-lg rounded-3" required name="otp_4">
+                            </div>
+                        </div>
+                        <div class="mb-0 d-grid">
+                            <buttun type="submit" name="verify_otp" class="btn btn-primary btn-ecomm rounded-3">Verify</a>
+                        </div>
+                    </form>
+                </div>
             </div>
 
         </div>
         <!--end to page content-->
+
+
+        <!--start to footer-->
+        <footer class="page-footer fixed-bottom border-top d-flex align-items-center justify-content-center">
+            <p class="mb-0 rounded-0">Have't recived the code? <a href="reset_password" class="text-danger">Resend</a></p>
+        </footer>
+        <!--end to footer-->
+
+
     </div>
     <!--end wrapper-->
 
 
     <!--JS Files-->
     <?php require_once('../partials/pwa_scripts.php'); ?>
+
+
+
 </body>
+
 
 </html>

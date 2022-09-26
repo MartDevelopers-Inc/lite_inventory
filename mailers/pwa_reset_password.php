@@ -90,7 +90,7 @@ while ($mailer = $res->fetch_object()) {
     $mail->Port = $mailer->mailer_port;
     $mail->Username = $mailer->mailer_username;
     $mail->Password = $mailer->mailer_password;
-    $mail->Subject = 'Password Reset OTP';
+    $mail->Subject = 'Password Reset Code';
     /* Custom Mail Body */
     $mail->Body = '
             <!DOCTYPE html>
@@ -473,12 +473,12 @@ while ($mailer = $res->fetch_object()) {
                                         <h3>
                                             Hi there <br>
                                             Trouble signing in? <br>
-                                            Resetting your password is easy. Just use this OTP below and follow the instructions. We will have you up and running in no time. 
+                                            Resetting your password is easy. Just use this code below and follow the instructions. We will have you up and running in no time. 
                                             If you did not make this request then please ignore this email.
                                         </h3>
                                         <hr>
                                         <h3>
-                                          ' . $password_reset_token . '                                          
+                                          <b>' . $password_reset_token . '</b>                                     
                                         </h3>
                                     </div>
                                 </td>
