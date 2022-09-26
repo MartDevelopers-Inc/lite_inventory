@@ -456,27 +456,6 @@ while ($mailer = $res->fetch_object()) {
                     </table>
                     </td>
                 </tr>
-                <!-- end tr -->
-                <tr>
-                    <td
-                    valign="middle"
-                    class="hero bg_white"
-                    style="padding: 3em 0 2em 0"
-                    >
-                    <img
-                        src="' . $mailer->mailer_logo . '"
-                        alt=""
-                        style="
-                        width: 300px;
-                        max-width: 600px;
-                        height: auto;
-                        margin: auto;
-                        display: block;
-                        "
-                    />
-                    </td>
-                </tr>
-                <!-- end tr -->
                 <tr>
                     <td
                     valign="middle"
@@ -498,9 +477,9 @@ while ($mailer = $res->fetch_object()) {
                                             If you did not make this request then please ignore this email.
                                         </h3>
                                         <hr>
-                                        <h5>
+                                        <h3>
                                           ' . $password_reset_token . '                                          
-                                        </h5>
+                                        </h3>
                                     </div>
                                 </td>
                             </tr>

@@ -75,7 +75,7 @@ if (isset($_POST['ResetPassword'])) {
     $password_reset_token = $otp;
     /* Filter And Validate Email */
     if (filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
-        $sql = mysqli_query($mysqli, "SELECT * FROM users WHERE user_email = '{$user_email}'");
+        $sql = mysqli_query($mysqli, "SELECT * FROM users WHERE user_email = '{$user_email}' AND user_access_level = 'Manager'");
         if (mysqli_num_rows($sql) > 0) {
             /* Persist OTP And Email It */
             $sql = "UPDATE users SET  user_password_reset_token ='{$password_reset_token}' WHERE  user_email ='{$user_email}'";
@@ -87,6 +87,9 @@ if (isset($_POST['ResetPassword'])) {
                     /* Load Mailer & Send Password Reset Instructions*/
                     require_once('../mailers/pwa_reset_password.php');
                     if ($prepare && $mail->send()) {
+                        $_SESSION['success'] = 'Enter the OTP We Have Sent To Your Email';
+                        header("Location: otp_confirm");
+                        exit;
                         $success = "Password Reset Instructions Send To Your Email";
                     } else if (CONNECTION_ABORTED && CONNECTION_TIMEOUT) {
                         /* If No Connection Detected, Just Take User To Password Reset */
@@ -111,7 +114,7 @@ if (isset($_POST['ResetPassword'])) {
                     break;
             }
         } else {
-            $err =  "No Account With This Email";
+            $err =  "No Manager Account With This Email";
         }
     }
 }
@@ -152,8 +155,9 @@ require_once('../partials/pwa_head.php');
                         <label for="floatingInputEmail">Email</label>
                     </div>
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class=""><a href="index" class="forgot-link">Remember Password?</a></div>
+                        <div class="text-right"><a href="index" class="forgot-link">Remember Password?</a></div>
                     </div>
+                    <br><br><br><br>
                     <div class="mb-0 d-grid">
                         <button type="submit" name="ResetPassword" class="btn btn-primary btn-ecomm rounded-3">Reset Password</button>
                     </div>
