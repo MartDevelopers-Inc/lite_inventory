@@ -1,0 +1,280 @@
+html.dark-theme .border-start {
+    border-left: 1px solid rgb(255 255 255 / 12%) !important;
+}
+
+html.dark-theme .border-end {
+    border-right: 1px solid rgb(255 255 255 / 12%) !important;
+}
+
+html.dark-theme .border-top {
+    border-top: 1px solid rgb(255 255 255 / 12%) !important;
+}
+
+html.dark-theme .border-bottom {
+    border-bottom: 1px solid rgb(255 255 255 / 12%) !important;
+}
+
+
+html.dark-theme body {
+    color: #f8f9fa;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #212529;
+}
+
+html.dark-theme .h1, html.dark-theme .h2, html.dark-theme .h3, html.dark-theme .h4, html.dark-theme .h5, html.dark-theme .h6,
+html.dark-theme h1,html.dark-theme  h2, html.dark-theme h3, html.dark-theme h4, html.dark-theme h5, html.dark-theme h6 {
+    color: #f8f9fa;
+}
+
+html.dark-theme ::placeholder {
+    color: #f8f9fa;
+    opacity: 0.3 !important;
+}
+
+html.dark-theme .offcanvas-footer,
+html.dark-theme .top-header {
+    background-color: #212529;
+}
+
+
+html.dark-theme .top-header .top-right-menu .cart-badge {
+    color: #212529;
+    background-color: #ffffff;
+}
+
+html.dark-theme .wrapper .page-footer .navbar a.nav-link,
+html.dark-theme .category-img figcaption,
+html.dark-theme .top-header .navbar .nav-button a,
+html.dark-theme .top-header .navbar .top-right-menu a.nav-link {
+    color: #f8f9fa;
+}
+
+
+html.dark-theme .top-header .navbar .full-search-bar {
+    border-bottom: 1px solid rgb(255 255 255 / 12%);
+    background-color: #212529;
+}
+
+html.dark-theme .top-header .navbar .full-search-bar .form-control {
+    color: #f8fafc;
+    background-color: #343a40;
+    border: 1px solid rgb(255 255 255 / 12%);
+}
+
+html.dark-theme .top-header .navbar .full-search-bar .form-control:focus {
+    background-color: #343a40;
+    border: 1px solid rgb(255 255 255 / 12%);
+}
+
+html.dark-theme .top-header .brand-logo {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+html.dark-theme .brands a img {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+html.dark-theme .why-choose .card-body img {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+html.dark-theme .review-item .client-name {
+    color: #f8fafc;
+}
+
+html.dark-theme .slick-dots li button:before {
+    color: white;
+}
+
+html.dark-theme .slick-dots li.slick-active button:before {
+    color: white;
+}
+
+
+html.dark-theme .brands-slider img {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+
+html.dark-theme .wrapper .page-footer {
+    background-color: #212529;
+}
+
+html.dark-theme .sidebar-nav .metismenu a {
+    color: #ffffff;
+    border-bottom: 1px solid rgb(255 255 255 / 12%);
+}
+
+html.dark-theme .sidebar-nav .metismenu .mm-active > a,
+html.dark-theme .sidebar-nav .metismenu a:hover, 
+html.dark-theme .sidebar-nav .metismenu a:focus {
+    background-color: rgb(248 249 250 / 12%);
+}
+
+html.dark-theme .profile-item,
+html.dark-theme .profile-item:hover,
+html.dark-theme .profile-item:focus {
+    color: #f8fafc;
+}
+
+
+html.dark-theme .size-chart div button {
+    color: #ffffff;
+    border: 1px solid rgb(255 255 255 / 12%);
+    background-color: rgb(255 255 255 / 12%);
+}
+
+
+html.dark-theme .size-chart div button:hover,
+html.dark-theme .size-chart div button:focus {
+    color: #212529;
+    border: 1px solid #fff;
+    background-color: #fff;
+}
+
+html.dark-theme .product-info .product-title {
+    color: #f8fafc;
+}
+
+html.dark-theme .form-check-input:checked,
+html.dark-theme .form-check-input:checked {
+  background-color: rgba(33, 30, 30, 0.25);
+  border-color: rgba(255, 253, 253, 0.779);
+}
+
+html.dark-theme .form-check-input:focus,
+html.dark-theme .form-check-input:focus {
+ border-color: rgba(255, 253, 253, 0.779);
+  outline: 0;
+  box-shadow: 0 0 0 .25rem rgba(34, 38, 42, 0.0)
+}
+
+
+html.dark-theme .filter-menu .nav-link {
+    color: #ffffff;
+    background-color: #31363b;
+    border-bottom: 1px solid rgb(255 255 255 / 12%);
+}
+
+html.dark-theme .filter-menu .nav-link.active {
+    color: #ffffff;
+    background-color: rgb(255 255 255 / 0%);
+}
+
+html.dark-theme .timeline-with-icons .timeline-icon {
+    color: #7e8388;
+    background-color: #343a40;
+}
+
+html.dark-theme .timeline-with-icons .timeline-icon.active {
+    color: #212529;
+    background-color: #ffffff;
+}
+
+html.dark-theme .error-img img {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+
+
+/* Components */
+
+html.dark-theme .card {
+    border-color: rgb(255 255 255 / 12%);
+    background-color: #31363b;
+}
+
+html.dark-theme .card .card-header,
+html.dark-theme .card .card-footer {
+    border-color: rgb(255 255 255 / 12%);
+}
+
+
+html.dark-theme .text-dark {
+    color: white !important;
+}
+
+html.dark-theme .text-muted {
+    color: #c0c2c5 !important;
+}
+
+html.dark-theme .border {
+    border-color: rgb(255 255 255 / 12%) !important;
+}
+html.dark-theme .bg-light {
+  background-color: rgb(248 249 250 / 12%) !important;
+}
+
+html.dark-theme .offcanvas {
+    background-color: #212529;
+}
+
+html.dark-theme .list-group-item {
+    color: #f8fafc;
+    border-color: rgb(255 255 255 / 12%);
+    background-color: #31363b;
+}
+
+html.dark-theme .btn {
+    color: #f8fafc;
+}
+
+html.dark-theme .btn:hover,
+html.dark-theme .btn:focus{
+    border-color: #6b7076;
+    background-color: #3c4146;
+}
+
+html.dark-theme .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+html.dark-theme .form-check-input {
+    background-color: rgb(255 255 255 / 16%);
+}
+
+html.dark-theme .form-control {
+    color: #f8fafc;
+    background-color: #31363b;
+    border-color: rgb(255 255 255 / 12%);
+}
+
+html.dark-theme .form-control:focus {
+	color: #f8fafc;
+	background-color: #2a2e33;
+	border-color: #4a5055;
+    border: 1px solid #4a5055;
+	outline: 0;
+	box-shadow: 0 0 0 .25rem rgba(33, 37, 41, 0.0)
+}
+
+html.dark-theme .btn-dark {
+    color: #f8fafc;
+    background-color: #121416;
+    border-color: #121416;
+}
+
+html.dark-theme .btn-light:hover,
+html.dark-theme .btn-light {
+    color: #f8fafc;
+    background-color: rgb(248 249 250 / 12%);
+    border-color: rgb(255 255 255 / 12%);
+}
+
+html.dark-theme .btn-outline-dark {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+html.dark-theme .offcanvas-backdrop {
+    background-color: #fff;
+}
+
+html.dark-theme .modal .modal-content {
+    background-color: #212529;
+}
+
+html.dark-theme .modal-footer {
+    border-color:rgb(255 255 255 / 12%)
+}

@@ -89,6 +89,9 @@ $paycode = substr(str_shuffle("QWERTYUIOPLKJHGFDSAZXCVBNM1234567890"), 1, $alpha
 $length = 8;
 $defaultPass = substr(str_shuffle("QWERTYUIOPwertyuioplkjLKJHGFDSAZXCVBNM1234567890qhgfdsazxcvbnm"), 1, $length);
 
+/* System Generated OTP */
+$otp = substr(str_shuffle("1234567890"), 1, 4);
+
 
 /* System Generated ID */
 $length = date('y');

@@ -66,7 +66,6 @@ require_once('../config/codeGen.php');
 /* Handle Password Reset */
 if (isset($_POST['ResetPassword'])) {
     $user_email = mysqli_real_escape_string($mysqli, $_POST['user_email']);
-    $user_email = mysqli_real_escape_string($mysqli, $_POST['user_email']);
     $password_reset_token = $checksum;
     $reset_url  =  $url . $checksum . '&email=' . $user_email;
     /* Filter And Validate Email */
