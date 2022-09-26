@@ -65,7 +65,23 @@
  *
  */
 
+session_start();
+require_once('../config/config.php');
+/* Handle Login */
+if (isset($_POST['SignIn'])) {
+
+    $user_email = mysqli_real_escape_string($mysqli, trim($_POST['user_email']));
+    $user_password = mysqli_real_escape_string($mysqli, trim(sha1(md5($_POST['user_password']))));
+    /* Check If Posted Data Matches */
+    $ret = mysqli_query($mysqli, "SELECT * FROM users  WHERE user_email='{$user_email}'  AND user_password='{$user_password}'");
+    $num = mysqli_fetch_array($ret);
+    /* Load Auth Log Helper */
+    include('../functions/auth_logger.php');
+}
+
+/* Load Header Partial */
 require_once('../partials/pwa_head.php');
+
 ?>
 
 <body>
@@ -83,23 +99,15 @@ require_once('../partials/pwa_head.php');
     <!--start wrapper-->
     <div class="wrapper">
 
-        <!--start to header-->
-        <header class="top-header fixed-top border-bottom d-flex align-items-center">
-            <nav class="navbar navbar-expand w-100 p-0 gap-3 align-items-center">
-                <div class="nav-button" onclick="history.back()"><a href="javascript:;"><i class="bi bi-arrow-left"></i></a></div>
-                <div class="account-profile">
-                    <h6 class="mb-0 fw-bold text-dark">Log In</h6>
-                </div>
-            </nav>
-        </header>
-        <!--end to header-->
-
         <!--start to page content-->
         <div class="page-content">
 
             <div class="login-body">
-                <h5 class="fw-bold">Welcome Back</h5>
-                <p class="mb-0">Login to your account to continue your shopping</p>
+                <div class="text-center">
+                    <img class="thubnail" width="50%" src="../public/images/logo.png" alt="">
+                    <h5 class="fw-bold"><?php echo $system_name; ?></h5>
+                    <p class="mb-0">Login to your account</p>
+                </div>
                 <form class="mt-4">
 
                     <div class="form-floating mb-3">
@@ -125,22 +133,7 @@ require_once('../partials/pwa_head.php');
                     <div class="mb-0 d-grid">
                         <a href="home.html" class="btn btn-dark btn-ecomm rounded-3">Log In</a>
                     </div>
-                    <div class="separator my-4">
-                        <div class="line"></div>
-                        <p class="mb-0 fw-bold px-3">Or</p>
-                        <div class="line"></div>
-                    </div>
-                    <div class="social-login d-flex flex-row gap-2 justify-content-center">
-                        <a href="javascript:;" class="bg-facebook">
-                            <i class="bi bi-facebook"></i>
-                        </a>
-                        <a href="javascript:;" class="bg-pinterest">
-                            <i class="bi bi-google"></i>
-                        </a>
-                        <a href="javascript:;" class="bg-linkedin">
-                            <i class="bi bi-linkedin"></i>
-                        </a>
-                    </div>
+
                 </form>
             </div>
 

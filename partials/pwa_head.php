@@ -70,6 +70,8 @@ $stmt = $mysqli->prepare($ret);
 $stmt->execute(); //ok
 $res = $stmt->get_result();
 while ($settings = $res->fetch_object()) {
+    $system_name = $settings->system_name;
+    global $system_name;
 ?>
     <!doctype html>
     <html lang="en">
