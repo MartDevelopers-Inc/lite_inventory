@@ -127,7 +127,28 @@ require_once('../partials/head.php');
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <div class="form-group col-md-12">
+                                                                <label>Select Store</label>
+                                                                <div class="form-control-wrap">
+                                                                    <div class="form-group">
+                                                                        <div class="form-control-wrap">
+                                                                            <select name="store" class="form-select form-control form-control-lg" data-search="on">
+                                                                                <?php
+                                                                                $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
+                                                                                if (mysqli_num_rows($raw_results) > 0) {
+                                                                                    while ($stores = mysqli_fetch_array($raw_results)) {
+                                                                                ?>
+                                                                                        <option value="<?php echo $stores['store_id']; ?>"><?php echo $stores['store_name']; ?></option>
+                                                                                <?php }
+                                                                                }
+                                                                                ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
+                                                        <br>
                                                         <div class="text-right">
                                                             <button name="get_sale_reports" class="btn btn-primary" type="submit">
                                                                 <em class="icon ni ni-report-profit"></em> Get Reports
