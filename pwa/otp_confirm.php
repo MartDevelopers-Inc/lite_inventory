@@ -83,7 +83,7 @@ if (isset($_POST['verify_otp'])) {
     $sql = mysqli_query($mysqli, "SELECT * FROM users WHERE user_password_reset_token = '{$final_otp}'");
     if (mysqli_num_rows($sql) > 0) {
         /* Redirect User To Reset Password */
-        $_SESSION['success'] = 'Confirm your new password';
+        $_SESSION['success'] = 'Code confirmed, reset your password';
         header("Location: confirm_password?token=$final_otp");
         exit;
     } else {

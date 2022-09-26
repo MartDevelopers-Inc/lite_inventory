@@ -69,7 +69,7 @@ session_start();
 require_once('../config/config.php');
 
 /* Handle Code Confirmation */
-if (isset($_POST['confirm_password'])) {
+if (isset($_POST['change_passwords'])) {
     $new_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['new_password'])));
     $confirm_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['confirm_password'])));
     $reset_code = mysqli_real_escape_string($mysqli, $_GET['token']);
@@ -138,7 +138,7 @@ require_once('../partials/pwa_head.php');
                         <span class="input-group-text bg-transparent rounded-3 rounded-start-0"><i class="bi bi-eye-slash"></i></span>
                     </div>
                     <div class="mb-0 d-grid">
-                        <button type="button" name="confirm_password" class="btn btn-primary btn-ecomm rounded-3">Change Password</button>
+                        <button type="submit" name="change_passwords" class="btn btn-primary btn-ecomm rounded-3">Change Password</button>
                     </div>
 
                 </form>
