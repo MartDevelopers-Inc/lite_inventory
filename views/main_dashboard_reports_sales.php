@@ -164,6 +164,7 @@ require_once('../partials/head.php');
                                         $start = date('Y-m-d', strtotime($_POST['start_date']));
                                         $end = date('Y-m-d', strtotime($_POST['end_date']));
                                         $sale_report_type = $_POST['sale_report_type'];
+                                        $store = $_POST['store'];
                                         /* Deteermine What Type Of Sale Report To Show Based On Option Selected */
                                         if ($sale_report_type == 'Summarized Report') {
                                             /* Show Summarized Sales */

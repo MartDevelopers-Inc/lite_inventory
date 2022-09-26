@@ -1,8 +1,8 @@
 <div class="card mb-3 col-12 border border-success">
     <div class="card-body">
         <h5 class="text-right">
-            <a class="btn btn-primary" href="main_dashboard_system_sales_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&type=<?php echo $_POST['sale_report_type']; ?>"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
-            <a class="btn btn-primary" href="main_dashboard_system_sales_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&type=<?php echo $_POST['sale_report_type']; ?>"><em class="icon ni ni-grid-add-fill-c"></em> Export To Excel</a>
+            <a class="btn btn-primary" href="main_dashboard_system_sales_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&type=<?php echo $_POST['sale_report_type']; ?>&store=<?php echo $store; ?>"><em class=" icon ni ni-file-docs"></em> Export To PDF</a>
+            <a class="btn btn-primary" href="main_dashboard_system_sales_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&type=<?php echo $_POST['sale_report_type']; ?>&store=<?php echo $store; ?>"><em class="icon ni ni-grid-add-fill-c"></em> Export To Excel</a>
         </h5>
         <div class="card-header">
             <h5 class="text-center text-primary">Summarized Report Of All Posted Sales From <?php echo date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)); ?></h5>
@@ -23,7 +23,7 @@
                 $ret = "SELECT * FROM sales s
                 INNER JOIN products p ON p.product_id = sale_product_id
                 INNER JOIN users us ON us.user_id = s.sale_user_id
-                WHERE s.sale_datetime BETWEEN '$start' AND '$end'
+                WHERE p.product_store_id = '{$store}' AND s.sale_datetime BETWEEN '$start' AND '$end'
                 ORDER BY sale_datetime ASC ";
                 $stmt = $mysqli->prepare($ret);
                 $stmt->execute(); //ok

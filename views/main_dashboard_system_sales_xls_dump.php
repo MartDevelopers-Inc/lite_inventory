@@ -67,6 +67,7 @@ require_once('../config/codeGen.php');
 
 $start = date('Y-m-d', strtotime($_GET['from']));
 $end = date('Y-m-d', strtotime($_GET['to']));
+$store = $_GET['store'];
 
 $report_type = $_GET['type'];
 if ($report_type == 'Summarized Report') {
@@ -92,7 +93,7 @@ if ($report_type == 'Summarized Report') {
     $query = $mysqli->query("SELECT * FROM sales s
     INNER JOIN products p ON p.product_id = sale_product_id
     INNER JOIN users us ON us.user_id = s.sale_user_id
-    WHERE  s.sale_datetime BETWEEN '$start' AND '$end'
+    WHERE p.product_store_id = '{$store}' AND  s.sale_datetime BETWEEN '$start' AND '$end'
     ORDER BY sale_datetime ASC ");
     if ($query->num_rows > 0) {
         /* Load All Fetched Rows */
@@ -150,7 +151,7 @@ if ($report_type == 'Summarized Report') {
     $query = $mysqli->query("SELECT * FROM sales s
     INNER JOIN products p ON p.product_id = sale_product_id
     INNER JOIN users us ON us.user_id = s.sale_user_id
-    WHERE  s.sale_datetime BETWEEN '$start' AND '$end'
+    WHERE p.product_store_id = '{$store}' AND  s.sale_datetime BETWEEN '$start' AND '$end'
     ORDER BY sale_datetime ASC ");
     if ($query->num_rows > 0) {
         /* Load All Fetched Rows */
