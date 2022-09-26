@@ -84,7 +84,7 @@ while ($settings = $res->fetch_object()) {
                 </div>
                 <div class="nk-header-brand">
                     <a href="pos?store=<?php echo $settings->user_store_id; ?>" class="logo-link text-light">
-                        <img class="logo-light logo-img" src="<a href="javascript:;"><img src="assets/images/logo.webp" width="95" alt=""></a>" srcset="../public/images/logo.png 2x" alt="logo">
+                        <img class="logo-light logo-img" src="../public/images/logo.png" srcset="../public/images/logo.png 2x" alt="logo">
                         <?php echo $settings->system_name; ?>
                     </a>
                 </div><!-- .nk-header-brand -->

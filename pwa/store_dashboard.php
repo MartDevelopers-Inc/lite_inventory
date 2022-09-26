@@ -67,6 +67,7 @@
 
 session_start();
 require_once('../config/config.php');
+require_once('../helpers/store_analytics.php');
 require_once('../partials/pwa_head.php');
 ?>
 
@@ -97,14 +98,16 @@ require_once('../partials/pwa_head.php');
             <!--start features-->
             <div class="features-section">
                 <div class="row row-cols-2 row-cols-md-4 g-3">
-                    <div class="col d-flex">
+                    <div class="col d-flex col-12">
                         <div class="card rounded-3 w-100">
                             <div class="card-body">
                                 <div class="icon-wrapper text-center">
-                                    <div class="noti-box mb-1 mx-auto bg-primary">
-                                        <i class="bi bi-truck"></i>
+                                    <div class="noti-box mb-1 mx-auto bg-success">
+                                        <i class="bi bi-cash-coin"></i>
                                     </div>
-                                    <p class="fw-bold mb-0 text-dark">Free Delivery</p>
+                                    <p class="fw-bold mb-0 text-dark">Today`s Sales <br>
+                                        <?php echo "Ksh " . number_format($today_sales, 2); ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -114,9 +117,9 @@ require_once('../partials/pwa_head.php');
                             <div class="card-body">
                                 <div class="icon-wrapper text-center">
                                     <div class="noti-box mb-1 mx-auto bg-purple">
-                                        <i class="bi bi-credit-card"></i>
+                                        <?php echo $products ?>
                                     </div>
-                                    <p class="fw-bold mb-0 text-dark">Secure Payment</p>
+                                    <p class="fw-bold mb-0 text-dark">Total Items</p>
                                 </div>
                             </div>
                         </div>
@@ -126,84 +129,61 @@ require_once('../partials/pwa_head.php');
                             <div class="card-body">
                                 <div class="icon-wrapper text-center">
                                     <div class="noti-box mb-1 mx-auto bg-red">
-                                        <i class="bi bi-minecart-loaded"></i>
+                                        <?php echo $out_of_stock ?>
                                     </div>
-                                    <p class="fw-bold mb-0 text-dark">Free Returns</p>
+                                    <p class="fw-bold mb-0 text-dark">Out Of Stock</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col d-flex">
-                        <div class="card rounded-3 w-100">
-                            <div class="card-body">
-                                <div class="icon-wrapper text-center">
-                                    <div class="noti-box mb-1 mx-auto bg-green">
-                                        <i class="bi bi-headset"></i>
-                                    </div>
-                                    <p class="fw-bold mb-0 text-dark">24/7 Support</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             <!--end features-->
 
-            <div class="py-2"></div>
+            <div class="py-2">
+                <hr>
+            </div>
 
             <!--start trending category-->
             <div class="trending-category">
-                <h4 class="my-2 text-center fw-bold section-title">Trending</h4>
-                <div class="row row-cols-2 row-cols-md-3 g-3">
-                    <div class="col d-flex">
-                        <div class="card rounded-0 w-100 rounded-3 overflow-hidden">
-                            <a href="shop.html"><img src="assets/images/trending/01.webp" class="img-fluid" alt=""></a>
-                            <div class="card-body text-center">
-                                <p class="mb-0 fw-bold">Denim Shirts</p>
-                            </div>
-                        </div>
+                <h4 class="my-2 text-center fw-bold section-title">Sales logs on <?php echo date('d M Y'); ?></h4>
+                <div class="card rounded-3 border-0 bg-transparent">
+                    <div class="card-body">
+                        <ul class="timeline-with-icons">
+                            <?php
+                            /* Load Recent Sales Today */
+                            $raw_results = mysqli_query($mysqli, "SELECT  * FROM sales s
+                            INNER JOIN products p ON p.product_id = s.sale_product_id
+                            INNER JOIN users u ON u.user_id = s.sale_user_id
+                            WHERE DATE(s.sale_datetime)=CURDATE()  AND p.product_store_id = '{$view}'
+                            ORDER BY s.sale_datetime DESC LIMIT 10");
+                            if (mysqli_num_rows($raw_results) > 0) {
+                                while ($results = mysqli_fetch_array($raw_results)) {
+                            ?>
+                                    <li class="timeline-item mb-5">
+                                        <span class="timeline-icon active bg-success">
+                                            <i class="bi bi-check-lg"></i>
+                                        </span>
+                                        <p class="fw-bold text-dark">
+                                            <?php echo $results['user_name']; ?> Sold <span class="text-success"><?php echo $results['product_name']; ?></span>
+                                            To <span class="text-success"><?php echo $results['sale_customer_name']; ?></span>.
+                                            Quantity Sold Is <span class="text-success"><?php echo $results['sale_quantity']; ?>
+                                        </p>
+                                        <p class="text-muted mb-0"><?php echo date('g:ia', strtotime($results['sale_datetime'])); ?></p>
+                                    </li>
+                                <?php }
+                            } else { ?>
+                                <li class="timeline-item mb-5">
+                                    <span class="timeline-icon text-danger">
+                                        <i class="bi bi-exclamation-circle"></i>
+                                    </span>
+                                    <p class="fw-bold">No Sales Recorded So Far</p>
+                                    <p class="text-muted mb-0"><?php echo date('g:ia'); ?></p>
+                                </li>
+                            <?php } ?>
+                        </ul>
                     </div>
-                    <div class="col d-flex">
-                        <div class="card rounded-0 w-100 rounded-3 overflow-hidden">
-                            <a href="shop.html"><img src="assets/images/trending/02.webp" class="img-fluid" alt=""></a>
-                            <div class="card-body text-center">
-                                <p class="mb-0 fw-bold">Casual Shirts</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col d-flex">
-                        <div class="card rounded-0 w-100 rounded-3 overflow-hidden">
-                            <a href="shop.html"><img src="assets/images/trending/03.webp" class="img-fluid" alt=""></a>
-                            <div class="card-body text-center">
-                                <p class="mb-0 fw-bold">Women Tops</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col d-flex">
-                        <div class="card rounded-0 w-100 rounded-3 overflow-hidden">
-                            <a href="shop.html"><img src="assets/images/trending/04.webp" class="img-fluid" alt=""></a>
-                            <div class="card-body text-center">
-                                <p class="mb-0 fw-bold">Women Shirts</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col d-flex">
-                        <div class="card rounded-0 w-100 rounded-3 overflow-hidden">
-                            <a href="shop.html"><img src="assets/images/trending/05.webp" class="img-fluid" alt=""></a>
-                            <div class="card-body text-center">
-                                <p class="mb-0 fw-bold">Women Jeans</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col d-flex">
-                        <div class="card rounded-0 w-100 rounded-3 overflow-hidden">
-                            <a href="shop.html"><img src="assets/images/trending/06.webp" class="img-fluid" alt=""></a>
-                            <div class="card-body text-center">
-                                <p class="mb-0 fw-bold">Nightwear</p>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
             <!--end trending category-->
