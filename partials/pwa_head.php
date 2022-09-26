@@ -80,7 +80,11 @@ while ($settings = $res->fetch_object()) {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title><?php echo $settings->system_name; ?></title>
-
+        <!-- Plugins -->
+        <link rel="stylesheet" type="text/css" href="../public/js/libs/metismenu/metisMenu.min.css" />
+        <link rel="stylesheet" type="text/css" href="../public/js/libs/metismenu/mm-vertical.css" />
+        <link rel="stylesheet" type="text/css" href="../public/js/libs/slick/slick.css" />
+        <link rel="stylesheet" type="text/css" href="../public/js/libs/slick/slick-theme.css" />
         <!--CSS Files-->
         <link href="../public/css/bootstrap.min.css" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">

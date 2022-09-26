@@ -4,6 +4,14 @@
 <script src="../public/js/jquery.min.js"></script>
 <!-- Custom Show / Hide Password -->
 <script src="../public/js/show-hide-password.js"></script>
+<!-- Cookies Theme Switcher -->
+<script src="../public/js/cookies-theme-switcher.js"></script>
+<!-- Mentis Menu -->
+<script src="../public/js/libs/metismenu/metisMenu.min.js"></script>
+<!-- Slick Min -->
+<script src="../public/js/libs/slick/slick.min.js"></script>
+<!-- Index Sliders -->
+<script src="../public/js/index.js"></script>
 <!-- Application Loader -->
 <script src="../public/js/loader.js"></script>
 <!-- Load Alerts -->
