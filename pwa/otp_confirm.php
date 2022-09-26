@@ -125,20 +125,20 @@ require_once('../partials/pwa_head.php');
                     <form class="mt-5" method="POST">
                         <div class="verification-controls d-flex align-items-center justify-content-center gap-3 mb-5">
                             <div class="">
-                                <input type="text" class="form-control form-control-lg rounded-3" required name="otp_1">
+                                <input type="text" class="form-control form-control-lg rounded-3" required name="otp_1" maxlength="1">
                             </div>
                             <div class="">
-                                <input type="text" class="form-control form-control-lg rounded-3" required name="otp_2">
+                                <input type="text" class="form-control form-control-lg rounded-3" required name="otp_2" maxlength="1">
                             </div>
                             <div class="">
-                                <input type="text" class="form-control form-control-lg rounded-3" required name="otp_3">
+                                <input type="text" class="form-control form-control-lg rounded-3" required name="otp_3" maxlength="1">
                             </div>
                             <div class="">
-                                <input type="text" class="form-control form-control-lg rounded-3" required name="otp_4">
+                                <input type="text" class="form-control form-control-lg rounded-3" required name="otp_4" maxlength="1">
                             </div>
                         </div>
                         <div class="mb-0 d-grid">
-                            <buttun type="submit" name="verify_otp" class="btn btn-primary btn-ecomm rounded-3">Verify</a>
+                            <button type="submit" name="verify_otp" class="btn btn-primary btn-ecomm rounded-3">Verify</button>
                         </div>
                     </form>
                 </div>
@@ -161,8 +161,6 @@ require_once('../partials/pwa_head.php');
 
     <!--JS Files-->
     <?php require_once('../partials/pwa_scripts.php'); ?>
-
-
 
 </body>
 
