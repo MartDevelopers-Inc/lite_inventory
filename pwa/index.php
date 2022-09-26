@@ -105,19 +105,19 @@ require_once('../partials/pwa_head.php');
             <div class="login-body">
                 <div class="text-center">
                     <img class="thubnail" width="50%" src="../public/images/logo.png" alt="">
-                    <h5 class="fw-bold"><?php echo $system_name; ?></h5>
+                    <h5 class="fw-bold text-primary"><?php echo $system_name; ?></h5>
                     <p class="mb-0">Login to your account</p>
                 </div>
-                <form class="mt-4">
+                <form class="mt-4" method="POST">
 
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control rounded-3" id="floatingInputEmail" placeholder="name@example.com" value="name@example.com">
+                        <input type="email" class="form-control rounded-3" id="floatingInputEmail" name="user_email">
                         <label for="floatingInputEmail">Email</label>
                     </div>
 
                     <div class="input-group mb-3" id="show_hide_password">
                         <div class="form-floating flex-grow-1">
-                            <input type="password" class="form-control rounded-3 rounded-end-0 border-end-0" id="floatingInputPassword" placeholder="Enter Password" value="password123">
+                            <input type="password" class="form-control rounded-3 rounded-end-0 border-end-0" id="floatingInputPassword" name="user_password">
                             <label for="floatingInputPassword">Password</label>
                         </div>
                         <span class="input-group-text bg-transparent rounded-start-0 rounded-3"><i class="bi bi-eye-slash"></i></span>
@@ -131,7 +131,7 @@ require_once('../partials/pwa_head.php');
                         <div class=""><a href="authentication-otp-varification.html" class="forgot-link">Forgot Password?</a></div>
                     </div>
                     <div class="mb-0 d-grid">
-                        <a href="home.html" class="btn btn-dark btn-ecomm rounded-3">Log In</a>
+                        <button type="submit" name="SignIn" class="btn btn-primary btn-ecomm rounded-3">Login</button>
                     </div>
 
                 </form>
