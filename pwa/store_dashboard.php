@@ -216,12 +216,6 @@ require_once('../partials/pwa_head.php');
         <?php require_once('../partials/pwa_footer_menu.php'); ?>
         <!--end to footer-->
 
-
-        <!--start sidenav-->
-        <?php require_once('../partials/pwa_sidebar.php'); ?>
-        <!--end sidenav-->
-
-
     </div>
     <!--end wrapper-->
 
