@@ -1,6 +1,6 @@
 # LITE INVENTORY MIS
 
-From our servers to your clients` endpoints, at full throttle with no loss of data, fluctuations, signal interferance or doubt it can only be Lite Invetory MIS.
+From our servers to your clients` endpoints, at full throttle with no loss of data, fluctuations, signal interferance or doubt it can only be Lite Invetory MIS, .
 
 # DISCLAIMER
 
@@ -20,6 +20,7 @@ On Pushing To Live Server Kindly Update This Links <br>
 8. Receipt Headers Must Be Tied To A Store - Fixed.
 9. Downloaded Receipt From Admin End Has No Loyalty Points. - Fixed.
 10. Stock Addition Reports, Cannot Show The Individual Who Added Them.
+11. Only Users With Managerial Access Level Can Access The PWA.
 
 # Login Credetials
 

@@ -67,13 +67,15 @@
 
 session_start();
 require_once('../config/config.php');
+
 /* Handle Login */
 if (isset($_POST['SignIn'])) {
-
+    /* Only Allow Users With Managerial Access Level To Access This PWA */
     $user_email = mysqli_real_escape_string($mysqli, trim($_POST['user_email']));
     $user_password = mysqli_real_escape_string($mysqli, trim(sha1(md5($_POST['user_password']))));
     /* Check If Posted Data Matches */
-    $ret = mysqli_query($mysqli, "SELECT * FROM users  WHERE user_email='{$user_email}'  AND user_password='{$user_password}'");
+    $ret = mysqli_query($mysqli, "SELECT * FROM users  WHERE user_email='{$user_email}'  
+    AND user_password='{$user_password}' AND user_access_level = 'Manager'");
     $num = mysqli_fetch_array($ret);
     /* Load Auth Log Helper */
     include('../functions/auth_logger.php');
@@ -108,16 +110,17 @@ require_once('../partials/pwa_head.php');
                     <h5 class="fw-bold text-primary"><?php echo $system_name; ?></h5>
                     <p class="mb-0">Login to your account</p>
                 </div>
+                <br><br>
                 <form class="mt-4" method="POST">
 
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control rounded-3" id="floatingInputEmail" name="user_email">
+                        <input type="email" required class="form-control rounded-3" id="floatingInputEmail" name="user_email">
                         <label for="floatingInputEmail">Email</label>
                     </div>
 
                     <div class="input-group mb-3" id="show_hide_password">
                         <div class="form-floating flex-grow-1">
-                            <input type="password" class="form-control rounded-3 rounded-end-0 border-end-0" id="floatingInputPassword" name="user_password">
+                            <input type="password" required class="form-control rounded-3 rounded-end-0 border-end-0" id="floatingInputPassword" name="user_password">
                             <label for="floatingInputPassword">Password</label>
                         </div>
                         <span class="input-group-text bg-transparent rounded-start-0 rounded-3"><i class="bi bi-eye-slash"></i></span>
@@ -128,8 +131,9 @@ require_once('../partials/pwa_head.php');
                             <input type="checkbox" class="form-check-input" id="flexCheckDefault">
                             <label class="form-check-label" for="flexCheckDefault">Remember</label>
                         </div>
-                        <div class=""><a href="authentication-otp-varification.html" class="forgot-link">Forgot Password?</a></div>
+                        <div class=""><a href="reset_password" class="forgot-link">Forgot Password?</a></div>
                     </div>
+                    <br><br><br>
                     <div class="mb-0 d-grid">
                         <button type="submit" name="SignIn" class="btn btn-primary btn-ecomm rounded-3">Login</button>
                     </div>
