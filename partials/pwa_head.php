@@ -72,6 +72,8 @@ $res = $stmt->get_result();
 while ($settings = $res->fetch_object()) {
     $system_name = $settings->system_name;
     global $system_name;
+    $store_id = $_GET['view'];
+    global $store_id;
 ?>
     <!doctype html>
     <html lang="en">
