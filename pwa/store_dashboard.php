@@ -100,12 +100,6 @@ require_once('../partials/pwa_head.php');
             <!--start to page content-->
             <div class="page-content">
 
-                <div class="py-2">
-                    <h6 class="text-center fw-bold section-title">
-                        Welcome To <?php echo $store->store_name; ?>
-                    </h6>
-                </div>
-
                 <!--start features-->
                 <div class="features-section">
                     <div class="row row-cols-2 row-cols-md-4 g-3">
@@ -113,8 +107,8 @@ require_once('../partials/pwa_head.php');
                             <div class="card rounded-3 w-100">
                                 <div class="card-body">
                                     <div class="icon-wrapper text-center">
-                                        <div class="noti-box mb-1 mx-auto bg-success">
-                                            <i class="bi bi-cash-coin"></i>
+                                        <div class="mb-1 mx-auto">
+                                            <img src="../public/images/money.png" class="img-fluid" width="80" alt="" />
                                         </div>
                                         <p class="fw-bold mb-0 text-dark">Today`s Sales <br>
                                             <?php echo "Ksh " . number_format($today_sales, 2); ?>
@@ -127,8 +121,8 @@ require_once('../partials/pwa_head.php');
                             <div class="card rounded-3 w-100">
                                 <div class="card-body">
                                     <div class="icon-wrapper text-center">
-                                        <div class="noti-box mb-1 mx-auto bg-purple">
-                                            <i class="bi bi-diagram-3-fill"></i>
+                                        <div class="mb-1 mx-auto">
+                                            <img src="../public/images/shopping.png" class="img-fluid" width="80" alt="" />
                                         </div>
                                         <p class="fw-bold mb-0 text-dark">
                                             Total Items <br>
@@ -142,8 +136,8 @@ require_once('../partials/pwa_head.php');
                             <div class="card rounded-3 w-100">
                                 <div class="card-body">
                                     <div class="icon-wrapper text-center">
-                                        <div class="noti-box mb-1 mx-auto bg-red">
-                                            <i class="bi bi-exclamation-lg"></i>
+                                        <div class="mb-1 mx-auto">
+                                            <img src="../public/images/empty-cart.png" class="img-fluid" width="80" alt="" />
                                         </div>
                                         <p class="fw-bold mb-0 text-dark">
                                             Out Of Stock <br>
@@ -196,7 +190,6 @@ require_once('../partials/pwa_head.php');
                                             <i class="bi bi-exclamation-circle"></i>
                                         </span>
                                         <p class="fw-bold">No Sales Recorded So Far</p>
-                                        <p class="text-muted mb-0"><?php echo date('g:ia'); ?></p>
                                     </li>
                                 <?php } ?>
                             </ul>

@@ -97,6 +97,7 @@ require_once('../partials/pwa_head.php');
                 </h6>
             </div>
             <hr>
+            <br>
             <div class="row row-cols-1 g-3">
                 <div class="col">
                     <a href="../views/store_system_inventory_pdf_dump?view=<?php echo $_GET['view']; ?>">
