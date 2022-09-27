@@ -117,9 +117,12 @@ require_once('../partials/pwa_head.php');
                             <div class="card-body">
                                 <div class="icon-wrapper text-center">
                                     <div class="noti-box mb-1 mx-auto bg-purple">
-                                        <?php echo $products ?>
+                                        <i class="bi bi-diagram-3-fill"></i>
                                     </div>
-                                    <p class="fw-bold mb-0 text-dark">Total Items</p>
+                                    <p class="fw-bold mb-0 text-dark">
+                                        Total Items <br>
+                                        <?php echo $products ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -129,9 +132,12 @@ require_once('../partials/pwa_head.php');
                             <div class="card-body">
                                 <div class="icon-wrapper text-center">
                                     <div class="noti-box mb-1 mx-auto bg-red">
-                                        <?php echo $out_of_stock ?>
+                                        <i class="bi bi-exclamation-lg"></i>
                                     </div>
-                                    <p class="fw-bold mb-0 text-dark">Out Of Stock</p>
+                                    <p class="fw-bold mb-0 text-dark">
+                                        Out Of Stock <br>
+                                        <?php echo $out_of_stock ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
