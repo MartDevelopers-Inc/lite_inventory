@@ -100,36 +100,111 @@ require_once('../partials/pwa_head.php');
             <br>
             <div class="row row-cols-1 g-3">
                 <div class="col">
-                    <a href="../views/store_system_inventory_pdf_dump?view=<?php echo $_GET['view']; ?>">
-                        <div class="card rounded-3 mb-0">
-                            <div class="card-body">
-                                <div class="d-flex flex-row align-items-center justify-content-between gap-2">
-                                    <div class="category-name">
-                                        <p class="mb-0 fw-bold text-dark fs-5">Download as PDF</p>
-                                    </div>
-                                    <div class="category-img">
-                                        <img src="../public/images/pdf-file.png" class="img-fluid" width="100" alt="" />
-                                    </div>
+                    <div class="card rounded-3 mb-0 border border-success" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample_1">
+                        <div class="card-body ">
+                            <div class="d-flex flex-row align-items-center justify-content-between gap-2">
+                                <div class="category-name">
+                                    <p class="mb-0 fw-bold text-dark fs-5">Current stock reports</p>
+                                </div>
+                                <div class="category-img">
+                                    <img src="../public/images/stocks.png" class="img-fluid" width="50" alt="" />
                                 </div>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
                 <div class="col">
-                    <a href="../views/store_system_inventory_xls_dump?view=<?php echo $_GET['view']; ?>">
-                        <div class="card rounded-3 mb-0">
-                            <div class="card-body">
-                                <div class="d-flex flex-row align-items-center justify-content-between gap-2">
-                                    <div class="category-name">
-                                        <p class="mb-0 fw-bold text-dark fs-5">Download as Excel</p>
-                                    </div>
-                                    <div class="category-img">
-                                        <img src="../public/images/xls.png" class="img-fluid" width="100" alt="" />
-                                    </div>
+                    <div class="card rounded-3 mb-0 border border-primary" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample">
+                        <div class="card-body">
+                            <div class="d-flex flex-row align-items-center justify-content-between gap-2">
+                                <div class="category-name">
+                                    <p class="mb-0 fw-bold text-dark fs-5">Stock addition reports</p>
+                                </div>
+                                <div class="category-img">
+                                    <img src="../public/images/stock_addition.png" class="img-fluid" width="50" alt="" />
                                 </div>
                             </div>
                         </div>
-                    </a>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse collapse-horizontal" id="collapseWidthExample_1">
+                <hr>
+                <div class="row row-cols-1 g-3">
+                    <div class="col">
+                        <a href="../views/store_system_inventory_pdf_dump?view=<?php echo $_GET['view']; ?>">
+                            <div class="card rounded-3 mb-0 border border-success">
+                                <div class="card-body">
+                                    <div class="d-flex flex-row align-items-center justify-content-between gap-2">
+                                        <div class="category-name">
+                                            <p class="mb-0 fw-bold text-dark fs-5">Download as PDF</p>
+                                        </div>
+                                        <div class="category-img">
+                                            <img src="../public/images/pdf-file.png" class="img-fluid" width="40" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col">
+                        <a href="../views/store_system_inventory_xls_dump?view=<?php echo $_GET['view']; ?>">
+                            <div class="card rounded-3 mb-0 border border-success">
+                                <div class="card-body">
+                                    <div class="d-flex flex-row align-items-center justify-content-between gap-2">
+                                        <div class="category-name">
+                                            <p class="mb-0 fw-bold text-dark fs-5">Download as Excel</p>
+                                        </div>
+                                        <div class="category-img">
+                                            <img src="../public/images/xls.png" class="img-fluid" width="40" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <?php
+            $start = date('Y-m-d', strtotime('-30 days'));
+            $end = date('Y-m-d');
+            ?>
+            <div class="collapse collapse-horizontal" id="collapseWidthExample">
+                <hr>
+                <div class="row row-cols-1 g-3">
+                    <div class="col">
+                        <a href="../views/main_dashboard_system_stock_addition_pdf_dump?store=<?php echo $_GET['view']; ?>&start=<?php echo $start; ?>&end=<?php echo $end; ?>">
+                            <div class="card rounded-3 mb-0 border border-primary">
+                                <div class="card-body">
+                                    <div class="d-flex flex-row align-items-center justify-content-between gap-2">
+                                        <div class="category-name">
+                                            <p class="mb-0 fw-bold text-dark fs-5">Download as PDF</p>
+                                        </div>
+                                        <div class="category-img">
+                                            <img src="../public/images/pdf-file.png" class="img-fluid" width="40" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a href="../views/main_dashboard_system_stock_addition_xls_dump?store=<?php echo $_GET['view']; ?>&start=<?php echo $start; ?>&end=<?php echo $end; ?>">
+                            <div class="card rounded-3 mb-0 border border-primary">
+                                <div class="card-body">
+                                    <div class="d-flex flex-row align-items-center justify-content-between gap-2">
+                                        <div class="category-name">
+                                            <p class="mb-0 fw-bold text-dark fs-5">Download as Excel</p>
+                                        </div>
+                                        <div class="category-img">
+                                            <img src="../public/images/xls.png" class="img-fluid" width="40" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -21,6 +21,7 @@ On Pushing To Live Server Kindly Update This Links <br>
 9. Downloaded Receipt From Admin End Has No Loyalty Points. - Fixed.
 10. Stock Addition Reports, Cannot Show The Individual Who Added Them.
 11. Only Users With Managerial Access Level Can Access The PWA.
+12. PWA Stock Addition Reports Only Shows Additions Done Within That Month.
 
 # Login Credetials
 
