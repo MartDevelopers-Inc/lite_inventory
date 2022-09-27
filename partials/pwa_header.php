@@ -5,8 +5,8 @@
         </div>
         <ul class="navbar-nav ms-auto d-flex align-items-center top-right-menu">
             <li class="nav-item">
-                <a class="nav-link position-relative text-primary" href="profile">
-                    <i class="bi bi-person-circle"></i>
+                <a class="nav-link position-relative text-danger" href="pwa_logout">
+                    <i class="bi bi-escape"></i>
                 </a>
             </li>
         </ul>

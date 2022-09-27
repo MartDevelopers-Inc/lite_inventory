@@ -117,7 +117,7 @@ require_once('../partials/pwa_head.php');
                                 </select>
                             </div>
                             <div class="text-center">
-                                <button class="btn btn-ecomm rounded-3 btn-primary">
+                                <button class="btn btn-ecomm rounded-3 btn-primary" name="get_sale_reports">
                                     Get reports
                                 </button>
                             </div>
@@ -125,7 +125,16 @@ require_once('../partials/pwa_head.php');
                     </form>
                 </div>
             </div>
+            <?php
+            if (isset($_POST['get_sale_reports'])) {
+                $start = date('Y-m-d', strtotime($_POST['start_date']));
+                $end = date('Y-m-d', strtotime($_POST['end_date']));
+                $sale_report_type = $_POST['sale_report_type'];
+                $store = $_GET['view'];
+            ?>
 
+
+            <?php } ?>
         </div>
         <!--end to page content-->
 
