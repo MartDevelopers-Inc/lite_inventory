@@ -132,7 +132,17 @@ require_once('../partials/pwa_head.php');
                 $sale_report_type = $_POST['sale_report_type'];
                 $store = $_GET['view'];
             ?>
-
+                <div class="card rounded-3 mb-3 border border-primary">
+                    <div class="card-body text-center">
+                        <a class="btn btn-primary" href="../views/store_system_sales_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&type=<?php echo $_POST['sale_report_type']; ?>&store=<?php echo $store; ?>">
+                            <i class="bi bi-filetype-pdf"></i> Download as PDF file
+                        </a>
+                        <br><br>
+                        <a class="btn btn-primary" href="../views/store_system_sales_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&type=<?php echo $_POST['sale_report_type']; ?>&store=<?php echo $store; ?>">
+                            <i class="bi bi-file-earmark-excel"></i> Download as Excel file
+                        </a>
+                    </div>
+                </div>
 
             <?php } ?>
         </div>

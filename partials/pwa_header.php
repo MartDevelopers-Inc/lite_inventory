@@ -6,7 +6,7 @@
         <ul class="navbar-nav ms-auto d-flex align-items-center top-right-menu">
             <li class="nav-item">
                 <a class="nav-link position-relative text-danger" href="pwa_logout">
-                    <i class="bi bi-escape"></i>
+                    <i class="bi bi-box-arrow-right"></i>
                 </a>
             </li>
         </ul>
