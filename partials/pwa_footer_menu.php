@@ -13,7 +13,7 @@
                     <div class="name">Sales</div>
                 </div>
             </a>
-            <a class="nav-link" href="store_sales?view=<?php echo $store_id; ?>">
+            <a class="nav-link" href="store_stocks?view=<?php echo $store_id; ?>">
                 <div class="d-flex flex-column align-items-center">
                     <div class="icon"><i class="bi bi-card-checklist"></i></div>
                     <div class="name">Stocks</div>

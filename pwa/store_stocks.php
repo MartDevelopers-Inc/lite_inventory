@@ -93,93 +93,53 @@ require_once('../partials/pwa_head.php');
             <br>
             <div class="py-2">
                 <h6 class="text-center fw-bold section-title">
-                    Sales Reports
+                    Stock Reports
                 </h6>
             </div>
-            <br>
-            <div class="card rounded-3 mb-3 border border-primary">
-                <div class="card-body">
-                    <form method="POST">
-                        <div class="form-body">
-                            <div class="mb-3">
-                                <label class="form-label">Sales from date</label>
-                                <input type="date" required name="start_date" class="form-control rounded-3">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Sales to date</label>
-                                <input type="date" required name="end_date" class="form-control rounded-3">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Report type</label>
-                                <select name="sale_report_type" class="form-select form-control form-control-lg" data-search="on">
-                                    <option>Summarized Report</option>
-                                    <option>Composite Report</option>
-                                </select>
-                            </div>
-                            <div class="text-center">
-                                <button class="btn btn-ecomm rounded-3 btn-primary" name="get_sale_reports">
-                                    Get reports
-                                </button>
+            <hr>
+            <div class="row row-cols-1 g-3">
+                <div class="col">
+                    <a href="../views/store_system_inventory_pdf_dump?view=<?php echo $_GET['view']; ?>">
+                        <div class="card rounded-3 mb-0">
+                            <div class="card-body">
+                                <div class="d-flex flex-row align-items-center justify-content-between gap-2">
+                                    <div class="category-name">
+                                        <p class="mb-0 fw-bold text-dark fs-5">Download as PDF</p>
+                                    </div>
+                                    <div class="category-img">
+                                        <img src="../public/images/pdf-file.png" class="img-fluid" width="100" alt="" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </a>
                 </div>
-            </div>
-            <div class="row row-cols-1 g-3">
-                <?php
-                if (isset($_POST['get_sale_reports'])) {
-                    $start = date('Y-m-d', strtotime($_POST['start_date']));
-                    $end = date('Y-m-d', strtotime($_POST['end_date']));
-                    $sale_report_type = $_POST['sale_report_type'];
-                    $store = $_GET['view'];
-                ?>
-                    <div class="col">
-                        <a href="../views/store_system_sales_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&type=<?php echo $_POST['sale_report_type']; ?>&store=<?php echo $store; ?>">
-                            <div class="card rounded-3 mb-0">
-                                <div class="card-body">
-                                    <div class="d-flex flex-row align-items-center justify-content-between gap-2">
-                                        <div class="category-name">
-                                            <p class="mb-0 fw-bold text-dark fs-5">Download as PDF</p>
-                                        </div>
-                                        <div class="category-img">
-                                            <img src="../public/images/pdf-file.png" class="img-fluid" width="100" alt="" />
-                                        </div>
+                <div class="col">
+                    <a href="../views/store_system_inventory_xls_dump?view=<?php echo $_GET['view']; ?>">
+                        <div class="card rounded-3 mb-0">
+                            <div class="card-body">
+                                <div class="d-flex flex-row align-items-center justify-content-between gap-2">
+                                    <div class="category-name">
+                                        <p class="mb-0 fw-bold text-dark fs-5">Download as Excel</p>
+                                    </div>
+                                    <div class="category-img">
+                                        <img src="../public/images/xls.png" class="img-fluid" width="100" alt="" />
                                     </div>
                                 </div>
                             </div>
-                        </a>
-                    </div>
-                    <div class="col">
-                        <a href="../views/store_system_sales_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&type=<?php echo $_POST['sale_report_type']; ?>&store=<?php echo $store; ?>">
-                            <div class="card rounded-3 mb-0">
-                                <div class="card-body">
-                                    <div class="d-flex flex-row align-items-center justify-content-between gap-2">
-                                        <div class="category-name">
-                                            <p class="mb-0 fw-bold text-dark fs-5">Download as Excel</p>
-                                        </div>
-                                        <div class="category-img">
-                                            <img src="../public/images/xls.png" class="img-fluid" width="100" alt="" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                <?php } ?>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
         <!--end to page content-->
-
 
         <!--start to footer-->
         <?php require_once('../partials/pwa_footer_menu.php'); ?>
         <!--end to footer-->
 
-
-
     </div>
     <!--end wrapper-->
-
 
     <!--JS Files-->
     <?php require_once('../partials/pwa_scripts.php'); ?>
