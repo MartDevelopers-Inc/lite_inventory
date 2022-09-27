@@ -87,116 +87,128 @@ require_once('../partials/pwa_head.php');
     <div class="wrapper">
 
         <!--start to header-->
-        <?php require_once('../partials/pwa_header.php'); ?>
-        <!--end to header-->
+        <?php require_once('../partials/pwa_header.php');
+        $view = $_GET['view'];
+        $ret = "SELECT * FROM  store_settings WHERE store_id = '{$view}' ";
+        $stmt = $mysqli->prepare($ret);
+        $stmt->execute(); //ok
+        $res = $stmt->get_result();
+        while ($store = $res->fetch_object()) {
+        ?>
+            <!--end to header-->
 
-        <!--start to page content-->
-        <div class="page-content">
+            <!--start to page content-->
+            <div class="page-content">
 
-            <div class="py-2"></div>
-
-            <!--start features-->
-            <div class="features-section">
-                <div class="row row-cols-2 row-cols-md-4 g-3">
-                    <div class="col d-flex col-12">
-                        <div class="card rounded-3 w-100">
-                            <div class="card-body">
-                                <div class="icon-wrapper text-center">
-                                    <div class="noti-box mb-1 mx-auto bg-success">
-                                        <i class="bi bi-cash-coin"></i>
-                                    </div>
-                                    <p class="fw-bold mb-0 text-dark">Today`s Sales <br>
-                                        <?php echo "Ksh " . number_format($today_sales, 2); ?>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col d-flex">
-                        <div class="card rounded-3 w-100">
-                            <div class="card-body">
-                                <div class="icon-wrapper text-center">
-                                    <div class="noti-box mb-1 mx-auto bg-purple">
-                                        <i class="bi bi-diagram-3-fill"></i>
-                                    </div>
-                                    <p class="fw-bold mb-0 text-dark">
-                                        Total Items <br>
-                                        <?php echo $products ?>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col d-flex">
-                        <div class="card rounded-3 w-100">
-                            <div class="card-body">
-                                <div class="icon-wrapper text-center">
-                                    <div class="noti-box mb-1 mx-auto bg-red">
-                                        <i class="bi bi-exclamation-lg"></i>
-                                    </div>
-                                    <p class="fw-bold mb-0 text-dark">
-                                        Out Of Stock <br>
-                                        <?php echo $out_of_stock ?>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="py-2">
+                    <h6 class="text-center fw-bold section-title">
+                        Welcome To <?php echo $store->store_name; ?>
+                    </h6>
                 </div>
-            </div>
-            <!--end features-->
 
-            <div class="py-2">
-                <hr>
-            </div>
-
-            <!--start trending category-->
-            <div class="trending-category">
-                <h4 class="my-2 text-center fw-bold section-title">Sales logs on <?php echo date('d M Y'); ?></h4>
-                <div class="card rounded-3 border-0 bg-transparent">
-                    <div class="card-body">
-                        <ul class="timeline-with-icons">
-                            <?php
-                            /* Load Recent Sales Today */
-                            $raw_results = mysqli_query($mysqli, "SELECT  * FROM sales s
-                            INNER JOIN products p ON p.product_id = s.sale_product_id
-                            INNER JOIN users u ON u.user_id = s.sale_user_id
-                            WHERE DATE(s.sale_datetime)=CURDATE()  AND p.product_store_id = '{$view}'
-                            ORDER BY s.sale_datetime DESC LIMIT 10");
-                            if (mysqli_num_rows($raw_results) > 0) {
-                                while ($results = mysqli_fetch_array($raw_results)) {
-                            ?>
-                                    <li class="timeline-item mb-5">
-                                        <span class="timeline-icon active bg-success">
-                                            <i class="bi bi-check-lg"></i>
-                                        </span>
-                                        <p class="fw-bold text-dark">
-                                            <?php echo $results['user_name']; ?> Sold <span class="text-success"><?php echo $results['product_name']; ?></span>
-                                            To <span class="text-success"><?php echo $results['sale_customer_name']; ?></span>.
-                                            Quantity Sold Is <span class="text-success"><?php echo $results['sale_quantity']; ?>
+                <!--start features-->
+                <div class="features-section">
+                    <div class="row row-cols-2 row-cols-md-4 g-3">
+                        <div class="col d-flex col-12">
+                            <div class="card rounded-3 w-100">
+                                <div class="card-body">
+                                    <div class="icon-wrapper text-center">
+                                        <div class="noti-box mb-1 mx-auto bg-success">
+                                            <i class="bi bi-cash-coin"></i>
+                                        </div>
+                                        <p class="fw-bold mb-0 text-dark">Today`s Sales <br>
+                                            <?php echo "Ksh " . number_format($today_sales, 2); ?>
                                         </p>
-                                        <p class="text-muted mb-0"><?php echo date('g:ia', strtotime($results['sale_datetime'])); ?></p>
-                                    </li>
-                                <?php }
-                            } else { ?>
-                                <li class="timeline-item mb-5">
-                                    <span class="timeline-icon text-danger">
-                                        <i class="bi bi-exclamation-circle"></i>
-                                    </span>
-                                    <p class="fw-bold">No Sales Recorded So Far</p>
-                                    <p class="text-muted mb-0"><?php echo date('g:ia'); ?></p>
-                                </li>
-                            <?php } ?>
-                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col d-flex">
+                            <div class="card rounded-3 w-100">
+                                <div class="card-body">
+                                    <div class="icon-wrapper text-center">
+                                        <div class="noti-box mb-1 mx-auto bg-purple">
+                                            <i class="bi bi-diagram-3-fill"></i>
+                                        </div>
+                                        <p class="fw-bold mb-0 text-dark">
+                                            Total Items <br>
+                                            <?php echo $products ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col d-flex">
+                            <div class="card rounded-3 w-100">
+                                <div class="card-body">
+                                    <div class="icon-wrapper text-center">
+                                        <div class="noti-box mb-1 mx-auto bg-red">
+                                            <i class="bi bi-exclamation-lg"></i>
+                                        </div>
+                                        <p class="fw-bold mb-0 text-dark">
+                                            Out Of Stock <br>
+                                            <?php echo $out_of_stock ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+                <!--end features-->
+
+                <div class="py-2">
+                    <hr>
+                </div>
+
+                <!--start trending category-->
+                <div class="trending-category">
+                    <h4 class="my-2 text-center fw-bold section-title">Sales logs on <?php echo date('d M Y'); ?></h4>
+                    <div class="card rounded-3 border-0 bg-transparent">
+                        <div class="card-body">
+                            <ul class="timeline-with-icons">
+                                <?php
+                                /* Load Recent Sales Today */
+                                $raw_results = mysqli_query($mysqli, "SELECT  * FROM sales s
+                                INNER JOIN products p ON p.product_id = s.sale_product_id
+                                INNER JOIN users u ON u.user_id = s.sale_user_id
+                                WHERE DATE(s.sale_datetime)=CURDATE()  AND p.product_store_id = '{$view}'
+                                ORDER BY s.sale_datetime DESC LIMIT 10");
+                                if (mysqli_num_rows($raw_results) > 0) {
+                                    while ($results = mysqli_fetch_array($raw_results)) {
+                                ?>
+                                        <li class="timeline-item mb-5">
+                                            <span class="timeline-icon active bg-success">
+                                                <i class="bi bi-check-lg"></i>
+                                            </span>
+                                            <p class="fw-bold text-dark">
+                                                <?php echo $results['user_name']; ?> Sold <span class="text-success"><?php echo $results['product_name']; ?></span>
+                                                To <span class="text-success"><?php echo $results['sale_customer_name']; ?></span>.
+                                                Quantity Sold Is <span class="text-success"><?php echo $results['sale_quantity']; ?>
+                                            </p>
+                                            <p class="text-muted mb-0"><?php echo date('g:ia', strtotime($results['sale_datetime'])); ?></p>
+                                        </li>
+                                    <?php }
+                                } else { ?>
+                                    <li class="timeline-item mb-5">
+                                        <span class="timeline-icon text-danger">
+                                            <i class="bi bi-exclamation-circle"></i>
+                                        </span>
+                                        <p class="fw-bold">No Sales Recorded So Far</p>
+                                        <p class="text-muted mb-0"><?php echo date('g:ia'); ?></p>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--end trending category-->
+
             </div>
-            <!--end trending category-->
+            <!--end to page content-->
 
-        </div>
-        <!--end to page content-->
-
+        <?php } ?>
 
         <!--start to footer-->
         <?php require_once('../partials/pwa_footer_menu.php'); ?>
