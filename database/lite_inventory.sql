@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 05, 2022 at 10:58 AM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.10
+-- Generation Time: Oct 18, 2022 at 04:06 PM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -4962,7 +4962,8 @@ INSERT INTO `system_logs` (`log_id`, `log_user_id`, `log_ip_address`, `log_detai
 (4024, 'STF-9418', '127.0.0.1', 'Successfully Logged Into Admin Dashboard', '2022-06-14 15:03:29', 'Authentication Logs'),
 (4025, 'STF-9418', '127.0.0.1', 'Successfully Logged Into Admin Dashboard', '2022-06-24 16:16:22', 'Authentication Logs'),
 (4026, 'STF-9418', '127.0.0.1', 'Successfully Logged Into Admin Dashboard', '2022-06-28 09:34:32', 'Authentication Logs'),
-(4027, 'STF-9418', '127.0.0.1', 'Successfully Logged Into Admin Dashboard', '2022-06-30 08:50:44', 'Authentication Logs');
+(4027, 'STF-9418', '127.0.0.1', 'Successfully Logged Into Admin Dashboard', '2022-06-30 08:50:44', 'Authentication Logs'),
+(4028, 'STF-9418', '127.0.0.1', 'Successfully Logged Into Admin Dashboard', '2022-10-18 13:49:34', 'Authentication Logs');
 
 -- --------------------------------------------------------
 
@@ -5080,7 +5081,9 @@ ALTER TABLE `payment_settings`
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`product_id`);
+  ADD PRIMARY KEY (`product_id`),
+  ADD KEY `product_name` (`product_name`,`product_code`),
+  ADD KEY `product_store_id` (`product_store_id`,`product_name`,`product_code`);
 
 --
 -- Indexes for table `receipt_customization`
@@ -5096,7 +5099,8 @@ ALTER TABLE `sales`
   ADD PRIMARY KEY (`sale_id`),
   ADD KEY `SaleProductID` (`sale_product_id`),
   ADD KEY `SaleUserID` (`sale_user_id`),
-  ADD KEY `sale_receipt_no` (`sale_receipt_no`);
+  ADD KEY `sale_receipt_no` (`sale_receipt_no`),
+  ADD KEY `sale_product_id` (`sale_product_id`);
 
 --
 -- Indexes for table `store_settings`
@@ -5186,7 +5190,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `system_logs`
 --
 ALTER TABLE `system_logs`
-  MODIFY `log_id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4028;
+  MODIFY `log_id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4029;
 
 --
 -- AUTO_INCREMENT for table `system_settings`
@@ -5221,12 +5225,6 @@ ALTER TABLE `payment_settings`
 --
 ALTER TABLE `receipt_customization`
   ADD CONSTRAINT `ReceiptStore` FOREIGN KEY (`receipt_store_id`) REFERENCES `store_settings` (`store_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `users`
---
-ALTER TABLE `users`
-  ADD CONSTRAINT `UserStoreID` FOREIGN KEY (`user_store_id`) REFERENCES `store_settings` (`store_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
