@@ -98,48 +98,54 @@ require_once('../helpers/store_analytics.php');
                                     <div class="row gy-gs">
                                         <div class="col-md-6 col-lg-4">
                                             <div class="nk-wg-card is-dark card card-bordered">
-                                                <div class="card-inner">
-                                                    <div class="nk-iv-wg2">
-                                                        <div class="nk-iv-wg2-title">
-                                                            <h6 class="title">Todays Sales </h6>
-                                                        </div>
-                                                        <div class="nk-iv-wg2-text">
-                                                            <div class="nk-iv-wg2-amount">
-                                                                <?php echo "Ksh " . number_format($today_sales, 2); ?>
+                                                <a href="store_reports_sales?view=<?php echo $store->store_id; ?>">
+                                                    <div class="card-inner">
+                                                        <div class="nk-iv-wg2">
+                                                            <div class="nk-iv-wg2-title">
+                                                                <h6 class="title">Todays Sales </h6>
+                                                            </div>
+                                                            <div class="nk-iv-wg2-text">
+                                                                <div class="nk-iv-wg2-amount">
+                                                                    <?php echo "Ksh " . number_format($today_sales, 2); ?>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </a>
                                             </div><!-- .card -->
                                         </div><!-- .col -->
                                         <div class="col-md-6 col-lg-4">
                                             <div class="nk-wg-card is-s1 card card-bordered">
-                                                <div class="card-inner">
-                                                    <div class="nk-iv-wg2">
-                                                        <div class="nk-iv-wg2-title">
-                                                            <h6 class="title">Total Items </h6>
-                                                        </div>
-                                                        <div class="nk-iv-wg2-text">
-                                                            <div class="nk-iv-wg2-amount">
-                                                                <?php echo $products ?>
+                                                <a href="store_items_manage?view=<?php echo $store->store_id; ?>">
+                                                    <div class="card-inner">
+                                                        <div class="nk-iv-wg2">
+                                                            <div class="nk-iv-wg2-title">
+                                                                <h6 class="title">Total Items </h6>
+                                                            </div>
+                                                            <div class="nk-iv-wg2-text">
+                                                                <div class="nk-iv-wg2-amount">
+                                                                    <?php echo $products ?>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </a>
                                             </div><!-- .card -->
                                         </div><!-- .col -->
                                         <div class="col-md-12 col-lg-4">
                                             <div class="nk-wg-card is-s3 card card-bordered">
-                                                <div class="card-inner">
-                                                    <div class="nk-iv-wg2">
-                                                        <div class="nk-iv-wg2-title">
-                                                            <h6 class="title text-danger">Out Of Stock Items</h6>
-                                                        </div>
-                                                        <div class="nk-iv-wg2-amount text-danger">
-                                                            <?php echo $out_of_stock ?>
+                                                <a href="store_items_manage?view=<?php echo $store->store_id; ?>">
+                                                    <div class="card-inner">
+                                                        <div class="nk-iv-wg2">
+                                                            <div class="nk-iv-wg2-title">
+                                                                <h6 class="title text-danger">Out Of Stock Items</h6>
+                                                            </div>
+                                                            <div class="nk-iv-wg2-amount text-danger">
+                                                                <?php echo $out_of_stock ?>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </a>
                                             </div><!-- .card -->
                                         </div><!-- .col -->
                                         <div class="col-12">
