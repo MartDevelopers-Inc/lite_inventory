@@ -104,61 +104,69 @@ require_once('../helpers/admin_analytics.php');
                                     </div><!-- .nk-block-head -->
                                     <div class="nk-block">
                                         <div class="row g-gs">
+
                                             <div class="col-md-4">
                                                 <div class="card card-bordered card-full border border-success">
-                                                    <div class="card-inner">
-                                                        <div class="card-title-group align-start mb-0">
-                                                            <div class="card-title">
-                                                                <h6 class="subtitle">Today's Overall Sales Revenue</h6>
+                                                    <a href="main_dashboard_reports_sales">
+                                                        <div class="card-inner">
+                                                            <div class="card-title-group align-start mb-0">
+                                                                <div class="card-title">
+                                                                    <h6 class="subtitle">Today's Overall Sales Revenue</h6>
+                                                                </div>
+                                                                <div class="card-tools">
+                                                                    <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="<?php echo date('d M Y'); ?> Sales Revenue"></em>
+                                                                </div>
                                                             </div>
-                                                            <div class="card-tools">
-                                                                <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="<?php echo date('d M Y'); ?> Sales Revenue"></em>
+                                                            <div class="card-amount">
+                                                                <span class="amount">
+                                                                    <?php echo "Ksh " . number_format($today_sales, 2); ?>
+                                                                </span>
                                                             </div>
                                                         </div>
-                                                        <div class="card-amount">
-                                                            <span class="amount">
-                                                                <?php echo "Ksh " . number_format($today_sales, 2); ?>
-                                                            </span>
-                                                        </div>
-                                                    </div>
+                                                    </a>
                                                 </div><!-- .card -->
                                             </div><!-- .col -->
+
                                             <div class="col-md-4">
                                                 <div class="card card-bordered card-full border border-success">
-                                                    <div class="card-inner">
-                                                        <div class="card-title-group align-start mb-0">
-                                                            <div class="card-title">
-                                                                <h6 class="subtitle">Overall Total Items</h6>
+                                                    <a href="main_dashboard_reports_stocks">
+                                                        <div class="card-inner">
+                                                            <div class="card-title-group align-start mb-0">
+                                                                <div class="card-title">
+                                                                    <h6 class="subtitle">Overall Total Items</h6>
+                                                                </div>
+                                                                <div class="card-tools">
+                                                                    <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="Total Registered Items"></em>
+                                                                </div>
                                                             </div>
-                                                            <div class="card-tools">
-                                                                <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="Total Registered Items"></em>
+                                                            <div class="card-amount">
+                                                                <span class="amount">
+                                                                    <?php echo $products ?>
+                                                                </span>
                                                             </div>
                                                         </div>
-                                                        <div class="card-amount">
-                                                            <span class="amount">
-                                                                <?php echo $products ?>
-                                                            </span>
-                                                        </div>
-                                                    </div>
+                                                    </a>
                                                 </div><!-- .card -->
                                             </div><!-- .col -->
                                             <div class="col-md-4">
                                                 <div class="card card-bordered  card-full border border-danger">
-                                                    <div class="card-inner">
-                                                        <div class="card-title-group align-start mb-0">
-                                                            <div class="card-title">
-                                                                <h6 class="subtitle">Overall Low / Out Of Stock Items</h6>
+                                                    <a href="main_dashboard_reports_stocks">
+                                                        <div class="card-inner">
+                                                            <div class="card-title-group align-start mb-0">
+                                                                <div class="card-title">
+                                                                    <h6 class="subtitle">Overall Low / Out Of Stock Items</h6>
+                                                                </div>
+                                                                <div class="card-tools">
+                                                                    <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="Total Items That Have Reached Restock Limit Or Low In Qty"></em>
+                                                                </div>
                                                             </div>
-                                                            <div class="card-tools">
-                                                                <em class="card-hint icon ni ni-help-fill" data-toggle="tooltip" data-placement="left" title="Total Items That Have Reached Restock Limit Or Low In Qty"></em>
+                                                            <div class="card-amount">
+                                                                <span class="amount text-danger">
+                                                                    <?php echo $out_of_stock ?>
+                                                                </span>
                                                             </div>
                                                         </div>
-                                                        <div class="card-amount">
-                                                            <span class="amount text-danger">
-                                                                <?php echo $out_of_stock ?>
-                                                            </span>
-                                                        </div>
-                                                    </div>
+                                                    </a>
                                                 </div><!-- .card -->
                                             </div><!-- .col -->
                                             <div class="col-12">
