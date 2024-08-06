@@ -105,49 +105,54 @@ require_once('../partials/pwa_head.php');
                     <div class="row row-cols-2 row-cols-md-4 g-3">
                         <div class="col d-flex col-12">
                             <div class="card rounded-3 w-100">
-                                <div class="card-body">
-                                    <div class="icon-wrapper text-center">
-                                        <div class="mb-1 mx-auto">
-                                            <img src="../public/images/money.png" class="img-fluid" width="80" alt="" />
+                                <a href="store_reports_sales?view=<?php echo $store->store_id; ?>">
+                                    <div class="card-body">
+                                        <div class="icon-wrapper text-center">
+                                            <div class="mb-1 mx-auto">
+                                                <img src="../public/images/money.png" class="img-fluid" width="80" alt="" />
+                                            </div>
+                                            <p class="fw-bold mb-0 text-dark">Today`s Sales <br>
+                                                <?php echo "Ksh " . number_format($today_sales, 2); ?>
+                                            </p>
                                         </div>
-                                        <p class="fw-bold mb-0 text-dark">Today`s Sales <br>
-                                            <?php echo "Ksh " . number_format($today_sales, 2); ?>
-                                        </p>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                         <div class="col d-flex">
                             <div class="card rounded-3 w-100">
-                                <div class="card-body">
-                                    <div class="icon-wrapper text-center">
-                                        <div class="mb-1 mx-auto">
-                                            <img src="../public/images/shopping.png" class="img-fluid" width="80" alt="" />
+                                <a href="store_stocks?view=<?php echo $store->store_id; ?>">
+                                    <div class="card-body">
+                                        <div class="icon-wrapper text-center">
+                                            <div class="mb-1 mx-auto">
+                                                <img src="../public/images/shopping.png" class="img-fluid" width="80" alt="" />
+                                            </div>
+                                            <p class="fw-bold mb-0 text-dark">
+                                                Total Items <br>
+                                                <?php echo $products ?>
+                                            </p>
                                         </div>
-                                        <p class="fw-bold mb-0 text-dark">
-                                            Total Items <br>
-                                            <?php echo $products ?>
-                                        </p>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                         <div class="col d-flex">
                             <div class="card rounded-3 w-100">
-                                <div class="card-body">
-                                    <div class="icon-wrapper text-center">
-                                        <div class="mb-1 mx-auto">
-                                            <img src="../public/images/empty-cart.png" class="img-fluid" width="80" alt="" />
+                                <a href="store_stocks?view=<?php echo $store->store_id; ?>">
+                                    <div class="card-body">
+                                        <div class="icon-wrapper text-center">
+                                            <div class="mb-1 mx-auto">
+                                                <img src="../public/images/empty-cart.png" class="img-fluid" width="80" alt="" />
+                                            </div>
+                                            <p class="fw-bold mb-0 text-dark">
+                                                Out Of Stock <br>
+                                                <?php echo $out_of_stock ?>
+                                            </p>
                                         </div>
-                                        <p class="fw-bold mb-0 text-dark">
-                                            Out Of Stock <br>
-                                            <?php echo $out_of_stock ?>
-                                        </p>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <!--end features-->
