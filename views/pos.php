@@ -463,6 +463,14 @@ require_once('../partials/head.php');
                                                                                             <option value="Credit">Credit</option>
                                                                                         </select>
                                                                                     </div>
+                                                                                    <div class="form-group col-md-12" id="SaleTXN" style="display: none;">
+                                                                                        <label>Transaction Ref</label>
+                                                                                        <input type="text"  name="sale_transaction_ref" class="form-control">
+                                                                                    </div>
+                                                                                    <div class="form-group col-md-12" id="SaleExpectedPaymentDate" style="display: none;">
+                                                                                        <label>Expected Payment Date</label>
+                                                                                        <input type="date"  name="sale_credit_expected_date" class="form-control">
+                                                                                    </div>
                                                                                 <?php } ?>
                                                                             </div>
                                                                             <div class="text-right">
