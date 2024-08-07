@@ -75,4 +75,21 @@
             }
         }
     }
+
+    document.getElementById('paymentMethod').addEventListener('change', function() {
+        var paymentMethod = this.value;
+        var txnField = document.getElementById('SaleTXN');
+        var dateField = document.getElementById('SaleExpectedPaymentDate');
+
+        if (paymentMethod === 'Mobile Payment') {
+            txnField.style.display = 'block';
+            dateField.style.display = 'none';
+        } else if (paymentMethod === 'Credit') {
+            txnField.style.display = 'none';
+            dateField.style.display = 'block';
+        } else {
+            txnField.style.display = 'none';
+            dateField.style.display = 'none';
+        }
+    });
 </script>
