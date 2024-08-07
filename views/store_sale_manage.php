@@ -220,7 +220,7 @@ require_once('../partials/head.php');
                                                         <td>Ksh <?php echo number_format($sales->sale_payment_amount, 2); ?></td>
                                                         <td>Ksh <?php echo number_format($total_sale, 2); ?></td>
                                                         <td>
-                                                            <?php if ($sales->sale_payment_method == 'Credit') { ?>
+                                                            <?php if ($sales->sale_payment_status == 'unpaid') { ?>
                                                                 <a data-toggle="modal" href="#mark_paid_<?php echo $sales->sale_id; ?>" class="badge badge-dim badge-pill badge-outline-success"><em class="icon ni ni-check"></em> Mark As Paid</a>
                                                                 <a data-toggle="modal" href="#delete_<?php echo $sales->sale_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
                                                             <?php } else { ?>
