@@ -457,7 +457,7 @@ require_once('../partials/head.php');
                                                                                     </div>
                                                                                     <div class="form-group col-md-4">
                                                                                         <label>Payment Means</label>
-                                                                                        <select name="sale_payment_method" class="form-select form-control form-control-lg" data-search="on" id="paymentMethod">
+                                                                                        <select name="sale_payment_method" class="form-control" id="paymentMethod">
                                                                                             <option value="Cash">Cash</option>
                                                                                             <option value="Mobile Payment">Mobile Payment</option>
                                                                                             <option value="Credit">Credit</option>
