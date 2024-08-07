@@ -66,7 +66,11 @@ $sale_customer_name = mysqli_real_escape_string($mysqli, $_POST['sale_customer_n
 $sale_customer_phoneno  = mysqli_real_escape_string($mysqli, $_POST['sale_customer_phoneno']);
 $sale_receipt_no = mysqli_real_escape_string($mysqli, $b);
 $sale_payment_method = mysqli_real_escape_string($mysqli, $_POST['sale_payment_method']);
-$sale_payment_status  = mysqli_real_escape_string($mysqli, 'paid');
+if ($sale_payment_method == 'Credit') {
+    $sale_payment_status  = mysqli_real_escape_string($mysqli, 'unpaid');
+} else {
+    $sale_payment_status  = mysqli_real_escape_string($mysqli, 'paid');
+}
 $total = mysqli_real_escape_string($mysqli, $_POST['total_payable_price']);
 $loyalty_points_code = mysqli_real_escape_string($mysqli, $a . $b);
 

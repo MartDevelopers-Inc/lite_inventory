@@ -441,6 +441,7 @@ require_once('../partials/head.php');
                                                                                     <input type="date" name="sale_credit_expected_date" class="form-control">
                                                                                 </div>
                                                                             </div>
+                                                                            <br>
                                                                             <div class="text-right">
                                                                                 <button name="add_sale" class="btn btn-primary" type="submit">
                                                                                     <em class="icon ni ni-list-check"></em> Save
