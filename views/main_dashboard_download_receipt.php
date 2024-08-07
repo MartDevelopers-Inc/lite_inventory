@@ -86,9 +86,27 @@ $date = new DateTime("now", new DateTimeZone('EAT'));
 
 $html = '
     <style>
-    @page {
-        margin: 0px 0px 6px 0px !important;
-        padding: 0px 0px 0px 0px !important;
+    table {
+        font-size: 12px;
+        padding: 4px;
+    }
+
+    tr {
+        page-break-after: always;
+    }
+
+    th {
+        text-align: left;
+        padding: 4pt;
+    }
+
+    td {
+        padding: 5pt;
+    }
+
+    body{
+        font-family: Arial, sans-serif;
+        font-size: 10pt;
     }
     .heading{
         letter-spacing: 1px;
@@ -112,7 +130,7 @@ $html = '
                 if (mysqli_num_rows($res) > 0) {
                     $receipts_header = mysqli_fetch_assoc($res);
                     $html .= '
-                        ' . $receipts_header['receipt_header_content'] . '
+                        ' . $receipts_header['receipt_header_content'] . ' <br>
                         Receipt No. ' . $_GET["number"] . ' <br>';
                         if($receipts_header['show_customer'] == 'true'){
                         $html .=
@@ -129,9 +147,8 @@ $html = '
             '
         </h4>
         </div>
-        <hr>
-        
-        <table cellspacing="5"  style="font-size:8.4pt">
+       
+        <table border="1" cellspacing="0" width="98%" style="font-size:9pt">
             <thead>
                 <tr>
                     <th style="text-align:left;" width="2%">SL</th>
@@ -154,7 +171,7 @@ $html = '
                         '
                         <tr>
                             <td style="text-align:left;"><strong>' . $cnt . '. </strong></td>
-                            <td style="text-align:left; overflow-wrap: break-word">
+                            <td style="text-align:left;">
                                 <strong>
                                     ' . $sales->product_name . '<br>
                                     ' . $sales->sale_quantity . ' X  Ksh ' . number_format($sales->sale_payment_amount, 2) . '
@@ -170,8 +187,8 @@ $html = '
 
                 $html .= '
                     <tr>
-                        <td colspan="1"><strong>TOTAL:</strong></td>
-                        <td style="text-align:right;" colspan="2"><strong>Ksh ' . number_format($total_price, 2) . '</strong></td>
+                        <td colspan="2"><strong>TOTAL:</strong></td>
+                        <td style="text-align:right;" colspan=""><strong>Ksh ' . number_format($total_price, 2) . '</strong></td>
                     </tr>';
                     $html .= '
             </tbody>
@@ -184,7 +201,6 @@ $html = '
             $users = mysqli_fetch_assoc($res);
             $html .=
             '<div class="footer">
-                <hr>
                 <p align="center"><strong>You Were Served By ' . $users['user_name'] . '<strong></p>
                 ';
                 if($receipts_header['allow_loyalty_points'] == 'true'){
@@ -202,8 +218,7 @@ $html = '
 $html .= '</body>';
 $dompdf = new Dompdf();
 $dompdf->load_html($html);
-$dompdf->set_paper(array(0, 0, 204, 650));
-$dompdf->set_option('dpi', 80);
+$dompdf->set_paper('A4', 'portrait');
 //$dompdf->set_paper('A4');
 $dompdf->set_option('isHtml5ParserEnabled', true);
 $dompdf->render();
