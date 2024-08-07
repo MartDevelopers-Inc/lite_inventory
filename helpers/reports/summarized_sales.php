@@ -35,7 +35,7 @@
                     $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
                     /* Payment Means */
                     if ($sales->sale_payment_method == 'Credit') {
-                        $payment_means = 'Credit Sale <br> Payment Due On ' . date('d M Y', strtotime($sales->sale_payment_due_date));
+                        $payment_means = 'Credit Sale <br> Payment Due On ' . date('d M Y', strtotime($sales->sale_credit_expected_date));
                     } else {
                         $payment_means = $sales->sale_payment_method;
                     }
