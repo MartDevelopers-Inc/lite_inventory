@@ -32,3 +32,33 @@
     </div>
 </div>
 <!-- End Delete Modal -->
+
+<!-- Mark As Paid -->
+<div class="modal fade" id="mark_paid_<?php echo $sales->sale_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">CONFIRM PAYMENT</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <form method="POST">
+                <div class="modal-body text-center ">
+                    <h4 class="text-danger">
+                        Mark This Sale Record As Paid?
+                        <hr>
+                        This operation is delicate. Please confirm that your client has paid this record.
+                    </h4>
+                    <br>
+                    <!-- Hide This -->
+                    <input type="hidden" name="sale_id" value="<?php echo $sales->sale_id; ?>">
+                    <input type="hidden" name="log_details" value="Marked <?php echo ' Receipt Number #:' . $sales->sale_receipt_no; ?> Sale Record As Paid.">
+                    <button type="button" class="text-center btn btn-success" data-dismiss="modal"> No, Dismiss</button>
+                    <button type="submit" name="Paid_Credit" class="text-center btn btn-danger"> Yes, Mark As Paid</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Mark As Paid -->

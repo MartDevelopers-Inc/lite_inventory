@@ -64,6 +64,10 @@ require_once('../config/config.php');
 require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
 check_login();
+/* Mark As Paid */
+if(isset($_POST['Paid_Credit'])){
+    
+}
 /* Roll Back Sale Record */
 if (isset($_POST['delete_sale'])) {
     $sale_id = mysqli_real_escape_string($mysqli, $_POST['sale_id']);
