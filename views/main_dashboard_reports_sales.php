@@ -127,7 +127,7 @@ require_once('../partials/head.php');
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group col-md-12">
+                                                            <div class="form-group col-md-8">
                                                                 <label>Select Store</label>
                                                                 <div class="form-control-wrap">
                                                                     <div class="form-group">
@@ -142,6 +142,21 @@ require_once('../partials/head.php');
                                                                                 <?php }
                                                                                 }
                                                                                 ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label>Select Payment Means</label>
+                                                                <div class="form-control-wrap">
+                                                                    <div class="form-group">
+                                                                        <div class="form-control-wrap">
+                                                                            <select name="payment_means" class="form-select form-control form-control-lg" data-search="on">
+                                                                                <option value="All">All</option>
+                                                                                <option value="Cash">Cash</option>
+                                                                                <option value="Mobile Payments">Mobile Payments</option>
+                                                                                <option value="Credit Purchase">Credit Purchase</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
