@@ -83,7 +83,7 @@ if ($report_type == 'Summarized Report') {
     $fileName = 'Summarized Sales Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($start)) . 'xls';
 
     /* Excel Column Name */
-    $fields = array('Item Details ', 'Quantity Sold ', 'Sold By ', 'Sold To ', 'Date Sold', 'Amount (Ksh)');
+    $fields = array('Item Details ', 'Quantity Sold ', 'Payment Means', 'Sold By ', 'Sold To ', 'Date Sold', 'Amount (Ksh)');
 
 
     /* Implode Excel Data */
@@ -101,8 +101,13 @@ if ($report_type == 'Summarized Report') {
             /* Sanitize Log Date */
             $sale_datetime = date('d M Y g:ia', strtotime($row['sale_datetime']));
             $sale_amount = $row['sale_quantity'] * $row['sale_payment_amount'];
+            if ($sales->sale_payment_method == 'Credit') {
+                $payment_means = 'Credit Sale Payment Due On ' . date('d M Y', strtotime($sales->sale_credit_expected_date));
+            } else {
+                $payment_means = $sales->sale_payment_method;
+            }
             /* Hardwire This Data Into .xls File */
-            $lineData = array($row['product_name'], $row['sale_quantity'], $row['user_name'], $row['sale_customer_name'], $sale_datetime, $sale_amount);
+            $lineData = array($row['product_name'], $row['sale_quantity'], $payment_means, $row['user_name'], $row['sale_customer_name'], $sale_datetime, $sale_amount);
             array_walk($lineData, 'filterData');
             $excelData .= implode("\t", array_values($lineData)) . "\n";
         }
@@ -135,6 +140,7 @@ if ($report_type == 'Summarized Report') {
         'Item Details',
         'Sold By ',
         'Sold To ',
+        'Payment Means',
         'Date Sold',
         'Unit Price (Ksh)',
         'Discount (Ksh)',
@@ -160,11 +166,17 @@ if ($report_type == 'Summarized Report') {
             $sale_datetime = date('d M Y g:ia', strtotime($row['sale_datetime']));
             $sale_amount = $row['sale_quantity'] * $row['sale_payment_amount'];
             $discounted_amount = $row['product_sale_price'] - $row['sale_discount'];
+            if ($sales->sale_payment_method == 'Credit') {
+                $payment_means = 'Credit Sale <br> Payment Due On ' . date('d M Y', strtotime($sales->sale_credit_expected_date));
+            } else {
+                $payment_means = $sales->sale_payment_method;
+            }
             /* Hardwire This Data Into .xls File */
             $lineData = array(
                 $row['product_name'],
                 $row['user_name'],
                 $row['sale_customer_name'],
+                $payment_means,
                 $sale_datetime,
                 $row['product_sale_price'],
                 $row['sale_discount'],
