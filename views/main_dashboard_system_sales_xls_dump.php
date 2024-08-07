@@ -101,10 +101,10 @@ if ($report_type == 'Summarized Report') {
             /* Sanitize Log Date */
             $sale_datetime = date('d M Y g:ia', strtotime($row['sale_datetime']));
             $sale_amount = $row['sale_quantity'] * $row['sale_payment_amount'];
-            if ($sales->sale_payment_method == 'Credit') {
-                $payment_means = 'Credit Sale Payment Due On ' . date('d M Y', strtotime($sales->sale_credit_expected_date));
+            if ($row['sale_payment_method'] == 'Credit') {
+                $payment_means = 'Credit Sale Payment Due On ' . date('d M Y', strtotime($row['sale_credit_expected_date']));
             } else {
-                $payment_means = $sales->sale_payment_method;
+                $payment_means = $row['sale_payment_method'];
             }
             /* Hardwire This Data Into .xls File */
             $lineData = array($row['product_name'], $row['sale_quantity'], $payment_means, $row['user_name'], $row['sale_customer_name'], $sale_datetime, $sale_amount);
@@ -166,10 +166,10 @@ if ($report_type == 'Summarized Report') {
             $sale_datetime = date('d M Y g:ia', strtotime($row['sale_datetime']));
             $sale_amount = $row['sale_quantity'] * $row['sale_payment_amount'];
             $discounted_amount = $row['product_sale_price'] - $row['sale_discount'];
-            if ($sales->sale_payment_method == 'Credit') {
-                $payment_means = 'Credit Sale <br> Payment Due On ' . date('d M Y', strtotime($sales->sale_credit_expected_date));
+            if ($row['sale_payment_method'] == 'Credit') {
+                $payment_means = 'Credit Sale Payment Due On ' . date('d M Y', strtotime($row['sale_credit_expected_date']));
             } else {
-                $payment_means = $sales->sale_payment_method;
+                $payment_means = $row['sale_payment_method'];
             }
             /* Hardwire This Data Into .xls File */
             $lineData = array(
