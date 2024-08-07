@@ -185,7 +185,9 @@ require_once('../partials/head.php');
                                                                 <em class="icon ni ni-printer-fill"></em>
                                                                 Print Receipt
                                                             </a>
-                                                            <a data-toggle="modal" href="#delete_<?php echo $sales->sale_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
+                                                            <?php if ($_SESSION['user_access_level'] != 'Staff') { ?>
+                                                                <a data-toggle="modal" href="#delete_<?php echo $sales->sale_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
+                                                            <?php } ?>
                                                         </td>
                                                     </tr>
                                                     <!-- Load Manage Sale Helper-->
