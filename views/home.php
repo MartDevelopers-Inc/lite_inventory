@@ -188,7 +188,7 @@ require_once('../helpers/admin_analytics.php');
                                                             <h6 class="title text-center"><?php echo date('M d Y'); ?> Credit Payments Ratio</h6>
                                                         </div>
                                                         <div class="nk-ck">
-                                                            <canvas class="bar-chart" id="barChartMultiple"></canvas>
+                                                            <canvas class="pie-chart" id="pieChartData"></canvas>
                                                         </div>
                                                     </div>
                                                 </div><!-- .card-preview -->

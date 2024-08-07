@@ -63,6 +63,9 @@
     $cumulative_income_cash = 0;
     $cumulative_income_mobile = 0;
     $cumulative_income_credit = 0;
+    $cumulative_paid_credit = 0;
+    $cumulative_unpaid_credit = 0;
+    $cumulative_overdue_credit = 0;
 
     // Query to get total amount sold for Cash payments
     $ret = "SELECT SUM(s.sale_payment_amount * s.sale_quantity) AS total_cash
@@ -101,6 +104,45 @@
     $res = $stmt->get_result();
     if ($credit = $res->fetch_object()) {
         $cumulative_income_credit = $credit->total_credit;
+    }
+
+    // Query to compute Paid Credit Purchases
+    $ret = "SELECT SUM(s.sale_payment_amount * s.sale_quantity) AS total_credit_paid
+    FROM sales s
+    INNER JOIN products p ON p.product_id = sale_product_id
+    INNER JOIN users us ON us.user_id = s.sale_user_id
+    WHERE DATE(s.sale_datetime) = CURDATE() AND s.sale_payment_method = 'Credit' AND s.sale_payment_status = 'Paid'";
+    $stmt = $mysqli->prepare($ret);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($credit = $res->fetch_object()) {
+        $cumulative_paid_credit = $credit->total_credit_paid;
+    }
+
+    // Query to compute Unpaid Credit Purchases
+    $ret = "SELECT SUM(s.sale_payment_amount * s.sale_quantity) AS total_credit_unpaid
+    FROM sales s
+    INNER JOIN products p ON p.product_id = sale_product_id
+    INNER JOIN users us ON us.user_id = s.sale_user_id
+    WHERE DATE(s.sale_datetime) = CURDATE() AND s.sale_payment_method = 'Credit' AND s.sale_payment_status = 'Unpaid'";
+    $stmt = $mysqli->prepare($ret);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($credit = $res->fetch_object()) {
+        $cumulative_unpaid_credit = $credit->total_credit_unpaid;
+    }
+
+    // Query to compute Overdue Credit Purchases
+    $ret = "SELECT SUM(s.sale_payment_amount * s.sale_quantity) AS total_credit_overdue
+    FROM sales s
+    INNER JOIN products p ON p.product_id = sale_product_id
+    INNER JOIN users us ON us.user_id = s.sale_user_id
+    WHERE DATE(s.sale_datetime) = CURDATE() AND s.sale_payment_method = 'Credit' AND s.sale_payment_status = 'Unpaid' AND s.sale_credit_expected_date < CURDATE()";
+    $stmt = $mysqli->prepare($ret);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($credit = $res->fetch_object()) {
+        $cumulative_overdue_credit = $credit->total_credit_overdue;
     }
     ?>
 
@@ -205,13 +247,13 @@
         barChart();
 
         var pieChartData = {
-            labels: ["Send", "Receive", "Withdraw"],
-            dataUnit: "BTC",
+            labels: ["Unpaid", "Paid", "Overdue"],
+            dataUnit: "Ksh",
             legend: !1,
             datasets: [{
                 borderColor: "#fff",
-                background: ["#9cabff", "#f4aaa4", "#8feac5"],
-                data: [110, 80, 125]
+                background: ["#ffcc00", "#339900", "#cc3300"],
+                data: [<?php echo $cumulative_unpaid_credit; ?>, <?php echo $cumulative_paid_credit; ?>, <?php echo $cumulative_overdue_credit; ?>]
             }]
         };
 
