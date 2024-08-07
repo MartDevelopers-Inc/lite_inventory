@@ -148,6 +148,30 @@ require_once('../helpers/store_analytics.php');
                                                 </a>
                                             </div><!-- .card -->
                                         </div><!-- .col -->
+                                        <div class="col-8">
+                                            <div class="card mb-3  border border-success">
+                                                <div class="card-inner">
+                                                    <div class="card-title">
+                                                        <h6 class="title text-center"><?php echo date('M d Y'); ?> Revenue Income Payment Method</h6>
+                                                    </div>
+                                                    <div class="nk-ck">
+                                                        <canvas class="bar-chart" id="barChartMultiple"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div><!-- .card-preview -->
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="card mb-3  border border-success">
+                                                <div class="card-inner">
+                                                    <div class="card-title">
+                                                        <h6 class="title text-center"><?php echo date('M d Y'); ?> Credit Payments Ratio</h6>
+                                                    </div>
+                                                    <div class="nk-ck">
+                                                        <canvas class="pie-chart" id="pieChartData"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div><!-- .card-preview -->
+                                        </div>
                                         <div class="col-12">
                                             <div class="card mb-3  border border-success">
                                                 <div class="card-inner">
@@ -280,6 +304,7 @@ require_once('../helpers/store_analytics.php');
     <?php
     require_once('../partials/scripts.php');
     require_once('../functions/store_sales_chart.php');
+    require_once('../functions/store_revenue_chart.php');
     ?>
 </body>
 
