@@ -126,8 +126,6 @@ require_once('../partials/head.php');
                                                     $stmt->bind_result($number_of_items);
                                                     $stmt->fetch();
                                                     $stmt->close();
-
-
                                                 ?>
                                                     <tr>
                                                         <td><?php echo $sales->sale_receipt_no; ?></td>
