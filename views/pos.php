@@ -457,7 +457,7 @@ require_once('../partials/head.php');
                                                                                     </div>
                                                                                     <div class="form-group col-md-4">
                                                                                         <label>Payment Means</label>
-                                                                                        <select name="sale_payment_method" class="form-select form-control form-control-lg" data-search="on">
+                                                                                        <select name="sale_payment_method" class="form-select form-control form-control-lg" data-search="on" id="paymentMethod">
                                                                                             <option value="Cash">Cash</option>
                                                                                             <option value="Mobile Payment">Mobile Payment</option>
                                                                                             <option value="Credit">Credit</option>
@@ -465,11 +465,11 @@ require_once('../partials/head.php');
                                                                                     </div>
                                                                                     <div class="form-group col-md-12" id="SaleTXN" style="display: none;">
                                                                                         <label>Transaction Ref</label>
-                                                                                        <input type="text"  name="sale_transaction_ref" class="form-control">
+                                                                                        <input type="text" name="sale_transaction_ref" class="form-control">
                                                                                     </div>
                                                                                     <div class="form-group col-md-12" id="SaleExpectedPaymentDate" style="display: none;">
                                                                                         <label>Expected Payment Date</label>
-                                                                                        <input type="date"  name="sale_credit_expected_date" class="form-control">
+                                                                                        <input type="date" name="sale_credit_expected_date" class="form-control">
                                                                                     </div>
                                                                                 <?php } ?>
                                                                             </div>
@@ -520,6 +520,24 @@ require_once('../partials/head.php');
     <?php require_once('../partials/scripts.php');
     require_once('../partials/filter_js.php');
     ?>
+    <script>
+        document.getElementById('paymentMethod').addEventListener('change', function() {
+            var paymentMethod = this.value;
+            var txnField = document.getElementById('SaleTXN');
+            var dateField = document.getElementById('SaleExpectedPaymentDate');
+
+            if (paymentMethod === 'Mobile Payment') {
+                txnField.style.display = 'block';
+                dateField.style.display = 'none';
+            } else if (paymentMethod === 'Credit') {
+                txnField.style.display = 'none';
+                dateField.style.display = 'block';
+            } else {
+                txnField.style.display = 'none';
+                dateField.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 
 </html>
