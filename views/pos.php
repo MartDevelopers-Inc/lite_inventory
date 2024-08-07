@@ -383,17 +383,14 @@ require_once('../partials/head.php');
                                                                 </button>
                                                             </div>
                                                         <?php } else {
-                                                            /* Post Transaction Automatically Without Asking Customer Details */
+                                                            /* Give A Modal To Select Payment Method And Post Transaction Without Asking Customer Details */
                                                         ?>
-                                                            <form method="POST">
-                                                                <input type="hidden" name="total_payable_price" value="<?php echo $total_price; ?>">
-                                                                <input type="hidden" name="sale_payment_method" value="Cash">
-                                                                <div class="text-right">
-                                                                    <button name="add_sale" class="btn btn-primary" type="submit">
-                                                                        <em class="icon ni ni-cart-fill"></em> Checkout
-                                                                    </button>
-                                                                </div>
-                                                            </form>
+                                                            <div class="text-right">
+                                                                <button type="button" data-toggle="modal" data-target="#checkout_modal_payment_means" class="btn btn-primary">
+                                                                    <em class="icon ni ni-cart-fill"></em>
+                                                                    Checkout
+                                                                </button>
+                                                            </div>
                                                         <?php }
                                                         ?>
                                                         <br>
@@ -448,16 +445,23 @@ require_once('../partials/head.php');
                                                                                         </select>
                                                                                     </div>
                                                                                 <?php } else { ?>
-                                                                                    <div class="form-group col-md-6">
+                                                                                    <div class="form-group col-md-4">
                                                                                         <label>Customer Name</label>
                                                                                         <input type="text" required name="sale_customer_name" class="form-control">
                                                                                     </div>
-                                                                                    <div class="form-group col-md-6">
+                                                                                    <div class="form-group col-md-4">
                                                                                         <label>Customer Phone Number</label>
                                                                                         <input type="text" required name="sale_customer_phoneno" class="form-control">
                                                                                         <!-- Hide This -->
                                                                                         <input type="hidden" name="total_payable_price" value="<?php echo $total_price; ?>">
-                                                                                        <input type="hidden" name="sale_payment_method" value="Cash">
+                                                                                    </div>
+                                                                                    <div class="form-group col-md-4">
+                                                                                        <label>Payment Means</label>
+                                                                                        <select name="sale_payment_method" class="form-select form-control form-control-lg" data-search="on">
+                                                                                            <option value="Cash">Cash</option>
+                                                                                            <option value="Mobile Payment">Mobile Payment</option>
+                                                                                            <option value="Credit">Credit</option>
+                                                                                        </select>
                                                                                     </div>
                                                                                 <?php } ?>
                                                                             </div>
