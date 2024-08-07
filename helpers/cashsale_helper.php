@@ -97,8 +97,8 @@ foreach ($cart_products as $cart_products) {
 
             /* SQLS To Persist Changes */
             $update_sql  = "UPDATE products SET product_quantity = '{$new_product_qty}' WHERE product_id  = '{$sale_product_id}'";
-            $sale_sql =  "INSERT INTO sales (sale_product_id, sale_user_id, sale_quantity, sale_customer_name, sale_customer_phoneno, sale_receipt_no, sale_payment_method, sale_payment_amount, sale_payment_status, sale_discount)
-            VALUES(?,?,?,?,?,?,?,?,?,?)";
+            $sale_sql =  "INSERT INTO sales (sale_product_id, sale_user_id, sale_quantity, sale_customer_name, sale_customer_phoneno, sale_receipt_no, sale_payment_method, sale_payment_amount, sale_payment_status, sale_discount, sale_transaction_ref, sale_credit_expected_date)
+            VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 
             /* Prepare */
             $update_prepare = $mysqli->prepare($update_sql);
@@ -106,7 +106,7 @@ foreach ($cart_products as $cart_products) {
 
             /* Bind */
             $sale_bind = $sale_prepare->bind_param(
-                'ssssssssss',
+                'ssssssssssss',
                 $sale_product_id,
                 $sale_user_id,
                 $sale_quantity,
@@ -116,7 +116,9 @@ foreach ($cart_products as $cart_products) {
                 $sale_payment_method,
                 $product_sale_price,
                 $sale_payment_status,
-                $Discount
+                $Discount,
+                $sale_transaction_ref,
+                $sale_credit_expected_date
             );
             /* Execute */
             $update_prepare->execute();

@@ -131,14 +131,19 @@ if (!empty($_GET["action"])) {
 if (isset($_POST['add_sale'])) {
     $sale_payment_method = $_POST['sale_payment_method'];
     $cart_products = $_SESSION["cart_item"];
+    $sale_transaction_ref = $_POST['sale_transaction_ref'];
+    $sale_credit_expected_date = $_POST['sale_credit_expected_date'];
+
+    include('../helpers/cashsale_helper.php');
+
     /* Load Sale Helper */
-    if ($sale_payment_method == 'Cash') {
-        include('../helpers/cashsale_helper.php');
+    /* if ($sale_payment_method == 'Cash') {
+        
     } else if ($sale_payment_method == 'MPESA') {
         include('../helpers/mpesa_helper.php');
     } else {
         include('../helpers/card_helper.php');
-    }
+    } */
 }
 
 /* Hold This Sale */
@@ -386,7 +391,7 @@ require_once('../partials/head.php');
                                                             /* Give A Modal To Select Payment Method And Post Transaction Without Asking Customer Details */
                                                         ?>
                                                             <div class="text-right">
-                                                                <button type="button" data-toggle="modal" data-target="#checkout_modal_payment_means" class="btn btn-primary">
+                                                                <button type="button" data-toggle="modal" data-target="#checkout_modal" class="btn btn-primary">
                                                                     <em class="icon ni ni-cart-fill"></em>
                                                                     Checkout
                                                                 </button>
@@ -408,70 +413,33 @@ require_once('../partials/head.php');
                                                                         <form method="post" enctype="multipart/form-data">
                                                                             <input type="hidden" name="total_payable_price" value="<?php echo $total_price; ?>">
                                                                             <div class="form-row">
-                                                                                <?php if ($settings->payment_settings_means == 'MPESA') { ?>
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label>Customer Name</label>
-                                                                                        <input type="text" required name="sale_customer_name" class="form-control">
-                                                                                    </div>
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label>Phone Number</label>
-                                                                                        <input type="text" required name="sale_customer_phoneno" class="form-control">
-                                                                                        <!-- Hide This -->
-                                                                                        <input type="hidden" name="total_payable_price" value="<?php echo $total_price; ?>">
-                                                                                    </div>
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label>Payment Means</label>
-                                                                                        <select name="sale_payment_method" class="form-select form-control form-control-lg" data-search="on">
-                                                                                            <option value="Cash">Cash</option>
-                                                                                            <option value="MPESA">Mpesa</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                <?php } else if ($settings->payment_settings_means == 'Cedit / Debit Card') { ?>
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label>Customer Name</label>
-                                                                                        <input type="text" required name="sale_customer_name" class="form-control">
-                                                                                    </div>
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label>Phone Number</label>
-                                                                                        <input type="text" required name="sale_customer_phoneno" class="form-control">
-                                                                                        <!-- Hide This -->
-                                                                                        <input type="hidden" name="total_payable_price" value="<?php echo $total_price; ?>">
-                                                                                    </div>
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label>Payment Means</label>
-                                                                                        <select name="sale_payment_method" class="form-select form-control form-control-lg" data-search="on">
-                                                                                            <option value="Cash">Cash</option>
-                                                                                            <option value="Cedit / Debit Card">Cedit / Debit Card</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                <?php } else { ?>
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label>Customer Name</label>
-                                                                                        <input type="text" required name="sale_customer_name" class="form-control">
-                                                                                    </div>
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label>Customer Phone Number</label>
-                                                                                        <input type="text" required name="sale_customer_phoneno" class="form-control">
-                                                                                        <!-- Hide This -->
-                                                                                        <input type="hidden" name="total_payable_price" value="<?php echo $total_price; ?>">
-                                                                                    </div>
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label>Payment Means</label>
-                                                                                        <select name="sale_payment_method" class="form-control" id="paymentMethod">
-                                                                                            <option value="Cash">Cash</option>
-                                                                                            <option value="Mobile Payment">Mobile Payment</option>
-                                                                                            <option value="Credit">Credit</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                    <div class="form-group col-md-12" id="SaleTXN" style="display: none;">
-                                                                                        <label>Transaction Ref</label>
-                                                                                        <input type="text" name="sale_transaction_ref" class="form-control">
-                                                                                    </div>
-                                                                                    <div class="form-group col-md-12" id="SaleExpectedPaymentDate" style="display: none;">
-                                                                                        <label>Expected Payment Date</label>
-                                                                                        <input type="date" name="sale_credit_expected_date" class="form-control">
-                                                                                    </div>
-                                                                                <?php } ?>
+
+                                                                                <div class="form-group col-md-4">
+                                                                                    <label>Customer Name</label>
+                                                                                    <input type="text" required name="sale_customer_name" class="form-control">
+                                                                                </div>
+                                                                                <div class="form-group col-md-4">
+                                                                                    <label>Customer Phone Number</label>
+                                                                                    <input type="text" required name="sale_customer_phoneno" class="form-control">
+                                                                                    <!-- Hide This -->
+                                                                                    <input type="hidden" name="total_payable_price" value="<?php echo $total_price; ?>">
+                                                                                </div>
+                                                                                <div class="form-group col-md-4">
+                                                                                    <label>Payment Means</label>
+                                                                                    <select name="sale_payment_method" class="form-control" id="paymentMethod">
+                                                                                        <option value="Cash">Cash</option>
+                                                                                        <option value="Mobile Payment">Mobile Payment</option>
+                                                                                        <option value="Credit">Credit</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="form-group col-md-12" id="SaleTXN" style="display: none;">
+                                                                                    <label>Transaction Ref</label>
+                                                                                    <input type="text" name="sale_transaction_ref" class="form-control">
+                                                                                </div>
+                                                                                <div class="form-group col-md-12" id="SaleExpectedPaymentDate" style="display: none;">
+                                                                                    <label>Expected Payment Date</label>
+                                                                                    <input type="date" name="sale_credit_expected_date" class="form-control">
+                                                                                </div>
                                                                             </div>
                                                                             <div class="text-right">
                                                                                 <button name="add_sale" class="btn btn-primary" type="submit">
