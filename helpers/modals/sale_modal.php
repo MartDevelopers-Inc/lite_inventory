@@ -53,7 +53,6 @@
                     <br>
                     <!-- Hide This -->
                     <input type="hidden" name="sale_id" value="<?php echo $sales->sale_id; ?>">
-                    <input type="hidden" name="log_details" value="Marked <?php echo ' Receipt Number #:' . $sales->sale_receipt_no; ?> Sale Record As Paid.">
                     <button type="button" class="text-center btn btn-success" data-dismiss="modal"> No, Dismiss</button>
                     <button type="submit" name="Paid_Credit" class="text-center btn btn-danger"> Yes, Mark As Paid</button>
                 </div>

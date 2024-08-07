@@ -65,8 +65,19 @@ require_once('../config/checklogin.php');
 require_once('../config/codeGen.php');
 check_login();
 /* Mark As Paid */
-if(isset($_POST['Paid_Credit'])){
-    
+if (isset($_POST['Paid_Credit'])) {
+    $sale_id = $_POST['sale_id'];
+
+    /* Update Details */
+    $sale_payment = "UPDATE sales SET sale_payment_status = 'paid' WHERE sale_id = '{$sale_id}'";
+    $sale_prepare = $mysqli->prepare($sale_payment);
+    $sale_prepare->execute();
+
+    if ($sale_prepare) {
+        $success = "Credit Payment Done";
+    } else {
+        $err = "Failed!, Please Try Again";
+    }
 }
 /* Roll Back Sale Record */
 if (isset($_POST['delete_sale'])) {
