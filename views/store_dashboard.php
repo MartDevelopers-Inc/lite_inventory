@@ -168,7 +168,7 @@ require_once('../helpers/store_analytics.php');
                                                             <h6 class="title">Today Overall Stores Sales Logs</h6>
                                                         </div>
                                                         <div class="card-tools">
-                                                            <a href="store_sales_manage" class="link">View All</a>
+                                                            <a href="store_sales_manage?view=<?php echo $store->store_id; ?>" class="link">View All</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -222,7 +222,7 @@ require_once('../helpers/store_analytics.php');
                                                             <h6 class="title">Low / Out Of Stock Items</h6>
                                                         </div>
                                                         <div class="card-tools">
-                                                            <a href="store_items_inventory" class="link">View All</a>
+                                                            <a href="store_items_inventory?view=<?php echo $store->store_id; ?>" class="link">View All</a>
                                                         </div>
                                                     </div>
                                                 </div>
