@@ -189,6 +189,7 @@ while ($stores = $res->fetch_object()) {
                                     <tr>
                                         <th style="width:100%">Item Details</th>
                                         <th style="width:30%">Qty</th>
+                                        <th style="width:100%">Payment Means</th>
                                         <th style="width:100%">Sold By</th>
                                         <th style="width:100%">Sold To</th>
                                         <th style="width:100%">Date Sold</th>
@@ -210,11 +211,18 @@ while ($stores = $res->fetch_object()) {
                                         /* Sale Amount  */
                                         $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
                                         $cumulative_income += $sales_amount;
+                                         /* Payment Means */
+                                        if ($sales->sale_payment_method == 'Credit') {
+                                            $payment_means = 'Credit Sale <br> Payment Due On ' . date('d M Y', strtotime($sales->sale_credit_expected_date));
+                                        } else {
+                                            $payment_means = $sales->sale_payment_method;
+                                        }
                                         $html .=
                                         '
                                             <tr>
                                                 <td>' . $sales->product_name . '</td>
                                                 <td>' . $sales->sale_quantity . '</td>
+                                                <td>' . $payment_means . '</td>
                                                 <td>' . $sales->user_name . '</td>
                                                 <td>' . $sales->sale_customer_name . '</td>
                                                 <td>' . date('d M Y g:ia', strtotime($sales->sale_datetime)) . '</td>
@@ -224,7 +232,7 @@ while ($stores = $res->fetch_object()) {
                                     }
                                         $html .= '
                                         <tr>
-                                            <td  colspan="5"><b>Total Amount: </b></td>
+                                            <td  colspan="6"><b>Total Amount: </b></td>
                                             <td><b>' . "Ksh " . number_format($cumulative_income, 2) . '</b></td>
                                         </tr>
                                 </tbody>
@@ -354,6 +362,7 @@ while ($stores = $res->fetch_object()) {
                                         <th style="width:100%">Discount</th>
                                         <th style="width:100%">Discounted Price</th>
                                         <th style="width:30%">Qty</th>
+                                        <th style="width:100%">Payment Means</th>
                                         <th style="width:100%">Amount</th>
                                     </tr>
                                 </thead>
@@ -373,6 +382,13 @@ while ($stores = $res->fetch_object()) {
                                         $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
                                         $discounted_price = $sales->product_sale_price - $sales->sale_discount;
                                         $cumulative_income += $sales_amount;
+                                        /* Payment Means */
+                                        if ($sales->sale_payment_method == 'Credit') {
+                                            $payment_means = 'Credit Sale <br> Payment Due On ' . date('d M Y', strtotime($sales->sale_credit_expected_date));
+                                        } else {
+                                            $payment_means = $sales->sale_payment_method;
+                                        }
+
                                         $html .=
                                         '
                                             <tr>
@@ -384,13 +400,14 @@ while ($stores = $res->fetch_object()) {
                                                 <td>' . "Ksh " . number_format($sales->sale_discount, 2) . '</td>
                                                 <td>' . "Ksh " . number_format($discounted_price, 2) . '</td>
                                                 <td>' . $sales->sale_quantity . '</td>
+                                                <td>' . $payment_means . '</td>
                                                 <td>' . "Ksh " . number_format($sales_amount, 2) . '</td>
                                             </tr>
                                         ';
                                     }
                                         $html .= '
                                         <tr>
-                                            <td  colspan="8"><b>Total Amount: </b></td>
+                                            <td  colspan="9"><b>Total Amount: </b></td>
                                             <td><b>' . "Ksh " . number_format($cumulative_income, 2) . '</b></td>
                                         </tr>
                                 </tbody>
