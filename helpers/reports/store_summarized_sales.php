@@ -12,6 +12,7 @@
                 <tr>
                     <th>Item</th>
                     <th>QTY</th>
+                    <th>Payment Means</th>
                     <th>Sold By</th>
                     <th>Sold To</th>
                     <th>Date Sold</th>
@@ -32,10 +33,17 @@
                 while ($sales = $res->fetch_object()) {
                     /* Sale Amount  */
                     $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
+                    /* Payment Means */
+                    if ($sales->sale_payment_method == 'Credit') {
+                        $payment_means = 'Credit Sale <br> Payment Due On ' . date('d M Y', strtotime($sales->sale_credit_expected_date));
+                    } else {
+                        $payment_means = $sales->sale_payment_method;
+                    }
                 ?>
                     <tr>
                         <td><?php echo $sales->product_name ?></td>
                         <td><?php echo $sales->sale_quantity ?></td>
+                        <td><?php echo $payment_means ?></td>
                         <td><?php echo $sales->user_name ?></td>
                         <td><?php echo $sales->sale_customer_name ?></td>
                         <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)) ?></td>
@@ -49,7 +57,7 @@
                 }
                 ?>
                 <tr>
-                    <td colspan="5"><b>Total Amount:</b></td>
+                    <td colspan="6"><b>Total Amount:</b></td>
                     <td><b><?php echo  "Ksh " . number_format($cumulative_income, 2); ?></b></td>
                 </tr>
             </tbody>

@@ -25,6 +25,7 @@
                     <th>Discount</th>
                     <th>Discounted Amt</th>
                     <th>QTY</th>
+                    <th>Payment Means</th>
                     <th>Amount</th>
                 </tr>
             </thead>
@@ -43,7 +44,12 @@
                     /* Sale Amount  */
                     $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
                     $discounted_price = $sales->product_sale_price - $sales->sale_discount;
-
+                    /* Payment Means */
+                    if ($sales->sale_payment_method == 'Credit') {
+                        $payment_means = 'Credit Sale <br> Payment Due On ' . date('d M Y', strtotime($sales->sale_credit_expected_date));
+                    } else {
+                        $payment_means = $sales->sale_payment_method;
+                    }
                 ?>
                     <tr>
                         <td><?php echo $sales->product_name ?></td>
@@ -54,6 +60,7 @@
                         <td><?php echo "Ksh " . number_format($sales->sale_discount, 2); ?></td>
                         <td><?php echo "Ksh " . number_format($discounted_price, 2); ?></td>
                         <td><?php echo $sales->sale_quantity ?></td>
+                        <td><?php echo $payment_means ?></td>
                         <td>
                             <?php echo "Ksh " . number_format($sales_amount, 2);
                             $cumulative_income += $sales_amount;
@@ -64,7 +71,7 @@
                 }
                 ?>
                 <tr>
-                    <td colspan="8"><b>Total Amount:</b></td>
+                    <td colspan="9"><b>Total Amount:</b></td>
                     <td><b><?php echo  "Ksh " . number_format($cumulative_income, 2); ?></b></td>
                 </tr>
             </tbody>
