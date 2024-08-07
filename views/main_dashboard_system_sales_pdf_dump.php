@@ -242,7 +242,7 @@ while ($stores = $res->fetch_object()) {
             ';
         $dompdf = new Dompdf();
         $dompdf->load_html($html);
-        $dompdf->set_paper('A4');
+        $dompdf->set_paper('A4', 'landscape');
         $dompdf->set_option('isHtml5ParserEnabled', true);
         $dompdf->render();
         $dompdf->stream('Summarized Sales Report From ' . $start . ' To ' . $end, array("Attachment" => 1));
@@ -417,7 +417,7 @@ while ($stores = $res->fetch_object()) {
             ';
         $dompdf = new Dompdf();
         $dompdf->load_html($html);
-        $dompdf->set_paper('A4');
+        $dompdf->set_paper('A4', 'landscape');
         $dompdf->set_option('isHtml5ParserEnabled', true);
         $dompdf->render();
         $dompdf->stream('Composite Sales Report From ' . $start . ' To ' . $end, array("Attachment" => 1));
