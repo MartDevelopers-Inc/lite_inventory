@@ -175,7 +175,7 @@ require_once('../helpers/store_analytics.php');
                                                 <div class="card-inner">
                                                     <div class="timeline">
                                                         <h6 class="timeline-head"><?php echo date('d M Y'); ?></h6>
-                                                        <ul class="timeline-list">
+                                                        <ul class="timeline-list" style="max-height: 290px; margin-bottom: 10px; overflow:scroll; -webkit-overflow-scrolling: touch;">
                                                             <?php
                                                             /* Load Recent Sales Today */
                                                             $raw_results = mysqli_query($mysqli, "SELECT  * FROM sales s
@@ -228,7 +228,7 @@ require_once('../helpers/store_analytics.php');
                                                 </div>
                                                 <div class="nk-tb-list">
                                                     <div class="nk-tb-item">
-                                                        <ul class="nk-activity">
+                                                        <ul class="nk-activity" style="max-height: 290px; margin-bottom: 10px; overflow:scroll; -webkit-overflow-scrolling: touch;">
                                                             <?php
                                                             /* Load Recent Out Of Stock Products */
                                                             $raw_results = mysqli_query($mysqli, "SELECT  * FROM products p
