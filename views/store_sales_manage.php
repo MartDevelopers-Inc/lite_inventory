@@ -102,6 +102,7 @@ require_once('../partials/head.php');
                                                     <th>Receipt Number</th>
                                                     <th>Date Posted</th>
                                                     <th>Items Qty</th>
+                                                    <th>Payment Method</th>
                                                     <th>Posted By</th>
                                                     <th>Manage</th>
                                                 </tr>
@@ -125,11 +126,14 @@ require_once('../partials/head.php');
                                                     $stmt->bind_result($number_of_items);
                                                     $stmt->fetch();
                                                     $stmt->close();
+
+
                                                 ?>
                                                     <tr>
                                                         <td><?php echo $sales->sale_receipt_no; ?></td>
                                                         <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?></td>
                                                         <td><?php echo $number_of_items; ?></td>
+                                                        <td><?php echo $sales->sale_payment_method; ?></td>
                                                         <td><?php echo $sales->user_name; ?></td>
                                                         <td>
                                                             <a href="store_sale_manage?receipt=<?php echo $sales->sale_receipt_no; ?>&view=<?php echo $store_id; ?>" class="badge badge-dim badge-pill badge-outline-primary"><em class="icon ni ni-external"></em> View Details</a>
