@@ -12,6 +12,7 @@
                 <tr>
                     <th>Item</th>
                     <th>QTY</th>
+                    <th>Payment Means</th>
                     <th>Sold By</th>
                     <th>Sold To</th>
                     <th>Date Sold</th>
