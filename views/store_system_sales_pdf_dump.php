@@ -171,7 +171,7 @@ while ($stores = $res->fetch_object()) {
                         <body style="margin:1px;">
                             <div class="footer">
                                 <hr>
-                                <i>Summarized Sales Report. Generated On ' . date('d M Y g:ia') . '</i>
+                                <i>Report Generated On ' . date('d M Y') . '</i>, Proudly Powered By Devlan Solutions LTD : www.devlan.co.ke
                             </div>
                             
                             <div class="list_header" align="center">
@@ -189,6 +189,7 @@ while ($stores = $res->fetch_object()) {
                                 <thead>
                                     <tr>
                                         <th style="width:100%">Item Details</th>
+                                        <th style="width:100%">Payment Means</th>
                                         <th style="width:30%">Qty</th>
                                         <th style="width:100%">Sold By</th>
                                         <th style="width:100%">Sold To</th>
@@ -211,10 +212,18 @@ while ($stores = $res->fetch_object()) {
                                         /* Sale Amount  */
                                         $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
                                         $cumulative_income += $sales_amount;
+                                         /* Payment Means */
+                                         if ($sales->sale_payment_method == 'Credit') {
+                                            $payment_means = 'Credit Sale <br> Payment Due On ' . date('d M Y', strtotime($sales->sale_credit_expected_date));
+                                        } else {
+                                            $payment_means = $sales->sale_payment_method;
+                                        }
+
                                         $html .=
                                         '
                                             <tr>
                                                 <td>' . $sales->product_name . '</td>
+                                                <td>' . $payment_means . '</td>
                                                 <td>' . $sales->sale_quantity . '</td>
                                                 <td>' . $sales->user_name . '</td>
                                                 <td>' . $sales->sale_customer_name . '</td>
@@ -225,7 +234,7 @@ while ($stores = $res->fetch_object()) {
                                     }
                                         $html .= '
                                         <tr>
-                                            <td  colspan="5"><b>Total Amount: </b></td>
+                                            <td  colspan="6"><b>Total Amount: </b></td>
                                             <td><b>' . "Ksh " . number_format($cumulative_income, 2) . '</b></td>
                                         </tr>
                                 </tbody>
@@ -235,7 +244,7 @@ while ($stores = $res->fetch_object()) {
             ';
         $dompdf = new Dompdf();
         $dompdf->load_html($html);
-        $dompdf->set_paper('A4');
+        $dompdf->set_paper('A4', 'landscape');
         $dompdf->set_option('isHtml5ParserEnabled', true);
         $dompdf->render();
         $dompdf->stream('Summarized Sales Report From ' . $start . ' To ' . $end, array("Attachment" => 1));
@@ -330,7 +339,7 @@ while ($stores = $res->fetch_object()) {
                         <body style="margin:1px;">
                             <div class="footer">
                                 <hr>
-                                <i>Composite Sales Report. Generated On ' . date('d M Y g:ia') . '</i>
+                                <i>Report Generated On ' . date('d M Y') . '</i>, Proudly Powered By Devlan Solutions LTD : www.devlan.co.ke
                             </div>
                             
                             <div class="list_header" align="center">
@@ -355,6 +364,7 @@ while ($stores = $res->fetch_object()) {
                                         <th style="width:100%">Discount</th>
                                         <th style="width:100%">Discounted Price</th>
                                         <th style="width:30%">Qty</th>
+                                        <th style="width:100%">Payment Means</th>
                                         <th style="width:100%">Amount</th>
                                     </tr>
                                 </thead>
@@ -374,6 +384,12 @@ while ($stores = $res->fetch_object()) {
                                         $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
                                         $discounted_price = $sales->product_sale_price - $sales->sale_discount;
                                         $cumulative_income += $sales_amount;
+                                         /* Payment Means */
+                                         if ($sales->sale_payment_method == 'Credit') {
+                                            $payment_means = 'Credit Sale <br> Payment Due On ' . date('d M Y', strtotime($sales->sale_credit_expected_date));
+                                        } else {
+                                            $payment_means = $sales->sale_payment_method;
+                                        }
                                         $html .=
                                         '
                                             <tr>
@@ -385,13 +401,14 @@ while ($stores = $res->fetch_object()) {
                                                 <td>' . "Ksh " . number_format($sales->sale_discount, 2) . '</td>
                                                 <td>' . "Ksh " . number_format($discounted_price, 2) . '</td>
                                                 <td>' . $sales->sale_quantity . '</td>
+                                                <td>' . $payment_means . '</td>
                                                 <td>' . "Ksh " . number_format($sales_amount, 2) . '</td>
                                             </tr>
                                         ';
                                     }
                                         $html .= '
                                         <tr>
-                                            <td  colspan="8"><b>Total Amount: </b></td>
+                                            <td  colspan="9"><b>Total Amount: </b></td>
                                             <td><b>' . "Ksh " . number_format($cumulative_income, 2) . '</b></td>
                                         </tr>
                                 </tbody>
@@ -401,7 +418,7 @@ while ($stores = $res->fetch_object()) {
             ';
         $dompdf = new Dompdf();
         $dompdf->load_html($html);
-        $dompdf->set_paper('A4');
+        $dompdf->set_paper('A4', 'landscape');
         $dompdf->set_option('isHtml5ParserEnabled', true);
         $dompdf->render();
         $dompdf->stream('Composite Sales Report From ' . $start . ' To ' . $end, array("Attachment" => 1));

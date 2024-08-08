@@ -168,7 +168,7 @@ while ($stores = $res->fetch_object()) {
                     <body style="margin:1px;">
                         <div class="footer">
                             <hr>
-                            <i>Profit & Loss Statement Report. Generated On ' . date('d M Y g:ia') . '</i>
+                            <i>Report Generated On ' . date('d M Y') . '</i>, Proudly Powered By Devlan Solutions LTD : www.devlan.co.ke
                         </div>
                         
                         <div class="list_header" align="center">
