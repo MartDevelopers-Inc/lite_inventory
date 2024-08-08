@@ -66,7 +66,7 @@ if ($num > 0) {
     $_SESSION['user_id'] = $num['user_id'];
     $_SESSION['user_name'] = $num['user_name'];
     $_SESSION['user_access_level'] = $num['user_access_level'];
-    $_SESSION['user_store_id'] = $user_store_id;
+    $_SESSION['user_store_id'] = $num['user_store_id'];
 
     /* Log All Successful Logins */
     $log_ip = $_SERVER['REMOTE_ADDR'];
