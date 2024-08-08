@@ -83,7 +83,7 @@ $store = $_GET['store'];
 $date = new DateTime("now", new DateTimeZone('EAT'));
 
 //Set Letter Head
-$path = '../public/images/letterhead.png';
+$path = '../public/images/letterhead.jpg';
 $type = pathinfo($path, PATHINFO_EXTENSION);
 $data = file_get_contents($path);
 $letter_head = 'data:image/' . $type . ';base64,' . base64_encode($data);
@@ -132,7 +132,7 @@ $html = '
     height: 500px;
     background-size: cover;">
         <div>
-        <br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br>
         <h4 class="heading" style="font-size:10pt">
             <strong>';
                 $sql = "SELECT * FROM receipt_customization rc
