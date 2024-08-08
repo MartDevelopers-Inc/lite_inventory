@@ -83,7 +83,7 @@ $store = $_GET['store'];
 $date = new DateTime("now", new DateTimeZone('EAT'));
 
 //Set Letter Head
-$path = '../public/images/letter_head.jpg';
+$path = '../public/images/letterhead.jpg';
 $type = pathinfo($path, PATHINFO_EXTENSION);
 $data = file_get_contents($path);
 $letter_head = 'data:image/' . $type . ';base64,' . base64_encode($data);
@@ -121,8 +121,12 @@ $html = '
     .break-text{
         inline-size: 150px;
     }
-    .footer{
-        font-size:8.4pt
+
+    .footer {
+        width: 100%;
+        text-align: center;
+        position: fixed;
+        bottom: 5px;
     }
     </style>
     <body style="
@@ -132,6 +136,10 @@ $html = '
     height: 500px;
     background-size: cover;">
         <div>
+        <div class="footer">
+            <hr>
+            <i>NativeBeecare POS, Proudly Powered By Devlan Solutions LTD : www.devlan.co.ke</i>
+        </div>
         <br><br><br><br><br><br>
         <h4 class="heading" style="font-size:10pt">
             <strong>';
@@ -212,7 +220,7 @@ $html = '
         if (mysqli_num_rows($res) > 0) {
             $users = mysqli_fetch_assoc($res);
             $html .=
-            '<div class="footer">
+            '<br>
                 <p align="center"><strong>You Were Served By ' . $users['user_name'] . '<strong></p>
                 ';
                 if($receipts_header['allow_loyalty_points'] == 'true'){
@@ -224,7 +232,7 @@ $html = '
                 }
                 $html .=
                 '<p align="center"><i>' . $receipts_header['receipt_footer_content'] . '</i></p>
-            </div>';
+            </br>';
         }
 }
 $html .= '</body>';
