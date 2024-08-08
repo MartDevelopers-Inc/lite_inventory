@@ -83,7 +83,7 @@ $store = $_GET['store'];
 $date = new DateTime("now", new DateTimeZone('EAT'));
 
 //Set Letter Head
-$path = '../public/images/letterhead.jpg';
+$path = '../public/images/letter_head.jpg';
 $type = pathinfo($path, PATHINFO_EXTENSION);
 $data = file_get_contents($path);
 $letter_head = 'data:image/' . $type . ';base64,' . base64_encode($data);
