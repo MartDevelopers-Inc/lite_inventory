@@ -125,8 +125,14 @@ $html = '
         font-size:8.4pt
     }
     </style>
-    <body >
+    <body style="
+    background-image: url('.$letter_head.');
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 500px;
+    background-size: cover;">
         <div>
+        <br><br><br><br><br><br><br><br><br>
         <h4 class="heading" style="font-size:10pt">
             <strong>';
                 $sql = "SELECT * FROM receipt_customization rc
