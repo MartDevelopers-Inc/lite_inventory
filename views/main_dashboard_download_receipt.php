@@ -82,6 +82,12 @@ $store = $_GET['store'];
 
 $date = new DateTime("now", new DateTimeZone('EAT'));
 
+//Set Letter Head
+$path = '../public/images/letterhead.png';
+$type = pathinfo($path, PATHINFO_EXTENSION);
+$data = file_get_contents($path);
+$letter_head = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
 /* Convert Image To Base 64 */
 
 $html = '
@@ -119,7 +125,7 @@ $html = '
         font-size:8.4pt
     }
     </style>
-    <body>
+    <body >
         <div>
         <h4 class="heading" style="font-size:10pt">
             <strong>';
