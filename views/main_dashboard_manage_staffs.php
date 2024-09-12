@@ -180,7 +180,13 @@ if (isset($_POST['Change_Password'])) {
     $user_id = mysqli_real_escape_string($mysqli, $_POST['user_id']);
     $new_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['new_password'])));
     $confirm_password = sha1(md5(mysqli_real_escape_string($mysqli, $_POST['confirm_password'])));
-    
+
+    /* Check If Passwords Match */
+    if ($new_password != $confirm_password) {
+        $err = "Failed, please try again";
+    }else{
+        /* Persist Password Change */
+    }
 }
 /* Load Header Partial */
 require_once('../partials/head.php')
