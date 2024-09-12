@@ -80,7 +80,7 @@
 <!-- Udpate Modal -->
 
 <!-- Change Password -->
-<div class="modal fade" id="update_<?php echo $users->user_id; ?>">
+<div class="modal fade" id="change_password_<?php echo $users->user_id; ?>">
     <div class="modal-dialog  modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -94,6 +94,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>New Password</label>
+                            <input type="password" name="user_id" value="<?php echo $users->user_id; ?>" required class="form-control">
                             <input type="password" name="new_password" required class="form-control">
                         </div>
                         <div class="form-group col-md-6">
@@ -102,8 +103,8 @@
                         </div>
                     </div><br><br>
                     <div class="text-right">
-                        <button name="update_user" class="btn btn-primary" type="submit">
-                            <em class="icon ni ni-list-check"></em> Update User
+                        <button name="Change_Password" class="btn btn-primary" type="submit">
+                            <em class="icon ni ni-lock"></em> Change Password
                         </button>
                     </div>
                 </form>
