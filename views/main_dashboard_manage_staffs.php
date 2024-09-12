@@ -184,8 +184,16 @@ if (isset($_POST['Change_Password'])) {
     /* Check If Passwords Match */
     if ($new_password != $confirm_password) {
         $err = "Failed, please try again";
-    }else{
+    } else {
         /* Persist Password Change */
+        if (mysqli_query(
+            $mysqli,
+            "UPDATE users SET user_password = '{$new_password}' WHERE user_id = '{$user_id}'"
+        )) {
+            $success = "Password Reset Successfully";
+        } else {
+            $err = "Failed, please try again";
+        }
     }
 }
 /* Load Header Partial */
