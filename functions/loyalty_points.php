@@ -1,62 +1,66 @@
 <?php
 /*
- * Created on Wed May 25 2022
+ *   Crafted On Mon Sep 16 2024
+ *   By the one and only Martin Mbithi (martin@devlan.co.ke)
+ *   
+ *   www.devlan.co.ke
+ *   hello@devlan.co.ke
  *
- * Devlan Solutions LTD - www.devlan.co.ke 
  *
- * hello@devlan.co.ke
+ *   The Devlan Solutions LTD Super Duper User License Agreement
+ *   Copyright (c) 2022 Devlan Solutions LTD
  *
  *
- * The Devlan Solutions LTD End User License Agreement
+ *   1. LICENSE TO BE AWESOME
+ *   Congrats, you lucky human! Devlan Solutions LTD hereby bestows upon you the magical,
+ *   revocable, personal, non-exclusive, and totally non-transferable right to install this epic system
+ *   on not one, but TWO separate computers for your personal, non-commercial shenanigans.
+ *   Unless, of course, you've leveled up with a commercial license from Devlan Solutions LTD.
+ *   Sharing this software with others or letting them even peek at it? Nope, that's a big no-no.
+ *   And don't even think about putting this on a network or letting a crowd join the fun unless you
+ *   first scored a multi-user license from us. Sharing is caring, but rules are rules!
  *
- * Copyright (c) 2022 Devlan Solutions LTD
+ *   2. COPYRIGHT POWER-UP
+ *   This Software is the prized possession of Devlan Solutions LTD and is shielded by copyright law
+ *   and the forces of international copyright treaties. You better not try to hide or mess with
+ *   any of our awesome proprietary notices, labels, or marks. Respect the swag!
  *
- * 1. GRANT OF LICENSE
- * Devlan Solutions LTD hereby grants to you (an individual) the revocable, personal, non-exclusive, and nontransferable right to
- * install and activate this system on two separated computers solely for your personal and non-commercial use,
- * unless you have purchased a commercial license from Devlan Solutions LTD. Sharing this Software with other individuals, 
- * or allowing other individuals to view the contents of this Software, is in violation of this license.
- * You may not make the Software available on a network, or in any way provide the Software to multiple users
- * unless you have first purchased at least a multi-user license from Devlan Solutions LTD.
  *
- * 2. COPYRIGHT 
- * The Software is owned by Devlan Solutions LTD and protected by copyright law and international copyright treaties. 
- * You may not remove or conceal any proprietary notices, labels or marks from the Software.
+ *   3. RESTRICTIONS, NO CHEAT CODES ALLOWED
+ *   You may not, and you shall not let anyone else:
+ *   (a) reverse engineer, decompile, decode, decrypt, disassemble, or do any sneaky stuff to
+ *   figure out the source code of this software;
+ *   (b) modify, remix, distribute, or create your own funky version of this masterpiece;
+ *   (c) copy (except for that one precious backup), distribute, show off in public, transmit, sell, rent,
+ *   lease, or otherwise exploit the Software like it's your own.
  *
- * 3. RESTRICTIONS ON USE
- * You may not, and you may not permit others to
- * (a) reverse engineer, decompile, decode, decrypt, disassemble, or in any way derive source code from, the Software;
- * (b) modify, distribute, or create derivative works of the Software;
- * (c) copy (other than one back-up copy), distribute, publicly display, transmit, sell, rent, lease or 
- * otherwise exploit the Software.  
  *
- * 4. TERM
- * This License is effective until terminated. 
- * You may terminate it at any time by destroying the Software, together with all copies thereof.
- * This License will also terminate if you fail to comply with any term or condition of this Agreement.
- * Upon such termination, you agree to destroy the Software, together with all copies thereof.
+ *   4. THE ENDGAME
+ *   This License lasts until one of us says 'Game Over'. You can call it quits anytime by
+ *   destroying the Software and all the copies you made (no hiding them under your bed).
+ *   If you break any of these sacred rules, this License self-destructs, and you must obliterate
+ *   every copy of the Software, no questions asked.
  *
- * 5. NO OTHER WARRANTIES. 
- * DEVLAN SOLUTIONS LTD DOES NOT WARRANT THAT THE SOFTWARE IS ERROR FREE. 
- * DEVLAN SOLUTIONS LTD SOFTWARE DISCLAIMS ALL OTHER WARRANTIES WITH RESPECT TO THE SOFTWARE, 
- * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS. 
- * SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF IMPLIED WARRANTIES OR LIMITATIONS
- * ON HOW LONG AN IMPLIED WARRANTY MAY LAST, OR THE EXCLUSION OR LIMITATION OF 
- * INCIDENTAL OR CONSEQUENTIAL DAMAGES,
- * SO THE ABOVE LIMITATIONS OR EXCLUSIONS MAY NOT APPLY TO YOU. 
- * THIS WARRANTY GIVES YOU SPECIFIC LEGAL RIGHTS AND YOU MAY ALSO 
- * HAVE OTHER RIGHTS WHICH VARY FROM JURISDICTION TO JURISDICTION.
  *
- * 6. SEVERABILITY
- * In the event of invalidity of any provision of this license, the parties agree that such invalidity shall not
- * affect the validity of the remaining portions of this license.
+ *   5. NO GUARANTEES, JUST PIXELS
+ *   DEVLAN SOLUTIONS LTD doesn’t guarantee this Software is flawless—it might have a few
+ *   quirks, but who doesn’t? DEVLAN SOLUTIONS LTD washes its hands of any other warranties,
+ *   implied or otherwise. That means no promises of perfect performance, marketability, or
+ *   non-infringement. Some places have different rules, so you might have extra rights, but don’t
+ *   count on us for backup if things go sideways. Use at your own risk, brave adventurer!
  *
- * 7. NO LIABILITY FOR CONSEQUENTIAL DAMAGES IN NO EVENT SHALL DEVLAN SOLUTIONS LTD  OR ITS SUPPLIERS BE LIABLE TO YOU FOR ANY
- * CONSEQUENTIAL, SPECIAL, INCIDENTAL OR INDIRECT DAMAGES OF ANY KIND ARISING OUT OF THE DELIVERY, PERFORMANCE OR 
- * USE OF THE SOFTWARE, EVEN IF DEVLAN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES
- * IN NO EVENT WILL DEVLAN  LIABILITY FOR ANY CLAIM, WHETHER IN CONTRACT 
- * TORT OR ANY OTHER THEORY OF LIABILITY, EXCEED THE LICENSE FEE PAID BY YOU, IF ANY.
+ *
+ *   6. SEVERABILITY—KEEP THE GOOD STUFF
+ *   If any part of this License gets tossed out by a judge, don’t worry—the rest of the agreement
+ *   still stands like a boss. Just because one piece fails doesn’t mean the whole thing crumbles.
+ *
+ *
+ *   7. NO DAMAGE, NO DRAMA
+ *   Under no circumstances will Devlan Solutions LTD or its squad be held responsible for any wild,
+ *   indirect, or accidental chaos that might come from using this software—even if we warned you!
+ *   And if you ever think you’ve got a claim, the most you’re getting out of us is the license fee you
+ *   paid—if any. No drama, no big payouts, just pixels and code.
+ *
  */
 
 
