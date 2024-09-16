@@ -188,6 +188,11 @@ while ($settings = $res->fetch_object()) {
                                         <span class="nk-menu-text">Expenses</span>
                                     </a>
                                 </li>
+                                <li class="nk-menu-item">
+                                    <a href="store_reports_income_statements?view=<?php echo $view; ?>" class="nk-menu-link">
+                                        <span class="nk-menu-text">Income Statements</span>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nk-menu-item active has-sub">

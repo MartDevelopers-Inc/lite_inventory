@@ -304,7 +304,6 @@ require_once('../partials/head.php');
     <!-- JavaScript -->
     <?php
     require_once('../partials/scripts.php');
-    include('../functions/sales_reports_chart.php');
     ?>
 </body>
 
