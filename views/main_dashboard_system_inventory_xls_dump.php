@@ -79,35 +79,45 @@ function filterData(&$str)
 }
 
 /* Excel File Name */
-$fileName = 'Inventory Report On ' . date('d M Y') . '.xls';
+$fileName = 'Inventory_Report_On_' . date('d_M_Y') . '.xls';
 
-/* Excel Column Name */
+/* Excel Column Names */
 $fields = array('Item Details', 'Current Stock');
 
-/* Implode Excel Data */
+/* Initialize Excel Data */
 $excelData = implode("\t", array_values($fields)) . "\n";
+
 $store = $_GET['store'];
 /* Fetch All Records From The Database */
-$query = $mysqli->query("SELECT * FROM products  WHERE product_store_id = '{$store}'
-ORDER BY product_name ASC");
+$query = $mysqli->query("SELECT * FROM products WHERE product_store_id = '{$store}' ORDER BY product_name ASC");
+
+$totalStock = 0;
+
 if ($query->num_rows > 0) {
     /* Load All Fetched Rows */
     while ($row = $query->fetch_assoc()) {
-
-        /* Hardwire This Data Into .xls File */
+        /* Prepare row data */
         $lineData = array($row['product_code'] . ' ' . $row['product_name'], $row['product_quantity']);
         array_walk($lineData, 'filterData');
         $excelData .= implode("\t", array_values($lineData)) . "\n";
+
+        /* Add to total stock */
+        $totalStock += $row['product_quantity'];
     }
+
+    /* Add a total row at the end */
+    $totalLine = array('Total Stock', $totalStock);
+    array_walk($totalLine, 'filterData');
+    $excelData .= implode("\t", array_values($totalLine)) . "\n";
 } else {
-    $excelData .= 'Invetory Records Available...' . "\n";
+    $excelData .= 'No Inventory Records Available...' . "\n";
 }
 
-/* Generate Header File Encodings For Download */
+/* Generate Headers for File Download */
 header("Content-Type: application/vnd.ms-excel");
 header("Content-Disposition: attachment; filename=\"$fileName\"");
 
-/* Render  Excel Data For Download */
+/* Render Excel Data for Download */
 echo $excelData;
 
 exit;

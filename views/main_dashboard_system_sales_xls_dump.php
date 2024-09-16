@@ -72,110 +72,122 @@ require_once('../config/codeGen.php');
 $start = date('Y-m-d', strtotime($_GET['from']));
 $end = date('Y-m-d', strtotime($_GET['to']));
 $store = $_GET['store'];
-
 $report_type = $_GET['type'];
+
+function filterData(&$str)
+{
+    $str = preg_replace("/\t/", "\\t", $str);
+    $str = preg_replace("/\r?\n/", "\\n", $str);
+    if (strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
+}
+
 if ($report_type == 'Summarized Report') {
-    /* Get Summarized Report */
-    function filterData(&$str)
-    {
-        $str = preg_replace("/\t/", "\\t", $str);
-        $str = preg_replace("/\r?\n/", "\\n", $str);
-        if (strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
-    }
-
     /* Excel File Name */
-    $fileName = 'Summarized Sales Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($start)) . 'xls';
+    $fileName = 'Summarized Sales Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)) . '.xls';
 
-    /* Excel Column Name */
+    /* Excel Column Names */
     $fields = array('Item Details ', 'Quantity Sold ', 'Payment Means', 'Sold By ', 'Sold To ', 'Date Sold', 'Amount (Ksh)');
-
-
-    /* Implode Excel Data */
     $excelData = implode("\t", array_values($fields)) . "\n";
 
     /* Fetch All Records From The Database */
     $query = $mysqli->query("SELECT * FROM sales s
-    INNER JOIN products p ON p.product_id = sale_product_id
-    INNER JOIN users us ON us.user_id = s.sale_user_id
-    WHERE p.product_store_id = '{$store}' AND  s.sale_datetime BETWEEN '$start' AND '$end'
-    ORDER BY sale_datetime ASC ");
+        INNER JOIN products p ON p.product_id = sale_product_id
+        INNER JOIN users us ON us.user_id = s.sale_user_id
+        WHERE p.product_store_id = '{$store}' AND s.sale_datetime BETWEEN '$start' AND '$end'
+        ORDER BY sale_datetime ASC");
+
+    $totalQuantity = 0;
+    $totalAmount = 0;
+
     if ($query->num_rows > 0) {
-        /* Load All Fetched Rows */
         while ($row = $query->fetch_assoc()) {
-            /* Sanitize Log Date */
+            /* Calculate sale amount */
             $sale_datetime = date('d M Y g:ia', strtotime($row['sale_datetime']));
             $sale_amount = $row['sale_quantity'] * $row['sale_payment_amount'];
-            if ($row['sale_payment_method'] == 'Credit') {
-                $payment_means = 'Credit Sale Payment Due On ' . date('d M Y', strtotime($row['sale_credit_expected_date']));
-            } else {
-                $payment_means = $row['sale_payment_method'];
-            }
-            /* Hardwire This Data Into .xls File */
-            $lineData = array($row['product_name'], $row['sale_quantity'], $payment_means, $row['user_name'], $row['sale_customer_name'], $sale_datetime, $sale_amount);
+            $payment_means = $row['sale_payment_method'] == 'Credit' 
+                ? 'Credit Sale Payment Due On ' . date('d M Y', strtotime($row['sale_credit_expected_date']))
+                : $row['sale_payment_method'];
+
+            $lineData = array(
+                $row['product_name'],
+                $row['sale_quantity'],
+                $payment_means,
+                $row['user_name'],
+                $row['sale_customer_name'],
+                $sale_datetime,
+                $sale_amount
+            );
             array_walk($lineData, 'filterData');
             $excelData .= implode("\t", array_values($lineData)) . "\n";
+
+            /* Update total calculations */
+            $totalQuantity += $row['sale_quantity'];
+            $totalAmount += $sale_amount;
         }
+
+        /* Add totals row */
+        $totalLine = array(
+            'Total',
+            $totalQuantity,
+            '',
+            '',
+            '',
+            '',
+            number_format($totalAmount, 2)
+        );
+        array_walk($totalLine, 'filterData');
+        $excelData .= implode("\t", array_values($totalLine)) . "\n";
     } else {
-        $excelData .= 'Sales Records Available...' . "\n";
+        $excelData .= 'No Sales Records Available...' . "\n";
     }
 
-    /* Generate Header File Encodings For Download */
+    /* Generate header for download */
     header("Content-Type: application/vnd.ms-excel");
     header("Content-Disposition: attachment; filename=\"$fileName\"");
 
-    /* Render  Excel Data For Download */
+    /* Output Excel data */
     echo $excelData;
-
     exit;
+
 } else {
-    /* Get More Composite Report */
-    function filterData(&$str)
-    {
-        $str = preg_replace("/\t/", "\\t", $str);
-        $str = preg_replace("/\r?\n/", "\\n", $str);
-        if (strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
-    }
-
     /* Excel File Name */
-    $fileName = 'Composite Sales Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($start)) . 'xls';
+    $fileName = 'Composite Sales Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)) . '.xls';
 
-    /* Excel Column Name */
+    /* Excel Column Names */
     $fields = array(
         'Item Details',
-        'Sold By ',
-        'Sold To ',
+        'Sold By',
+        'Sold To',
         'Payment Means',
         'Date Sold',
         'Unit Price (Ksh)',
         'Discount (Ksh)',
         'Discounted Amount (Ksh)',
-        'Quantity Sold ',
+        'Quantity Sold',
         'Amount (Ksh)'
     );
-
-
-    /* Implode Excel Data */
     $excelData = implode("\t", array_values($fields)) . "\n";
 
     /* Fetch All Records From The Database */
     $query = $mysqli->query("SELECT * FROM sales s
-    INNER JOIN products p ON p.product_id = sale_product_id
-    INNER JOIN users us ON us.user_id = s.sale_user_id
-    WHERE p.product_store_id = '{$store}' AND  s.sale_datetime BETWEEN '$start' AND '$end'
-    ORDER BY sale_datetime ASC ");
+        INNER JOIN products p ON p.product_id = sale_product_id
+        INNER JOIN users us ON us.user_id = s.sale_user_id
+        WHERE p.product_store_id = '{$store}' AND s.sale_datetime BETWEEN '$start' AND '$end'
+        ORDER BY sale_datetime ASC");
+
+    $totalQuantity = 0;
+    $totalAmount = 0;
+
     if ($query->num_rows > 0) {
-        /* Load All Fetched Rows */
         while ($row = $query->fetch_assoc()) {
-            /* Sanitize Log Date */
+            /* Calculate sale amount */
             $sale_datetime = date('d M Y g:ia', strtotime($row['sale_datetime']));
             $sale_amount = $row['sale_quantity'] * $row['sale_payment_amount'];
             $discounted_amount = $row['product_sale_price'] - $row['sale_discount'];
-            if ($row['sale_payment_method'] == 'Credit') {
-                $payment_means = 'Credit Sale Payment Due On ' . date('d M Y', strtotime($row['sale_credit_expected_date']));
-            } else {
-                $payment_means = $row['sale_payment_method'];
-            }
-            /* Hardwire This Data Into .xls File */
+            $payment_means = $row['sale_payment_method'] == 'Credit' 
+                ? 'Credit Sale Payment Due On ' . date('d M Y', strtotime($row['sale_credit_expected_date']))
+                : $row['sale_payment_method'];
+
             $lineData = array(
                 $row['product_name'],
                 $row['user_name'],
@@ -190,17 +202,36 @@ if ($report_type == 'Summarized Report') {
             );
             array_walk($lineData, 'filterData');
             $excelData .= implode("\t", array_values($lineData)) . "\n";
+
+            /* Update total calculations */
+            $totalQuantity += $row['sale_quantity'];
+            $totalAmount += $sale_amount;
         }
+
+        /* Add totals row */
+        $totalLine = array(
+            'Total',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            $totalQuantity,
+            number_format($totalAmount, 2)
+        );
+        array_walk($totalLine, 'filterData');
+        $excelData .= implode("\t", array_values($totalLine)) . "\n";
     } else {
-        $excelData .= 'Sales Records Available...' . "\n";
+        $excelData .= 'No Sales Records Available...' . "\n";
     }
 
-    /* Generate Header File Encodings For Download */
+    /* Generate header for download */
     header("Content-Type: application/vnd.ms-excel");
     header("Content-Disposition: attachment; filename=\"$fileName\"");
 
-    /* Render  Excel Data For Download */
+    /* Output Excel data */
     echo $excelData;
-
     exit;
 }
