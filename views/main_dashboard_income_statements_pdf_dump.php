@@ -196,7 +196,8 @@ while ($stores = $res->fetch_object()) {
                                 <tbody>
                                     ';
                                     // Query to get sales data aggregated by month
-                                    $sales_query = "SELECT DATE_FORMAT(sale_datetime, '%Y-%m') AS sale_month, DATE_FORMAT(sale_datetime, '%M %Y') AS display_month, SUM(sale_quantity * sale_payment_amount) AS total_sales
+                                    $sales_query = "SELECT DATE_FORMAT(sale_datetime, '%Y-%m') AS sale_month, 
+                                    DATE_FORMAT(sale_datetime, '%M %Y') AS display_month, SUM(sale_quantity * sale_payment_amount) AS total_sales
                                     FROM sales
                                     WHERE sale_datetime BETWEEN '{$start}' AND '{$end}' 
                                     AND sale_product_id IN (SELECT product_id FROM products WHERE product_store_id = '{$store}')
@@ -207,7 +208,8 @@ while ($stores = $res->fetch_object()) {
                                     $sales_res = $sales_stmt->get_result();
 
                                     // Query to get expenses data aggregated by month with expense items
-                                    $expenses_query = "SELECT DATE_FORMAT(expense_date, '%Y-%m') AS expense_month, DATE_FORMAT(expense_date, '%M %Y') AS display_month, SUM(expense_amount) AS total_expenses, GROUP_CONCAT(expense_name SEPARATOR ', ') AS expense_items
+                                    $expenses_query = "SELECT DATE_FORMAT(expense_date, '%Y-%m') AS expense_month, 
+                                    DATE_FORMAT(expense_date, '%M %Y') AS display_month, SUM(expense_amount) AS total_expenses, GROUP_CONCAT(expense_name SEPARATOR ', ') AS expense_items
                                     FROM expenses
                                     WHERE expense_date BETWEEN '{$start}' AND '{$end}' 
                                     AND expense_store_id = '{$store}'
