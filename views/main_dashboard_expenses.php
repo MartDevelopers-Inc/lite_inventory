@@ -264,25 +264,23 @@ require_once('../partials/head.php')
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $ret = "SELECT * FROM users us INNER JOIN store_settings st ON st.store_id = us.user_store_id 
-                                                        WHERE us.user_status ='active'  && us.user_id != '$user_id'";
+                                                        $ret = "SELECT * FROM  expenses e INNER JOIN store_settings st ON st.store_id = e.expense_store_id ";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
-                                                        while ($users = $res->fetch_object()) { ?>
+                                                        while ($expenses = $res->fetch_object()) { ?>
                                                             <tr>
-                                                                <td><?php echo $users->user_name; ?></td>
-                                                                <td><?php echo $users->user_email; ?></td>
-                                                                <td><?php echo $users->user_phoneno; ?></td>
-                                                                <td><?php echo $users->user_access_level; ?></td>
-                                                                <td><?php echo $users->store_name; ?></td>
+                                                                <td><?php echo $expenses->expense_name; ?></td>
+                                                                <td><?php echo $expenses->store_name; ?></td>
+                                                                <td><?php echo $expenses->expense_date; ?></td>
+                                                                <td>Ksh <?php echo number_format($expenses->expense_amount, 2); ?></td>
+                                                                <td><?php echo $expenses->expense_details; ?></td>
                                                                 <td>
-                                                                    <a data-toggle="modal" href="#update_<?php echo $users->user_id; ?>" class="badge badge-dim badge-pill badge-outline-warning"><em class="icon ni ni-edit"></em> Edit</a>
-                                                                    <a data-toggle="modal" href="#change_password_<?php echo $users->user_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-lock"></em> Change Password</a>
-                                                                    <a data-toggle="modal" href="#delete_<?php echo $users->user_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
+                                                                    <a data-toggle="modal" href="#update_<?php echo $expenses->expense_id; ?>" class="badge badge-dim badge-pill badge-outline-warning"><em class="icon ni ni-edit"></em> Edit</a>
+                                                                    <a data-toggle="modal" href="#delete_<?php echo $expenses->expense_id; ?>" class="badge badge-dim badge-pill badge-outline-danger"><em class="icon ni ni-trash-fill"></em> Delete</a>
                                                                 </td>
                                                             </tr>
-                                                        <?php include('../helpers/modals/staff_modals.php');
+                                                        <?php include('../helpers/modals/expenses.php');
                                                         }
                                                         ?>
                                                     </tbody>
