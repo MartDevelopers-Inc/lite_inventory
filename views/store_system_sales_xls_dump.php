@@ -74,6 +74,7 @@ $end = date('Y-m-d', strtotime($_GET['to']));
 $store = $_GET['store'];
 
 $report_type = $_GET['type'];
+
 if ($report_type == 'Summarized Report') {
     /* Get Summarized Report */
     function filterData(&$str)
@@ -84,31 +85,35 @@ if ($report_type == 'Summarized Report') {
     }
 
     /* Excel File Name */
-    $fileName = 'Summarized Sales Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($start)) . '.xls';
+    $fileName = 'Summarized Sales Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)) . '.xls';
 
     /* Excel Column Name */
     $fields = array('Item Details ', 'Quantity Sold ', 'Sold By ', 'Sold To ', 'Date Sold', 'Amount (Ksh)');
-
-
-    /* Implode Excel Data */
     $excelData = implode("\t", array_values($fields)) . "\n";
+
+    /* Total Sales Amount */
+    $totalAmount = 0;
+
     /* Fetch All Records From The Database */
     $query = $mysqli->query("SELECT * FROM sales s
     INNER JOIN products p ON p.product_id = sale_product_id
     INNER JOIN users us ON us.user_id = s.sale_user_id
     WHERE p.product_store_id = '{$store}' AND s.sale_datetime BETWEEN '$start' AND '$end'
     ORDER BY sale_datetime ASC ");
+
     if ($query->num_rows > 0) {
         /* Load All Fetched Rows */
         while ($row = $query->fetch_assoc()) {
-            /* Sanitize Log Date */
             $sale_datetime = date('d M Y g:ia', strtotime($row['sale_datetime']));
             $sale_amount = $row['sale_quantity'] * $row['sale_payment_amount'];
-            /* Hardwire This Data Into .xls File */
+            $totalAmount += $sale_amount;  // Accumulate total
             $lineData = array($row['product_name'], $row['sale_quantity'], $row['user_name'], $row['sale_customer_name'], $sale_datetime, $sale_amount);
             array_walk($lineData, 'filterData');
             $excelData .= implode("\t", array_values($lineData)) . "\n";
         }
+
+        /* Append Total */
+        $excelData .= "\t\t\t\tTotal:\t" . number_format($totalAmount, 2) . "\n";
     } else {
         $excelData .= 'No Sales Records Available...' . "\n";
     }
@@ -117,9 +122,8 @@ if ($report_type == 'Summarized Report') {
     header("Content-Type: application/vnd.ms-excel");
     header("Content-Disposition: attachment; filename=\"$fileName\"");
 
-    /* Render  Excel Data For Download */
+    /* Render Excel Data For Download */
     echo $excelData;
-
     exit;
 } else {
     /* Get More Composite Report */
@@ -131,24 +135,24 @@ if ($report_type == 'Summarized Report') {
     }
 
     /* Excel File Name */
-    $fileName = 'Composite Sales Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($start)) . 'xls';
+    $fileName = 'Composite Sales Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)) . '.xls';
 
     /* Excel Column Name */
     $fields = array(
         'Item Details',
-        'Sold By ',
-        'Sold To ',
+        'Sold By',
+        'Sold To',
         'Date Sold',
         'Unit Price (Ksh)',
         'Discount (Ksh)',
         'Discounted Amount (Ksh)',
-        'Quantity Sold ',
+        'Quantity Sold',
         'Amount (Ksh)'
     );
-
-
-    /* Implode Excel Data */
     $excelData = implode("\t", array_values($fields)) . "\n";
+
+    /* Total Sales Amount */
+    $totalAmount = 0;
 
     /* Fetch All Records From The Database */
     $query = $mysqli->query("SELECT * FROM sales s
@@ -156,14 +160,14 @@ if ($report_type == 'Summarized Report') {
     INNER JOIN users us ON us.user_id = s.sale_user_id
     WHERE p.product_store_id = '{$store}' AND s.sale_datetime BETWEEN '$start' AND '$end'
     ORDER BY sale_datetime ASC ");
+
     if ($query->num_rows > 0) {
         /* Load All Fetched Rows */
         while ($row = $query->fetch_assoc()) {
-            /* Sanitize Log Date */
             $sale_datetime = date('d M Y g:ia', strtotime($row['sale_datetime']));
             $sale_amount = $row['sale_quantity'] * $row['sale_payment_amount'];
             $discounted_amount = $row['product_sale_price'] - $row['sale_discount'];
-            /* Hardwire This Data Into .xls File */
+            $totalAmount += $sale_amount;  // Accumulate total
             $lineData = array(
                 $row['product_name'],
                 $row['user_name'],
@@ -178,16 +182,18 @@ if ($report_type == 'Summarized Report') {
             array_walk($lineData, 'filterData');
             $excelData .= implode("\t", array_values($lineData)) . "\n";
         }
+
+        /* Append Total */
+        $excelData .= "\t\t\t\t\t\t\tTotal:\t" . number_format($totalAmount, 2) . "\n";
     } else {
-        $excelData .= 'Sales Records Available...' . "\n";
+        $excelData .= 'No Sales Records Available...' . "\n";
     }
 
     /* Generate Header File Encodings For Download */
     header("Content-Type: application/vnd.ms-excel");
     header("Content-Disposition: attachment; filename=\"$fileName\"");
 
-    /* Render  Excel Data For Download */
+    /* Render Excel Data For Download */
     echo $excelData;
-
     exit;
 }
