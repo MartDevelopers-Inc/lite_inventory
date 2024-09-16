@@ -91,10 +91,10 @@ require_once('../partials/head.php');
                                 <div class="nk-block-head nk-block-head-sm">
                                     <div class="nk-block-between">
                                         <div class="nk-block-head-content">
-                                            <h3 class="nk-block-title page-title">Profit And Loss Statements</h3>
+                                            <h3 class="nk-block-title page-title">Income Statements</h3>
                                             <div class="nk-block-des text-soft">
                                                 <p>
-                                                    Customize, generate and export P&L statements reports in spreadsheet(.csv, .xlsx, .xls) or pdf format. <br>
+                                                    Customize, generate and export Income statements reports in spreadsheet(.csv, .xlsx, .xls) or pdf format. <br>
                                                 </p>
                                             </div>
                                         </div><!-- .nk-block-head-content -->
@@ -150,6 +150,7 @@ require_once('../partials/head.php');
                                     </div>
                                     <?php
                                     if (isset($_POST['get_statements'])) {
+                                        // Capture the date range and store from the form input
                                         $start = date('Y-m-d', strtotime($_POST['start_date']));
                                         $end = date('Y-m-d', strtotime($_POST['end_date']));
                                         $store = $_POST['store'];
@@ -157,101 +158,132 @@ require_once('../partials/head.php');
                                         <div class="card mb-3 col-12 border border-success">
                                             <div class="card-body">
                                                 <h5 class="text-right">
-                                                    <a class="btn btn-primary" href="store_system_pl_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&store=<?php echo $store; ?>"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
-                                                    <a class="btn btn-primary" href="store_system_pl_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&store=<?php echo $store; ?>"><em class="icon ni ni-grid-add-fill-c"></em> Export To Excel</a>
+                                                    <!-- Export to PDF and Excel links -->
+                                                    <a class="btn btn-primary" href="store_system_income_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&store=<?php echo $store; ?>"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
+                                                    <a class="btn btn-primary" href="store_system_income_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&store=<?php echo $store; ?>"><em class="icon ni ni-grid-add-fill-c"></em> Export To Excel</a>
                                                 </h5>
+
+                                                <!-- Report title -->
                                                 <div class="card-header">
-                                                    <h5 class="text-center text-primary">Income Statement From <?php echo date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)); ?></h5>
+                                                    <h5 class="text-center text-primary">Income Statements Report From <?php echo date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)); ?></h5>
                                                 </div>
                                                 <table class="table table-bordered dt-responsive" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                     <thead>
                                                         <tr>
-                                                            <th>Sale</th>
-                                                            <th>Date</th>
-                                                            <th>Purchase Price</th>
-                                                            <th>Sale Price</th>
-                                                            <th>Discounted Amount</th>
-                                                            <th>QTY Sold</th>
-                                                            <th>Margin</th>
-                                                            <th>Amount</th>
+                                                            <th>Month</th>
+                                                            <th>Cash In (Sales Revenue)</th>
+                                                            <th>Cash Out (Expenses)</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $ret = "SELECT * FROM sales s
-                                                        INNER JOIN products p ON p.product_id = sale_product_id
-                                                        INNER JOIN users us ON us.user_id = s.sale_user_id
-                                                        WHERE p.product_store_id = '{$store}' AND s.sale_datetime BETWEEN '{$start}' AND '{$end}'
-                                                        ORDER BY sale_datetime ASC ";
-                                                        $stmt = $mysqli->prepare($ret);
-                                                        $stmt->execute(); // Execute query
-                                                        $res = $stmt->get_result();
+                                                        // Query to get sales data aggregated by month
+                                                        $sales_query = "SELECT DATE_FORMAT(sale_datetime, '%Y-%m') AS sale_month, DATE_FORMAT(sale_datetime, '%M %Y') AS display_month, SUM(sale_quantity * sale_payment_amount) AS total_sales
+                                                        FROM sales
+                                                        WHERE sale_datetime BETWEEN '{$start}' AND '{$end}' 
+                                                        AND sale_product_id IN (SELECT product_id FROM products WHERE product_store_id = '{$store}')
+                                                        GROUP BY sale_month
+                                                        ORDER BY sale_month ASC";
+                                                        $sales_stmt = $mysqli->prepare($sales_query);
+                                                        $sales_stmt->execute();
+                                                        $sales_res = $sales_stmt->get_result();
 
-                                                        $cumulative_income = 0;       // Total Cash In (Revenue)
-                                                        $cumulative_expenditure = 0;  // Total Cash Out (Cost of Goods Sold)
+                                                        // Query to get expenses data aggregated by month with expense items
+                                                        $expenses_query = "SELECT DATE_FORMAT(expense_date, '%Y-%m') AS expense_month, DATE_FORMAT(expense_date, '%M %Y') AS display_month, SUM(expense_amount) AS total_expenses, GROUP_CONCAT(expense_name SEPARATOR ', ') AS expense_items
+                                                        FROM expenses
+                                                        WHERE expense_date BETWEEN '{$start}' AND '{$end}' 
+                                                        AND expense_store_id = '{$store}'
+                                                        GROUP BY expense_month
+                                                        ORDER BY expense_month ASC";
+                                                        $expenses_stmt = $mysqli->prepare($expenses_query);
+                                                        $expenses_stmt->execute();
+                                                        $expenses_res = $expenses_stmt->get_result();
 
-                                                        while ($sales = $res->fetch_object()) {
-                                                            /* Sale Amount (Revenue) */
-                                                            $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
-                                                            $discounted_price = $sales->product_sale_price - $sales->sale_discount;
-                                                            $sale_margin = ($sales->product_sale_price - $sales->product_purchase_price) * $sales->sale_quantity;
+                                                        // Initialize cumulative totals for income and expenditure
+                                                        $cumulative_income = 0;
+                                                        $cumulative_expenditure = 0;
 
-                                                            /* Output Sales Data */
-                                                        ?>
-                                                            <tr>
-                                                                <td><?php echo $sales->product_name ?></td>
-                                                                <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)) ?></td>
-                                                                <td><?php echo "Ksh " . number_format($sales->product_purchase_price, 2); ?></td>
-                                                                <td><?php echo "Ksh " . number_format($sales->product_sale_price, 2); ?></td>
-                                                                <td><?php echo "Ksh " . number_format($discounted_price, 2); ?></td>
-                                                                <td><?php echo $sales->sale_quantity ?></td>
-                                                                <td><?php echo "Ksh " . number_format($sale_margin); ?></td>
-                                                                <td>
-                                                                    <?php echo "Ksh " . number_format($sales_amount, 2); ?>
-                                                                    <?php
-                                                                    $cumulative_income += $sales_amount;  // Accumulate Total Cash In
-                                                                    $cumulative_expenditure += ($sales->product_purchase_price * $sales->sale_quantity); // Accumulate Total Cash Out
-                                                                    ?>
-                                                                </td>
-                                                            </tr>
-                                                        <?php
+                                                        // Store results in arrays
+                                                        $sales_data = [];
+                                                        $expense_data = [];
+
+                                                        // Fetch sales data and store it by month
+                                                        while ($sales_record = $sales_res->fetch_object()) {
+                                                            $sales_data[$sales_record->sale_month] = [
+                                                                'display_month' => $sales_record->display_month,
+                                                                'total_sales' => $sales_record->total_sales
+                                                            ];
+                                                        }
+
+                                                        // Fetch expenses data and store it by month, including expense items
+                                                        while ($expense_record = $expenses_res->fetch_object()) {
+                                                            $expense_data[$expense_record->expense_month] = [
+                                                                'display_month' => $expense_record->display_month,
+                                                                'total_expenses' => $expense_record->total_expenses,
+                                                                'items' => $expense_record->expense_items
+                                                            ];
+                                                        }
+
+                                                        // Get all unique months from both sales and expenses
+                                                        $all_months = array_unique(array_merge(array_keys($sales_data), array_keys($expense_data)));
+                                                        sort($all_months); // Sort months in chronological order
+
+                                                        // Loop through all months and display cumulative data
+                                                        foreach ($all_months as $month) {
+                                                            $monthly_sales = $sales_data[$month]['total_sales'] ?? 0; // Default to 0 if no sales
+                                                            $monthly_expenses = $expense_data[$month]['total_expenses'] ?? 0; // Default to 0 if no expenses
+                                                            $expense_items = $expense_data[$month]['items'] ?? ''; // Default to empty if no expense items
+                                                            $display_month = $sales_data[$month]['display_month'] ?? $expense_data[$month]['display_month'] ?? '';
+
+                                                            echo "<tr>
+                                                                <td>{$display_month}</td>
+                                                                <td>Ksh " . number_format($monthly_sales, 2) . "</td>
+                                                                <td>Ksh " . number_format($monthly_expenses, 2) . (!empty($expense_items) ? " ({$expense_items})" : '') . "</td>
+                                                            </tr>";
+
+                                                            $cumulative_income += $monthly_sales;
+                                                            $cumulative_expenditure += $monthly_expenses;
                                                         }
                                                         ?>
-                                                        <!-- Total Cash In (Revenue) -->
+                                                        <!-- Display cumulative income (total sales) -->
                                                         <tr>
-                                                            <td colspan="7"><b>Total Cash In (Revenue):</b></td>
-                                                            <td><b><?php echo  "Ksh " . number_format($cumulative_income, 2); ?></b></td>
+                                                            <td colspan="2"><b>Cumulative Cash In (Sales Revenue):</b></td>
+                                                            <td><b><?php echo "Ksh " . number_format($cumulative_income, 2); ?></b></td>
                                                         </tr>
-                                                        <!-- Total Cash Out (Cost of Goods Sold) -->
+
+                                                        <!-- Display cumulative expenses -->
                                                         <tr>
-                                                            <td colspan="7"><b>Total Cash Out (Cost of Goods Sold):</b></td>
-                                                            <td><b><?php echo  "Ksh " . number_format($cumulative_expenditure, 2); ?></b></td>
+                                                            <td colspan="2"><b>Cumulative Cash Out (Expenses):</b></td>
+                                                            <td><b><?php echo "Ksh " . number_format($cumulative_expenditure, 2); ?></b></td>
                                                         </tr>
-                                                        <!-- Net Profit or Loss -->
+
+                                                        <!-- Display Net Profit or Loss -->
                                                         <?php
                                                         $net_result = $cumulative_income - $cumulative_expenditure;
                                                         if ($net_result > 0) {
                                                         ?>
                                                             <tr>
-                                                                <td colspan="7"><b>Net Profit:</b></td>
-                                                                <td><b><?php echo  "Ksh " . number_format($net_result, 2); ?></b></td>
+                                                                <td colspan="2"><b>Net Profit:</b></td>
+                                                                <td><b><?php echo "Ksh " . number_format($net_result, 2); ?></b></td>
                                                             </tr>
                                                         <?php } elseif ($net_result < 0) { ?>
                                                             <tr>
-                                                                <td colspan="7"><b>Net Loss:</b></td>
-                                                                <td><b><?php echo  "Ksh " . number_format(abs($net_result), 2); ?></b></td>
+                                                                <td colspan="2"><b>Net Loss:</b></td>
+                                                                <td><b><?php echo "Ksh " . number_format(abs($net_result), 2); ?></b></td>
                                                             </tr>
                                                         <?php } else { ?>
                                                             <tr>
-                                                                <td colspan="7"><b>Break-Even (No Profit or Loss):</b></td>
-                                                                <td><b><?php echo  "Ksh " . number_format($net_result, 2); ?></b></td>
+                                                                <td colspan="2"><b>Break-Even (No Profit or Loss):</b></td>
+                                                                <td><b><?php echo "Ksh " . number_format($net_result, 2); ?></b></td>
                                                             </tr>
                                                         <?php } ?>
                                                     </tbody>
                                                 </table>
+
                                             </div>
                                         </div>
                                     <?php } ?>
+
                                 </div>
                             </div>
                         </div>
