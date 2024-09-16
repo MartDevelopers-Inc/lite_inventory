@@ -110,6 +110,16 @@ if (isset($_POST['Update_Expense'])) {
 }
 
 /* Delete Expense */
+if (isset($_POST['Delete_Expense'])) {
+    $expense_id = mysqli_real_escape_string($mysqli, $_POST['expense_id']);
+
+    /* Delete */
+    if (mysqli_query($mysqli, "DELETE FROM expenses WHERE expense_id = '{$expense_id}'")) {
+        $success = "Expense Deleted";
+    } else {
+        $err = "Please Try Again Or Try Later";
+    }
+}
 
 /* Load Header Partial */
 require_once('../partials/head.php')
