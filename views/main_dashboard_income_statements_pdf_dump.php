@@ -260,6 +260,9 @@ while ($stores = $res->fetch_object()) {
                                             <td>Ksh " . number_format($monthly_sales, 2) . "</td>
                                             <td>Ksh " . number_format($monthly_expenses, 2) . (!empty($expense_items) ? " ({$expense_items})" : '') . "</td>
                                         </tr>";
+                                        
+                                        $cumulative_income += $monthly_sales;
+                                        $cumulative_expenditure += $monthly_expenses;
                                     }
                                         $html .= '
                                         <tr>
