@@ -143,7 +143,12 @@ while ($settings = $res->fetch_object()) {
                             <ul class="nk-menu-sub">
                                 <li class="nk-menu-item">
                                     <a href="store_sales_manage?view=<?php echo $view; ?>" class="nk-menu-link">
-                                        <span class="nk-menu-text">Manage</span>
+                                        <span class="nk-menu-text">Manage Sales</span>
+                                    </a>
+                                </li>
+                                <li class="nk-menu-item">
+                                    <a href="store_expenses_manage?view=<?php echo $view; ?>" class="nk-menu-link">
+                                        <span class="nk-menu-text">Manage Expenses</span>
                                     </a>
                                 </li>
                                 <li class="nk-menu-item">
@@ -176,6 +181,11 @@ while ($settings = $res->fetch_object()) {
                                 <li class="nk-menu-item">
                                     <a href="store_reports_stock_additions?view=<?php echo $view; ?>" class="nk-menu-link">
                                         <span class="nk-menu-text">Stock Additions</span>
+                                    </a>
+                                </li>
+                                <li class="nk-menu-item">
+                                    <a href="store_reports_expenses?view=<?php echo $view; ?>" class="nk-menu-link">
+                                        <span class="nk-menu-text">Expenses</span>
                                     </a>
                                 </li>
                             </ul>
