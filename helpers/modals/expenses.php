@@ -52,7 +52,7 @@
             <form method="POST">
                 <div class="modal-body text-center ">
                     <h4 class="text-danger">
-                        Delete <?php echo $expenses->expense_name; ?>'s account? <br>
+                        Delete <?php echo $expenses->expense_name; ?> ? <br>
                         This operation is delicate and Irreversible.
                     </h4>
                     <br>
