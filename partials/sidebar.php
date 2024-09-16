@@ -168,6 +168,12 @@ while ($settings = $res->fetch_object()) {
                             </a>
                         </li><!-- .nk-menu-item -->
                         <li class="nk-menu-item">
+                            <a href="main_dashboard_reports_expenses" class="nk-menu-link">
+                                <span class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span>
+                                <span class="nk-menu-text">Expenses Reports</span>
+                            </a>
+                        </li>
+                        <li class="nk-menu-item">
                             <a href="main_dashboard_reports_pl_statements" class="nk-menu-link">
                                 <span class="nk-menu-icon"><em class="icon ni ni-growth"></em></span>
                                 <span class="nk-menu-text">P&L Statements</span>
