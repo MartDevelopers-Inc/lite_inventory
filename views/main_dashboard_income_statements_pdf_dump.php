@@ -255,8 +255,8 @@ while ($stores = $res->fetch_object()) {
                                         $expense_items = $expense_data[$month]['items'] ?? ''; // Default to empty if no expense items
                                         $display_month = $sales_data[$month]['display_month'] ?? $expense_data[$month]['display_month'] ?? '';
 
-                                        echo "<tr>
-                                            <td>{$display_month}</td>
+                                        $html .= "<tr>
+                                            <td>".$display_month."</td>
                                             <td>Ksh " . number_format($monthly_sales, 2) . "</td>
                                             <td>Ksh " . number_format($monthly_expenses, 2) . (!empty($expense_items) ? " ({$expense_items})" : '') . "</td>
                                         </tr>";
