@@ -126,7 +126,7 @@ require_once('../partials/head.php');
                                 </div>
                             </div>
                             <?php
-                            if (isset($_POST['GetExpensesReports'])) {
+                            if (isset($_POST['GetIncomeStatements'])) {
                                 $start = date('Y-m-d', strtotime($_POST['start_date']));
                                 $end = date('Y-m-d', strtotime($_POST['end_date']));
                                 $store = $_GET['view'];
