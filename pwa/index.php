@@ -106,8 +106,8 @@ require_once('../partials/pwa_head.php');
 
             <div class="login-body">
                 <div class="text-center">
-                    <img class="thubnail" width="50%" src="../public/images/logo.png" alt="">
-                    <h5 class="fw-bold text-primary"><?php echo $system_name; ?></h5>
+                    <img class="thubnail" width="50%" src="https://nativebeecare.co.ke/assets/img/logo/logo-dark.png" alt="">
+                    <h5 class="fw-bold text-dark"><br><?php echo $system_name; ?></h5>
                     <p class="mb-0">Login to your account</p>
                 </div>
                 <br><br>

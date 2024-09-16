@@ -60,9 +60,9 @@
  */
 
 
-define("DB_USER", 'root');
-define("DB_PASSWORD", '');
-define("DB_NAME", 'lite_inventory'); /* On Production Change This To Your Database Name */
+define("DB_USER", 'hqcpyhvg_dbuser');
+define("DB_PASSWORD", 'N@#A8qp)IL*6');
+define("DB_NAME", 'hqcpyhvg_pos'); /* On Production Change This To Your Database Name */
 define("DB_HOST", 'localhost');
 define("BACKUP_DIR", '../database'); // Comment this line to use same script's directory ('.')
 define("TABLES", '*'); // Full backup

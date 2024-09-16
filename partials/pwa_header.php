@@ -1,7 +1,7 @@
 <header class="top-header fixed-top border-bottom d-flex align-items-center">
     <nav class="navbar navbar-expand w-100 p-0 gap-3 align-items-center">
         <div class="brand-logo">
-            <a href="javascript:;" class="text-dark"><img src="../public/images/logo.png" width="50" alt=""><b> <?php echo $system_name; ?></b></a>
+            <a href="javascript:;" class="text-dark"><img src="https://nativebeecare.co.ke/assets/img/logo/favicon.png" width="50" alt=""><b> <?php echo $system_name; ?></b></a>
         </div>
         <ul class="navbar-nav ms-auto d-flex align-items-center top-right-menu">
             <li class="nav-item">

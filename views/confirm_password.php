@@ -103,8 +103,9 @@ require_once('../partials/head.php');
                 <div class="nk-split-content nk-block-area nk-block-area-column nk-auth-container">
                     <div class="nk-block nk-block-middle nk-auth-body">
                         <div class="nk-block-head">
-                            <div class="nk-block-head-content">
-                                <h5 class="nk-block-title">Confirm Password</h5>
+                            <div class="nk-block-head-content text-center">
+                                <img class="round" src="https://nativebeecare.co.ke/assets/img/logo/logo-dark.png" alt="">
+                                <h5 class="nk-block-title"><br>Confirm Password</h5>
                                 <div class="nk-block-des">
                                     <p>Enter Your New Password & Confirm It To Access <?php echo $settings->system_name; ?>? </p>
                                 </div>
@@ -138,12 +139,14 @@ require_once('../partials/head.php');
                         <div class="slider-init">
                             <div class="slider-item">
                                 <div class="nk-feature nk-feature-center">
-                                    <div class="nk-feature-img">
-                                        <img class="round" src="../public/images/logo.png" alt="">
-                                    </div>
+                                    <!--<div class="nk-feature-img">
+                                        <img class="round" src="https://nativebeecare.co.ke/assets/img/logo/logo-dark.png" alt="">
+                                    </div> -->
                                     <div class="nk-feature-content py-4 p-sm-5">
                                         <h4><?php echo $settings->system_name; ?></h4>
                                         <p><?php echo $settings->system_tagline; ?></p>
+                                        <p>Welcome to Native Beecare, an innovative entity dedicated to fostering sustainable development in Kenya. Since our inception,
+                                        we have been on a mission to build capacity for bee products especially in  Makueni County regions while championing the protection of indigenous trees.</p>
                                     </div>
                                 </div>
                             </div><!-- .slider-item -->

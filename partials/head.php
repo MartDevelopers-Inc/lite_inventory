@@ -71,13 +71,34 @@ while ($settings = $res->fetch_object()) {
     <html lang="zxx" class="js">
 
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="@@page-discription">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Explore the best in apiculture with Native Beecare . We provide top-notch solutions for beekeeping and more. Discover the excellence of our services." />
+        <meta name="keywords" content="Native Beecare , Apiculture, Beekeeping, Beekeeping Solutions, Beekeeping Services" />
+        <meta name="author" content="Devlan Solutions LTD" />
+    
+        <!-- Primary Meta Tags -->
+        <title>Native Beecare POS - Apiculture at its best</title>
+        <meta name="title" content="Native Beecare  - Apiculture at the best" />
+        <meta name="description" content="Explore the best in apiculture with Native Beecare . We provide top-notch solutions for beekeeping and more. Discover the excellence of our services." />
+    
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://nativebeecare.co.ke/" />
+        <meta property="og:title" content="Native Beecare  - Apiculture at the best" />
+        <meta property="og:description" content="Explore the best in apiculture with Native Beecare . We provide top-notch solutions for beekeeping and more. Discover the excellence of our services." />
+        <meta property="og:image" content="https://nativebeecare.co.ke/assets/img/logo/favicon.png" />
+    
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://nativebeecare.co.ke/" />
+        <meta property="twitter:title" content="Native Beecare  - Apiculture at the best" />
+        <meta property="twitter:description" content="Explore the best in apiculture with Native Beecare . We provide top-notch solutions for beekeeping and more. Discover the excellence of our services." />
+        <meta property="twitter:image" content="https://nativebeecare.co.ke/assets/img/logo/favicon.png" />
         <!-- Fav Icon  -->
-        <link rel="shortcut icon" href="../public/images/favicon/favicon.ico">
+        <link rel="shortcut icon" href="https://nativebeecare.co.ke/assets/img/logo/favicon.png">
         <!-- Page Title  -->
-        <title><?php echo $settings->system_name; ?></title>
         <!-- StyleSheets  -->
         <link rel="stylesheet" href="../public/css/dashlite.css?ver=1.4.0">
         <!-- Skin Css -->
