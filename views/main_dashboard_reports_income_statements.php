@@ -159,8 +159,8 @@ require_once('../partials/head.php');
                                             <div class="card-body">
                                                 <h5 class="text-right">
                                                     <!-- Export to PDF and Excel links -->
-                                                    <a class="btn btn-primary" href="store_system_income_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&store=<?php echo $store; ?>"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
-                                                    <a class="btn btn-primary" href="store_system_income_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&store=<?php echo $store; ?>"><em class="icon ni ni-grid-add-fill-c"></em> Export To Excel</a>
+                                                    <a class="btn btn-primary" href="main_dashboard_income_statements_pdf_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&store=<?php echo $store; ?>"><em class="icon ni ni-file-docs"></em> Export To PDF</a>
+                                                    <a class="btn btn-primary" href="main_dashboard_income_statements_xls_dump?from=<?php echo $_POST['start_date']; ?>&to=<?php echo $_POST['end_date']; ?>&store=<?php echo $store; ?>"><em class="icon ni ni-grid-add-fill-c"></em> Export To Excel</a>
                                                 </h5>
 
                                                 <!-- Report title -->
