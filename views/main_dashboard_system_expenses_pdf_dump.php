@@ -208,8 +208,8 @@ while ($stores = $res->fetch_object()) {
                                         $html .=
                                         '
                                             <tr>
-                                                <td>' . $cumulative_expenses->product_name . '</td>
-                                                <td>' . $cumulative_expenses->sale_quantity . '</td>
+                                                <td>' . $expenses->expense_name . '</td>
+                                                <td>' . $expenses->expense_details . '</td>
                                                 <td>' . date('d M Y', strtotime($expenses->expense_date)) . '</td>
                                                 <td>' . "Ksh " . number_format($expenses->expense_amount, 2) . '</td>
                                             </tr>
@@ -217,7 +217,7 @@ while ($stores = $res->fetch_object()) {
                                     }
                                         $html .= '
                                         <tr>
-                                            <td  colspan="4"><b>Total Amount: </b></td>
+                                            <td  colspan="3"><b>Total Amount: </b></td>
                                             <td><b>' . "Ksh " . number_format($cumulative_expenses, 2) . '</b></td>
                                         </tr>
                                 </tbody>
