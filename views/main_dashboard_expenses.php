@@ -70,8 +70,44 @@ require_once('../config/codeGen.php');
 check_login();
 
 /* Add Expense */
+if (isset($_POST['Add_Expense'])) {
+    $expense_store_id  = mysqli_real_escape_string($mysqli, $_POST['expense_store_id']);
+    $expense_name = mysqli_real_escape_string($mysqli, $_POST['expense_name']);
+    $expense_date = mysqli_real_escape_string($mysqli, $_POST['expense_date']);
+    $expense_amount = mysqli_real_escape_string($mysqli, $_POST['expense_amount']);
+    $expense_details = mysqli_real_escape_string($mysqli, $_POST['expense_details']);
+
+    /* Persist */
+    if (mysqli_query(
+        $mysqli,
+        "INSERT INTO expenses (expense_store_id, expense_name, expense_date, expense_amount, expense_details)
+        VALUES('{$expense_store_id}', '{$expense_name}', '{$expense_date}', '{$expense_amount}', '{$expense_details}')"
+    )) {
+        $success = "Expense Added";
+    } else {
+        $err = "Please Try Again Or Try Later";
+    }
+}
 
 /* Update Expense */
+if (isset($_POST['Update_Expense'])) {
+    $expense_id  = mysqli_real_escape_string($mysqli, $_POST['expense_id']);
+    $expense_name = mysqli_real_escape_string($mysqli, $_POST['expense_name']);
+    $expense_date = mysqli_real_escape_string($mysqli, $_POST['expense_date']);
+    $expense_amount = mysqli_real_escape_string($mysqli, $_POST['expense_amount']);
+    $expense_details = mysqli_real_escape_string($mysqli, $_POST['expense_details']);
+
+    /* Update */
+    if (mysqli_query(
+        $mysqli,
+        "UPDATE expenses SET expense_name = '{$expense_name}', expense_date = '{$expense_date}', expense_amount = '{$expense_amount}', expense_details = '{$expense_details}'
+        WHERE expense_id = '{$expense_id}'"
+    )) {
+        $success = "Expense Updated";
+    } else {
+        $err = "Please Try Again Or Try Later";
+    }
+}
 
 /* Delete Expense */
 
