@@ -24,7 +24,7 @@
                 $stmt = $mysqli->prepare($ret);
                 $stmt->execute(); //ok
                 $res = $stmt->get_result();
-                $cumulative_income = 0;
+                $cumulative_expenses = 0;
                 while ($expenses = $res->fetch_object()) {
                     $cumulative_expenses += $expenses->expense_amount;
                 ?>
@@ -33,7 +33,7 @@
                         <td><?php echo $expenses->expense_details ?></td>
                         <td><?php echo date('d M Y', strtotime($expenses->expense_date)) ?></td>
                         <td>
-                            <?php echo "Ksh " . number_format($expense_amount, 2);
+                            <?php echo "Ksh " . number_format($expenses->expense_amount, 2);
                             ?>
                         </td>
                     </tr>
@@ -42,7 +42,7 @@
                 ?>
                 <tr>
                     <td colspan="3"><b>Total Amount:</b></td>
-                    <td><b><?php echo  "Ksh " . number_format($cumulative_income, 2); ?></b></td>
+                    <td><b><?php echo  "Ksh " . number_format($cumulative_expenses, 2); ?></b></td>
                 </tr>
             </tbody>
         </table>
