@@ -170,7 +170,7 @@ require_once('../partials/head.php')
                                             <h3 class="nk-block-title page-title">Manage Expenses</h3>
                                             <div class="nk-block-des text-soft">
                                                 <p>
-                                                    This module allows you to register, update and delete expenses <br>
+                                                    This module allows you to manage expeses across all stores <br>
                                                 </p>
                                             </div>
                                         </div><!-- .nk-block-head-content -->
@@ -208,7 +208,7 @@ require_once('../partials/head.php')
                                                             <div class="form-control-wrap">
                                                                 <div class="form-group">
                                                                     <div class="form-control-wrap">
-                                                                        <select name="expense_store_id " class="form-select form-control form-control-lg" data-search="on">
+                                                                        <select name="expense_store_id" class="form-select form-control form-control-lg" data-search="on">
                                                                             <?php
                                                                             $raw_results = mysqli_query($mysqli, "SELECT * FROM store_settings WHERE store_status = 'active'");
                                                                             if (mysqli_num_rows($raw_results) > 0) {
