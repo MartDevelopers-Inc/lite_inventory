@@ -77,6 +77,12 @@ if (isset($_POST['Add_Expense'])) {
     $expense_amount = mysqli_real_escape_string($mysqli, $_POST['expense_amount']);
     $expense_details = mysqli_real_escape_string($mysqli, $_POST['expense_details']);
 
+    /* Log User Activity */
+    $log_type = "Expenses Management";
+    $log_details = "Added $expense_name Worth $expense_amount For $expense_date";
+
+    include('../functions/logs.php');
+
     /* Persist */
     if (mysqli_query(
         $mysqli,
@@ -97,6 +103,12 @@ if (isset($_POST['Update_Expense'])) {
     $expense_amount = mysqli_real_escape_string($mysqli, $_POST['expense_amount']);
     $expense_details = mysqli_real_escape_string($mysqli, $_POST['expense_details']);
 
+
+    /* Log User Activity */
+    $log_type = "Expenses Management";
+    $log_details = "Updated $expense_name Worth $expense_amount For $expense_date";
+
+    include('../functions/logs.php');
     /* Update */
     if (mysqli_query(
         $mysqli,
@@ -112,6 +124,16 @@ if (isset($_POST['Update_Expense'])) {
 /* Delete Expense */
 if (isset($_POST['Delete_Expense'])) {
     $expense_id = mysqli_real_escape_string($mysqli, $_POST['expense_id']);
+    $expense_name = mysqli_real_escape_string($mysqli, $_POST['expense_name']);
+    $expense_amount = mysqli_real_escape_string($mysqli, $_POST['expense_amount']);
+    $expense_date = mysqli_real_escape_string($mysqli, $_POST['expense_date']);
+
+    /* Log User Activity */
+    $log_type = "Expenses Management";
+    $log_details = "Deleted $expense_name Worth $expense_amount For $expense_date";
+
+    include('../functions/logs.php');
+
 
     /* Delete */
     if (mysqli_query($mysqli, "DELETE FROM expenses WHERE expense_id = '{$expense_id}'")) {
@@ -232,17 +254,16 @@ require_once('../partials/head.php')
                                                 <table class="datatable-init table">
                                                     <thead>
                                                         <tr>
-                                                            <th>Full Name</th>
-                                                            <th>Email</th>
-                                                            <th>Phone Number</th>
-                                                            <th>Access Level</th>
-                                                            <th>Assigned Store</th>
+                                                            <th>Expense Name</th>
+                                                            <th>Store</th>
+                                                            <th>Date</th>
+                                                            <th>Amount</th>
+                                                            <th>Expenses Details</th>
                                                             <th>Manage</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $user_id = $_SESSION['user_id'];
                                                         $ret = "SELECT * FROM users us INNER JOIN store_settings st ON st.store_id = us.user_store_id 
                                                         WHERE us.user_status ='active'  && us.user_id != '$user_id'";
                                                         $stmt = $mysqli->prepare($ret);
