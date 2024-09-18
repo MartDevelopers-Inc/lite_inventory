@@ -166,14 +166,14 @@ require_once('../partials/head.php');
                                                 <table class="table table-bordered dt-responsive" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                     <thead>
                                                         <tr>
-                                                            <th>Item</th>
+                                                            <th>Sale</th>
                                                             <th>Date</th>
                                                             <th>Purchase Price</th>
                                                             <th>Sale Price</th>
+                                                            <th>Discounted Amount</th>
                                                             <th>QTY Sold</th>
-                                                            <th>Discounted  Amount</th>
                                                             <th>Margin</th>
-                                                            <th>Amount</th>
+                                                            <th>Amount (Cash In)</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -194,7 +194,7 @@ require_once('../partials/head.php');
                                                             /* Sale Amount (Revenue) */
                                                             $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
                                                             $discounted_price = $sales->product_sale_price - $sales->sale_discount;
-                                                            $sale_margin = ($sales->product_sale_price - $sales->product_purchase_price) * $sales->sale_quantity;
+                                                            $sale_margin = ($discounted_price - $sales->product_purchase_price) * $sales->sale_quantity;
 
                                                             /* Output Sales Data */
                                                         ?>
