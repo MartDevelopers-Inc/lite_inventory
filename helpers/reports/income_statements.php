@@ -95,13 +95,11 @@
                     <td colspan="2"><b>Cumulative Cash In (Sales Revenue):</b></td>
                     <td><b><?php echo "Ksh " . number_format($cumulative_income, 2); ?></b></td>
                 </tr>
-
                 <!-- Display cumulative expenses -->
                 <tr>
                     <td colspan="2"><b>Cumulative Cash Out (Expenses):</b></td>
                     <td><b><?php echo "Ksh " . number_format($cumulative_expenditure, 2); ?></b></td>
                 </tr>
-
                 <!-- Display Net Profit or Loss -->
                 <?php
                 $net_result = $cumulative_income - $cumulative_expenditure;
