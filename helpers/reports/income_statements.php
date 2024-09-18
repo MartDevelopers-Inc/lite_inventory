@@ -24,22 +24,22 @@
                 <?php
                 // Query to get sales data aggregated by month
                 $sales_query = "SELECT DATE_FORMAT(sale_datetime, '%Y-%m') AS sale_month, DATE_FORMAT(sale_datetime, '%M %Y') AS display_month, SUM(sale_quantity * sale_payment_amount) AS total_sales
-                                                        FROM sales
-                                                        WHERE sale_datetime BETWEEN '{$start}' AND '{$end}' 
-                                                        AND sale_product_id IN (SELECT product_id FROM products WHERE product_store_id = '{$store}')
-                                                        GROUP BY sale_month
-                                                        ORDER BY sale_month ASC";
+                FROM sales
+                WHERE sale_datetime BETWEEN '{$start}' AND '{$end}' 
+                AND sale_product_id IN (SELECT product_id FROM products WHERE product_store_id = '{$store}')
+                GROUP BY sale_month
+                ORDER BY sale_month ASC";
                 $sales_stmt = $mysqli->prepare($sales_query);
                 $sales_stmt->execute();
                 $sales_res = $sales_stmt->get_result();
 
                 // Query to get expenses data aggregated by month with expense items
                 $expenses_query = "SELECT DATE_FORMAT(expense_date, '%Y-%m') AS expense_month, DATE_FORMAT(expense_date, '%M %Y') AS display_month, SUM(expense_amount) AS total_expenses, GROUP_CONCAT(expense_name SEPARATOR ', ') AS expense_items
-                                                        FROM expenses
-                                                        WHERE expense_date BETWEEN '{$start}' AND '{$end}' 
-                                                        AND expense_store_id = '{$store}'
-                                                        GROUP BY expense_month
-                                                        ORDER BY expense_month ASC";
+                FROM expenses
+                WHERE expense_date BETWEEN '{$start}' AND '{$end}' 
+                AND expense_store_id = '{$store}'
+                GROUP BY expense_month
+                ORDER BY expense_month ASC";
                 $expenses_stmt = $mysqli->prepare($expenses_query);
                 $expenses_stmt->execute();
                 $expenses_res = $expenses_stmt->get_result();
@@ -108,17 +108,17 @@
                 if ($net_result > 0) {
                 ?>
                     <tr>
-                        <td colspan="2"><b>Net Profit:</b></td>
+                        <td colspan="2"><b>Operating Income:</b></td>
                         <td><b><?php echo "Ksh " . number_format($net_result, 2); ?></b></td>
                     </tr>
                 <?php } elseif ($net_result < 0) { ?>
                     <tr>
-                        <td colspan="2"><b>Net Loss:</b></td>
+                        <td colspan="2"><b>Operating Income:</b></td>
                         <td><b><?php echo "Ksh " . number_format(abs($net_result), 2); ?></b></td>
                     </tr>
                 <?php } else { ?>
                     <tr>
-                        <td colspan="2"><b>Break-Even (No Profit or Loss):</b></td>
+                        <td colspan="2"><b>Operating Income:</b></td>
                         <td><b><?php echo "Ksh " . number_format($net_result, 2); ?></b></td>
                     </tr>
                 <?php } ?>
