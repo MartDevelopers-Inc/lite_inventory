@@ -262,23 +262,11 @@ require_once('../partials/head.php');
                                                         <!-- Display Net Profit or Loss -->
                                                         <?php
                                                         $net_result = $cumulative_income - $cumulative_expenditure;
-                                                        if ($net_result > 0) {
                                                         ?>
-                                                            <tr>
-                                                                <td colspan="2"><b>Net Profit:</b></td>
-                                                                <td><b><?php echo "Ksh " . number_format($net_result, 2); ?></b></td>
-                                                            </tr>
-                                                        <?php } elseif ($net_result < 0) { ?>
-                                                            <tr>
-                                                                <td colspan="2"><b>Net Loss:</b></td>
-                                                                <td><b><?php echo "Ksh " . number_format(abs($net_result), 2); ?></b></td>
-                                                            </tr>
-                                                        <?php } else { ?>
-                                                            <tr>
-                                                                <td colspan="2"><b>Break-Even (No Profit or Loss):</b></td>
-                                                                <td><b><?php echo "Ksh " . number_format($net_result, 2); ?></b></td>
-                                                            </tr>
-                                                        <?php } ?>
+                                                        <tr>
+                                                            <td colspan="2"><b>Operating Income:</b></td>
+                                                            <td><b><?php echo "Ksh " . number_format($net_result, 2); ?></b></td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
 
