@@ -171,7 +171,7 @@ while ($stores = $res->fetch_object()) {
                         <body style="margin:1px;">
                             <div class="footer">
                                 <hr>
-                                <i>Income Statement Reports. Generated On ' . date('d M Y g:ia') . '</i>
+                                <i><b>Report Generated On ' . date('d M Y') . ', NativeBeecare POS. Powered By Devlan Solutions LTD ~ devlan.co.ke </b><i>
                             </div>
                             
                             <div class="list_header" align="center">
@@ -274,26 +274,11 @@ while ($stores = $res->fetch_object()) {
                                             <td><b>' . "Ksh " . number_format($cumulative_expenditure, 2) . '</b></td>
                                         </tr>';
                                         $net_result = $cumulative_income - $cumulative_expenditure;
-                                        if ($net_result > 0) {
-                                            $html .= '
-                                            <tr>
-                                                <td  colspan="2"><b>Net Income: </b></td>
-                                                <td><b>' . "Ksh " . number_format($net_result, 2) . '</b></td>
-                                            </tr>';
-                                        } elseif ($net_result < 0) {
-                                            $html .= '
-                                            <tr>
-                                                <td  colspan="2"><b>Net Loss: </b></td>
-                                                <td><b>' . "Ksh " . number_format($net_result, 2) . '</b></td>
-                                            </tr>';
-                                        } else {
-                                            $html .= '
-                                            <tr>
-                                                <td  colspan="2"><b>Break-Even (No Profit or Loss):</b></td>
-                                                <td><b>' . "Ksh " . number_format($net_result, 2) . '</b></td>
-                                            </tr>';
-                                        }
                                          $html .= '
+                                            <tr>
+                                                <td  colspan="2"><b>Operating Income: </b></td>
+                                                <td><b>' . "Ksh " . number_format($net_result, 2) . '</b></td>
+                                            </tr>
                                 </tbody>
                             </table>
                         </body>

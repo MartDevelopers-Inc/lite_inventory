@@ -171,7 +171,7 @@ if ($log_type == 'All Logs') {
         <body style="margin:1px;">
             <div class="footer">
                 <hr>
-                <i>' . $log_type . ' . Report Generated On ' . date('d M Y') . '</i>
+                <i><b>Report Generated On ' . date('d M Y') . ', NativeBeecare POS. Powered By Devlan Solutions LTD ~ devlan.co.ke </b><i>
             </div>
 
             <div class="list_header" align="center">

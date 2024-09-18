@@ -142,10 +142,9 @@ require_once('../partials/head.php');
                                                 <thead>
                                                     <tr>
                                                         <th>Item</th>
-                                                        <th>Date Sold</th>
+                                                        <th>Date</th>
                                                         <th>Purchase Price</th>
-                                                        <th>Sale Price</th>
-                                                        <th>Discounted Amount</th>
+                                                        <th>Discounted Sale Price</th>
                                                         <th>QTY Sold</th>
                                                         <th>Margin</th>
                                                         <th>Amount</th>
@@ -154,64 +153,71 @@ require_once('../partials/head.php');
                                                 <tbody>
                                                     <?php
                                                     $ret = "SELECT * FROM sales s
-                                                    INNER JOIN products p ON p.product_id = sale_product_id
-                                                    INNER JOIN users us ON us.user_id = s.sale_user_id
-                                                    WHERE p.product_store_id = '{$store}' AND s.sale_datetime BETWEEN '{$start}' AND '{$end}'
-                                                    ORDER BY sale_datetime ASC ";
+                                                        INNER JOIN products p ON p.product_id = sale_product_id
+                                                        INNER JOIN users us ON us.user_id = s.sale_user_id
+                                                        WHERE p.product_store_id = '{$store}' AND s.sale_datetime BETWEEN '{$start}' AND '{$end}'
+                                                        ORDER BY sale_datetime ASC ";
                                                     $stmt = $mysqli->prepare($ret);
-                                                    $stmt->execute(); //ok
+                                                    $stmt->execute(); // Execute query
                                                     $res = $stmt->get_result();
-                                                    $cumulative_income = 0;
-                                                    $cumulative_expenditure = 0;
+
+                                                    $cumulative_income = 0;       // Total Cash In (Revenue)
+                                                    $cumulative_expenditure = 0;  // Total Cash Out (Cost of Goods Sold)
+
                                                     while ($sales = $res->fetch_object()) {
-                                                        /* Sale Amount  */
+                                                        /* Sale Amount (Revenue) */
                                                         $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
                                                         $discounted_price = $sales->product_sale_price - $sales->sale_discount;
-                                                        $sale_margin = ($sales->product_sale_price - $sales->product_purchase_price) * $sales->sale_quantity;
+                                                        $sale_margin = ($discounted_price - $sales->product_purchase_price) * $sales->sale_quantity;
 
+                                                        /* Output Sales Data */
                                                     ?>
                                                         <tr>
                                                             <td><?php echo $sales->product_name ?></td>
-                                                            <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)) ?></td>
+                                                            <td><?php echo date('d M Y', strtotime($sales->sale_datetime)) ?></td>
                                                             <td><?php echo "Ksh " . number_format($sales->product_purchase_price, 2); ?></td>
-                                                            <td><?php echo "Ksh " . number_format($sales->product_sale_price, 2); ?></td>
                                                             <td><?php echo "Ksh " . number_format($discounted_price, 2); ?></td>
                                                             <td><?php echo $sales->sale_quantity ?></td>
                                                             <td><?php echo "Ksh " . number_format($sale_margin); ?></td>
                                                             <td>
-                                                                <?php echo "Ksh " . number_format($sales_amount, 2);
-                                                                $cumulative_income += $sales_amount;
-                                                                $cumulative_expenditure += ($sales->product_purchase_price * $sales->sale_quantity);
+                                                                <?php echo "Ksh " . number_format($sales_amount, 2); ?>
+                                                                <?php
+                                                                $cumulative_income += $sales_amount;  // Accumulate Total Cash In
+                                                                $cumulative_expenditure += ($sales->product_purchase_price * $sales->sale_quantity); // Accumulate Total Cash Out
                                                                 ?>
                                                             </td>
                                                         </tr>
                                                     <?php
                                                     }
                                                     ?>
+                                                    <!-- Total Cash In (Revenue) -->
                                                     <tr>
-                                                        <td colspan="7"><b>Cumulative Sales :</b></td>
+                                                        <td colspan="6"><b>Total Cash In (Revenue):</b></td>
                                                         <td><b><?php echo  "Ksh " . number_format($cumulative_income, 2); ?></b></td>
                                                     </tr>
+                                                    <!-- Total Cash Out (Cost of Goods Sold) -->
                                                     <tr>
-                                                        <td colspan="7"><b>Cumulative Purchase:</b></td>
+                                                        <td colspan="6"><b>Total Cash Out (Cost of Goods Sold):</b></td>
                                                         <td><b><?php echo  "Ksh " . number_format($cumulative_expenditure, 2); ?></b></td>
                                                     </tr>
+                                                    <!-- Net Profit or Loss -->
                                                     <?php
-                                                    if ($cumulative_expenditure > $cumulative_income) {
+                                                    $net_result = $cumulative_income - $cumulative_expenditure;
+                                                    if ($net_result > 0) {
                                                     ?>
                                                         <tr>
-                                                            <td colspan="7"><b>Cumulative Loss :</b></td>
-                                                            <td><b><?php echo  "Ksh " . number_format(abs($cumulative_income - $cumulative_expenditure), 2); ?></b></td>
+                                                            <td colspan="6"><b>Net Profit:</b></td>
+                                                            <td><b><?php echo  "Ksh " . number_format($net_result, 2); ?></b></td>
                                                         </tr>
-                                                    <?php } else if ($cumulative_expenditure < $cumulative_income) { ?>
+                                                    <?php } elseif ($net_result < 0) { ?>
                                                         <tr>
-                                                            <td colspan="7"><b>Cumulative Profit:</b></td>
-                                                            <td><b><?php echo  "Ksh " . number_format(abs($cumulative_income - $cumulative_expenditure), 2); ?></b></td>
+                                                            <td colspan="6"><b>Net Loss:</b></td>
+                                                            <td><b><?php echo  "Ksh " . number_format(abs($net_result), 2); ?></b></td>
                                                         </tr>
                                                     <?php } else { ?>
                                                         <tr>
-                                                            <td colspan="7"><b>Cumulative Loss Or Profit:</b></td>
-                                                            <td><b><?php echo  "Ksh " . number_format(($cumulative_income - $cumulative_expenditure), 2); ?></b></td>
+                                                            <td colspan="6"><b>Break-Even (No Profit or Loss):</b></td>
+                                                            <td><b><?php echo  "Ksh " . number_format($net_result, 2); ?></b></td>
                                                         </tr>
                                                     <?php } ?>
                                                 </tbody>

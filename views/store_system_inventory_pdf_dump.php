@@ -166,7 +166,7 @@ while ($stores = $res->fetch_object()) {
         <body style="margin:1px;">
             <div class="footer">
                 <hr>
-                <i>Report Generated On ' . date('d M Y') . '</i>, Proudly Powered By Devlan Solutions LTD : www.devlan.co.ke
+                <i><b>Report Generated On ' . date('d M Y') . ', NativeBeecare POS. Powered By Devlan Solutions LTD ~ devlan.co.ke </b><i>
             </div>
             <div class="list_header" align="center">
                 <h3>
