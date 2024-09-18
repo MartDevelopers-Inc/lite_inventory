@@ -166,12 +166,12 @@ require_once('../partials/head.php');
                                                 <table class="table table-bordered dt-responsive" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                     <thead>
                                                         <tr>
-                                                            <th>Sale</th>
+                                                            <th>Item</th>
                                                             <th>Date</th>
                                                             <th>Purchase Price</th>
                                                             <th>Sale Price</th>
-                                                            <th>Discounted Amount</th>
                                                             <th>QTY Sold</th>
+                                                            <th>Discounted  Amount</th>
                                                             <th>Margin</th>
                                                             <th>Amount</th>
                                                         </tr>
