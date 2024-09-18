@@ -85,25 +85,28 @@ function filterData(&$str)
 }
 
 /* Excel File Name */
-$fileName = 'Profit / Loss Statements Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($start)) . '.xls';
+$fileName = 'Profit / Loss Statements Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)) . '.xls';
 
 /* Excel Column Name */
 $fields = array(
-    'Item Details',
+    'Item',
     'Date Sold',
-    'Unit Purchase Price (Ksh)',
-    'Unit Sale Price',
-    'Unit Discounted Amount (Ksh)',
+    'Purchase Price (Ksh)',
+    'Discounted Sale Amount (Ksh)',
     'Quantity Sold',
     'Margin (Ksh)',
     'Amount (Ksh)',
 );
 
-
-
-
 /* Implode Excel Data */
 $excelData = implode("\t", array_values($fields)) . "\n";
+
+/* Initialize totals */
+$total_margin = 0;
+$total_sales = 0;
+$total_quantity = 0;
+$cumulative_income = 0;
+$cumulative_expenditure = 0;
 
 /* Fetch All Records From The Database */
 $query = $mysqli->query("SELECT * FROM sales s
@@ -119,14 +122,19 @@ if ($query->num_rows > 0) {
         $sales_amount = $row['sale_quantity'] * $row['sale_payment_amount'];
         $discounted_price = $row['product_sale_price'] - $row['sale_discount'];
         $sale_margin = ($discounted_price - $row['product_purchase_price']) * $row['sale_quantity'];
+
+        /* Update cumulative totals */
+        $total_margin += $sale_margin;
+        $total_sales += $sales_amount;
+        $total_quantity += $row['sale_quantity'];
         $cumulative_income += $sales_amount;
         $cumulative_expenditure += ($row['product_purchase_price'] * $row['sale_quantity']);
+
         /* Hardwire This Data Into .xls File */
         $lineData = array(
             $row['product_name'],
             $sale_datetime,
             $row['product_purchase_price'],
-            $row['product_sale_price'],
             $discounted_price,
             $row['sale_quantity'],
             $sale_margin,
@@ -135,6 +143,33 @@ if ($query->num_rows > 0) {
         array_walk($lineData, 'filterData');
         $excelData .= implode("\t", array_values($lineData)) . "\n";
     }
+
+    /* Add totals row at the bottom */
+    $totalsData = array(
+        'TOTAL',
+        '',
+        '',
+        '',
+        $total_quantity, /* Total quantity sold */
+        $total_margin,   /* Total margin */
+        $total_sales     /* Total sales amount */
+    );
+    array_walk($totalsData, 'filterData');
+    $excelData .= implode("\t", array_values($totalsData)) . "\n";
+
+    /* Compute overall profit or loss */
+    $profit_or_loss = $cumulative_income - $cumulative_expenditure;
+    $profit_or_loss_data = array(
+        'Profit / Loss',
+        '',
+        '',
+        '',
+        '',
+        '',
+        $profit_or_loss
+    );
+    array_walk($profit_or_loss_data, 'filterData');
+    $excelData .= implode("\t", array_values($profit_or_loss_data)) . "\n";
 } else {
     $excelData .= 'No Records Available...' . "\n";
 }
@@ -143,7 +178,7 @@ if ($query->num_rows > 0) {
 header("Content-Type: application/vnd.ms-excel");
 header("Content-Disposition: attachment; filename=\"$fileName\"");
 
-/* Render  Excel Data For Download */
+/* Render Excel Data For Download */
 echo $excelData;
 
 exit;

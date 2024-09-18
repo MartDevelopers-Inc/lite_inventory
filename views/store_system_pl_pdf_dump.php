@@ -172,7 +172,7 @@ while ($stores = $res->fetch_object()) {
                     <body style="margin:1px;">
                         <div class="footer">
                             <hr>
-                            <i>Report Generated On ' . date('d M Y') . '</i>, Proudly Powered By Devlan Solutions LTD : www.devlan.co.ke
+                            <i><b>Report Generated On ' . date('d M Y') . ', NativeBeecare POS. Powered By Devlan Solutions LTD ~ devlan.co.ke </b><i>
                         </div>
                         
                         <div class="list_header" align="center">
@@ -192,8 +192,7 @@ while ($stores = $res->fetch_object()) {
                                     <th>Item</th>
                                     <th>Date</th>
                                     <th>Purchase Price</th>
-                                    <th>Sale Price</th>
-                                    <th>Discounted Amount</th>
+                                    <th>Discounted Sale Price</th>
                                     <th>QTY</th>
                                     <th>Margin</th>
                                     <th>Amount</th>
@@ -222,41 +221,40 @@ while ($stores = $res->fetch_object()) {
                                     '
                                         <tr>
                                             <td style="width:100%">' . $sales->product_name . '</td>
-                                            <td style="width:100%">' . date('d M Y g:ia', strtotime($sales->sale_datetime)) . '</td>
+                                            <td style="width:100%">' . date('d M Y', strtotime($sales->sale_datetime)) . '</td>
                                             <td style="width:100%">' . "Ksh " . number_format($sales->product_purchase_price, 2). '</td>
-                                            <td style="width:100%">' . "Ksh " . number_format($sales->product_sale_price, 2) . '</td>
                                             <td style="width:100%">' . "Ksh " . number_format($discounted_price, 2) . '</td>
                                             <td style="width:40%">' . $sales->sale_quantity . '</td>
-                                            <td style="width:100%">'. "Ksh " . number_format($sale_margin). '</td>
+                                            <td style="width:50%">'. "Ksh " . number_format($sale_margin). '</td>
                                             <td style="width:100%">' . "Ksh " . number_format($sales_amount, 2) . '</td>
                                         </tr>
                                     ';
                                 }
                                     $html .= '
                                     <tr>
-                                        <td  colspan="7"><b>Cumulative Sales: </b></td>
+                                        <td  colspan="6"><b>Total Cash In (Revenue): </b></td>
                                         <td style="width:100%"><b>' . "Ksh " . number_format($cumulative_income, 2) . '</b></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="7"><b>Cumulative Purchase: </b></td>
+                                        <td colspan="6"><b>Total Cash Out (Cost of Goods Sold): </b></td>
                                         <td style="width:100%"><b>'. "Ksh " . number_format($cumulative_expenditure, 2) . '</b></td>
                                     </tr>';
                                     if ($cumulative_expenditure > $cumulative_income) {
                                     $html .='
                                     <tr>
-                                        <td colspan="7"><b>Cumulative Loss: </b></td>
+                                        <td colspan="6"><b>Net Loss: </b></td>
                                         <td style="width:100%"><b>'. "Ksh " . number_format(abs($cumulative_income - $cumulative_expenditure), 2) . '</b></td>
                                     </tr>';
                                     } else if($cumulative_expenditure < $cumulative_income) {
                                     $html .='
                                     <tr>
-                                        <td colspan="7"><b>Cumulative Profit: </b></td>
+                                        <td colspan="6"><b>Net Profit: </b></td>
                                         <td style="width:100%"><b>'. "Ksh " . number_format(abs($cumulative_income - $cumulative_expenditure), 2) . '</b></td>
                                     </tr>';
                                     } else {
                                         $html .='
                                     <tr>
-                                        <td colspan="7"><b>Cumulative Profit / Loss: </b></td>
+                                        <td colspan="6"><b>Break-Even (No Profit or Loss): </b></td>
                                         <td style="width:100%"><b>'. "Ksh " . number_format(($cumulative_income - $cumulative_expenditure), 2) . '</b></td>
                                     </tr>';
                                     }$html .='
@@ -267,7 +265,7 @@ while ($stores = $res->fetch_object()) {
         ';
     $dompdf = new Dompdf();
     $dompdf->load_html($html);
-    $dompdf->set_paper('A4');
+    $dompdf->set_paper('A4', 'landscape');
     $dompdf->set_option('isHtml5ParserEnabled', true);
     $dompdf->render();
     $dompdf->stream('Profit And Loss Statement Report From ' . $start . ' To ' . $end, array("Attachment" => 1));
