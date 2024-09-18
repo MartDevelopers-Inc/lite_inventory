@@ -169,11 +169,10 @@ require_once('../partials/head.php');
                                                             <th>Sale</th>
                                                             <th>Date</th>
                                                             <th>Purchase Price</th>
-                                                            <th>Sale Price</th>
-                                                            <th>Discounted Amount</th>
+                                                            <th>Discounted Sale Price</th>
                                                             <th>QTY Sold</th>
                                                             <th>Margin</th>
-                                                            <th>Amount (Cash In)</th>
+                                                            <th>Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -200,9 +199,8 @@ require_once('../partials/head.php');
                                                         ?>
                                                             <tr>
                                                                 <td><?php echo $sales->product_name ?></td>
-                                                                <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)) ?></td>
+                                                                <td><?php echo date('d M Y', strtotime($sales->sale_datetime)) ?></td>
                                                                 <td><?php echo "Ksh " . number_format($sales->product_purchase_price, 2); ?></td>
-                                                                <td><?php echo "Ksh " . number_format($sales->product_sale_price, 2); ?></td>
                                                                 <td><?php echo "Ksh " . number_format($discounted_price, 2); ?></td>
                                                                 <td><?php echo $sales->sale_quantity ?></td>
                                                                 <td><?php echo "Ksh " . number_format($sale_margin); ?></td>
@@ -219,12 +217,12 @@ require_once('../partials/head.php');
                                                         ?>
                                                         <!-- Total Cash In (Revenue) -->
                                                         <tr>
-                                                            <td colspan="7"><b>Total Cash In (Revenue):</b></td>
+                                                            <td colspan="6"><b>Total Cash In (Revenue):</b></td>
                                                             <td><b><?php echo  "Ksh " . number_format($cumulative_income, 2); ?></b></td>
                                                         </tr>
                                                         <!-- Total Cash Out (Cost of Goods Sold) -->
                                                         <tr>
-                                                            <td colspan="7"><b>Total Cash Out (Cost of Goods Sold):</b></td>
+                                                            <td colspan="6"><b>Total Cash Out (Cost of Goods Sold):</b></td>
                                                             <td><b><?php echo  "Ksh " . number_format($cumulative_expenditure, 2); ?></b></td>
                                                         </tr>
                                                         <!-- Net Profit or Loss -->
@@ -233,17 +231,17 @@ require_once('../partials/head.php');
                                                         if ($net_result > 0) {
                                                         ?>
                                                             <tr>
-                                                                <td colspan="7"><b>Net Profit:</b></td>
+                                                                <td colspan="6"><b>Net Profit:</b></td>
                                                                 <td><b><?php echo  "Ksh " . number_format($net_result, 2); ?></b></td>
                                                             </tr>
                                                         <?php } elseif ($net_result < 0) { ?>
                                                             <tr>
-                                                                <td colspan="7"><b>Net Loss:</b></td>
+                                                                <td colspan="6"><b>Net Loss:</b></td>
                                                                 <td><b><?php echo  "Ksh " . number_format(abs($net_result), 2); ?></b></td>
                                                             </tr>
                                                         <?php } else { ?>
                                                             <tr>
-                                                                <td colspan="7"><b>Break-Even (No Profit or Loss):</b></td>
+                                                                <td colspan="6"><b>Break-Even (No Profit or Loss):</b></td>
                                                                 <td><b><?php echo  "Ksh " . number_format($net_result, 2); ?></b></td>
                                                             </tr>
                                                         <?php } ?>

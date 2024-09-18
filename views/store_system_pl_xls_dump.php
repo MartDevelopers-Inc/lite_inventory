@@ -118,7 +118,7 @@ if ($query->num_rows > 0) {
         $sale_datetime = date('d M Y g:ia', strtotime($row['sale_datetime']));
         $sales_amount = $row['sale_quantity'] * $row['sale_payment_amount'];
         $discounted_price = $row['product_sale_price'] - $row['sale_discount'];
-        $sale_margin = ($row['product_sale_price'] - $row['product_purchase_price']) * $row['sale_quantity'];
+        $sale_margin = ($discounted_price - $row['product_purchase_price']) * $row['sale_quantity'];
         $cumulative_income += $sales_amount;
         $cumulative_expenditure += ($row['product_purchase_price'] * $row['sale_quantity']);
         /* Hardwire This Data Into .xls File */

@@ -215,7 +215,7 @@ while ($stores = $res->fetch_object()) {
                                     /* Sale Amount  */
                                     $sales_amount = $sales->sale_quantity * $sales->sale_payment_amount;
                                     $discounted_price = $sales->product_sale_price - $sales->sale_discount;
-                                    $sale_margin = ($sales->product_sale_price - $sales->product_purchase_price) * $sales->sale_quantity;
+                                    $sale_margin = ($discounted_price - $sales->product_purchase_price) * $sales->sale_quantity;
                                     $cumulative_income += $sales_amount;
                                     $cumulative_expenditure += ($sales->product_purchase_price * $sales->sale_quantity);
                                     $html .=
