@@ -174,7 +174,7 @@ while ($stores = $res->fetch_object()) {
                         <body style="margin:1px;">
                             <div class="footer">
                                 <hr>
-                                <i>Summarized Sales Report. Generated On ' . date('d M Y g:ia') . '</i>
+                                <i><b>Report Generated On ' . date('d M Y') . ', NativeBeecare POS. Powered By Devlan Solutions LTD ~ devlan.co.ke </b><i>
                             </div>
                             
                             <div class="list_header" align="center">
@@ -341,7 +341,7 @@ while ($stores = $res->fetch_object()) {
                         <body style="margin:1px;">
                             <div class="footer">
                                 <hr>
-                                <i>Composite Sales Report. Generated On ' . date('d M Y g:ia') . '</i>
+                                <i><b>Report Generated On ' . date('d M Y') . ', NativeBeecare POS. Powered By Devlan Solutions LTD ~ devlan.co.ke </b><i>
                             </div>
                             
                             <div class="list_header" align="center">
