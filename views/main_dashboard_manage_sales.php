@@ -118,10 +118,12 @@ require_once('../partials/head.php')
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $ret = "SELECT * FROM sales s
-                                                        INNER JOIN products p ON p.product_id =  s.sale_product_id
+                                                        $ret = "SELECT s.sale_receipt_no, s.sale_datetime, SUM(s.sale_quantity) as total_quantity, 
+                                                        p.product_name, u.user_name 
+                                                        FROM sales s
+                                                        INNER JOIN products p ON p.product_id = s.sale_product_id
                                                         INNER JOIN users u ON u.user_id = s.sale_user_id
-                                                        GROUP BY s.sale_receipt_no";
+                                                        GROUP BY s.sale_receipt_no, s.sale_datetime, p.product_name, u.user_name";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
