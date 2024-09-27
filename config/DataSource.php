@@ -81,11 +81,11 @@ class DataSource
 
     // PHP 7.1.0 visibility modifiers are allowed for class constants.
     // when using above 7.1.0, declare the below constants as private
-    const HOST = 'localhost';
+    const HOST = 'db';
 
-    const USERNAME = 'root';
+    const USERNAME = 'lite_inventory';
 
-    const PASSWORD = '';
+    const PASSWORD = '20Devlan@';
 
     const DATABASENAME = 'lite_inventory';
 

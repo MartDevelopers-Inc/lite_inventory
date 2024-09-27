@@ -66,9 +66,9 @@
 
 class DBController
 {
-	private $host = "localhost";
-	private $user = "root";
-	private $password = "";
+	private $host = "db";
+	private $user = "lite_inventory";
+	private $password = "20Devlan@";
 	private $database = "lite_inventory";
 	private $conn;
 

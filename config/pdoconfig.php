@@ -65,13 +65,13 @@
 
 
 /* Database Host */
-$DB_host = "localhost";
+$DB_host = "db";
 
 /* Database Root */
-$DB_user = "root";
+$DB_user = "lite_inventory";
 
 /* Database Password */
-$DB_pass = "";
+$DB_pass = "20Devlan@";
 
 /* Database Name */
 $DB_name = "lite_inventory";
