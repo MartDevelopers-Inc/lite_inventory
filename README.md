@@ -48,6 +48,9 @@ From our servers to our clients' endpoints, at full throttle with no loss of dat
 
 ## How to Unleash This Beast
 
+
+### Run It Using LAMPP/XAMPP Stack
+
 To install the Devlan Solutions LTD Lite Inventory MIS, follow these steps:
 
 1. Clone the repository:
@@ -64,12 +67,23 @@ To install the Devlan Solutions LTD Lite Inventory MIS, follow these steps:
 
 6. On your browswer just type http://localhost/Inventory
 
+
+### Run It Using Docker
+
+To install the Devlan Solutions LTD Lite Inventory MIS, follow these steps:
+
+- Fix Internal Server Error
+ In Docker Desktop CLI RUN a2enmod rewrite
+- Fix class mysqli not found
+  
+
+
 NOTE: For commercial deployment on a live server, you can drop an email to us for little guidance and leave a cup of coffee because our developers are thirsty as hell.
 
 
 ## Tech Stack
 
-**Client:** Bootstrap
+**Client:** Bootstrap, jQuerry
 
 **Server:** PHP and Mysql
 
