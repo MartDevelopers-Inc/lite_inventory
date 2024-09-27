@@ -1,22 +1,20 @@
 # Use the official PHP image with Apache
 FROM php:8.1-apache
 
-# Set the working directory in the container
+# Enable mod_rewrite for Apache
+RUN a2enmod rewrite
+
+# Install mysqli extension
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+
+# Allow .htaccess files to override Apache settings
+RUN sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
+# Set the working directory
 WORKDIR /var/www/html
 
-# Copy the PHP app into the container
+# Copy the application files into the container
 COPY . /var/www/html
-
-# Install necessary PHP extensions (including MySQL)
-RUN docker-php-ext-install pdo pdo_mysql mysqli
-
 
 # Expose port 80 for web traffic
 EXPOSE 80
-
-# Install required Apache modules
-RUN a2enmod rewrite
-
-# Set AllowOverride to All in the Apache config
-RUN sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
-
