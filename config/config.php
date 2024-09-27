@@ -65,8 +65,8 @@
 
 
 /* Procedural Database Connecrions */
-$dbuser = "root"; /* Database Username */
-$dbpass = ""; /* Database Username Password */
+$dbuser = "lite_inventory"; /* Database Username */
+$dbpass = "20Devlan@"; /* Database Username Password */
 $host = "localhost"; /* Database Host */
 $db = "lite_inventory";  /* Database Name */
 $mysqli = new mysqli($host, $dbuser, $dbpass, $db); /* Connection Function */
