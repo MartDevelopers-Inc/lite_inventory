@@ -72,10 +72,17 @@ To install the Devlan Solutions LTD Lite Inventory MIS, follow these steps:
 
 To install the Devlan Solutions LTD Lite Inventory MIS, follow these steps:
 
-- Fix Internal Server Error
- In Docker Desktop CLI RUN a2enmod rewrite
-- Fix class mysqli not found
-  
+
+- Install necessary extensions
+    RUN docker-php-ext-install mysqli
+    RUN  a2enmod rewrite
+    RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd
+
 
 
 NOTE: For commercial deployment on a live server, you can drop an email to us for little guidance and leave a cup of coffee because our developers are thirsty as hell.

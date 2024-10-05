@@ -114,17 +114,20 @@ require_once('../partials/head.php');
                                             <tbody>
                                                 <?php
                                                 $store_id = $_GET['view'];
-                                                $ret = "SELECT * FROM sales s
-                                                INNER JOIN products p ON p.product_id =  s.sale_product_id
-                                                INNER JOIN users u ON u.user_id = s.sale_user_id 
-                                                WHERE p.product_store_id = '{$store_id}' GROUP BY s.sale_receipt_no";
+                                                $ret = "SELECT s.sale_receipt_no, s.sale_datetime, p.product_store_id,  SUM(s.sale_quantity) as total_quantity, 
+                                                p.product_name, u.user_name 
+                                                FROM sales s
+                                                INNER JOIN products p ON p.product_id = s.sale_product_id
+                                                INNER JOIN users u ON u.user_id = s.sale_user_id
+                                                WHERE p.product_store_id = '$store_id'
+                                                GROUP BY s.sale_receipt_no, s.sale_datetime, p.product_name, u.user_name";
                                                 $stmt = $mysqli->prepare($ret);
                                                 $stmt->execute(); //ok
                                                 $res = $stmt->get_result();
                                                 while ($sales = $res->fetch_object()) {
                                                     /* Count Number Of Sales */
                                                     $query = "SELECT SUM(sale_quantity)  FROM sales 
-                                                    WHERE sale_receipt_no = '{$sales->sale_receipt_no}'";
+                                                    WHERE sale_receipt_no = '$sales->sale_receipt_no'";
                                                     $stmt = $mysqli->prepare($query);
                                                     $stmt->execute();
                                                     $stmt->bind_result($number_of_items);
