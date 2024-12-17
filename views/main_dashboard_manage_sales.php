@@ -109,8 +109,8 @@ require_once('../partials/head.php')
                                                 <table class="datatable-init table">
                                                     <thead>
                                                         <tr>
-                                                            <th>Receipt Number</th>
                                                             <th>Date Posted</th>
+                                                            <th>Receipt Number</th>
                                                             <th>Items Qty</th>
                                                             <th>Posted By</th>
                                                             <th>Manage</th>
@@ -118,13 +118,11 @@ require_once('../partials/head.php')
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $ret = "SELECT s.sale_receipt_no, s.sale_datetime, SUM(s.sale_quantity) as total_quantity, 
-                                                        p.product_name, u.user_name 
-                                                        FROM sales s
-                                                        INNER JOIN products p ON p.product_id = s.sale_product_id
+                                                        $ret = "SELECT * FROM sales s
+                                                        INNER JOIN products p ON p.product_id =  s.sale_product_id
                                                         INNER JOIN users u ON u.user_id = s.sale_user_id
-                                                        GROUP BY s.sale_receipt_no, s.sale_datetime, p.product_name, u.user_name 
-                                                        ORDER BY s.sale_datetime ASC";
+                                                        GROUP BY s.sale_receipt_no
+                                                        ORDER BY sale_datetime ASC";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
@@ -139,8 +137,10 @@ require_once('../partials/head.php')
                                                             $stmt->close();
                                                         ?>
                                                             <tr>
+                                                                <td data-sort="<?php echo date('Y-m-d\TH:i:s', strtotime($sales->sale_datetime)); ?>">
+                                                                    <?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?>
+                                                                </td>
                                                                 <td><?php echo $sales->sale_receipt_no; ?></td>
-                                                                <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?></td>
                                                                 <td><?php echo $number_of_items; ?></td>
                                                                 <td><?php echo $sales->user_name; ?></td>
                                                                 <td>
