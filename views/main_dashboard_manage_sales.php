@@ -124,7 +124,7 @@ require_once('../partials/head.php')
                                                         INNER JOIN products p ON p.product_id = s.sale_product_id
                                                         INNER JOIN users u ON u.user_id = s.sale_user_id
                                                         GROUP BY s.sale_receipt_no, s.sale_datetime, p.product_name, u.user_name 
-                                                        ORDER BY s.sale_datetime DESC";
+                                                        ORDER BY s.sale_datetime ASC";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
