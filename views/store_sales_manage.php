@@ -103,8 +103,8 @@ require_once('../partials/head.php');
                                         <table class="datatable-init table">
                                             <thead>
                                                 <tr>
-                                                    <th>Receipt Number</th>
                                                     <th>Date Posted</th>
+                                                    <th>Receipt Number</th>
                                                     <th>Items Qty</th>
                                                     <th>Payment Method</th>
                                                     <th>Posted By</th>
@@ -114,20 +114,18 @@ require_once('../partials/head.php');
                                             <tbody>
                                                 <?php
                                                 $store_id = $_GET['view'];
-                                                $ret = "SELECT s.sale_receipt_no, s.sale_datetime, p.product_store_id,  SUM(s.sale_quantity) as total_quantity, 
-                                                p.product_name, u.user_name 
-                                                FROM sales s
-                                                INNER JOIN products p ON p.product_id = s.sale_product_id
-                                                INNER JOIN users u ON u.user_id = s.sale_user_id
-                                                WHERE p.product_store_id = '$store_id'
-                                                GROUP BY s.sale_receipt_no, s.sale_datetime, p.product_name, u.user_name";
+                                                $ret = "SELECT * FROM sales s
+                                                INNER JOIN products p ON p.product_id =  s.sale_product_id
+                                                INNER JOIN users u ON u.user_id = s.sale_user_id 
+                                                WHERE p.product_store_id = '{$store_id}' GROUP BY s.sale_receipt_no
+                                                ORDER BY sale_datetime ASC";
                                                 $stmt = $mysqli->prepare($ret);
                                                 $stmt->execute(); //ok
                                                 $res = $stmt->get_result();
                                                 while ($sales = $res->fetch_object()) {
                                                     /* Count Number Of Sales */
                                                     $query = "SELECT SUM(sale_quantity)  FROM sales 
-                                                    WHERE sale_receipt_no = '$sales->sale_receipt_no'";
+                                                    WHERE sale_receipt_no = '{$sales->sale_receipt_no}'";
                                                     $stmt = $mysqli->prepare($query);
                                                     $stmt->execute();
                                                     $stmt->bind_result($number_of_items);
@@ -135,8 +133,10 @@ require_once('../partials/head.php');
                                                     $stmt->close();
                                                 ?>
                                                     <tr>
+                                                        <td data-sort="<?php echo date('Y-m-d\TH:i:s', strtotime($sales->sale_datetime)); ?>">
+                                                            <?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?>
+                                                        </td>
                                                         <td><?php echo $sales->sale_receipt_no; ?></td>
-                                                        <td><?php echo date('d M Y g:ia', strtotime($sales->sale_datetime)); ?></td>
                                                         <td><?php echo $number_of_items; ?></td>
                                                         <td><?php echo $sales->sale_payment_method; ?></td>
                                                         <td><?php echo $sales->user_name; ?></td>
