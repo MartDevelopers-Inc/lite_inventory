@@ -2,13 +2,11 @@
 /**
  * @package php-svg-lib
  * @link    http://github.com/PhenX/php-svg-lib
- * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
  * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
  */
 
 namespace Svg\Tag;
-
-use Svg\Style;
 
 class Rect extends Shape
 {
@@ -21,21 +19,28 @@ class Rect extends Shape
 
     public function start($attributes)
     {
-        $width = $this->document->getWidth();
-        $height = $this->document->getHeight();
-
         if (isset($attributes['x'])) {
-            $this->x = $this->convertSize($attributes['x'], $width);
+            $this->x = $attributes['x'];
         }
         if (isset($attributes['y'])) {
-            $this->y = $this->convertSize($attributes['y'], $height);
+            $this->y = $attributes['y'];
         }
 
         if (isset($attributes['width'])) {
-            $this->width = $this->convertSize($attributes['width'], $width);
+            if ('%' === substr($attributes['width'], -1)) {
+                $factor = substr($attributes['width'], 0, -1) / 100;
+                $this->width = $this->document->getWidth() * $factor;
+            } else {
+                $this->width = $attributes['width'];
+            }
         }
         if (isset($attributes['height'])) {
-            $this->height = $this->convertSize($attributes['height'], $height);
+            if ('%' === substr($attributes['height'], -1)) {
+                $factor = substr($attributes['height'], 0, -1) / 100;
+                $this->height = $this->document->getHeight() * $factor;
+            } else {
+                $this->height = $attributes['height'];
+            }
         }
 
         if (isset($attributes['rx'])) {

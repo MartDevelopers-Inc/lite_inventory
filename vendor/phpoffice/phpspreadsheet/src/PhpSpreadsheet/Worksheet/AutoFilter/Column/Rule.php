@@ -213,13 +213,6 @@ class Rule
         $this->parent = $parent;
     }
 
-    private function setEvaluatedFalse(): void
-    {
-        if ($this->parent !== null) {
-            $this->parent->setEvaluatedFalse();
-        }
-    }
-
     /**
      * Get AutoFilter Rule Type.
      *
@@ -239,7 +232,6 @@ class Rule
      */
     public function setRuleType($ruleType)
     {
-        $this->setEvaluatedFalse();
         if (!in_array($ruleType, self::RULE_TYPES)) {
             throw new PhpSpreadsheetException('Invalid rule type for column AutoFilter Rule.');
         }
@@ -268,7 +260,6 @@ class Rule
      */
     public function setValue($value)
     {
-        $this->setEvaluatedFalse();
         if (is_array($value)) {
             $grouping = -1;
             foreach ($value as $key => $v) {
@@ -311,7 +302,6 @@ class Rule
      */
     public function setOperator($operator)
     {
-        $this->setEvaluatedFalse();
         if (empty($operator)) {
             $operator = self::AUTOFILTER_COLUMN_RULE_EQUAL;
         }
@@ -345,7 +335,6 @@ class Rule
      */
     public function setGrouping($grouping)
     {
-        $this->setEvaluatedFalse();
         if (
             ($grouping !== null) &&
             (!in_array($grouping, self::DATE_TIME_GROUPS)) &&
@@ -370,7 +359,6 @@ class Rule
      */
     public function setRule($operator, $value, $grouping = null)
     {
-        $this->setEvaluatedFalse();
         $this->setOperator($operator);
         $this->setValue($value);
         //  Only set grouping if it's been passed in as a user-supplied argument,
@@ -400,7 +388,6 @@ class Rule
      */
     public function setParent(?Column $parent = null)
     {
-        $this->setEvaluatedFalse();
         $this->parent = $parent;
 
         return $this;

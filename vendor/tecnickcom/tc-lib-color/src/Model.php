@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Model.php
  *
@@ -7,7 +6,7 @@
  * @category    Library
  * @package     Color
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2015-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2015-2015 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-color
  *
@@ -25,7 +24,7 @@ namespace Com\Tecnick\Color;
  * @category    Library
  * @package     Color
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2015-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2015-2015 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-color
  */
@@ -37,7 +36,7 @@ abstract class Model
      * @var string
      */
     protected $type;
-
+    
     /**
      * Value of the Alpha channel component.
      * Values range between 0.0 (fully transparent) and 1.0 (fully opaque)
@@ -45,8 +44,6 @@ abstract class Model
      * @var float
      */
     protected $cmp_alpha = 1.0;
-
-    abstract public function toRgbArray();
 
     /**
      * Initialize a new color object
@@ -56,7 +53,7 @@ abstract class Model
     public function __construct($components)
     {
         foreach ($components as $color => $value) {
-            $property = 'cmp_' . $color;
+            $property = 'cmp_'.$color;
             if (property_exists($this, $property)) {
                 $this->$property = (max(0, min(1, floatval($value))));
             }
@@ -79,7 +76,7 @@ abstract class Model
      * @param float $value Fraction value to convert [0..1]
      * @param int   $max   Maximum value to return (reference value)
      *
-     * @return float value [0..$max]
+     * @return integer value [0..$max]
      */
     public function getNormalizedValue($value, $max)
     {
@@ -92,7 +89,7 @@ abstract class Model
      * @param float $value Fraction value to convert [0..1]
      * @param int   $max   Maximum value to return (reference value)
      *
-     * @return string
+     * @return integer value [0..$max]
      */
     public function getHexValue($value, $max)
     {
@@ -108,10 +105,10 @@ abstract class Model
     {
         $rgba = $this->toRgbArray();
         return '#'
-            . $this->getHexValue($rgba['red'], 255)
-            . $this->getHexValue($rgba['green'], 255)
-            . $this->getHexValue($rgba['blue'], 255)
-            . $this->getHexValue($rgba['alpha'], 255);
+            .$this->getHexValue($rgba['red'], 255)
+            .$this->getHexValue($rgba['green'], 255)
+            .$this->getHexValue($rgba['blue'], 255)
+            .$this->getHexValue($rgba['alpha'], 255);
     }
 
     /**
@@ -123,8 +120,8 @@ abstract class Model
     {
         $rgba = $this->toRgbArray();
         return '#'
-            . $this->getHexValue($rgba['red'], 255)
-            . $this->getHexValue($rgba['green'], 255)
-            . $this->getHexValue($rgba['blue'], 255);
+            .$this->getHexValue($rgba['red'], 255)
+            .$this->getHexValue($rgba['green'], 255)
+            .$this->getHexValue($rgba['blue'], 255);
     }
 }

@@ -2,7 +2,7 @@
 /**
  * @package php-svg-lib
  * @link    http://github.com/PhenX/php-svg-lib
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien M�nager <fabien.menager@gmail.com>
  * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -14,19 +14,12 @@ class UseTag extends AbstractTag
     protected $y = 0;
     protected $width;
     protected $height;
-    protected $instances = 0;
 
     /** @var AbstractTag */
     protected $reference;
 
     protected function before($attributes)
     {
-        $this->instances++;
-        if ($this->instances > 1) {
-            //TODO: log circular reference error state
-            return;
-        }
-
         if (isset($attributes['x'])) {
             $this->x = $attributes['x'];
         }
@@ -45,8 +38,12 @@ class UseTag extends AbstractTag
 
         $document = $this->getDocument();
 
-        $link = $attributes["href"] ?? $attributes["xlink:href"];
+        $link = $attributes["xlink:href"];
         $this->reference = $document->getDef($link);
+
+        if ($this->reference) {
+            $this->reference->before($attributes);
+        }
 
         $surface = $document->getSurface();
         $surface->save();
@@ -55,78 +52,45 @@ class UseTag extends AbstractTag
     }
 
     protected function after() {
-        if ($this->instances > 0) {
-            return;
-        }
         parent::after();
+
+        if ($this->reference) {
+            $this->reference->after();
+        }
+
         $this->getDocument()->getSurface()->restore();
     }
 
     public function handle($attributes)
     {
-        if ($this->instances > 1) {
-            //TODO: log circular reference error state
-            return;
-        }
-
         parent::handle($attributes);
 
         if (!$this->reference) {
             return;
         }
 
-        $originalAttributes = array_merge($this->reference->attributes);
-        $originalStyle = $this->reference->getStyle();
-        $mergedAttributes = $this->reference->attributes;
-        $attributesToNotMerge = ['x', 'y', 'width', 'height', 'href', 'xlink:href', 'id', 'style'];
-        foreach ($attributes as $attrKey => $attrVal) {
-            if (!in_array($attrKey, $attributesToNotMerge) && !isset($mergedAttributes[$attrKey])) {
-                $mergedAttributes[$attrKey] = $attrVal;
-            }
-        }
-        $mergedAttributes['style'] = ($attributes['style'] ?? '') . ';' . ($mergedAttributes['style'] ?? '');
+        $attributes = array_merge($this->reference->attributes, $attributes);
 
-        $this->_handle($this->reference, $mergedAttributes);
+        $this->reference->handle($attributes);
 
-        $this->reference->attributes = $originalAttributes;
-        if ($originalStyle !== null) {
-            $this->reference->setStyle($originalStyle);
+        foreach ($this->reference->children as $_child) {
+            $_attributes = array_merge($_child->attributes, $attributes);
+            $_child->handle($_attributes);
         }
     }
 
     public function handleEnd()
     {
-        $this->instances--;
-        if ($this->instances > 0) {
+        parent::handleEnd();
+
+        if (!$this->reference) {
             return;
         }
 
-        if ($this->reference) {
-            $this->_handleEnd($this->reference);
-        }
+        $this->reference->handleEnd();
 
-        parent::handleEnd();
-    }
-
-    private function _handle($tag, $attributes) {
-        $tag->handle($attributes);
-        foreach ($tag->children as $child) {
-            $originalAttributes = array_merge($child->attributes);
-            $originalStyle = $child->getStyle();
-            $mergedAttributes = $child->attributes;
-            $mergedAttributes['style'] = ($attributes['style'] ?? '') . ';' . ($mergedAttributes['style'] ?? '');
-            $this->_handle($child, $mergedAttributes);
-            $child->attributes = $originalAttributes;
-            if ($originalStyle !== null) {
-                $child->setStyle($originalStyle);
-            }
+        foreach ($this->reference->children as $_child) {
+            $_child->handleEnd();
         }
-    }
-
-    private function _handleEnd($tag) {
-        foreach ($tag->children as $child) {
-            $this->_handleEnd($child);
-        }
-        $tag->handleEnd();
     }
 } 

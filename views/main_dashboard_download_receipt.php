@@ -115,7 +115,7 @@ $html = '
     }
 
     body{
-        font-family: Arial, sans-serif;
+        font-family: Consolas, "Roboto Mono", "Courier New", monospace;
         font-size: 10pt;
     }
     .heading{

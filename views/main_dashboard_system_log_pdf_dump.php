@@ -96,6 +96,7 @@ if ($log_type == 'All Logs') {
                 table {
                     font-size: 12px;
                     padding: 4px;
+                    font-family: Consolas, "Roboto Mono", "Courier New", monospace;
                 }
 
                 tr {
@@ -135,6 +136,7 @@ if ($log_type == 'All Logs') {
                 }
 
                 .footer {
+                    font-family: Consolas, "Roboto Mono", "Courier New", monospace;
                     width: 100%;
                     text-align: center;
                     position: fixed;
@@ -163,7 +165,7 @@ if ($log_type == 'All Logs') {
                     border: 1px solid red;
                 }
                 .list_header{
-                    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+                    font-family: Consolas, "Roboto Mono", "Courier New", monospace;
                 }
             </style>
         </head>
@@ -171,7 +173,7 @@ if ($log_type == 'All Logs') {
         <body style="margin:1px;">
             <div class="footer">
                 <hr>
-                <i><b>Report Generated On ' . date('d M Y') . ', NativeBeecare POS. Powered By Devlan Solutions LTD ~ devlan.co.ke </b><i>
+                <i><b>Generated On ' . date('d M Y') . '. Powered By Devlan Solutions LTD ~ devlan.co.ke </b><i>
             </div>
 
             <div class="list_header" align="center">
@@ -181,7 +183,7 @@ if ($log_type == 'All Logs') {
                     ' . $stores->store_adr . '  
                 </h3>
                 <hr style="width:100%" , color=black>
-                <h4> ' . $log_type . ' From ' . date('d M Y', strtotime($start)) . ' To ' . date('d M Y', strtotime($end)) . ' </h4>
+                <h4  style="font-size:14pt"> ' . $log_type . ' From ' . date('d M Y', strtotime($start)) . ' To ' . date('d M Y', strtotime($end)) . ' </h4>
             </div>
             <table border="1" cellspacing="0" width="98%" style="font-size:9pt">
                 <thead>
@@ -220,7 +222,7 @@ if ($log_type == 'All Logs') {
 
         $dompdf = new Dompdf();
         $dompdf->load_html($html);
-        $dompdf->set_paper('A4');
+        $dompdf->set_paper('A4', 'landscape');
         $dompdf->set_option('isHtml5ParserEnabled', true);
         $dompdf->render();
         $dompdf->stream('System Logs From ' . $start . ' To ' . $end, array("Attachment" => 1));
@@ -240,10 +242,11 @@ if ($log_type == 'All Logs') {
 
         <head>
             <meta name="" content="XYZ,0,0,1" />
-            <style type="text/css">
+           <style type="text/css">
                 table {
                     font-size: 12px;
                     padding: 4px;
+                    font-family: Consolas, "Roboto Mono", "Courier New", monospace;
                 }
 
                 tr {
@@ -283,6 +286,7 @@ if ($log_type == 'All Logs') {
                 }
 
                 .footer {
+                    font-family: Consolas, "Roboto Mono", "Courier New", monospace;
                     width: 100%;
                     text-align: center;
                     position: fixed;
@@ -311,7 +315,7 @@ if ($log_type == 'All Logs') {
                     border: 1px solid red;
                 }
                 .list_header{
-                    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+                    font-family: Consolas, "Roboto Mono", "Courier New", monospace;
                 }
             </style>
         </head>
@@ -329,7 +333,7 @@ if ($log_type == 'All Logs') {
                     ' . $stores->store_adr . '  
                 </h3>
                 <hr style="width:100%" , color=black>
-                <h4> ' . $log_type . ' From ' . date('d M Y', strtotime($start)) . ' To ' . date('d M Y', strtotime($end)) . ' </h4>
+                <h4 style="font-size:14pt"> ' . $log_type . ' From ' . date('d M Y', strtotime($start)) . ' To ' . date('d M Y', strtotime($end)) . ' </h4>
             </div>
             <table border="1" cellspacing="0" width="98%" style="font-size:9pt">
                 <thead>
@@ -369,9 +373,9 @@ if ($log_type == 'All Logs') {
 
         $dompdf = new Dompdf();
         $dompdf->load_html($html);
-        $dompdf->set_paper('A4');
+        $dompdf->set_paper('A4', 'landscape');
         $dompdf->set_option('isHtml5ParserEnabled', true);
-        $dompdf->render();
+        $dompdf->render();        
         $dompdf->stream($log_type . ' From ' . $start . ' To ' . $end, array("Attachment" => 1));
         $options = $dompdf->getOptions();
         $options->setDefaultFont('');

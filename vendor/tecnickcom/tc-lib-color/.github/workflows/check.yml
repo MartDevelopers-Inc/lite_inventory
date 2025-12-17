@@ -3,9 +3,6 @@ name: check
 env:
   XDEBUG_MODE: coverage
 
-permissions:
-  contents: read
-
 on:
   push:
     branches:
@@ -23,18 +20,19 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php-version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2"]
+                php-version: ["7.2", "7.3", "7.4", "8.0", "8.1"]
                 experimental: [false]
                 os: [ubuntu-latest]
                 coverage-extension: [pcov]
                 include:
                     #- { php-version: '5.3', experimental: false, os: ubuntu-latest, coverage-extension: 'xdebug' }
-                    #- { php-version: '5.4', experimental: false, os: ubuntu-latest, coverage-extension: 'xdebug' }
+                    - { php-version: '5.4', experimental: false, os: ubuntu-latest, coverage-extension: 'xdebug' }
                     - { php-version: '5.5', experimental: false, os: ubuntu-latest, coverage-extension: 'xdebug' }
                     - { php-version: '5.6', experimental: false, os: ubuntu-latest, coverage-extension: 'xdebug' }
                     - { php-version: '7.1', experimental: false, os: ubuntu-latest, coverage-extension: 'xdebug' }
+                    - { php-version: 'nightly', experimental: true, os: ubuntu-latest, coverage-extension: 'pcov' }
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v2
             - name: Use php ${{ matrix.php-version }}
               uses: shivammathur/setup-php@v2
               with:
@@ -47,16 +45,16 @@ jobs:
             - name: List php modules using "no php ini" mode
               run: php -m -n
             - name: Cache module
-              uses: actions/cache@v3
+              uses: actions/cache@v2
               with:
                   path: ~/.composer/cache/
                   key: composer-cache
             - name: Install dependencies
-              run: make deps
+              run: composer install --no-interaction
             - name: Run all tests
               run: make qa
             - name: Send coverage
-              uses: codecov/codecov-action@v3
+              uses: codecov/codecov-action@v1
               with:
                 flags: php-${{ matrix.php-version }}-${{ matrix.os }}
                 name: php-${{ matrix.php-version }}-${{ matrix.os }}

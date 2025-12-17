@@ -2,7 +2,7 @@
 /**
  * @package php-svg-lib
  * @link    http://github.com/PhenX/php-svg-lib
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien M�nager <fabien.menager@gmail.com>
  * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -17,9 +17,6 @@ class Style
     const TYPE_NAME = 3;
     const TYPE_ANGLE = 4;
     const TYPE_NUMBER = 5;
-
-    private $_document;
-    private $_parentStyle;
 
     public $color;
     public $opacity;
@@ -43,12 +40,6 @@ class Style
     public $fontWeight = 'normal';
     public $fontStyle = 'normal';
     public $textAnchor = 'start';
-
-    public function __construct($document = null) {
-        if ($document !== null) {
-            $this->_document = $document;
-        }
-    }
 
     protected function getStyleMap()
     {
@@ -97,7 +88,7 @@ class Style
         $group = $tag->getParentGroup();
         if ($group) {
             $parent_style = $group->getStyle();
-            $this->_parentStyle = $parent_style;
+
             foreach ($parent_style as $_key => $_value) {
                 if ($_value !== null) {
                     $this->$_key = $_value;
@@ -154,24 +145,13 @@ class Style
 
     protected function fillStyles($styles)
     {
-        $style_map = $this->getStyleMap();
-        foreach ($style_map as $from => $spec) {
+        foreach ($this->getStyleMap() as $from => $spec) {
             if (isset($styles[$from])) {
                 list($to, $type) = $spec;
                 $value = null;
                 switch ($type) {
                     case self::TYPE_COLOR:
                         $value = self::parseColor($styles[$from]);
-                        if ($value === "currentcolor") {
-                            if ($type === "color") {
-                                $value = $this->_parentStyle->color;
-                            } else {
-                                $value = $this->color;
-                            }
-                        }
-                        if (is_array($value) && $value[3] !== 1.0 && array_key_exists("{$from}-opacity", $style_map) === true) {
-                            $styles["{$from}-opacity"] = $value[3];
-                        }
                         break;
 
                     case self::TYPE_NUMBER:
@@ -180,16 +160,6 @@ class Style
 
                     default:
                         $value = $styles[$from];
-                }
-
-                if ($from === "font-family") {
-                    $scheme = \strtolower(parse_url($value, PHP_URL_SCHEME) ?: "");
-                    if (
-                        $scheme === "phar" || \strtolower(\substr($value, 0, 7)) === "phar://"
-                        || ($this->_document !== null && $this->_document->allowExternalReferences === false && $scheme !== "data")
-                    ) {
-                        continue;
-                    }
                 }
 
                 if ($value !== null) {
@@ -207,20 +177,13 @@ class Style
 
         if (count($parts) == 2) {
             $color = $parts[1];
-        } else {
+        }
+        else {
             $color = $parts[0];
         }
 
         if ($color === "none") {
             return "none";
-        }
-
-        if ($color === "currentcolor") {
-            return "currentcolor";
-        }
-
-        if ($color === "transparent") {
-            return [0.0, 0.0, 0.0, 0.0];
         }
 
         // SVG color name
@@ -235,18 +198,18 @@ class Style
 
         // RGB color
         if (strpos($color, "rgb") !== false) {
-            return self::getQuad($color);
+            return self::getTriplet($color);
         }
 
-        // HSL color
+        // RGB color
         if (strpos($color, "hsl") !== false) {
-            $quad = self::getQuad($color, true);
+            $triplet = self::getTriplet($color, true);
 
-            if ($quad == null) {
+            if ($triplet == null) {
                 return null;
             }
 
-            list($h, $s, $l, $a) = $quad;
+            list($h, $s, $l) = $triplet;
 
             $r = $l;
             $g = $l;
@@ -295,13 +258,11 @@ class Style
                         break;
                 }
             }
-            $a = $a * 255;
 
             return array(
                 $r * 255.0,
                 $g * 255.0,
                 $b * 255.0,
-                $a
             );
         }
 
@@ -315,14 +276,13 @@ class Style
                 return null;
             }
 
-            //FIXME: gradients not supported?
-            return null; // trim(substr($color, $i + 1, $j - $i - 1));
+            return trim(substr($color, $i + 1, $j - $i - 1));
         }
 
         return null;
     }
 
-    static function getQuad($color, $percent = false) {
+    static function getTriplet($color, $percent = false) {
         $i = strpos($color, "(");
         $j = strpos($color, ")");
 
@@ -331,62 +291,46 @@ class Style
             return null;
         }
 
-        $quad = preg_split("/\\s*[,\\/]\\s*/", trim(substr($color, $i + 1, $j - $i - 1)));
-        if (!isset($quad[3])) {
-            $quad[3] = "1";
-        }
+        $triplet = preg_split("/\\s*,\\s*/", trim(substr($color, $i + 1, $j - $i - 1)));
 
-        if (count($quad) != 3 && count($quad) != 4) {
+        if (count($triplet) != 3) {
             return null;
         }
 
-        foreach (array_keys($quad) as $c) {
-            $quad[$c] = trim($quad[$c]);
+        foreach (array_keys($triplet) as $c) {
+            $triplet[$c] = trim($triplet[$c]);
 
             if ($percent) {
-                if ($quad[$c][strlen($quad[$c]) - 1] === "%") {
-                    $quad[$c] = floatval($quad[$c]) / 100;
-                } else {
-                    $quad[$c] = floatval($quad[$c]) / 255;
+                if ($triplet[$c][strlen($triplet[$c]) - 1] === "%") {
+                    $triplet[$c] = floatval($triplet[$c]) / 100;
                 }
-            } else {
-                if ($quad[$c][strlen($quad[$c]) - 1] === "%") {
-                    $quad[$c] = floatval($quad[$c]) * 2.55;
-                } else {
-                    $quad[$c] = floatval($quad[$c]);
+                else {
+                    $triplet[$c] = $triplet[$c] / 255;
+                }
+            }
+            else {
+                if ($triplet[$c][strlen($triplet[$c]) - 1] === "%") {
+                    $triplet[$c] = round(floatval($triplet[$c]) * 2.55);
                 }
             }
         }
 
-        return $quad;
+        return $triplet;
     }
 
     static function parseHexColor($hex)
     {
-        $c = array(0.0, 0.0, 0.0, 1.0);
+        $c = array(0, 0, 0);
 
         // #FFFFFF
         if (isset($hex[6])) {
             $c[0] = hexdec(substr($hex, 1, 2));
             $c[1] = hexdec(substr($hex, 3, 2));
             $c[2] = hexdec(substr($hex, 5, 2));
-
-            if (isset($hex[7])) {
-                $alpha = substr($hex, 7, 2);
-                if (ctype_xdigit($alpha)) {
-                    $c[3] = round(hexdec($alpha)/255, 2);
-                }
-            }
         } else {
             $c[0] = hexdec($hex[1] . $hex[1]);
             $c[1] = hexdec($hex[2] . $hex[2]);
             $c[2] = hexdec($hex[3] . $hex[3]);
-
-            if (isset($hex[4])) {
-                if (ctype_xdigit($hex[4])) {
-                    $c[3] = round(hexdec($hex[4] . $hex[4])/255, 2);
-                }
-            }
         }
 
         return $c;
@@ -410,6 +354,47 @@ class Style
         }
 
         return $styles;
+    }
+
+    /**
+     * Convert a size to a float
+     *
+     * @param string $size          SVG size
+     * @param float  $dpi           DPI
+     * @param float  $referenceSize Reference size
+     *
+     * @return float|null
+     */
+    static function convertSize($size, $referenceSize = 11.0, $dpi = 96.0) {
+        $size = trim(strtolower($size));
+
+        if (is_numeric($size)) {
+            return $size;
+        }
+
+        if ($pos = strpos($size, "px")) {
+            return floatval(substr($size, 0, $pos));
+        }
+
+        if ($pos = strpos($size, "pt")) {
+            return floatval(substr($size, 0, $pos));
+        }
+
+        if ($pos = strpos($size, "cm")) {
+            return floatval(substr($size, 0, $pos)) * $dpi;
+        }
+
+        if ($pos = strpos($size, "%")) {
+            return $referenceSize * substr($size, 0, $pos) / 100;
+        }
+
+        if ($pos = strpos($size, "em")) {
+            return $referenceSize * substr($size, 0, $pos);
+        }
+
+        // TODO cm, mm, pc, in, etc
+
+        return null;
     }
 
     static $colorNames = array(

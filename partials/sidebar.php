@@ -161,11 +161,19 @@ while ($settings = $res->fetch_object()) {
                         <li class="nk-menu-heading">
                             <h6 class="overline-title text-primary-alt">Reports</h6>
                         </li><!-- .nk-menu-heading -->
-                        <li class="nk-menu-item">
-                            <a href="main_dashboard_reports_sales" class="nk-menu-link">
+                        <li class="nk-menu-item has-sub">
+                            <a href="#" class="nk-menu-link nk-menu-toggle">
                                 <span class="nk-menu-icon"><em class="icon ni ni-money"></em></span>
-                                <span class="nk-menu-text">Sales Reports</span>
+                                <span class="nk-menu-text">Sales</span>
                             </a>
+                            <ul class="nk-menu-sub">
+                                <li class="nk-menu-item">
+                                    <a href="main_dashboard_reports_sales" class="nk-menu-link"><span class="nk-menu-text">Overall Sales</span></a>
+                                </li>
+                                <li class="nk-menu-item">
+                                    <a href="main_dashboard_reports_item_based_sales" class="nk-menu-link"><span class="nk-menu-text">Item Based</span></a>
+                                </li>
+                            </ul><!-- .nk-menu-sub -->
                         </li><!-- .nk-menu-item -->
                         <li class="nk-menu-item">
                             <a href="main_dashboard_reports_expenses" class="nk-menu-link">

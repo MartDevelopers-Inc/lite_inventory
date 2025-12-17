@@ -2,15 +2,11 @@
 
 namespace PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions;
 
-use PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
 use PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use PhpOffice\PhpSpreadsheet\Calculation\Functions;
-use PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 
 class Beta
 {
-    use ArrayEnabled;
-
     private const MAX_ITERATIONS = 256;
 
     private const LOG_GAMMA_X_MAX_VALUE = 2.55e305;
@@ -23,28 +19,20 @@ class Beta
      * Returns the beta distribution.
      *
      * @param mixed $value Float value at which you want to evaluate the distribution
-     *                      Or can be an array of values
      * @param mixed $alpha Parameter to the distribution as a float
-     *                      Or can be an array of values
      * @param mixed $beta Parameter to the distribution as a float
-     *                      Or can be an array of values
      * @param mixed $rMin as an float
-     *                      Or can be an array of values
      * @param mixed $rMax as an float
-     *                      Or can be an array of values
      *
-     * @return array|float|string
-     *         If an array of numbers is passed as an argument, then the returned result will also be an array
-     *            with the same dimensions
+     * @return float|string
      */
     public static function distribution($value, $alpha, $beta, $rMin = 0.0, $rMax = 1.0)
     {
-        if (is_array($value) || is_array($alpha) || is_array($beta) || is_array($rMin) || is_array($rMax)) {
-            return self::evaluateArrayArguments([self::class, __FUNCTION__], $value, $alpha, $beta, $rMin, $rMax);
-        }
-
-        $rMin = $rMin ?? 0.0;
-        $rMax = $rMax ?? 1.0;
+        $value = Functions::flattenSingleValue($value);
+        $alpha = Functions::flattenSingleValue($alpha);
+        $beta = Functions::flattenSingleValue($beta);
+        $rMin = ($rMin === null) ? 0.0 : Functions::flattenSingleValue($rMin);
+        $rMax = ($rMax === null) ? 1.0 : Functions::flattenSingleValue($rMax);
 
         try {
             $value = DistributionValidations::validateFloat($value);
@@ -62,7 +50,7 @@ class Beta
             $rMax = $tmp;
         }
         if (($value < $rMin) || ($value > $rMax) || ($alpha <= 0) || ($beta <= 0) || ($rMin == $rMax)) {
-            return ExcelError::NAN();
+            return Functions::NAN();
         }
 
         $value -= $rMin;
@@ -77,28 +65,20 @@ class Beta
      * Returns the inverse of the Beta distribution.
      *
      * @param mixed $probability Float probability at which you want to evaluate the distribution
-     *                      Or can be an array of values
      * @param mixed $alpha Parameter to the distribution as a float
-     *                      Or can be an array of values
      * @param mixed $beta Parameter to the distribution as a float
-     *                      Or can be an array of values
      * @param mixed $rMin Minimum value as a float
-     *                      Or can be an array of values
      * @param mixed $rMax Maximum value as a float
-     *                      Or can be an array of values
      *
-     * @return array|float|string
-     *         If an array of numbers is passed as an argument, then the returned result will also be an array
-     *            with the same dimensions
+     * @return float|string
      */
     public static function inverse($probability, $alpha, $beta, $rMin = 0.0, $rMax = 1.0)
     {
-        if (is_array($probability) || is_array($alpha) || is_array($beta) || is_array($rMin) || is_array($rMax)) {
-            return self::evaluateArrayArguments([self::class, __FUNCTION__], $probability, $alpha, $beta, $rMin, $rMax);
-        }
-
-        $rMin = $rMin ?? 0.0;
-        $rMax = $rMax ?? 1.0;
+        $probability = Functions::flattenSingleValue($probability);
+        $alpha = Functions::flattenSingleValue($alpha);
+        $beta = Functions::flattenSingleValue($beta);
+        $rMin = ($rMin === null) ? 0.0 : Functions::flattenSingleValue($rMin);
+        $rMax = ($rMax === null) ? 1.0 : Functions::flattenSingleValue($rMax);
 
         try {
             $probability = DistributionValidations::validateProbability($probability);
@@ -116,7 +96,7 @@ class Beta
             $rMax = $tmp;
         }
         if (($alpha <= 0) || ($beta <= 0) || ($rMin == $rMax) || ($probability <= 0.0)) {
-            return ExcelError::NAN();
+            return Functions::NAN();
         }
 
         return self::calculateInverse($probability, $alpha, $beta, $rMin, $rMax);
@@ -129,7 +109,6 @@ class Beta
     {
         $a = 0;
         $b = 2;
-        $guess = ($a + $b) / 2;
 
         $i = 0;
         while ((($b - $a) > Functions::PRECISION) && (++$i <= self::MAX_ITERATIONS)) {
@@ -145,7 +124,7 @@ class Beta
         }
 
         if ($i === self::MAX_ITERATIONS) {
-            return ExcelError::NA();
+            return Functions::NA();
         }
 
         return round($rMin + $guess * ($rMax - $rMin), 12);
@@ -184,13 +163,10 @@ class Beta
     }
 
     // Function cache for logBeta function
-    /** @var float */
     private static $logBetaCacheP = 0.0;
 
-    /** @var float */
     private static $logBetaCacheQ = 0.0;
 
-    /** @var float */
     private static $logBetaCacheResult = 0.0;
 
     /**
@@ -271,7 +247,6 @@ class Beta
         return $frac;
     }
 
-    /*
     private static function betaValue(float $a, float $b): float
     {
         return (Gamma::gammaValue($a) * Gamma::gammaValue($b)) /
@@ -282,5 +257,4 @@ class Beta
     {
         return self::incompleteBeta($value, $a, $b) / self::betaValue($a, $b);
     }
-    */
 }

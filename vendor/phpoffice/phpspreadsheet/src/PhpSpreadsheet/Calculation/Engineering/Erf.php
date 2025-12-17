@@ -2,15 +2,11 @@
 
 namespace PhpOffice\PhpSpreadsheet\Calculation\Engineering;
 
-use PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
 use PhpOffice\PhpSpreadsheet\Calculation\Functions;
-use PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 
 class Erf
 {
-    use ArrayEnabled;
-
-    private const TWO_SQRT_PI = 1.128379167095512574;
+    private static $twoSqrtPi = 1.128379167095512574;
 
     /**
      * ERF.
@@ -26,20 +22,15 @@ class Erf
      *        ERF(lower[,upper])
      *
      * @param mixed $lower Lower bound float for integrating ERF
-     *                      Or can be an array of values
      * @param mixed $upper Upper bound float for integrating ERF.
      *                           If omitted, ERF integrates between zero and lower_limit
-     *                      Or can be an array of values
      *
-     * @return array|float|string
-     *         If an array of numbers is passed as an argument, then the returned result will also be an array
-     *            with the same dimensions
+     * @return float|string
      */
     public static function ERF($lower, $upper = null)
     {
-        if (is_array($lower) || is_array($upper)) {
-            return self::evaluateArrayArguments([self::class, __FUNCTION__], $lower, $upper);
-        }
+        $lower = Functions::flattenSingleValue($lower);
+        $upper = Functions::flattenSingleValue($upper);
 
         if (is_numeric($lower)) {
             if ($upper === null) {
@@ -50,7 +41,7 @@ class Erf
             }
         }
 
-        return ExcelError::VALUE();
+        return Functions::VALUE();
     }
 
     /**
@@ -62,31 +53,21 @@ class Erf
      *        ERF.PRECISE(limit)
      *
      * @param mixed $limit Float bound for integrating ERF, other bound is zero
-     *                      Or can be an array of values
      *
-     * @return array|float|string
-     *         If an array of numbers is passed as an argument, then the returned result will also be an array
-     *            with the same dimensions
+     * @return float|string
      */
     public static function ERFPRECISE($limit)
     {
-        if (is_array($limit)) {
-            return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $limit);
-        }
+        $limit = Functions::flattenSingleValue($limit);
 
         return self::ERF($limit);
     }
 
-    /**
-     * Method to calculate the erf value.
-     *
-     * @param float|int|string $value
-     *
-     * @return float
-     */
+    //
+    //    Private method to calculate the erf value
+    //
     public static function erfValue($value)
     {
-        $value = (float) $value;
         if (abs($value) > 2.2) {
             return 1 - ErfC::ERFC($value);
         }
@@ -105,6 +86,6 @@ class Erf
             }
         } while (abs($term / $sum) > Functions::PRECISION);
 
-        return self::TWO_SQRT_PI * $sum;
+        return self::$twoSqrtPi * $sum;
     }
 }

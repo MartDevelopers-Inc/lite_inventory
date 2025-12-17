@@ -1,5 +1,4 @@
 <?php
-
 /**
  * HslTest.php
  *
@@ -7,7 +6,7 @@
  * @category    Library
  * @package     Color
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2015-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2015-2015 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-color
  *
@@ -17,7 +16,7 @@
 namespace Test\Model;
 
 use PHPUnit\Framework\TestCase;
-use Test\TestUtil;
+use \Test\TestUtil;
 
 /**
  * Hsl Color class test
@@ -26,7 +25,7 @@ use Test\TestUtil;
  * @category    Library
  * @package     Color
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2015-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2015-2015 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-color
  */
@@ -146,13 +145,13 @@ class HslTest extends TestUtil
     {
         $testObj = $this->getTestObject();
         $res = $testObj->getPdfColor();
-        $this->assertEquals('0.250000 0.501000 0.750000 rg' . "\n", $res);
-
+        $this->assertEquals('0.250000 0.501000 0.750000 rg'."\n", $res);
+        
         $res = $testObj->getPdfColor(false);
-        $this->assertEquals('0.250000 0.501000 0.750000 rg' . "\n", $res);
-
+        $this->assertEquals('0.250000 0.501000 0.750000 rg'."\n", $res);
+        
         $res = $testObj->getPdfColor(true);
-        $this->assertEquals('0.250000 0.501000 0.750000 RG' . "\n", $res);
+        $this->assertEquals('0.250000 0.501000 0.750000 RG'."\n", $res);
     }
 
     public function testToGrayArray()

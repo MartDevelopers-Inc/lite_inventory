@@ -8,8 +8,6 @@
 
 namespace Svg\Tag;
 
-use Svg\Style;
-
 class Text extends Shape
 {
     protected $x = 0;
@@ -18,18 +16,18 @@ class Text extends Shape
 
     public function start($attributes)
     {
+        $document = $this->document;
         $height = $this->document->getHeight();
         $this->y = $height;
 
         if (isset($attributes['x'])) {
-            $width = $this->document->getWidth();
-            $this->x = $this->convertSize($attributes['x'], $width);
+            $this->x = $attributes['x'];
         }
         if (isset($attributes['y'])) {
-            $this->y = $height - $this->convertSize($attributes['y'], $height);
+            $this->y = $height - $attributes['y'];
         }
 
-        $this->document->getSurface()->transform(1, 0, 0, -1, 0, $height);
+        $document->getSurface()->transform(1, 0, 0, -1, 0, $height);
     }
 
     public function end()

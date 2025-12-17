@@ -21,7 +21,6 @@ class Border extends Supervisor
     const BORDER_SLANTDASHDOT = 'slantDashDot';
     const BORDER_THICK = 'thick';
     const BORDER_THIN = 'thin';
-    const BORDER_OMIT = 'omit'; // should be used only for Conditional
 
     /**
      * Border style.
@@ -49,7 +48,7 @@ class Border extends Supervisor
      *                                    Leave this value at default unless you understand exactly what
      *                                        its ramifications are
      */
-    public function __construct($isSupervisor = false, bool $isConditional = false)
+    public function __construct($isSupervisor = false)
     {
         // Supervisor?
         parent::__construct($isSupervisor);
@@ -61,9 +60,6 @@ class Border extends Supervisor
         if ($isSupervisor) {
             $this->color->bindParent($this, 'color');
         }
-        if ($isConditional) {
-            $this->borderStyle = self::BORDER_OMIT;
-        }
     }
 
     /**
@@ -74,11 +70,8 @@ class Border extends Supervisor
      */
     public function getSharedComponent()
     {
-        /** @var Style */
-        $parent = $this->parent;
-
         /** @var Borders $sharedComponent */
-        $sharedComponent = $parent->getSharedComponent();
+        $sharedComponent = $this->parent->getSharedComponent();
         switch ($this->parentPropertyName) {
             case 'bottom':
                 return $sharedComponent->getBottom();
@@ -104,10 +97,7 @@ class Border extends Supervisor
      */
     public function getStyleArray($array)
     {
-        /** @var Style */
-        $parent = $this->parent;
-
-        return $parent->/** @scrutinizer ignore-call */ getStyleArray([$this->parentPropertyName => $array]);
+        return $this->parent->getStyleArray([$this->parentPropertyName => $array]);
     }
 
     /**

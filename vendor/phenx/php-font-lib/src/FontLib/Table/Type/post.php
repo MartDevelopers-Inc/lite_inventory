@@ -1,7 +1,7 @@
 <?php
 /**
  * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
+ * @link    https://github.com/PhenX/php-font-lib
  * @author  Fabien Ménager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
@@ -57,9 +57,7 @@ class post extends Table {
             $names[$g] = File::$macCharNames[$index];
           }
           else {
-            if (array_key_exists($index - 258, $namesPascal)) {
-              $names[$g] = $namesPascal[$index - 258];
-            }
+            $names[$g] = $namesPascal[$index - 258];
           }
         }
 

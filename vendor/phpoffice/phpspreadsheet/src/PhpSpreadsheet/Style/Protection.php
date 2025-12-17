@@ -53,10 +53,7 @@ class Protection extends Supervisor
      */
     public function getSharedComponent()
     {
-        /** @var Style */
-        $parent = $this->parent;
-
-        return $parent->getSharedComponent()->getProtection();
+        return $this->parent->getSharedComponent()->getProtection();
     }
 
     /**

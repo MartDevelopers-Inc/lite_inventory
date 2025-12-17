@@ -2,7 +2,7 @@
 /**
  * @package php-svg-lib
  * @link    http://github.com/PhenX/php-svg-lib
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien M�nager <fabien.menager@gmail.com>
  * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -15,7 +15,7 @@ class SurfaceCpdf implements SurfaceInterface
 {
     const DEBUG = false;
 
-    /** @var \Svg\Surface\CPdf */
+    /** @var \CPdf\CPdf */
     private $canvas;
 
     private $width;
@@ -33,7 +33,7 @@ class SurfaceCpdf implements SurfaceInterface
         $h = $dimensions["height"];
 
         if (!$canvas) {
-            $canvas = new \Svg\Surface\CPdf(array(0, 0, $w, $h));
+            $canvas = new \CPdf\CPdf(array(0, 0, $w, $h));
             $refl = new \ReflectionClass($canvas);
             $canvas->fontcache = realpath(dirname($refl->getFileName()) . "/../../fonts/")."/";
         }
@@ -122,10 +122,10 @@ class SurfaceCpdf implements SurfaceInterface
         $this->canvas->closePath();
     }
 
-    public function fillStroke(bool $close = false)
+    public function fillStroke()
     {
         if (self::DEBUG) echo __FUNCTION__ . "\n";
-        $this->canvas->fillStroke($close);
+        $this->canvas->fillStroke();
     }
 
     public function clip()
@@ -173,7 +173,7 @@ class SurfaceCpdf implements SurfaceInterface
             $data = file_get_contents($image);
         }
 
-        $image = tempnam(sys_get_temp_dir(), "svg");
+        $image = tempnam("", "svg");
         file_put_contents($image, $data);
 
         $img = $this->image($image, $sx, $sy, $sw, $sh, "normal");
@@ -342,10 +342,10 @@ class SurfaceCpdf implements SurfaceInterface
         $this->stroke();
     }
 
-    public function stroke(bool $close = false)
+    public function stroke()
     {
         if (self::DEBUG) echo __FUNCTION__ . "\n";
-        $this->canvas->stroke($close);
+        $this->canvas->stroke();
     }
 
     public function endPath()
@@ -415,19 +415,11 @@ class SurfaceCpdf implements SurfaceInterface
             $dashArray = preg_split('/\s*,\s*/', $style->strokeDasharray);
         }
 
-
-        $phase=0;
-        if ($style->strokeDashoffset) {
-           $phase = $style->strokeDashoffset;
-        }
-
-
         $canvas->setLineStyle(
             $style->strokeWidth,
             $style->strokeLinecap,
             $style->strokeLinejoin,
-            $dashArray,
-            $phase
+            $dashArray
         );
 
         $this->setFont($style->fontFamily, $style->fontStyle, $style->fontWeight);
@@ -435,52 +427,51 @@ class SurfaceCpdf implements SurfaceInterface
 
     public function setFont($family, $style, $weight)
     {
-        $map = [
-            "serif"      => "times",
-            "sans-serif" => "helvetica",
-            "fantasy"    => "symbol",
-            "cursive"    => "times",
-            "monospace"  => "courier"
-        ];
+        $map = array(
+            "serif"      => "Times",
+            "sans-serif" => "Helvetica",
+            "fantasy"    => "Symbol",
+            "cursive"    => "Times",
+            "monospace"  => "Courier",
 
-        $styleMap = [
-            "courier" => [
-                ""   => "Courier",
-                "b"  => "Courier-Bold",
-                "i"  => "Courier-Oblique",
-                "bi" => "Courier-BoldOblique",
-            ],
-            "helvetica" => [
-                ""   => "Helvetica",
-                "b"  => "Helvetica-Bold",
-                "i"  => "Helvetica-Oblique",
-                "bi" => "Helvetica-BoldOblique",
-            ],
-            "symbol" => [
-                "" => "Symbol"
-            ],
-            "times" => [
-                ""   => "Times-Roman",
-                "b"  => "Times-Bold",
-                "i"  => "Times-Italic",
-                "bi" => "Times-BoldItalic",
-            ],
-        ];
+            "arial"      => "Helvetica",
+            "verdana"    => "Helvetica",
+        );
 
-        $family_lc = strtolower($family);
-        if (isset($map[$family_lc])) {
-            $family = $map[$family_lc];
+        $styleMap = array(
+            'Helvetica' => array(
+                'b'  => 'Helvetica-Bold',
+                'i'  => 'Helvetica-Oblique',
+                'bi' => 'Helvetica-BoldOblique',
+            ),
+            'Courier' => array(
+                'b'  => 'Courier-Bold',
+                'i'  => 'Courier-Oblique',
+                'bi' => 'Courier-BoldOblique',
+            ),
+            'Times' => array(
+                ''   => 'Times-Roman',
+                'b'  => 'Times-Bold',
+                'i'  => 'Times-Italic',
+                'bi' => 'Times-BoldItalic',
+            ),
+        );
+
+        $family = strtolower($family);
+        $style  = strtolower($style);
+        $weight = strtolower($weight);
+
+        if (isset($map[$family])) {
+            $family = $map[$family];
         }
 
         if (isset($styleMap[$family])) {
             $key = "";
 
-            $weight = strtolower($weight);
             if ($weight === "bold" || $weight === "bolder" || (is_numeric($weight) && $weight >= 600)) {
                 $key .= "b";
             }
 
-            $style = strtolower($style);
             if ($style === "italic" || $style === "oblique") {
                 $key .= "i";
             }

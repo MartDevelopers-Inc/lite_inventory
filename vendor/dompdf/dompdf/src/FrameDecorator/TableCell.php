@@ -1,7 +1,8 @@
 <?php
 /**
  * @package dompdf
- * @link    https://github.com/dompdf/dompdf
+ * @link    http://dompdf.github.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 namespace Dompdf\FrameDecorator;
@@ -80,7 +81,7 @@ class TableCell extends BlockFrameDecorator
         );
 
         $new_height = $height - $v_space;
-        $style->set_used("height", $new_height);
+        $style->height = $new_height;
 
         if ($new_height > $this->_content_height) {
             $y_offset = 0;

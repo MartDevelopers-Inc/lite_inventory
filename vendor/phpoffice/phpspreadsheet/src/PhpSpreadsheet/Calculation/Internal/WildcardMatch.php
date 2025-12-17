@@ -6,10 +6,10 @@ class WildcardMatch
 {
     private const SEARCH_SET = [
         '~~', // convert double tilde to unprintable value
-        '~\*', // convert tilde backslash asterisk to [*] (matches literal asterisk in regexp)
-        '\*', // convert backslash asterisk to .* (matches string of any length in regexp)
-        '~\?', // convert tilde backslash question to [?] (matches literal question mark in regexp)
-        '\?', // convert backslash question to . (matches one character in regexp)
+        '~\\*', // convert tilde backslash asterisk to [*] (matches literal asterisk in regexp)
+        '\\*', // convert backslash asterisk to .* (matches string of any length in regexp)
+        '~\\?', // convert tilde backslash question to [?] (matches literal question mark in regexp)
+        '\\?', // convert backslash question to . (matches one character in regexp)
         "\x1c", // convert original double tilde to single tilde
     ];
 
@@ -25,13 +25,13 @@ class WildcardMatch
     public static function wildcard(string $wildcard): string
     {
         // Preg Escape the wildcard, but protecting the Excel * and ? search characters
-        return str_replace(self::SEARCH_SET, self::REPLACEMENT_SET, preg_quote($wildcard, '/'));
+        return str_replace(self::SEARCH_SET, self::REPLACEMENT_SET, preg_quote($wildcard));
     }
 
-    public static function compare(?string $value, string $wildcard): bool
+    public static function compare(string $value, string $wildcard): bool
     {
-        if ($value === '' || $value === null) {
-            return false;
+        if ($value === '') {
+            return true;
         }
 
         return (bool) preg_match("/^{$wildcard}\$/mui", $value);

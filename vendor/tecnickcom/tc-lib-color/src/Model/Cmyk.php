@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Cmyk.php
  *
@@ -7,7 +6,7 @@
  * @category    Library
  * @package     Color
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2015-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2015-2015 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-color
  *
@@ -25,7 +24,7 @@ namespace Com\Tecnick\Color\Model;
  * @category    Library
  * @package     Color
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2015-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2015-2015 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-color
  */
@@ -112,11 +111,11 @@ class Cmyk extends \Com\Tecnick\Color\Model implements \Com\Tecnick\Color\Model\
     {
         $rgb = $this->toRgbArray();
         return 'rgba('
-            . $this->getNormalizedValue($rgb['red'], 100) . '%,'
-            . $this->getNormalizedValue($rgb['green'], 100) . '%,'
-            . $this->getNormalizedValue($rgb['blue'], 100) . '%,'
-            . $rgb['alpha']
-            . ')';
+            .$this->getNormalizedValue($rgb['red'], 100).'%,'
+            .$this->getNormalizedValue($rgb['green'], 100).'%,'
+            .$this->getNormalizedValue($rgb['blue'], 100).'%,'
+            .$rgb['alpha']
+            .')';
     }
 
     /**
@@ -157,7 +156,7 @@ class Cmyk extends \Com\Tecnick\Color\Model implements \Com\Tecnick\Color\Model\
         if ($stroke) {
             $mode = strtoupper($mode);
         }
-        return $this->getComponentsString() . ' ' . $mode . "\n";
+        return $this->getComponentsString().' '.$mode."\n";
     }
 
     /**

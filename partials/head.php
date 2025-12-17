@@ -82,7 +82,7 @@ while ($settings = $res->fetch_object()) {
         <meta name="author" content="Devlan Solutions LTD" />
     
         <!-- Primary Meta Tags -->
-        <title>Native Beecare POS - Apiculture at its best</title>
+        <title>Nyuki Apiculture Solutions LTD POS - Apiculture at its best</title>
         <meta name="title" content="Native Beecare  - Apiculture at the best" />
         <meta name="description" content="Explore the best in apiculture with Native Beecare . We provide top-notch solutions for beekeeping and more. Discover the excellence of our services." />
     

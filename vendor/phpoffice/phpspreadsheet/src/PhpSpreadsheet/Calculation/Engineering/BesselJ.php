@@ -2,14 +2,11 @@
 
 namespace PhpOffice\PhpSpreadsheet\Calculation\Engineering;
 
-use PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
 use PhpOffice\PhpSpreadsheet\Calculation\Exception;
-use PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
+use PhpOffice\PhpSpreadsheet\Calculation\Functions;
 
 class BesselJ
 {
-    use ArrayEnabled;
-
     /**
      * BESSELJ.
      *
@@ -23,22 +20,17 @@ class BesselJ
      *
      * @param mixed $x A float value at which to evaluate the function.
      *                                If x is nonnumeric, BESSELJ returns the #VALUE! error value.
-     *                      Or can be an array of values
      * @param mixed $ord The integer order of the Bessel function.
      *                       If ord is not an integer, it is truncated.
      *                                If $ord is nonnumeric, BESSELJ returns the #VALUE! error value.
      *                                If $ord < 0, BESSELJ returns the #NUM! error value.
-     *                      Or can be an array of values
      *
-     * @return array|float|string Result, or a string containing an error
-     *         If an array of numbers is passed as an argument, then the returned result will also be an array
-     *            with the same dimensions
+     * @return float|string Result, or a string containing an error
      */
     public static function BESSELJ($x, $ord)
     {
-        if (is_array($x) || is_array($ord)) {
-            return self::evaluateArrayArguments([self::class, __FUNCTION__], $x, $ord);
-        }
+        $x = Functions::flattenSingleValue($x);
+        $ord = Functions::flattenSingleValue($ord);
 
         try {
             $x = EngineeringValidations::validateFloat($x);
@@ -48,12 +40,12 @@ class BesselJ
         }
 
         if ($ord < 0) {
-            return ExcelError::NAN();
+            return Functions::NAN();
         }
 
         $fResult = self::calculate($x, $ord);
 
-        return (is_nan($fResult)) ? ExcelError::NAN() : $fResult;
+        return (is_nan($fResult)) ? Functions::NAN() : $fResult;
     }
 
     private static function calculate(float $x, int $ord): float
@@ -133,7 +125,7 @@ class BesselJ
         return self::besselj2b($ax, $ord, $x);
     }
 
-    private static function besselj2a(float $ax, int $ord, float $x): float
+    private static function besselj2a(float $ax, int $ord, float $x)
     {
         $tox = 2.0 / $ax;
         $bjm = self::besselJ0($ax);
@@ -148,7 +140,7 @@ class BesselJ
         return ($x < 0.0 && ($ord % 2) == 1) ? -$ans : $ans;
     }
 
-    private static function besselj2b(float $ax, int $ord, float $x): float
+    private static function besselj2b(float $ax, int $ord, float $x)
     {
         $tox = 2.0 / $ax;
         $jsum = false;
@@ -167,7 +159,7 @@ class BesselJ
             if ($jsum === true) {
                 $sum += $bj;
             }
-            $jsum = $jsum === false;
+            $jsum = !$jsum;
             if ($j === $ord) {
                 $ans = $bjp;
             }

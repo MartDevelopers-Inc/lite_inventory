@@ -87,10 +87,11 @@ while ($stores = $res->fetch_object()) {
 
         <head>
             <meta name="" content="XYZ,0,0,1" />
-            <style type="text/css">
+             <style type="text/css">
                 table {
                     font-size: 12px;
                     padding: 4px;
+                    font-family: Consolas, "Roboto Mono", "Courier New", monospace;
                 }
 
                 tr {
@@ -130,6 +131,7 @@ while ($stores = $res->fetch_object()) {
                 }
 
                 .footer {
+                    font-family: Consolas, "Roboto Mono", "Courier New", monospace;
                     width: 100%;
                     text-align: center;
                     position: fixed;
@@ -158,7 +160,7 @@ while ($stores = $res->fetch_object()) {
                     border: 1px solid red;
                 }
                 .list_header{
-                    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+                    font-family: Consolas, "Roboto Mono", "Courier New", monospace;
                 }
             </style>
         </head>
@@ -166,18 +168,16 @@ while ($stores = $res->fetch_object()) {
         <body style="margin:1px;">
             <div class="footer">
                 <hr>
-                <i><b>Report Generated On ' . date('d M Y') . ', NativeBeecare POS. Powered By Devlan Solutions LTD ~ devlan.co.ke </b><i>
+                <i><b>Generated On ' . date('d M Y') . '. Powered By Devlan Solutions LTD ~ devlan.co.ke </b><i>
             </div>
             <div class="list_header" align="center">
                 <h3>
-                    ' . $stores->store_name . '
-                </h3>
-                <h4>
+                    ' . $stores->store_name . ' <br>
                     ' . $stores->store_email . '<br>
                     ' . $stores->store_adr . ' 
-                </h4>
+                </h3>
                 <hr style="width:100%" , color=black>
-                <h5>Inventory Report On ' . date('d M Y') . ' </h5>
+                <h5  style="font-size:14pt">Inventory Report On ' . date('d M Y') . ' </h5>
             </div>
             <table border="1" cellspacing="0" width="98%" style="font-size:9pt">
                 <thead>

@@ -140,7 +140,7 @@ require_once('../partials/head.php');
                                     <div class="nk-feature-content py-4 p-sm-5">
                                         <h4><?php echo $settings->system_name; ?></h4>
                                         <p><?php echo $settings->system_tagline; ?></p>
-                                        <p>Welcome to Native Beecare, an innovative entity dedicated to fostering sustainable development in Kenya. Since our inception,
+                                        <p>Welcome to Nyuki Apiculture Solutions LTD , an innovative entity dedicated to fostering sustainable development in Kenya. Since our inception,
                                         we have been on a mission to build capacity for bee products especially in  Makueni County regions while championing the protection of indigenous trees.</p>
                                     </div>
                                 </div>

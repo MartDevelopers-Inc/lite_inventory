@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Spot.php
  *
@@ -7,7 +6,7 @@
  * @category    Library
  * @package     Color
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2015-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2015-2015 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-color
  *
@@ -16,8 +15,8 @@
 
 namespace Com\Tecnick\Color;
 
-use Com\Tecnick\Color\Exception as ColorException;
-use Com\Tecnick\Color\Model\Cmyk;
+use \Com\Tecnick\Color\Exception as ColorException;
+use \Com\Tecnick\Color\Model\Cmyk;
 
 /**
  * Com\Tecnick\Color\Spot
@@ -28,7 +27,7 @@ use Com\Tecnick\Color\Model\Cmyk;
  * @category    Library
  * @package     Color
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2015-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2015-2015 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-color
  */
@@ -64,7 +63,7 @@ class Spot extends \Com\Tecnick\Color\Web
         'blue' => array('name' => 'Blue',
             'color' => array('cyan' => 1, 'magenta' => 1, 'yellow' => 0, 'key' => 0, 'alpha' => 1)),
     );
-
+    
     /**
      * Array of Spot colors
      *
@@ -109,7 +108,7 @@ class Spot extends \Com\Tecnick\Color\Web
         if (empty($this->spot_colors[$key])) {
             // search on default spot colors
             if (empty(self::$default_spot_colors[$key])) {
-                throw new ColorException('unable to find the spot color: ' . $key);
+                throw new ColorException('unable to find the spot color: '.$key);
             }
             $this->addSpotColor($key, new Cmyk(self::$default_spot_colors[$key]['color']));
         }
@@ -121,7 +120,7 @@ class Spot extends \Com\Tecnick\Color\Web
      *
      * @param string $name Full name of the spot color.
      *
-     * @return array
+     * @return \Com\Tecnick\Color\Web\Model\Cmyk
      *
      * @throws ColorException if the color is not found
      */
@@ -164,18 +163,18 @@ class Spot extends \Com\Tecnick\Color\Web
     {
         $out = '';
         foreach ($this->spot_colors as $name => $color) {
-            $out .= (++$pon) . ' 0 obj' . "\n";
+            $out .= (++$pon).' 0 obj'."\n";
             $this->spot_colors[$name]['n'] = $pon;
-            $out .= '[/Separation /' . str_replace(' ', '#20', $name)
-                . ' /DeviceCMYK <<'
-                . '/Range [0 1 0 1 0 1 0 1]'
-                . ' /C0 [0 0 0 0]'
-                . ' /C1 [' . $color['color']->getComponentsString() . ']'
-                . ' /FunctionType 2'
-                . ' /Domain [0 1]'
-                . ' /N 1'
-                . '>>]' . "\n"
-                . 'endobj' . "\n";
+            $out .= '[/Separation /'.str_replace(' ', '#20', $name)
+                .' /DeviceCMYK <<'
+                .'/Range [0 1 0 1 0 1 0 1]'
+                .' /C0 [0 0 0 0]'
+                .' /C1 ['.$color['color']->getComponentsString().']'
+                .' /FunctionType 2'
+                .' /Domain [0 1]'
+                .' /N 1'
+                .'>>]'."\n"
+                .'endobj'."\n";
         }
         return $out;
     }
@@ -192,9 +191,9 @@ class Spot extends \Com\Tecnick\Color\Web
         }
         $out = '/ColorSpace << ';
         foreach ($this->spot_colors as $color) {
-            $out .= '/CS' . $color['i'] . ' ' . $color['n'] . ' 0 R ';
+            $out .= '/CS'.$color['i'].' '.$color['n'].' 0 R ';
         }
-        $out .= '>>' . "\n";
+        $out .= '>>'."\n";
         return $out;
     }
 }
