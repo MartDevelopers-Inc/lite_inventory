@@ -64,76 +64,140 @@
  */
 
 session_start();
+
 require_once('../config/config.php');
 require_once('../config/checklogin.php');
 check_login();
 require_once('../config/codeGen.php');
 
+
 $start = date('Y-m-d', strtotime($_GET['from']));
-$end = date('Y-m-d', strtotime($_GET['to']));
+$end   = date('Y-m-d', strtotime($_GET['to']));
 $store = $_GET['store'];
 
+
+/* Sanitize for Excel */
 function filterData(&$str)
 {
     $str = preg_replace("/\t/", "\\t", $str);
     $str = preg_replace("/\r?\n/", "\\n", $str);
-    if (strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
+
+    if (strstr($str, '"')) {
+        $str = '"' . str_replace('"', '""', $str) . '"';
+    }
 }
 
-/* Excel File Name */
-$fileName = 'Item Based Sales Report From ' . date('M d Y', strtotime($start)) . ' To ' . date('M d Y', strtotime($end)) . '.xls';
 
-/* Excel Column Names */
-$fields = array('Item Details ', 'Quantity Sold ', 'Amount (Ksh)');
-$excelData = implode("\t", array_values($fields)) . "\n";
+/* File Name */
+$fileName = 'Item Based Sales & Profit Report From '
+    . date('M d Y', strtotime($start))
+    . ' To '
+    . date('M d Y', strtotime($end))
+    . '.xls';
 
-/* Fetch All Records From The Database */
-$query = $mysqli->query("SELECT 
+
+/* Column Headers */
+$fields = array(
+    'Item',
+    'Quantity Sold',
+    'Total Sales (Ksh)',
+    'Profit / Unit (Ksh)',
+    'Total Profit (Ksh)'
+);
+
+$excelData = implode("\t", $fields) . "\n";
+
+
+/* Query */
+$sql = "
+SELECT
     p.product_name,
+
     SUM(s.sale_quantity) AS total_qty,
-    SUM(s.sale_quantity * s.sale_payment_amount) AS total_amount
-    FROM sales s
-    INNER JOIN products p ON p.product_id = s.sale_product_id
-    WHERE p.product_store_id = '{$store}' 
-    AND s.sale_datetime BETWEEN '$start' AND '$end'
-    GROUP BY p.product_name
-    ORDER BY total_qty  DESC
-");
 
-$totalQuantity = 0;
-$totalAmount = 0;
+    SUM(s.sale_quantity * s.sale_payment_amount) AS total_amount,
 
-if ($query->num_rows > 0) {
-    while ($row = $query->fetch_assoc()) {
-        
+    (AVG(s.sale_payment_amount) - p.product_purchase_price) AS profit_per_unit,
+
+    SUM(
+        s.sale_quantity *
+        (s.sale_payment_amount - p.product_purchase_price)
+    ) AS total_profit
+
+FROM sales s
+
+INNER JOIN products p
+    ON p.product_id = s.sale_product_id
+
+WHERE p.product_store_id = ?
+AND s.sale_datetime BETWEEN ? AND ?
+
+GROUP BY p.product_id
+
+ORDER BY total_qty DESC
+";
+
+
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param("sss", $store, $start, $end);
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+
+/* Totals */
+$totalRevenue = 0;
+$totalProfit  = 0;
+
+
+if ($result->num_rows > 0) {
+
+    while ($row = $result->fetch_assoc()) {
+
         $lineData = array(
             $row['product_name'],
             $row['total_qty'],
-           $row['total_amount'],
+            number_format($row['total_amount'], 2),
+            number_format($row['profit_per_unit'], 2),
+            number_format($row['total_profit'], 2)
         );
-        array_walk($lineData, 'filterData');
-        $excelData .= implode("\t", array_values($lineData)) . "\n";
 
-        /* Update total calculations */
-        $totalAmount += $row['total_amount'];
+        array_walk($lineData, 'filterData');
+
+        $excelData .= implode("\t", $lineData) . "\n";
+
+
+        /* Accumulate totals */
+        $totalRevenue += $row['total_amount'];
+        $totalProfit  += $row['total_profit'];
     }
 
-    /* Add totals row */
+
+    /* Totals Row */
     $totalLine = array(
-        'Total',
+        'TOTAL',
         '',
-        number_format($totalAmount, 2)
+        number_format($totalRevenue, 2),
+        '',
+        number_format($totalProfit, 2)
     );
+
     array_walk($totalLine, 'filterData');
-    $excelData .= implode("\t", array_values($totalLine)) . "\n";
+
+    $excelData .= implode("\t", $totalLine) . "\n";
 } else {
-    $excelData .= 'No Sales Records Available...' . "\n";
+
+    $excelData .= "No Sales Records Available...\n";
 }
 
-/* Generate header for download */
+
+/* Download Headers */
 header("Content-Type: application/vnd.ms-excel");
 header("Content-Disposition: attachment; filename=\"$fileName\"");
+header("Pragma: no-cache");
+header("Expires: 0");
 
-/* Output Excel data */
+
+/* Output */
 echo $excelData;
 exit;
