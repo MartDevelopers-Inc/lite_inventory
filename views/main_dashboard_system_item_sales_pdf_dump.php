@@ -187,43 +187,83 @@ while ($stores = $res->fetch_object()) {
                         <table border="1" cellspacing="0" width="98%" style="font-size:9pt">
                             <thead>
                                 <tr>
-                                    <th style="width:100%">Item Details</th>
-                                    <th style="width:100%">Total Quantity Sold</th>
-                                    <th style="width:100%">Total Amount</th>
+                                    <th style="width:100%">Item</th>
+                                    <th style="width:100%">Total Qty</th>
+                                    <th style="width:100%">Total Sales</th>
+                                    <th style="width:100%">Profit / Unit</th>
+                                    <th style="width:100%">Total Profit</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 ';
-                                $ret = "SELECT 
-                                p.product_name,
-                                SUM(s.sale_quantity) AS total_qty,
-                                SUM(s.sale_quantity * s.sale_payment_amount) AS total_amount
-                                FROM sales s
-                                INNER JOIN products p ON p.product_id = s.sale_product_id
-                                WHERE p.product_store_id = '{$store}' 
-                                AND s.sale_datetime BETWEEN '$start' AND '$end'
-                                GROUP BY p.product_name
-                                ORDER BY total_qty  DESC";
-                                $stmt = $mysqli->prepare($ret);
-                                $stmt->execute(); //ok
-                                $res = $stmt->get_result();
-                                $cumulative_income = 0;
-                                while ($sales = $res->fetch_object()) {
-                                    $cumulative_income += $sales->total_amount;
+                               $ret = "
+                                SELECT
+                                    p.product_name,
 
-                                    $html .=
-                                    '
+                                    SUM(s.sale_quantity) AS total_qty,
+
+                                    SUM(s.sale_quantity * s.sale_payment_amount) AS total_amount,
+
+                                    (AVG(s.sale_payment_amount) - p.product_purchase_price) AS profit_per_unit,
+
+                                    SUM(
+                                        s.sale_quantity *
+                                        (s.sale_payment_amount - p.product_purchase_price)
+                                    ) AS total_profit
+
+                                FROM sales s
+
+                                INNER JOIN products p
+                                    ON p.product_id = s.sale_product_id
+
+                                WHERE p.product_store_id = ?
+                                AND s.sale_datetime BETWEEN ? AND ?
+
+                                GROUP BY p.product_id
+
+                                ORDER BY total_qty DESC
+                                ";
+
+                                $stmt = $mysqli->prepare($ret);
+                                $stmt->bind_param("sss", $store, $start, $end);
+                                $stmt->execute();
+
+                                $res = $stmt->get_result();
+
+                                $cumulative_income = 0;
+                                $cumulative_profit = 0;
+
+                                while ($sales = $res->fetch_object()) {
+
+                                    $cumulative_income += $sales->total_amount;
+                                    $cumulative_profit += $sales->total_profit;
+
+                                    $html .= '
                                         <tr>
-                                            <td>' . $sales->product_name . '</td>
-                                            <td>' . number_format($sales->total_qty) . '</td>                                           
+                                            <td>' . htmlspecialchars($sales->product_name) . '</td>
+
+                                            <td>' . number_format($sales->total_qty) . '</td>
+
                                             <td>' . "Ksh " . number_format($sales->total_amount, 2) . '</td>
+
+                                            <td>' . "Ksh " . number_format($sales->profit_per_unit, 2) . '</td>
+
+                                            <td>' . "Ksh " . number_format($sales->total_profit, 2) . '</td>
                                         </tr>
                                     ';
                                 }
-                                    $html .= '
-                                    <tr>
-                                        <td  colspan="2"><b>Total Amount: </b></td>
+
+                                $html .= '
+                                    <tr id="bold_row">
+
+                                        <td colspan="2"><b>Totals</b></td>
+
                                         <td><b>' . "Ksh " . number_format($cumulative_income, 2) . '</b></td>
+
+                                        <td></td>
+
+                                        <td><b>' . "Ksh " . number_format($cumulative_profit, 2) . '</b></td>
+
                                     </tr>
                             </tbody>
                         </table>
