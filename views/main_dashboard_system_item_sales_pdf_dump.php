@@ -221,7 +221,7 @@ while ($stores = $res->fetch_object()) {
 
                                 GROUP BY p.product_id
 
-                                ORDER BY total_qty DESC
+                                ORDER BY total_amount DESC
                                 ";
 
                                 $stmt = $mysqli->prepare($ret);

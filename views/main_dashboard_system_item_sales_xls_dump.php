@@ -134,7 +134,7 @@ AND s.sale_datetime BETWEEN ? AND ?
 
 GROUP BY p.product_id
 
-ORDER BY total_qty DESC
+ORDER BY total_amount DESC
 ";
 
 
